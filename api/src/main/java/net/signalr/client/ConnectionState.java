@@ -1,0 +1,44 @@
+/*
+ * Copyright © Martin Tamme
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package net.signalr.client;
+
+import net.signalr.client.concurrent.Promise;
+
+/**
+ * Defines a connection state.
+ */
+interface ConnectionState {
+
+    void onEnterState();
+
+    void onLeaveState();
+
+    boolean isConnected();
+
+    void addHeader(ConnectionContext context, String name, String value);
+
+    void addQueryParameter(ConnectionContext context, String name, String value);
+
+    void setConnectionData(ConnectionContext context, String connectionData);
+
+    Promise<Void> start(ConnectionContext context, ConnectionHandler handler);
+
+    Promise<Void> stop(ConnectionContext context);
+
+    Promise<Void> send(ConnectionContext context, String message);
+}
