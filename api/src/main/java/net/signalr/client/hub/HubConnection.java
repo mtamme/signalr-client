@@ -80,7 +80,7 @@ public final class HubConnection {
 
         if (hubProxy == null) {
             updateConnectionData(_hubProxies.keySet(), hubName);
-            hubProxy = new HubProxyImpl(_connection, hubName);
+            hubProxy = new DefaultHubProxy(_connection, hubName);
             _hubProxies.put(lowerCaseHubName, hubProxy);
         }
 

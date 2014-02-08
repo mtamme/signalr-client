@@ -27,9 +27,9 @@ import net.signalr.client.concurrent.Promise;
 import net.signalr.client.json.JsonSerializer;
 
 /**
-*
-*/
-final class HubProxyImpl implements HubProxy {
+ * Represents the default hub proxy.
+ */
+final class DefaultHubProxy implements HubProxy {
 
     private final Connection _connection;
 
@@ -39,7 +39,7 @@ final class HubProxyImpl implements HubProxy {
 
     private final Map<Long, Promise<?>> _promises;
 
-    public HubProxyImpl(final Connection connection, final String hubName) {
+    public DefaultHubProxy(final Connection connection, final String hubName) {
         if (connection == null) {
             throw new IllegalArgumentException("Connection must not be null");
         }
