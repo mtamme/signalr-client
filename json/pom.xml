@@ -6,9 +6,9 @@
 		<artifactId>signalr-client</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>signalr-client-transports</artifactId>
+	<artifactId>signalr-client-json</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<module>asynchttpclient</module>
+		<module>gson</module>
 	</modules>
 </project>

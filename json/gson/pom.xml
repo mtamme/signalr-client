@@ -3,32 +3,25 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.signalr.client</groupId>
-		<artifactId>signalr-client</artifactId>
+		<artifactId>signalr-client-json</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>signalr-client-api</artifactId>
+	<artifactId>signalr-client-json-gson</artifactId>
 	<dependencies>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.5</version>
-		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.2.4</version>
 		</dependency>
 		<dependency>
+			<groupId>net.signalr.client</groupId>
+			<artifactId>signalr-client-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>easymock</groupId>
-			<artifactId>easymock</artifactId>
-			<version>2.0</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
