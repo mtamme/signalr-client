@@ -42,7 +42,7 @@ public final class HubConnectionTests {
 
     private static final String METHOD_NAME = "join";
 
-    private static void log(String format, Object... args) {
+    private static void log(final String format, final Object... args) {
         final String line = String.format(format, args);
 
         System.out.printf("[%s] %s\n", Thread.currentThread().getName(), line);
