@@ -25,10 +25,10 @@ import net.signalr.client.concurrent.Deferred;
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Promise;
 import net.signalr.client.concurrent.Promises;
-import net.signalr.client.transports.DefaultTransportManager;
-import net.signalr.client.transports.TransportChannel;
-import net.signalr.client.transports.Transport;
-import net.signalr.client.transports.TransportManager;
+import net.signalr.client.transport.DefaultTransportManager;
+import net.signalr.client.transport.Transport;
+import net.signalr.client.transport.TransportChannel;
+import net.signalr.client.transport.TransportManager;
 
 /**
  * Represents the connected connection state.

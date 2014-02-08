@@ -17,8 +17,8 @@
 
 package net.signalr.client;
 
-import net.signalr.client.transports.Transport;
-import net.signalr.client.transports.TransportContext;
+import net.signalr.client.transport.Transport;
+import net.signalr.client.transport.TransportContext;
 
 /**
  * Defines a connection context.

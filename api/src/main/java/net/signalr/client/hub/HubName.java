@@ -15,37 +15,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client;
+package net.signalr.client.hub;
 
-import net.signalr.client.concurrent.Promise;
-import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.transport.Transport;
+import net.signalr.client.json.JsonName;
 
 /**
- * Defines a connection.
- */
-public interface Connection {
+*
+*/
+final class HubName {
 
-    String getProtocolVersion();
+    @JsonName("name")
+    private String _name;
 
-    String getUrl();
+    public HubName(final String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name must not be null");
+        }
 
-    Transport getTransport();
-
-    JsonSerializer getSerializer();
-
-    boolean isConnected();
-
-    void addHeader(String name, String value);
-
-    void addQueryParameter(String name, String value);
-
-    void setConnectionData(String connectionData);
-
-    Promise<Void> start(ConnectionHandler handler);
-
-    Promise<Void> stop();
-
-    Promise<Void> send(String message);
-
+        _name = name;
+    }
 }

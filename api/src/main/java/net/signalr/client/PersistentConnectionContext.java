@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import net.signalr.client.concurrent.Scheduler;
 import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.transports.Transport;
+import net.signalr.client.transport.Transport;
 
 /**
  * Represents a persistent connection context.

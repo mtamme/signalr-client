@@ -15,37 +15,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client;
+package net.signalr.client.transport;
 
-import net.signalr.client.concurrent.Promise;
-import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.transport.Transport;
+import net.signalr.client.json.JsonName;
+import net.signalr.client.json.JsonReadable;
+import net.signalr.client.json.JsonReader;
 
 /**
- * Defines a connection.
+ * Represents a ping response.
  */
-public interface Connection {
+public final class PingResponse implements JsonReadable {
 
-    String getProtocolVersion();
+    @JsonName("Response")
+    private String _value;
 
-    String getUrl();
+    public String getValue() {
+        return _value;
+    }
 
-    Transport getTransport();
-
-    JsonSerializer getSerializer();
-
-    boolean isConnected();
-
-    void addHeader(String name, String value);
-
-    void addQueryParameter(String name, String value);
-
-    void setConnectionData(String connectionData);
-
-    Promise<Void> start(ConnectionHandler handler);
-
-    Promise<Void> stop();
-
-    Promise<Void> send(String message);
-
+    @Override
+    public void readJson(final JsonReader reader) {
+        _value = reader.getString("Response");
+    }
 }

@@ -15,37 +15,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client;
+package net.signalr.client.hub;
 
 import net.signalr.client.concurrent.Promise;
-import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.transport.Transport;
 
 /**
- * Defines a connection.
- */
-public interface Connection {
+*
+*/
+public interface HubProxy {
 
-    String getProtocolVersion();
+    /**
+     * Executes a method on the server side hub asynchronously.
+     * 
+     * @param methodName The name of the method.
+     * @param args The arguments.
+     * @return A future that represents when invocation returned.
+     */
+    <T> Promise<T> invoke(String methodName, Object... args);
 
-    String getUrl();
-
-    Transport getTransport();
-
-    JsonSerializer getSerializer();
-
-    boolean isConnected();
-
-    void addHeader(String name, String value);
-
-    void addQueryParameter(String name, String value);
-
-    void setConnectionData(String connectionData);
-
-    Promise<Void> start(ConnectionHandler handler);
-
-    Promise<Void> stop();
-
-    Promise<Void> send(String message);
-
+    /**
+     * Registers an event for the hub.
+     * 
+     * @param eventName The name of the event.
+     * @param listener The hub listener.
+     */
+    void subscribe(String eventName, HubListener listener);
 }

@@ -25,9 +25,9 @@ import net.signalr.client.concurrent.Deferred;
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Promise;
 import net.signalr.client.concurrent.Promises;
-import net.signalr.client.transports.TransportChannel;
-import net.signalr.client.transports.NegotiationResponse;
-import net.signalr.client.transports.Transport;
+import net.signalr.client.transport.NegotiationResponse;
+import net.signalr.client.transport.Transport;
+import net.signalr.client.transport.TransportChannel;
 
 /**
  * Represents the disconnected connection state.

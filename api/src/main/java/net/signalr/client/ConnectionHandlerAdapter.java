@@ -17,7 +17,7 @@
 
 package net.signalr.client;
 
-import net.signalr.client.transports.TransportChannelHandler;
+import net.signalr.client.transport.TransportChannelHandler;
 
 /**
  * Represents a connection handler adapter.

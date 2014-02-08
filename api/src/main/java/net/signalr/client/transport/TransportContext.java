@@ -15,37 +15,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client;
+package net.signalr.client.transport;
 
-import net.signalr.client.concurrent.Promise;
+import java.util.Collection;
+import java.util.Map;
+
+import net.signalr.client.concurrent.Scheduler;
 import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.transport.Transport;
 
 /**
- * Defines a connection.
+ * Defines a transport context.
  */
-public interface Connection {
+public interface TransportContext {
 
     String getProtocolVersion();
 
     String getUrl();
 
-    Transport getTransport();
+    Scheduler getScheduler();
 
     JsonSerializer getSerializer();
 
-    boolean isConnected();
+    boolean getTryWebSockets();
 
-    void addHeader(String name, String value);
+    String getConnectionData();
 
-    void addQueryParameter(String name, String value);
+    String getConnectionToken();
 
-    void setConnectionData(String connectionData);
+    long getKeepAliveTimeout();
 
-    Promise<Void> start(ConnectionHandler handler);
+    Map<String, Collection<String>> getHeaders();
 
-    Promise<Void> stop();
-
-    Promise<Void> send(String message);
-
+    Map<String, Collection<String>> getQueryParameters();
 }

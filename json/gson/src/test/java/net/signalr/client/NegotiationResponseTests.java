@@ -19,7 +19,7 @@ package net.signalr.client;
 
 import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.json.gson.GsonSerializer;
-import net.signalr.client.transports.NegotiationResponse;
+import net.signalr.client.transport.NegotiationResponse;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 

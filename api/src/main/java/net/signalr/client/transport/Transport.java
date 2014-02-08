@@ -15,37 +15,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client;
+package net.signalr.client.transport;
 
 import net.signalr.client.concurrent.Promise;
-import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.transport.Transport;
 
 /**
- * Defines a connection.
+ * Defines a transport.
  */
-public interface Connection {
+public interface Transport {
 
-    String getProtocolVersion();
+    /**
+     * Returns the transport name.
+     * 
+     * @return the transport name.
+     */
+    String getName();
 
-    String getUrl();
+    Promise<NegotiationResponse> negotiate(TransportContext context);
 
-    Transport getTransport();
+    Promise<TransportChannel> connect(TransportContext context, TransportChannelHandler handler, boolean reconnect);
 
-    JsonSerializer getSerializer();
+    Promise<PingResponse> ping(TransportContext context);
 
-    boolean isConnected();
-
-    void addHeader(String name, String value);
-
-    void addQueryParameter(String name, String value);
-
-    void setConnectionData(String connectionData);
-
-    Promise<Void> start(ConnectionHandler handler);
-
-    Promise<Void> stop();
-
-    Promise<Void> send(String message);
-
+    Promise<Void> abort(TransportContext context);
 }

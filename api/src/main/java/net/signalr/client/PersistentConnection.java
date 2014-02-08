@@ -20,7 +20,7 @@ package net.signalr.client;
 import net.signalr.client.concurrent.Promise;
 import net.signalr.client.concurrent.TimerScheduler;
 import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.transports.Transport;
+import net.signalr.client.transport.Transport;
 
 /**
  * Represents a persistent connection.

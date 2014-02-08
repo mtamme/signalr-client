@@ -15,37 +15,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client;
-
-import net.signalr.client.concurrent.Promise;
-import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.transport.Transport;
+package net.signalr.client.transport;
 
 /**
- * Defines a connection.
+ * Defines a transport channel handler.
  */
-public interface Connection {
+public interface TransportChannelHandler {
 
-    String getProtocolVersion();
+    void onOpen();
 
-    String getUrl();
+    void onClose();
 
-    Transport getTransport();
+    void onSending(String message);
 
-    JsonSerializer getSerializer();
+    void onReceived(String message);
 
-    boolean isConnected();
-
-    void addHeader(String name, String value);
-
-    void addQueryParameter(String name, String value);
-
-    void setConnectionData(String connectionData);
-
-    Promise<Void> start(ConnectionHandler handler);
-
-    Promise<Void> stop();
-
-    Promise<Void> send(String message);
-
+    void onError(Throwable throwable);
 }
