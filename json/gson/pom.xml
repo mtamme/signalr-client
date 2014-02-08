@@ -8,20 +8,21 @@
 	</parent>
 	<artifactId>signalr-client-json-gson</artifactId>
 	<dependencies>
+        <dependency>
+            <groupId>net.signalr.client</groupId>
+            <artifactId>signalr-client-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.2.4</version>
 		</dependency>
 		<dependency>
-			<groupId>net.signalr.client</groupId>
-			<artifactId>signalr-client-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
