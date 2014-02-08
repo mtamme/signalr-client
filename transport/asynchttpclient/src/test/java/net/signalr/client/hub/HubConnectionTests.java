@@ -32,7 +32,7 @@ import net.signalr.client.transport.asynchttpclient.WebSocketTransport;
 
 public final class HubConnectionTests {
 
-    private static final String URL = "https://localhost/signalr/";
+    private static final String URL = "https:///signalr/";
 
     private static final String ACCESS_ID_NAME = "X-AccessId";
 
@@ -41,6 +41,13 @@ public final class HubConnectionTests {
     private static final String HUB_NAME = "hub";
 
     private static final String METHOD_NAME = "join";
+
+    private static void log(String format, Object... args) {
+        final String line = String.format(format, args);
+
+        System.out.printf("[%s] %s\n", Thread.currentThread().getName(), line);
+        System.out.flush();
+    }
 
     @Test
     public void test() throws InterruptedException, ExecutionException, IOException {
@@ -52,52 +59,52 @@ public final class HubConnectionTests {
         final Promise<Void> start = connection.start(new ConnectionHandler() {
             @Override
             public void onReconnecting() {
-                System.out.println("onReconnecting");
+                log("onReconnecting");
             }
 
             @Override
             public void onReconnected() {
-                System.out.println("onReconnected");
+                log("onReconnected");
             }
 
             @Override
             public void onSending(final String message) {
-                System.out.println("onSending: " + message);
+                log("onSending: %s", message);
             }
 
             @Override
             public void onReceived(final String message) {
-                System.out.println("onReceived: " + message);
+                log("onReceived: %s", message);
             }
 
             @Override
             public void onError(final Throwable throwable) {
-                System.out.println("onError: " + throwable);
+                log("onError: %s", throwable);
             }
 
             @Override
             public void onConnectionSlow() {
-                System.out.println("onConnectionSlow");
+                log("onConnectionSlow");
             }
 
             @Override
             public void onConnecting() {
-                System.out.println("onConnecting");
+                log("onConnecting");
             }
 
             @Override
             public void onConnected() {
-                System.out.println("onConnected");
+                log("onConnected");
             }
 
             @Override
             public void onDisconnecting() {
-                System.out.println("onDisconnecting");
+                log("onDisconnecting");
             }
 
             @Override
             public void onDisconnected() {
-                System.out.println("onDisconnected");
+                log("onDisconnected");
             }
         });
 
