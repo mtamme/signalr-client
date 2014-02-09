@@ -90,7 +90,7 @@ final class DefaultHubDispatcher implements HubDispatcher {
         final Deferred<HubResponse> deferred = _responses.remove(callbackId);
 
         if (deferred == null) {
-            LOGGER.warn("Received response for unknwon callback ID {}", callbackId);
+            LOGGER.warn("Received response for unknown callback ID {}", callbackId);
             return;
         }
 
