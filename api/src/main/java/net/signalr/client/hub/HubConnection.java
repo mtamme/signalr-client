@@ -25,7 +25,6 @@ import java.util.Map;
 import net.signalr.client.Connection;
 import net.signalr.client.ConnectionHandler;
 import net.signalr.client.PersistentConnection;
-import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Promise;
 import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.transport.Transport;
@@ -35,7 +34,9 @@ import net.signalr.client.transport.Transport;
  */
 public final class HubConnection {
 
-    protected final Connection _connection;
+    private final HubDispatcher _dispatcher;
+
+    private final Connection _connection;
 
     private final Map<String, HubProxy> _hubProxies;
 
@@ -43,12 +44,21 @@ public final class HubConnection {
         this(new PersistentConnection(url, transport, serializer));
     }
 
-    HubConnection(final Connection connection) {
+    public HubConnection(final Connection connection) {
+        this(new DefaultHubDispatcher(connection), connection);
+    }
+
+    HubConnection(final HubDispatcher dispatcher, final Connection connection) {
+        if (dispatcher == null) {
+            throw new IllegalArgumentException("Dispatcher must not be null");
+        }
         if (connection == null) {
             throw new IllegalArgumentException("Connection must not be null");
         }
 
+        _dispatcher = dispatcher;
         _connection = connection;
+
         _hubProxies = new HashMap<String, HubProxy>();
     }
 
@@ -74,24 +84,17 @@ public final class HubConnection {
         _connection.addQueryParameter(name, value);
     }
 
-    public HubProxy createHubProxy(final String hubName) {
+    public HubProxy createProxy(final String hubName) {
         final String lowerCaseHubName = hubName.toLowerCase();
         HubProxy hubProxy = _hubProxies.get(lowerCaseHubName);
 
         if (hubProxy == null) {
             updateConnectionData(_hubProxies.keySet(), hubName);
-            hubProxy = new DefaultHubProxy(_connection, hubName);
+            hubProxy = new DefaultHubProxy(hubName, _dispatcher);
             _hubProxies.put(lowerCaseHubName, hubProxy);
         }
 
         return hubProxy;
-    }
-
-    public String registerCallback(final Function<String, Void> callback) {
-        return null;
-    }
-
-    public void removeCallback(final String callbackId) {
     }
 
     public final Promise<Void> start(final ConnectionHandler handler) {

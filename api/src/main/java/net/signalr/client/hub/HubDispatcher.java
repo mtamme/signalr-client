@@ -20,24 +20,23 @@ package net.signalr.client.hub;
 import net.signalr.client.concurrent.Promise;
 
 /**
-*
-*/
-public interface HubProxy {
+ * Defines a hub dispatcher.
+ */
+interface HubDispatcher {
+
+    /**
+     * Invoked when a message was received.
+     * 
+     * @param message The message.
+     */
+    void onReceived(String message);
 
     /**
      * Invokes a method on the server side hub asynchronously.
      * 
-     * @param methodName The name of the method.
-     * @param args The arguments.
-     * @return A promise that represents when return value.
+     * @param request The hub request.
+     * @return A promise that represents the hub response.
      */
-    <T> Promise<T> invoke(String methodName, Object... args);
+    Promise<HubResponse> invoke(HubRequest request);
 
-    /**
-     * Registers an event for the hub.
-     * 
-     * @param eventName The name of the event.
-     * @param listener The hub listener.
-     */
-    void subscribe(String eventName, HubListener listener);
 }

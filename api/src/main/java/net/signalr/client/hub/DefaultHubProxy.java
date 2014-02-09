@@ -17,61 +17,44 @@
 
 package net.signalr.client.hub;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
-
-import net.signalr.client.Connection;
-import net.signalr.client.concurrent.Deferred;
+import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Promise;
-import net.signalr.client.json.JsonSerializer;
 
 /**
  * Represents the default hub proxy.
  */
 final class DefaultHubProxy implements HubProxy {
 
-    private final Connection _connection;
-
     private final String _hubName;
 
-    private final AtomicLong _callbackId;
+    private final HubDispatcher _dispatcher;
 
-    private final Map<Long, Promise<?>> _promises;
-
-    public DefaultHubProxy(final Connection connection, final String hubName) {
-        if (connection == null) {
-            throw new IllegalArgumentException("Connection must not be null");
-        }
+    public DefaultHubProxy(final String hubName, final HubDispatcher dispatcher) {
         if (hubName == null) {
             throw new IllegalArgumentException("Hub name must not be null");
         }
+        if (dispatcher == null) {
+            throw new IllegalArgumentException("Dispatcher must not be null");
+        }
 
-        _connection = connection;
         _hubName = hubName;
-
-        _callbackId = new AtomicLong(0);
-        _promises = new ConcurrentHashMap<Long, Promise<?>>();
+        _dispatcher = dispatcher;
     }
 
     @Override
-    public <T> Promise<T> invoke(final String method, final Object... args) {
-        final long callbackId = _callbackId.incrementAndGet();
-        final Deferred<T> deferred = new Deferred<T>();
-
-        _promises.put(callbackId, deferred);
+    public <T> Promise<T> invoke(final String methodName, final Object... args) {
         final HubRequest request = new HubRequest();
 
         request.setHubName(_hubName);
-        request.setMethodName(method);
-        request.setCallbackId(Long.toString(callbackId));
+        request.setMethodName(methodName);
         request.setArguments(args);
-        final JsonSerializer serializer = _connection.getSerializer();
-        final String message = serializer.serialize(request);
 
-        _connection.send(message);
-
-        return deferred;
+        return _dispatcher.invoke(request).thenApply(new Function<HubResponse, T>() {
+            @Override
+            public T apply(final HubResponse value) throws Exception {
+                return null;
+            }
+        });
     }
 
     @Override
