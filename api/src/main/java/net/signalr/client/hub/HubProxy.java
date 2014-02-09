@@ -27,12 +27,12 @@ public interface HubProxy {
     /**
      * Invokes a method on the server side hub asynchronously.
      * 
-     * @param methodName The name of the method.
      * @param returnClass The class of the return value.
+     * @param methodName The name of the method.
      * @param args The arguments.
      * @return A promise that represents when return value.
      */
-    <T> Promise<T> invoke(String methodName, Class<T> returnClass, Object... args);
+    <T> Promise<T> invoke(Class<T> returnClass, String methodName, Object... args);
 
     /**
      * Registers an event for the hub.

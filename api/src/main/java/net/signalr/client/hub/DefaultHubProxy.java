@@ -43,7 +43,10 @@ final class DefaultHubProxy implements HubProxy {
     }
 
     @Override
-    public <T> Promise<T> invoke(final String methodName, final Class<T> returnClass, final Object... args) {
+    public <T> Promise<T> invoke(final Class<T> returnClass, final String methodName, final Object... args) {
+        if (returnClass == null) {
+            throw new IllegalArgumentException("Return class name must not e null");
+        }
         if (methodName == null) {
             throw new IllegalArgumentException("Method name must not e null");
         }
