@@ -43,6 +43,13 @@ final class DefaultHubProxy implements HubProxy {
 
     @Override
     public <T> Promise<T> invoke(final String methodName, final Object... args) {
+        if (methodName == null) {
+            throw new IllegalArgumentException("Method name must not e null");
+        }
+        if (args == null) {
+            throw new IllegalArgumentException("Arguments must not e null");
+        }
+
         final HubRequest request = new HubRequest();
 
         request.setHubName(_hubName);
@@ -51,13 +58,13 @@ final class DefaultHubProxy implements HubProxy {
 
         return _dispatcher.invoke(request).thenApply(new Function<HubResponse, T>() {
             @Override
-            public T apply(final HubResponse value) throws Exception {
+            public T apply(final HubResponse response) throws Exception {
                 return null;
             }
         });
     }
 
     @Override
-    public void subscribe(final String eventName, final HubListener listener) {
+    public void subscribe(final String eventName, final HubEventListener listener) {
     }
 }

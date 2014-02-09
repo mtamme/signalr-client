@@ -39,5 +39,5 @@ public interface HubProxy {
      * @param eventName The name of the event.
      * @param listener The hub listener.
      */
-    void subscribe(String eventName, HubListener listener);
+    void subscribe(String eventName, HubEventListener listener);
 }

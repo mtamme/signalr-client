@@ -20,8 +20,8 @@ package net.signalr.client.hub;
 import net.signalr.client.json.JsonName;
 
 /**
-*
-*/
+ * Represents a hub name.
+ */
 final class HubName {
 
     @JsonName("name")
