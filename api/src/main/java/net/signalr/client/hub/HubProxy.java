@@ -35,10 +35,10 @@ public interface HubProxy {
     <T> Promise<T> invoke(Class<T> returnClass, String methodName, Object... args);
 
     /**
-     * Registers an event for the hub.
+     * Subscribes to a hub event.
      * 
-     * @param eventName The name of the event.
-     * @param listener The hub listener.
+     * @param eventName The event name.
+     * @param listener The hub event listener.
      */
     void subscribe(String eventName, HubEventListener listener);
 }
