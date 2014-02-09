@@ -25,9 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.signalr.client.Connection;
-import net.signalr.client.concurrent.Callback;
 import net.signalr.client.concurrent.Deferred;
 import net.signalr.client.concurrent.Function;
+import net.signalr.client.concurrent.OnRejected;
 import net.signalr.client.concurrent.Promise;
 import net.signalr.client.json.JsonSerializer;
 
@@ -102,19 +102,16 @@ final class DefaultHubDispatcher implements HubDispatcher {
         if (request == null) {
             throw new IllegalArgumentException("Hub request must not be null");
         }
-        final Deferred<HubResponse> deferred = new Deferred<HubResponse>();
         final String callbackId = nextCallbackId();
 
-        _responses.put(callbackId, deferred);
         request.setCallbackId(callbackId);
         final JsonSerializer serializer = _connection.getSerializer();
         final String message = serializer.serialize(request);
+        final Deferred<HubResponse> deferred = new Deferred<HubResponse>();
 
-        return _connection.send(message).thenCall(new Callback<Void>() {
-            @Override
-            public void onResolved(final Void value) {
-            }
+        _responses.put(callbackId, deferred);
 
+        return _connection.send(message).thenCall(new OnRejected<Void>() {
             @Override
             public void onRejected(final Throwable throwable) {
                 _responses.remove(callbackId);
