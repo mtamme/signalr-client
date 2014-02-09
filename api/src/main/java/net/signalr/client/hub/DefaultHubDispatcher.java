@@ -100,7 +100,7 @@ final class DefaultHubDispatcher implements HubDispatcher {
     @Override
     public Promise<HubResponse> invoke(final HubRequest request) {
         if (request == null) {
-            throw new IllegalArgumentException("Hub request must not be null");
+            throw new IllegalArgumentException("Request must not be null");
         }
         final String callbackId = nextCallbackId();
 
