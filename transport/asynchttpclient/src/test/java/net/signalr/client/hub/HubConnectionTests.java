@@ -32,7 +32,7 @@ import net.signalr.client.transport.asynchttpclient.WebSocketTransport;
 
 public final class HubConnectionTests {
 
-    private static final String URL = "https:///signalr/";
+    private static final String URL = "https://localhost/signalr/";
 
     private static final String ACCESS_ID_NAME = "X-AccessId";
 
@@ -55,7 +55,7 @@ public final class HubConnectionTests {
 
         connection.addHeader(ACCESS_ID_NAME, ACCESS_ID_VALUE);
         connection.addQueryParameter("culture", "en");
-        final HubProxy hubProxy = connection.createHubProxy(HUB_NAME);
+        final HubProxy hubProxy = connection.createProxy(HUB_NAME);
         final Promise<Void> start = connection.start(new ConnectionHandler() {
             @Override
             public void onReconnecting() {
@@ -110,7 +110,7 @@ public final class HubConnectionTests {
 
         Promises.toFuture(start).get();
 
-        hubProxy.invoke(METHOD_NAME, new int[] { 1 }, true);
+        hubProxy.invoke(METHOD_NAME, Void.class, new int[] { 1 }, true);
 
         System.in.read();
         final Promise<Void> stop = connection.stop();

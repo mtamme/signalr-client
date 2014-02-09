@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.signalr.client.Connection;
+import net.signalr.client.concurrent.Callback;
 import net.signalr.client.concurrent.Deferred;
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Promise;
@@ -109,7 +110,16 @@ final class DefaultHubDispatcher implements HubDispatcher {
         final JsonSerializer serializer = _connection.getSerializer();
         final String message = serializer.serialize(request);
 
-        return _connection.send(message).thenCompose(new Function<Void, Promise<HubResponse>>() {
+        return _connection.send(message).thenCall(new Callback<Void>() {
+            @Override
+            public void onResolved(final Void value) {
+            }
+
+            @Override
+            public void onRejected(final Throwable throwable) {
+                _responses.remove(callbackId);
+            }
+        }).thenCompose(new Function<Void, Promise<HubResponse>>() {
             @Override
             public Promise<HubResponse> apply(final Void value) throws Exception {
                 return deferred;

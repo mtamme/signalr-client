@@ -19,6 +19,7 @@ package net.signalr.client.hub;
 
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Promise;
+import net.signalr.client.json.JsonToken;
 
 /**
  * Represents the default hub proxy.
@@ -42,7 +43,7 @@ final class DefaultHubProxy implements HubProxy {
     }
 
     @Override
-    public <T> Promise<T> invoke(final String methodName, final Object... args) {
+    public <T> Promise<T> invoke(final String methodName, final Class<T> returnClass, final Object... args) {
         if (methodName == null) {
             throw new IllegalArgumentException("Method name must not e null");
         }
@@ -59,7 +60,14 @@ final class DefaultHubProxy implements HubProxy {
         return _dispatcher.invoke(request).thenApply(new Function<HubResponse, T>() {
             @Override
             public T apply(final HubResponse response) throws Exception {
-                return null;
+                if (response.isHubException()) {
+                    final String message = response.getErrorMessage();
+
+                    throw new HubException(message);
+                }
+                final JsonToken data = response.getData();
+
+                return data.toObject(returnClass);
             }
         });
     }

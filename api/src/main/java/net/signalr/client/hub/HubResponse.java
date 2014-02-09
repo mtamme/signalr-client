@@ -25,8 +25,8 @@ import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
 
 /**
-*
-*/
+ * Represents a hub response.
+ */
 final class HubResponse implements JsonReadable {
 
     /**
@@ -36,10 +36,10 @@ final class HubResponse implements JsonReadable {
     private Map<String, JsonToken> _state;
 
     /**
-     * The result of the invocation.
+     * The data of the invocation.
      */
     @JsonName("R")
-    private Object _result;
+    private JsonToken _date;
 
     /**
      * The ID of the operation.
@@ -57,7 +57,7 @@ final class HubResponse implements JsonReadable {
      * The exception that occurs as a result of invoking the hub method.
      */
     @JsonName("E")
-    private String _error;
+    private String _errorMessage;
 
     /**
      * The stack trace of the exception that occurs as a result of invoking the hub method.
@@ -71,11 +71,38 @@ final class HubResponse implements JsonReadable {
     @JsonName("D")
     private String _errorData;
 
+    /**
+     * The message ID.
+     */
     @JsonName("C")
     private String _messageId;
 
+    public Map<String, JsonToken> getState() {
+        return _state;
+    }
+
+    public JsonToken getData() {
+        return _date;
+    }
+
     public String getCallbackId() {
         return _callbackId;
+    }
+
+    public boolean isHubException() {
+        return _isHubException;
+    }
+
+    public String getErrorMessage() {
+        return _errorMessage;
+    }
+
+    public String getStackTrace() {
+        return _stackTrace;
+    }
+
+    public String getErrorData() {
+        return _errorData;
     }
 
     public String getMessageId() {
