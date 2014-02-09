@@ -53,6 +53,7 @@ final class DefaultHubProxy implements HubProxy {
         if (args == null) {
             throw new IllegalArgumentException("Arguments must not e null");
         }
+
         final HubRequest request = new HubRequest();
 
         request.setHubName(_hubName);

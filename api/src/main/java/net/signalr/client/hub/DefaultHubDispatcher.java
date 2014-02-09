@@ -65,6 +65,7 @@ final class DefaultHubDispatcher implements HubDispatcher {
         if (connection == null) {
             throw new IllegalArgumentException("Connection must not be null");
         }
+
         _connection = connection;
 
         _nextCallbackId = new AtomicLong(0);
@@ -102,6 +103,7 @@ final class DefaultHubDispatcher implements HubDispatcher {
         if (request == null) {
             throw new IllegalArgumentException("Request must not be null");
         }
+
         final String callbackId = nextCallbackId();
 
         request.setCallbackId(callbackId);

@@ -72,6 +72,10 @@ public abstract class AbstractTransport implements Transport {
 
     @Override
     public Promise<NegotiationResponse> negotiate(final TransportContext context) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null");
+        }
+
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), "negotiate");
         final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
 
