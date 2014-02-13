@@ -10,4 +10,6 @@
 		<module>json</module>
 		<module>transport</module>
 	</modules>
+	<name>signalr-client</name>
+	<url>https://github.com/mtamme/signalr-client</url>
 </project>
