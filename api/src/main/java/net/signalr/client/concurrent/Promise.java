@@ -25,9 +25,9 @@ package net.signalr.client.concurrent;
 public interface Promise<V> {
 
     /**
-     * Returns a value indicating weather the {@link Promise} completed.
+     * Returns a value indicating whether the {@link Promise} completed.
      * 
-     * @return A value indicating weather the {@link Promise} completed.
+     * @return A value indicating whether the {@link Promise} completed.
      */
     boolean isCompleted();
 

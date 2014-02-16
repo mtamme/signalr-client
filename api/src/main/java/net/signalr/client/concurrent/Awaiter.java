@@ -64,9 +64,9 @@ final class Awaiter<V> implements Callback<V> {
     }
 
     /**
-     * Returns a value indicating weather a {@link Promise} completed.
+     * Returns a value indicating whether a {@link Promise} completed.
      * 
-     * @return A value indicating weather a {@link Promise} completed.
+     * @return A value indicating whether a {@link Promise} completed.
      */
     public boolean isCompleted() {
         final long count = _completion.getCount();

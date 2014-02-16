@@ -76,9 +76,9 @@ public final class Deferred<V> extends AbstractPromise<V> {
     private static interface State<V> {
 
         /**
-         * Returns a value indicating weather the {@link Deferred} completed.
+         * Returns a value indicating whether the {@link Deferred} completed.
          * 
-         * @return A value indicating weather the {@link Deferred} completed.
+         * @return A value indicating whether the {@link Deferred} completed.
          */
         boolean isCompleted();
 
@@ -86,7 +86,7 @@ public final class Deferred<V> extends AbstractPromise<V> {
          * Tries to resolves the {@link Deferred} with the specified value.
          * 
          * @param value The value.
-         * @return A value indicating weather the {@link Deferred} was resolved.
+         * @return A value indicating whether the {@link Deferred} was resolved.
          */
         boolean resolve(V value);
 
@@ -94,7 +94,7 @@ public final class Deferred<V> extends AbstractPromise<V> {
          * Tries to rejects the {@link Deferred} with the specified throwable.
          * 
          * @param throwable The throwable.
-         * @return A value indicating weather the {@link Deferred} was rejected.
+         * @return A value indicating whether the {@link Deferred} was rejected.
          */
         boolean reject(Throwable throwable);
 

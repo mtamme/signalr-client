@@ -47,9 +47,9 @@ interface ConnectionContext extends TransportContext {
     void setConnectionId(String connectionId);
 
     /**
-     * Sets a value indicating weather web sockets should be tried.
+     * Sets a value indicating whether web sockets should be tried.
      * 
-     * @param tryWebSockets A value indicating weather web sockets should be tried.
+     * @param tryWebSockets A value indicating whether web sockets should be tried.
      */
     void setTryWebSockets(boolean tryWebSockets);
 
@@ -124,7 +124,7 @@ interface ConnectionContext extends TransportContext {
      * 
      * @param oldState The old connection state.
      * @param newState The new connection state.
-     * @return A value indicating weather the connection state changed.
+     * @return A value indicating whether the connection state changed.
      */
     boolean tryChangeState(ConnectionState oldState, ConnectionState newState);
 }
