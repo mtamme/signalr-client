@@ -32,7 +32,7 @@ final class TransportMonitor implements Runnable, TransportChannelHandler {
     /**
      * The private logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransportMonitor.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransportMonitor.class);
 
     /**
      * Defines heart beat states.
@@ -140,11 +140,11 @@ final class TransportMonitor implements Runnable, TransportChannelHandler {
             return;
         }
         if (currentHeartbeatState == HeartbeatState.TIMEOUT) {
-            LOGGER.error("Keep alive timed out, connection has been lost.");
+            logger.error("Keep alive timed out, connection has been lost.");
 
             _manager.handleConnectionLost();
         } else if (currentHeartbeatState == HeartbeatState.WARNING_TIMEOUT) {
-            LOGGER.warn("Keep alive has been missed, connection may be dead/slow.");
+            logger.warn("Keep alive has been missed, connection may be dead/slow.");
 
             _manager.handleConnectionSlow();
         }

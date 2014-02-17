@@ -37,7 +37,7 @@ final class DisconnectedConnectionState implements ConnectionState {
     /**
      * The private logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisconnectedConnectionState.class);
+    private static final Logger logger = LoggerFactory.getLogger(DisconnectedConnectionState.class);
 
     @Override
     public void onEnterState() {
@@ -78,7 +78,7 @@ final class DisconnectedConnectionState implements ConnectionState {
 
         handler.onConnecting();
 
-        LOGGER.info("Negotiating transport...");
+        logger.info("Negotiating transport...");
 
         final Transport transport = context.getTransport();
 
@@ -97,7 +97,7 @@ final class DisconnectedConnectionState implements ConnectionState {
                 context.setDisconnectTimeout(response.getDisconnectTimeout());
                 context.setKeepAliveTimeout(response.getKeepAliveTimeout());
 
-                LOGGER.info("Connecting transport...");
+                logger.info("Connecting transport...");
 
                 return transport.connect(context, new ConnectionHandlerAdapter(handler), false);
             }

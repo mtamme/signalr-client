@@ -32,7 +32,7 @@ final class TransportPing implements Runnable {
     /**
      * The private logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransportPing.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransportPing.class);
 
     private static final String PING_RESPONSE_VALUE = "pong";
 
@@ -66,7 +66,7 @@ final class TransportPing implements Runnable {
 
     @Override
     public void run() {
-        LOGGER.info("Sending transport ping...");
+        logger.info("Sending transport ping...");
 
         final Transport transport = _manager.getTransport();
 
@@ -75,7 +75,7 @@ final class TransportPing implements Runnable {
             public void onResolved(final PingResponse response) {
                 final String value = response.getValue();
 
-                LOGGER.info("Received transport ping response: '{}'", value);
+                logger.info("Received transport ping response: '{}'", value);
 
                 if (!PING_RESPONSE_VALUE.equalsIgnoreCase(value)) {
                     _manager.handleError(new IOException("Received invalid transport ping response: '" + value + "'."));
@@ -84,7 +84,7 @@ final class TransportPing implements Runnable {
 
             @Override
             public void onRejected(final Throwable throwable) {
-                LOGGER.warn("Transport ping failed", throwable);
+                logger.warn("Transport ping failed", throwable);
 
                 _manager.handleError(throwable);
             }

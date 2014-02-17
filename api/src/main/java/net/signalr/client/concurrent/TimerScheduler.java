@@ -34,7 +34,7 @@ public final class TimerScheduler implements Scheduler {
     /**
      * The private logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimerScheduler.class);
+    private static final Logger logger = LoggerFactory.getLogger(TimerScheduler.class);
 
     /**
      * The timer.
@@ -106,7 +106,7 @@ public final class TimerScheduler implements Scheduler {
             throw new IllegalArgumentException("Time unit must not be null");
         }
 
-        LOGGER.info("Scheduling '{}' job...", name);
+        logger.info("Scheduling '{}' job...", name);
 
         final Job job = addJob(name, runnable);
 
@@ -119,7 +119,7 @@ public final class TimerScheduler implements Scheduler {
             throw new IllegalArgumentException("Name must not be null");
         }
 
-        LOGGER.info("Unscheduling '{}' job...", name);
+        logger.info("Unscheduling '{}' job...", name);
 
         final Job job = removeJob(name);
 
@@ -150,7 +150,7 @@ public final class TimerScheduler implements Scheduler {
             try {
                 _runnable.run();
             } catch (final Throwable t) {
-                LOGGER.warn("Job execution failed", t);
+                logger.warn("Job execution failed", t);
             }
         }
     }

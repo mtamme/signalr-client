@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.signalr.client.concurrent.Scheduler;
 import net.signalr.client.util.SystemTimeProvider;
+import net.signalr.client.util.TimeProvider;
 
 /**
  * Represents the default manager controller.
@@ -59,7 +60,8 @@ public final class DefaultTransportManager implements TransportManager {
         final long keepAliveTimeout = context.getKeepAliveTimeout();
 
         if (keepAliveTimeout > 0) {
-            final TransportMonitor monitor = new TransportMonitor(this, SystemTimeProvider.INSTANCE, keepAliveTimeout);
+            final TimeProvider timeProvider = SystemTimeProvider.getInstance();
+            final TransportMonitor monitor = new TransportMonitor(this, timeProvider, keepAliveTimeout);
             final long monitorInterval = monitor.getInterval();
 
             scheduler.scheduleJob(MONITOR_NAME, monitor, monitorInterval, monitorInterval, TimeUnit.MILLISECONDS);

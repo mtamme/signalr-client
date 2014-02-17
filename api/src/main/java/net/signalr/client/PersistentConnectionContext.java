@@ -38,7 +38,7 @@ final class PersistentConnectionContext implements ConnectionContext {
     /**
      * The private logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersistentConnectionContext.class);
+    private static final Logger logger = LoggerFactory.getLogger(PersistentConnectionContext.class);
 
     private static final String PROTOCOL_VERSION = "1.3";
 
@@ -247,16 +247,16 @@ final class PersistentConnectionContext implements ConnectionContext {
     @Override
     public boolean tryChangeState(final ConnectionState oldState, final ConnectionState newState) {
         if (!_state.compareAndSet(oldState, newState)) {
-            LOGGER.warn("Failed to change connection state from '{}' to '{}'", oldState, newState);
+            logger.warn("Failed to change connection state from '{}' to '{}'", oldState, newState);
 
             return false;
         }
 
-        LOGGER.info("Leaving connection state '{}'", oldState);
+        logger.info("Leaving connection state '{}'", oldState);
 
         oldState.onLeaveState();
 
-        LOGGER.info("Entering connection state '{}'", newState);
+        logger.info("Entering connection state '{}'", newState);
 
         newState.onEnterState();
 

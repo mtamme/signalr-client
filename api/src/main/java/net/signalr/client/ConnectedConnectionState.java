@@ -38,7 +38,7 @@ final class ConnectedConnectionState implements ConnectionState {
     /**
      * The private logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedConnectionState.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConnectedConnectionState.class);
 
     private final ConnectionHandler _handler;
 
@@ -112,12 +112,12 @@ final class ConnectedConnectionState implements ConnectionState {
 
         _handler.onDisconnecting();
 
-        LOGGER.info("Closing transport channel...");
+        logger.info("Closing transport channel...");
 
         _channel.close().thenCompose(new Function<Void, Promise<Void>>() {
             @Override
             public Promise<Void> apply(final Void source) throws Exception {
-                LOGGER.info("Aborting transport...");
+                logger.info("Aborting transport...");
 
                 final Transport transport = context.getTransport();
 

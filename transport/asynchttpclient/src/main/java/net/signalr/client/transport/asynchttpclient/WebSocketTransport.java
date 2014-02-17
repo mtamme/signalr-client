@@ -37,9 +37,14 @@ import net.signalr.client.util.URIBuilder;
  */
 public final class WebSocketTransport extends AbstractTransport {
 
+    /**
+     * The transport name.
+     */
+    private static final String NAME = "webSockets";
+
     @Override
     public String getName() {
-        return "webSockets";
+        return NAME;
     }
 
     @Override
