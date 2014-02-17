@@ -36,11 +36,14 @@ import net.signalr.client.transport.Transport;
 final class PersistentConnectionContext implements ConnectionContext {
 
     /**
+     * The protocol version.
+     */
+    private static final String PROTOCOL_VERSION = "1.3";
+
+    /**
      * The private logger.
      */
     private static final Logger logger = LoggerFactory.getLogger(PersistentConnectionContext.class);
-
-    private static final String PROTOCOL_VERSION = "1.3";
 
     private final String _url;
 
