@@ -51,7 +51,7 @@ public final class HubResponseTests {
     @Test
     public void deserializeMessageResponseTest() {
         // Arrange
-        final String data = "{\"C\":\"s-0,298F690\",\"M\":[]}";
+        final String data = "{\"C\":\"s-0,298F690\",\"M\":[{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":1}]},{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":2}]}]}";
 
         // Act
         final HubResponse response = _serializer.deserialize(data, HubResponse.class);

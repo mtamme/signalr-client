@@ -17,53 +17,41 @@
 
 package net.signalr.client.hub;
 
-import java.util.Map;
-
 import net.signalr.client.json.JsonName;
-import net.signalr.client.json.JsonWriteable;
-import net.signalr.client.json.JsonWriter;
+import net.signalr.client.json.JsonToken;
 
 /**
- * Represents a hub request.
+ * Represents a hub message.
  */
-final class HubRequest implements JsonWriteable {
+final class HubMessage {
 
-    @JsonName("I")
-    private String _callbackId;
-
+    /**
+     * The hub name.
+     */
     @JsonName("H")
     private String _hubName;
 
+    /**
+     * The method name.
+     */
     @JsonName("M")
     private String _methodName;
 
+    /**
+     * The arguments.
+     */
     @JsonName("A")
-    private Object[] _arguments;
+    private JsonToken[] _arguments;
 
-    @JsonName("S")
-    private Map<String, Object> _state;
-
-    public void setCallbackId(final String callbackId) {
-        _callbackId = callbackId;
+    public String getHubName() {
+        return _hubName;
     }
 
-    public void setHubName(final String hubName) {
-        _hubName = hubName;
+    public String getMethodName() {
+        return _methodName;
     }
 
-    public void setMethodName(final String methodName) {
-        _methodName = methodName;
-    }
-
-    public void setArguments(final Object[] arguments) {
-        _arguments = arguments;
-    }
-
-    public void setState(final Map<String, Object> state) {
-        _state = state;
-    }
-
-    @Override
-    public void writeJson(final JsonWriter writer) {
+    public JsonToken[] getArguments() {
+        return _arguments;
     }
 }
