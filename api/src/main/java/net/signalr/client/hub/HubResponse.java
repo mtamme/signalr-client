@@ -77,6 +77,12 @@ final class HubResponse implements JsonReadable {
     @JsonName("C")
     private String _messageId;
 
+    /**
+     * The hub messages.
+     */
+    @JsonName("M")
+    private HubMessage[] _messages;
+
     public Map<String, JsonToken> getState() {
         return _state;
     }
@@ -107,6 +113,10 @@ final class HubResponse implements JsonReadable {
 
     public String getMessageId() {
         return _messageId;
+    }
+
+    public HubMessage[] getMessages() {
+        return _messages;
     }
 
     @Override
