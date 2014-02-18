@@ -18,6 +18,7 @@
 package net.signalr.client.transport;
 
 import net.signalr.client.json.JsonName;
+import net.signalr.client.json.JsonObject;
 import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
 
@@ -92,14 +93,16 @@ public final class NegotiationResponse implements JsonReadable {
     }
 
     @Override
-    public void readJson(JsonReader reader) {
-        _url = reader.getString("Url");
-        _connectionToken = reader.getString("ConnectionToken");
-        _connectionId = reader.getString("ConnectionId");
-        _protocolVersion = reader.getString("ProtocolVersion");
-        _tryWebSockets = reader.getBoolean("TryWebSockets");
-        _keepAliveTimeout = reader.getDouble("KeepAliveTimeout");
-        _disconnectTimeout = reader.getDouble("DisconnectTimeout");
-        _transportConnectTimeout = reader.getDouble("TransportConnectTimeout");
+    public void readJson(final JsonReader reader) {
+        final JsonObject object = reader.readObject();
+
+        _url = object.getString("Url");
+        _connectionToken = object.getString("ConnectionToken");
+        _connectionId = object.getString("ConnectionId");
+        _protocolVersion = object.getString("ProtocolVersion");
+        _tryWebSockets = object.getBoolean("TryWebSockets", false);
+        _keepAliveTimeout = object.getDouble("KeepAliveTimeout", 0.0);
+        _disconnectTimeout = object.getDouble("DisconnectTimeout", 0.0);
+        _transportConnectTimeout = object.getDouble("TransportConnectTimeout", 0.0);
     }
 }

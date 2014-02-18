@@ -17,9 +17,22 @@
 
 package net.signalr.client.json;
 
-public interface JsonWriter {
+/**
+ * Defines a JSON object.
+ */
+public interface JsonObject extends JsonValue {
 
-    void writeObject(JsonObject object);
+    boolean getBoolean(String name, boolean defaultValue);
 
-    void writeArray(JsonArray array);
+    int getInt(String name, int defaultValue);
+
+    long getLong(String name, long defaultValue);
+
+    double getDouble(String name, double defaultValue);
+
+    String getString(String name);
+
+    JsonObject getObject(String name);
+
+    JsonArray getArray(String name);
 }

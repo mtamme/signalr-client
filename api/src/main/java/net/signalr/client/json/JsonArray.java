@@ -18,8 +18,9 @@
 package net.signalr.client.json;
 
 /**
- * Defines a JSON token.
+ * Defines a JSON array.
  */
-public interface JsonToken {
-    <T> T toObject(Class<T> clazz);
+public interface JsonArray extends JsonValue {
+
+    JsonObject getObject(int index);
 }

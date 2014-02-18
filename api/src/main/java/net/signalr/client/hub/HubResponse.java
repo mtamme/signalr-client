@@ -17,10 +17,9 @@
 
 package net.signalr.client.hub;
 
-import java.util.Map;
-
 import net.signalr.client.json.JsonName;
-import net.signalr.client.json.JsonToken;
+import net.signalr.client.json.JsonObject;
+import net.signalr.client.json.JsonValue;
 import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
 
@@ -33,13 +32,13 @@ final class HubResponse implements JsonReadable {
      * The changes made the the round tripped state.
      */
     @JsonName("S")
-    private Map<String, JsonToken> _state;
+    private JsonObject _state;
 
     /**
      * The data of the invocation.
      */
     @JsonName("R")
-    private JsonToken _date;
+    private JsonValue _date;
 
     /**
      * The ID of the operation.
@@ -83,11 +82,11 @@ final class HubResponse implements JsonReadable {
     @JsonName("M")
     private HubMessage[] _messages;
 
-    public Map<String, JsonToken> getState() {
+    public JsonObject getState() {
         return _state;
     }
 
-    public JsonToken getData() {
+    public JsonValue getData() {
         return _date;
     }
 

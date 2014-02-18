@@ -18,6 +18,7 @@
 package net.signalr.client.transport;
 
 import net.signalr.client.json.JsonName;
+import net.signalr.client.json.JsonObject;
 import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
 
@@ -35,6 +36,8 @@ public final class PingResponse implements JsonReadable {
 
     @Override
     public void readJson(final JsonReader reader) {
-        _value = reader.getString("Response");
+        final JsonObject object = reader.readObject();
+
+        _value = object.getString("Response");
     }
 }

@@ -21,17 +21,8 @@ package net.signalr.client.json;
  * Defines a JSON reader.
  */
 public interface JsonReader {
-    Boolean getBoolean(String name);
 
-    Double getDouble(String name);
+    JsonObject readObject();
 
-    Integer getInteger(String name);
-
-    Long getLong(String name);
-
-    String getString(String name);
-
-    JsonToken getObject(String name);
-
-    JsonToken[] getArray(String name);
+    JsonArray readArray();
 }

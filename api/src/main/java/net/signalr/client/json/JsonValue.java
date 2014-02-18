@@ -17,9 +17,9 @@
 
 package net.signalr.client.json;
 
-public interface JsonWriter {
-
-    void writeObject(JsonObject object);
-
-    void writeArray(JsonArray array);
+/**
+ * Defines a JSON value.
+ */
+public interface JsonValue {
+    <T> T toObject(Class<T> clazz);
 }

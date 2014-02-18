@@ -17,8 +17,9 @@
 
 package net.signalr.client;
 
+import net.signalr.client.json.JsonArray;
 import net.signalr.client.json.JsonName;
-import net.signalr.client.json.JsonToken;
+import net.signalr.client.json.JsonObject;
 import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
 
@@ -46,7 +47,7 @@ final class PersistentResponse implements JsonReadable {
     private Long _longPollDelay;
 
     @JsonName("M")
-    private JsonToken[] _messages;
+    private JsonArray _messages;
 
     public String getMessageId() {
         return _messageId;
@@ -69,13 +70,15 @@ final class PersistentResponse implements JsonReadable {
     }
 
     @Override
-    public void readJson(JsonReader reader) {
-        _messageId = reader.getString("C");
-        _initialize = reader.getInteger("S");
-        _disconnect = reader.getInteger("D");
-        _reconnect = reader.getInteger("T");
-        _groupsToken = reader.getString("G");
-        _longPollDelay = reader.getLong("L");
-        _messages = reader.getArray("M");
+    public void readJson(final JsonReader reader) {
+        final JsonObject object = reader.readObject();
+
+        _messageId = object.getString("C");
+        _initialize = object.getInt("S", 0);
+        _disconnect = object.getInt("D", 0);
+        _reconnect = object.getInt("T", 0);
+        _groupsToken = object.getString("G");
+        _longPollDelay = object.getLong("L", 0L);
+        _messages = object.getArray("M");
     }
 }

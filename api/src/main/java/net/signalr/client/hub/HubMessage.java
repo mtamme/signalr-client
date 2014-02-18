@@ -17,8 +17,8 @@
 
 package net.signalr.client.hub;
 
+import net.signalr.client.json.JsonArray;
 import net.signalr.client.json.JsonName;
-import net.signalr.client.json.JsonToken;
 
 /**
  * Represents a hub message.
@@ -41,7 +41,7 @@ final class HubMessage {
      * The arguments.
      */
     @JsonName("A")
-    private JsonToken[] _arguments;
+    private JsonArray _arguments;
 
     public String getHubName() {
         return _hubName;
@@ -51,7 +51,7 @@ final class HubMessage {
         return _methodName;
     }
 
-    public JsonToken[] getArguments() {
+    public JsonArray getArguments() {
         return _arguments;
     }
 }

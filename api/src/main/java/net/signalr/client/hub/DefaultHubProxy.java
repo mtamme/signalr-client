@@ -19,7 +19,7 @@ package net.signalr.client.hub;
 
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Promise;
-import net.signalr.client.json.JsonToken;
+import net.signalr.client.json.JsonValue;
 
 /**
  * Represents the default hub proxy.
@@ -68,7 +68,7 @@ final class DefaultHubProxy implements HubProxy {
 
                     throw new HubException(message);
                 }
-                final JsonToken data = response.getData();
+                final JsonValue data = response.getData();
 
                 return data.toObject(returnClass);
             }
