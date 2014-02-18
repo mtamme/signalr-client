@@ -20,6 +20,7 @@ package net.signalr.client.hub;
 import java.util.Map;
 
 import net.signalr.client.json.JsonName;
+import net.signalr.client.json.JsonToken;
 import net.signalr.client.json.JsonWriteable;
 import net.signalr.client.json.JsonWriter;
 
@@ -41,7 +42,7 @@ final class HubRequest implements JsonWriteable {
     private Object[] _arguments;
 
     @JsonName("S")
-    private Map<String, Object> _state;
+    private Map<String, JsonToken> _state;
 
     public void setCallbackId(final String callbackId) {
         _callbackId = callbackId;
@@ -59,7 +60,7 @@ final class HubRequest implements JsonWriteable {
         _arguments = arguments;
     }
 
-    public void setState(final Map<String, Object> state) {
+    public void setState(final Map<String, JsonToken> state) {
         _state = state;
     }
 
