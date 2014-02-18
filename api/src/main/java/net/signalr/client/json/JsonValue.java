@@ -21,5 +21,8 @@ package net.signalr.client.json;
  * Defines a JSON value.
  */
 public interface JsonValue {
+
     <T> T toObject(Class<T> clazz);
+
+    String toString();
 }
