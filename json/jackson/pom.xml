@@ -9,6 +9,11 @@
 	<artifactId>signalr-client-json-jackson</artifactId>
 	<dependencies>
 		<dependency>
+			<groupId>net.signalr.client</groupId>
+			<artifactId>signalr-client-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>2.2.3</version>
