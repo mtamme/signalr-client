@@ -3,13 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.signalr.client</groupId>
-		<artifactId>signalr-client</artifactId>
+		<artifactId>signalr-client-json</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>signalr-client-json</artifactId>
-	<packaging>pom</packaging>
-	<modules>
-		<module>gson</module>
-		<module>jackson</module>
-	</modules>
+	<artifactId>signalr-client-json-jackson</artifactId>
 </project>
