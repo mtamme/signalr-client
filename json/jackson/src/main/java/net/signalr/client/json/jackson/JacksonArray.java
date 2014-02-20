@@ -25,12 +25,20 @@ import net.signalr.client.json.JsonArray;
 import net.signalr.client.json.JsonObject;
 
 /**
- * 
+ * Represents a Jackson based JSON array.
  */
 final class JacksonArray implements JsonArray {
 
+    /**
+     * The underlying JSON array.
+     */
     private final ArrayNode _array;
 
+    /**
+     * Initializes a new instance of the {@link JacksonArray} class.
+     * 
+     * @param array The underlying JSON array.
+     */
     public JacksonArray(final ArrayNode array) {
         if (array == null) {
             throw new IllegalArgumentException("Array must not be null");

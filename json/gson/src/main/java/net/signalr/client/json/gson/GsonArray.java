@@ -23,12 +23,20 @@ import net.signalr.client.json.JsonArray;
 import net.signalr.client.json.JsonObject;
 
 /**
- * 
+ * Represents a GSON based JSON array.
  */
 final class GsonArray implements JsonArray {
 
+    /**
+     * The underlying JSON array.
+     */
     private final com.google.gson.JsonArray _array;
 
+    /**
+     * Initializes a new instance of the {@link GsonArray} class.
+     * 
+     * @param array The underlying JSON array.
+     */
     public GsonArray(final com.google.gson.JsonArray array) {
         if (array == null) {
             throw new IllegalArgumentException("Array must not be null");

@@ -25,12 +25,20 @@ import net.signalr.client.json.JsonArray;
 import net.signalr.client.json.JsonObject;
 
 /**
- * 
+ * Represents a GSON based JSON object.
  */
 final class JacksonObject implements JsonObject {
 
+    /**
+     * The underlying JSON object.
+     */
     private final ObjectNode _object;
 
+    /**
+     * Initializes a new instance of the {@link JacksonObject} class.
+     * 
+     * @param object The underlying JSON object.
+     */
     public JacksonObject(final ObjectNode object) {
         if (object == null) {
             throw new IllegalArgumentException("Object must not be null");
