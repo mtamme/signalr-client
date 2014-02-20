@@ -15,9 +15,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.json.gson;
+package net.signalr.client.json.jackson;
 
-import com.google.gson.JsonElement;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import net.signalr.client.json.JsonArray;
 import net.signalr.client.json.JsonObject;
@@ -25,11 +27,11 @@ import net.signalr.client.json.JsonObject;
 /**
  * 
  */
-final class GsonObject implements JsonObject {
+final class JacksonObject implements JsonObject {
 
-    private final com.google.gson.JsonObject _object;
+    private final ObjectNode _object;
 
-    public GsonObject(com.google.gson.JsonObject object) {
+    public JacksonObject(final ObjectNode object) {
         if (object == null) {
             throw new IllegalArgumentException("Object must not be null");
         }
@@ -39,81 +41,81 @@ final class GsonObject implements JsonObject {
 
     @Override
     public boolean getBoolean(final String name, final boolean defaultValue) {
-        final JsonElement element = _object.get(name);
+        final JsonNode node = _object.get(name);
 
-        if ((element == null) || element.isJsonPrimitive()) {
+        if ((node == null) || !node.isBoolean()) {
             return defaultValue;
         }
 
-        return element.getAsBoolean();
+        return node.asBoolean();
     }
 
     @Override
     public int getInt(final String name, final int defaultValue) {
-        final JsonElement element = _object.get(name);
+        final JsonNode node = _object.get(name);
 
-        if ((element == null) || element.isJsonPrimitive()) {
+        if ((node == null) || !node.isInt()) {
             return defaultValue;
         }
 
-        return element.getAsInt();
+        return node.asInt();
     }
 
     @Override
     public long getLong(final String name, final long defaultValue) {
-        final JsonElement element = _object.get(name);
+        final JsonNode node = _object.get(name);
 
-        if ((element == null) || element.isJsonPrimitive()) {
+        if ((node == null) || !node.isLong()) {
             return defaultValue;
         }
 
-        return element.getAsLong();
+        return node.asLong();
     }
 
     @Override
     public double getDouble(final String name, final double defaultValue) {
-        final JsonElement element = _object.get(name);
+        final JsonNode node = _object.get(name);
 
-        if ((element == null) || element.isJsonPrimitive()) {
+        if ((node == null) || !node.isDouble()) {
             return defaultValue;
         }
 
-        return element.getAsDouble();
+        return node.asDouble();
     }
 
     @Override
     public String getString(final String name) {
-        final JsonElement element = _object.get(name);
+        final JsonNode node = _object.get(name);
 
-        if ((element == null) || element.isJsonPrimitive()) {
+        if ((node == null) || !node.isTextual()) {
             return null;
         }
 
-        return element.getAsString();
+        return node.asText();
     }
 
     @Override
     public JsonObject getObject(final String name) {
-        final JsonElement element = _object.get(name);
+        final JsonNode node = _object.get(name);
 
-        if ((element == null) || element.isJsonObject()) {
+        if ((node == null) || !node.isObject()) {
             return null;
         }
-        final com.google.gson.JsonObject object = element.getAsJsonObject();
+        final ObjectNode object = (ObjectNode) node;
 
-        return new GsonObject(object);
+        return new JacksonObject(object);
     }
 
     @Override
     public JsonArray getArray(final String name) {
-        final JsonElement element = _object.get(name);
+        final JsonNode node = _object.get(name);
 
-        if ((element == null) || element.isJsonArray()) {
+        if ((node == null) || !node.isArray()) {
             return null;
         }
-        final com.google.gson.JsonArray array = element.getAsJsonArray();
+        final ArrayNode array = (ArrayNode) node;
 
-        return new GsonArray(array);
+        return new JacksonArray(array);
     }
 
     @Override
@@ -123,6 +125,6 @@ final class GsonObject implements JsonObject {
 
     @Override
     public String toString() {
-        return _object.toString();
+        return _object.asText();
     }
 }

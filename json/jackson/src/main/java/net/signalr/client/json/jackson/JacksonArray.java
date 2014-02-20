@@ -15,9 +15,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.json.gson;
+package net.signalr.client.json.jackson;
 
-import com.google.gson.JsonElement;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import net.signalr.client.json.JsonArray;
 import net.signalr.client.json.JsonObject;
@@ -25,11 +27,11 @@ import net.signalr.client.json.JsonObject;
 /**
  * 
  */
-final class GsonArray implements JsonArray {
+final class JacksonArray implements JsonArray {
 
-    private final com.google.gson.JsonArray _array;
+    private final ArrayNode _array;
 
-    public GsonArray(final com.google.gson.JsonArray array) {
+    public JacksonArray(final ArrayNode array) {
         if (array == null) {
             throw new IllegalArgumentException("Array must not be null");
         }
@@ -39,23 +41,24 @@ final class GsonArray implements JsonArray {
 
     @Override
     public JsonObject getObject(final int index) {
-        final JsonElement element = _array.get(index);
+        final JsonNode node = _array.get(index);
 
-        if ((element == null) || element.isJsonObject()) {
+        if ((node == null) || !node.isObject()) {
             return null;
         }
-        final com.google.gson.JsonObject object = element.getAsJsonObject();
+        final ObjectNode object = (ObjectNode) node;
 
-        return new GsonObject(object);
+        return new JacksonObject(object);
     }
 
     @Override
     public <T> T toObject(final Class<T> clazz) {
+        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public String toString() {
-        return _array.toString();
+        return _array.asText();
     }
 }
