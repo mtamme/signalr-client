@@ -17,6 +17,7 @@
 
 package net.signalr.client.json.gson;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import net.signalr.client.json.JsonArray;
@@ -28,6 +29,11 @@ import net.signalr.client.json.JsonObject;
 final class GsonObject implements JsonObject {
 
     /**
+     * The GSON instance.
+     */
+    private final Gson _gson;
+
+    /**
      * The underlying JSON object.
      */
     private final com.google.gson.JsonObject _object;
@@ -35,13 +41,18 @@ final class GsonObject implements JsonObject {
     /**
      * Initializes a new instance of the {@link GsonObject} class.
      * 
+     * @param gson The GSON instance.
      * @param object The underlying JSON object.
      */
-    public GsonObject(com.google.gson.JsonObject object) {
+    public GsonObject(final Gson gson, com.google.gson.JsonObject object) {
+        if (gson == null) {
+            throw new IllegalArgumentException("Gson must not be null");
+        }
         if (object == null) {
             throw new IllegalArgumentException("Object must not be null");
         }
 
+        _gson = gson;
         _object = object;
     }
 
@@ -109,7 +120,7 @@ final class GsonObject implements JsonObject {
         }
         final com.google.gson.JsonObject object = element.getAsJsonObject();
 
-        return new GsonObject(object);
+        return new GsonObject(_gson, object);
     }
 
     @Override
@@ -121,12 +132,12 @@ final class GsonObject implements JsonObject {
         }
         final com.google.gson.JsonArray array = element.getAsJsonArray();
 
-        return new GsonArray(array);
+        return new GsonArray(_gson, array);
     }
 
     @Override
     public <T> T toObject(final Class<T> clazz) {
-        return null;
+        return _gson.fromJson(_object, clazz);
     }
 
     @Override

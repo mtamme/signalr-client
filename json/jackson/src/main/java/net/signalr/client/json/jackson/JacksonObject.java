@@ -18,6 +18,7 @@
 package net.signalr.client.json.jackson;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -30,6 +31,11 @@ import net.signalr.client.json.JsonObject;
 final class JacksonObject implements JsonObject {
 
     /**
+     * The object mapper.
+     */
+    private final ObjectMapper _mapper;
+
+    /**
      * The underlying JSON object.
      */
     private final ObjectNode _object;
@@ -39,11 +45,15 @@ final class JacksonObject implements JsonObject {
      * 
      * @param object The underlying JSON object.
      */
-    public JacksonObject(final ObjectNode object) {
+    public JacksonObject(final ObjectMapper mapper, final ObjectNode object) {
+        if (mapper == null) {
+            throw new IllegalArgumentException("Mapper must not be null");
+        }
         if (object == null) {
             throw new IllegalArgumentException("Object must not be null");
         }
 
+        _mapper = mapper;
         _object = object;
     }
 
@@ -111,7 +121,7 @@ final class JacksonObject implements JsonObject {
         }
         final ObjectNode object = (ObjectNode) node;
 
-        return new JacksonObject(object);
+        return new JacksonObject(_mapper, object);
     }
 
     @Override
@@ -123,12 +133,12 @@ final class JacksonObject implements JsonObject {
         }
         final ArrayNode array = (ArrayNode) node;
 
-        return new JacksonArray(array);
+        return new JacksonArray(_mapper, array);
     }
 
     @Override
     public <T> T toObject(final Class<T> clazz) {
-        return null;
+        return _mapper.convertValue(_object, clazz);
     }
 
     @Override
