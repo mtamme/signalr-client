@@ -17,6 +17,7 @@
 
 package net.signalr.client.hub;
 
+import net.signalr.client.json.JsonArray;
 import net.signalr.client.json.JsonName;
 import net.signalr.client.json.JsonObject;
 import net.signalr.client.json.JsonValue;
@@ -38,7 +39,7 @@ final class HubResponse implements JsonReadable {
      * The data of the invocation.
      */
     @JsonName("R")
-    private JsonValue _date;
+    private JsonObject _date;
 
     /**
      * The ID of the operation.
@@ -80,7 +81,7 @@ final class HubResponse implements JsonReadable {
      * The hub messages.
      */
     @JsonName("M")
-    private HubMessage[] _messages;
+    private JsonArray _messages;
 
     public JsonObject getState() {
         return _state;
@@ -114,11 +115,22 @@ final class HubResponse implements JsonReadable {
         return _messageId;
     }
 
-    public HubMessage[] getMessages() {
+    public JsonArray getMessages() {
         return _messages;
     }
 
     @Override
     public void readJson(final JsonReader reader) {
+        final JsonObject object = reader.readObject();
+
+        _state = object.getObject("S");
+        _date = object.getObject("R");
+        _callbackId = object.getString("I");
+        _isHubException = object.getBoolean("H", false);
+        _errorMessage = object.getString("E");
+        _stackTrace = object.getString("T");
+        _errorData = object.getString("D");
+        _messageId = object.getString("C");
+        _messages = object.getArray("M");
     }
 }

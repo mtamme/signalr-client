@@ -19,11 +19,14 @@ package net.signalr.client.hub;
 
 import net.signalr.client.json.JsonArray;
 import net.signalr.client.json.JsonName;
+import net.signalr.client.json.JsonObject;
+import net.signalr.client.json.JsonReadable;
+import net.signalr.client.json.JsonReader;
 
 /**
  * Represents a hub message.
  */
-final class HubMessage {
+final class HubMessage implements JsonReadable {
 
     /**
      * The hub name.
@@ -53,5 +56,14 @@ final class HubMessage {
 
     public JsonArray getArguments() {
         return _arguments;
+    }
+
+    @Override
+    public void readJson(final JsonReader reader) {
+        final JsonObject object = reader.readObject();
+
+        _hubName = object.getString("H");
+        _methodName = object.getString("M");
+        _arguments = object.getArray("A");
     }
 }
