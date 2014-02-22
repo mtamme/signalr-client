@@ -57,7 +57,7 @@ public abstract class AbstractTransport implements Transport {
     protected final AsyncHttpClient _client;
 
     /**
-     * Initializes a new instance of the {@link WebSocketTransport} class.
+     * Initializes a new instance of the {@link AbstractTransport} class.
      */
     public AbstractTransport() {
         final Builder builder = new Builder();
