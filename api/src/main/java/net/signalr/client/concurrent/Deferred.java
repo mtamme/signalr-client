@@ -42,10 +42,22 @@ public final class Deferred<V> extends AbstractPromise<V> {
         _state = new AtomicReference<State<V>>(initialState);
     }
 
+    /**
+     * Tries to resolves the {@link Deferred} with the specified value.
+     * 
+     * @param value The value.
+     * @return A value indicating whether the {@link Deferred} was resolved.
+     */
     public boolean resolve(final V value) {
         return _state.get().resolve(value);
     }
 
+    /**
+     * Tries to rejects the {@link Deferred} with the specified throwable.
+     * 
+     * @param throwable The throwable.
+     * @return A value indicating whether the {@link Deferred} was rejected.
+     */
     public boolean reject(final Throwable throwable) {
         if (throwable == null) {
             throw new IllegalArgumentException("Throwable must not be null");
