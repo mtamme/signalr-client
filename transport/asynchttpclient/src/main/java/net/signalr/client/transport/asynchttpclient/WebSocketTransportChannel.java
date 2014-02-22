@@ -63,7 +63,7 @@ final class WebSocketTransportChannel implements TransportChannel {
 
         try {
             _webSocket.sendTextMessage(message);
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             return Promises.rejected(t);
         }
 
@@ -74,9 +74,10 @@ final class WebSocketTransportChannel implements TransportChannel {
     public Promise<Void> close() {
         try {
             _webSocket.close();
-            return Promises.resolved();
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             return Promises.rejected(t);
         }
+
+        return Promises.resolved();
     }
 }
