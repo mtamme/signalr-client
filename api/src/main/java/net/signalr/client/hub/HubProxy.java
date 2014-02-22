@@ -20,8 +20,8 @@ package net.signalr.client.hub;
 import net.signalr.client.concurrent.Promise;
 
 /**
-*
-*/
+ * Defines a hub proxy.
+ */
 public interface HubProxy {
 
     /**
