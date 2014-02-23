@@ -26,6 +26,11 @@ import java.net.URISyntaxException;
 public final class URIBuilder {
 
     /**
+     * The URI.
+     */
+    private URI _uri;
+
+    /**
      * The schema.
      */
     private String _schema;
@@ -75,8 +80,9 @@ public final class URIBuilder {
      * @param uri The URI.
      */
     public URIBuilder(final URI uri) {
-        if (uri == null)
+        if (uri == null) {
             throw new IllegalArgumentException("URI must not be null");
+        }
 
         init(uri);
     }
@@ -98,8 +104,9 @@ public final class URIBuilder {
      * @param path The path.
      */
     public URIBuilder(final URI uri, final String path) {
-        if (uri == null)
+        if (uri == null) {
             throw new IllegalArgumentException("URI must not be null");
+        }
 
         init(uri.resolve(path));
     }
@@ -111,12 +118,13 @@ public final class URIBuilder {
      * @return The URI.
      */
     private static URI toURI(final String uri) {
-        if (uri == null)
+        if (uri == null) {
             throw new IllegalArgumentException("URI must not be null");
+        }
 
         try {
             return new URI(uri);
-        } catch (URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             throw new URIException(e);
         }
     }
@@ -127,6 +135,7 @@ public final class URIBuilder {
      * @param uri The URI.
      */
     private void init(final URI uri) {
+        _uri = uri;
         _schema = uri.getScheme();
         _userInfo = uri.getUserInfo();
         _host = uri.getHost();
@@ -149,9 +158,13 @@ public final class URIBuilder {
      * Sets the schema.
      * 
      * @param schema The schema.
+     * @return The {@link URIBuilder}.
      */
-    public void setSchema(final String schema) {
+    public URIBuilder setSchema(final String schema) {
         _schema = schema;
+        _uri = null;
+
+        return this;
     }
 
     /**
@@ -167,9 +180,13 @@ public final class URIBuilder {
      * Sets the host.
      * 
      * @param host The host.
+     * @return The {@link URIBuilder}.
      */
-    public void setHost(final String host) {
+    public URIBuilder setHost(final String host) {
         _host = host;
+        _uri = null;
+
+        return this;
     }
 
     /**
@@ -185,9 +202,13 @@ public final class URIBuilder {
      * Sets the port.
      * 
      * @param port The port.
+     * @return The {@link URIBuilder}.
      */
-    public void setPort(final int port) {
+    public URIBuilder setPort(final int port) {
         _port = port;
+        _uri = null;
+
+        return this;
     }
 
     /**
@@ -203,9 +224,13 @@ public final class URIBuilder {
      * Sets the path.
      * 
      * @param path The path.
+     * @return The {@link URIBuilder}.
      */
-    public void setPath(final String path) {
+    public URIBuilder setPath(final String path) {
         _path = path;
+        _uri = null;
+
+        return this;
     }
 
     /**
@@ -221,9 +246,13 @@ public final class URIBuilder {
      * Sets the query.
      * 
      * @param query The query.
+     * @return The {@link URIBuilder}.
      */
-    public void setQuery(final String query) {
+    public URIBuilder setQuery(final String query) {
         _query = query;
+        _uri = null;
+
+        return this;
     }
 
     /**
@@ -239,9 +268,13 @@ public final class URIBuilder {
      * Sets the fragment.
      * 
      * @param fragment The fragment.
+     * @return The {@link URIBuilder}.
      */
-    public void setFragment(final String fragment) {
+    public URIBuilder setFragment(final String fragment) {
         _fragment = fragment;
+        _uri = null;
+
+        return this;
     }
 
     /**
@@ -250,19 +283,22 @@ public final class URIBuilder {
      * @return The URI.
      */
     public URI toURI() {
+        if (_uri != null) {
+            return _uri;
+        }
+
         try {
-            return new URI(_schema, _userInfo, _host, _port, _path, _query, _fragment);
-        } catch (URISyntaxException e) {
+            _uri = new URI(_schema, _userInfo, _host, _port, _path, _query, _fragment);
+        } catch (final URISyntaxException e) {
             throw new URIException(e);
         }
+
+        return _uri;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
-        URI uri = toURI();
+        final URI uri = toURI();
 
         return uri.toString();
     }
