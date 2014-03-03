@@ -1,4 +1,4 @@
 signalr-client
 ==============
 
-A Java SignalR client
+A SignalR client for Java.
