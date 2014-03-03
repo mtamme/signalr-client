@@ -7,6 +7,9 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>signalr-client-json-gson</artifactId>
+	<properties>
+		<com.google.code.gson.version>2.2.4</com.google.code.gson.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>net.signalr.client</groupId>
@@ -16,7 +19,7 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.2.4</version>
+			<version>${com.google.code.gson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

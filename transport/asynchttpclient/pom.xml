@@ -7,6 +7,9 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>signalr-client-transport-asynchttpclient</artifactId>
+	<properties>
+		<com.ning.version>1.7.21</com.ning.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>net.signalr.client</groupId>
@@ -22,12 +25,12 @@
 		<dependency>
 			<groupId>com.ning</groupId>
 			<artifactId>async-http-client</artifactId>
-			<version>1.7.21</version>
+			<version>${com.ning.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.5</version>
+			<version>${org.slf4j.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
