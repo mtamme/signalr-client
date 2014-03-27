@@ -222,12 +222,12 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public <V> V readObject(final Class<V> objectClass) {
+    public <V> V readObject(final Class<V> valueClass) {
         final V value;
 
         try {
             _parser.nextToken();
-            value = _parser.readValueAs(objectClass);
+            value = _mapper.readValue(_parser, valueClass);
             _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);

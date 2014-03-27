@@ -347,4 +347,19 @@ public final class JacksonReaderTests {
         assertThat(value.size(), is(2));
         assertThat(value.get(0).getInt(0), is(1));
     }
+
+    @Test
+    public void readArrayWithObjectTest() {
+        // Arrange
+        final JsonReader reader = createReader("[1]");
+        final Integer value;
+
+        // Act
+        reader.readBeginArray();
+        value = reader.readObject(Integer.class);
+        reader.readEndArray();
+
+        // Assert
+        assertThat(value, is(1));
+    }
 }

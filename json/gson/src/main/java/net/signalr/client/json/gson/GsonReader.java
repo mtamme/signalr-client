@@ -156,8 +156,8 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public <V> V readObject(final Class<V> objectClass) {
-        return _gson.fromJson(_reader, objectClass);
+    public <V> V readObject(final Class<V> valueClass) {
+        return _gson.fromJson(_reader, valueClass);
     }
 
     @Override
