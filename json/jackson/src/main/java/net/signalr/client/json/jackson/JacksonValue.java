@@ -129,7 +129,11 @@ public class JacksonValue implements JsonValue {
 
     @Override
     public int size() {
-        return _node.size();
+        if (_node.isArray()) {
+            return _node.size();
+        }
+
+        return 0;
     }
 
     @Override
