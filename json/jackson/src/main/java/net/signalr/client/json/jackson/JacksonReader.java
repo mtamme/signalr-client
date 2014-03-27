@@ -65,6 +65,7 @@ final class JacksonReader implements JsonReader {
 
         try {
             token = _parser.nextToken();
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
@@ -79,7 +80,12 @@ final class JacksonReader implements JsonReader {
         final com.fasterxml.jackson.core.JsonToken token;
 
         try {
-            token = _parser.getCurrentToken();
+            if (_parser.hasCurrentToken()) {
+                token = _parser.getCurrentToken();
+            } else {
+                token = _parser.nextToken();
+            }
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
@@ -95,6 +101,7 @@ final class JacksonReader implements JsonReader {
 
         try {
             token = _parser.nextToken();
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
@@ -109,7 +116,12 @@ final class JacksonReader implements JsonReader {
         final com.fasterxml.jackson.core.JsonToken token;
 
         try {
-            token = _parser.getCurrentToken();
+            if (_parser.hasCurrentToken()) {
+                token = _parser.getCurrentToken();
+            } else {
+                token = _parser.nextToken();
+            }
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
@@ -201,6 +213,7 @@ final class JacksonReader implements JsonReader {
         try {
             _parser.nextToken();
             node = _mapper.readTree(_parser);
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
@@ -210,32 +223,47 @@ final class JacksonReader implements JsonReader {
 
     @Override
     public <V> V readObject(final Class<V> objectClass) {
+        final V value;
+
         try {
             _parser.nextToken();
-            return _mapper.readTree(_parser);
+            value = _parser.readValueAs(objectClass);
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
+
+        return value;
     }
 
     @Override
     public String readString() {
+        final String value;
+
         try {
             _parser.nextToken();
-            return _parser.getText();
+            value = _parser.getText();
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
+
+        return value;
     }
 
     @Override
     public boolean readBoolean() {
+        final boolean value;
+
         try {
             _parser.nextToken();
-            return _parser.getBooleanValue();
+            value = _parser.getBooleanValue();
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
+
+        return value;
     }
 
     @Override
@@ -244,6 +272,7 @@ final class JacksonReader implements JsonReader {
 
         try {
             token = _parser.nextToken();
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
@@ -255,32 +284,47 @@ final class JacksonReader implements JsonReader {
 
     @Override
     public double readDouble() {
+        final double value;
+
         try {
             _parser.nextToken();
-            return _parser.getDoubleValue();
+            value = _parser.getDoubleValue();
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
+
+        return value;
     }
 
     @Override
     public long readLong() {
+        final long value;
+
         try {
             _parser.nextToken();
-            return _parser.getLongValue();
+            value = _parser.getLongValue();
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
+
+        return value;
     }
 
     @Override
     public int readInt() {
+        final int value;
+
         try {
             _parser.nextToken();
-            return _parser.getIntValue();
+            value = _parser.getIntValue();
+            _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
         }
+
+        return value;
     }
 
     @Override
