@@ -19,7 +19,7 @@ package net.signalr.client.hub;
 
 import net.signalr.client.hub.HubResponse;
 import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.gson.GsonSerializer;
+import net.signalr.client.json.jackson.JacksonSerializer;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -32,7 +32,7 @@ public final class HubResponseTests {
 
     @Before
     public void setUp() {
-        _serializer = new GsonSerializer();
+        _serializer = new JacksonSerializer();
     }
 
     @Test

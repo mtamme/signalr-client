@@ -17,8 +17,8 @@
 
 package net.signalr.client.hub;
 
-import net.signalr.client.json.JsonName;
-import net.signalr.client.json.JsonObject;
+import java.util.Map;
+
 import net.signalr.client.json.JsonWriteable;
 import net.signalr.client.json.JsonWriter;
 
@@ -27,20 +27,15 @@ import net.signalr.client.json.JsonWriter;
  */
 final class HubRequest implements JsonWriteable {
 
-    @JsonName("I")
     private String _callbackId;
 
-    @JsonName("H")
     private String _hubName;
 
-    @JsonName("M")
     private String _methodName;
 
-    @JsonName("A")
     private Object[] _arguments;
 
-    @JsonName("S")
-    private JsonObject _state;
+    private Map<String, Object> _state;
 
     public void setCallbackId(final String callbackId) {
         _callbackId = callbackId;
@@ -58,11 +53,33 @@ final class HubRequest implements JsonWriteable {
         _arguments = arguments;
     }
 
-    public void setState(final JsonObject state) {
+    public void setState(final Map<String, Object> state) {
         _state = state;
     }
 
     @Override
     public void writeJson(final JsonWriter writer) {
+        writer.beginObject();
+
+        writer.name("I");
+        writer.stringValue(_callbackId);
+        if (_hubName != null) {
+            writer.name("H");
+            writer.stringValue(_hubName);
+        }
+        if (_methodName != null) {
+            writer.name("M");
+            writer.stringValue(_methodName);
+        }
+        if (_arguments != null) {
+            writer.name("A");
+            writer.value(_arguments);
+        }
+        if (_state != null) {
+            writer.name("S");
+            writer.value(_state);
+        }
+
+        writer.endObject();
     }
 }

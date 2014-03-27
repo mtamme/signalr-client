@@ -49,17 +49,7 @@ public final class Promises {
      * @return A resolved {@link Promise}.
      */
     public static <V> Promise<V> resolved(final V value) {
-        return new AbstractPromise<V>() {
-            @Override
-            public boolean isCompleted() {
-                return true;
-            }
-
-            @Override
-            public void addCallback(final Callback<? super V> callback) {
-                callback.onResolved(value);
-            }
-        };
+        return new Deferred<V>(value);
     }
 
     /**
@@ -69,21 +59,7 @@ public final class Promises {
      * @return A rejected {@link Promise}.
      */
     public static <V> Promise<V> rejected(final Throwable throwable) {
-        if (throwable == null) {
-            throw new IllegalArgumentException("Throwable must not be null");
-        }
-
-        return new AbstractPromise<V>() {
-            @Override
-            public boolean isCompleted() {
-                return true;
-            }
-
-            @Override
-            public void addCallback(final Callback<? super V> callback) {
-                callback.onRejected(throwable);
-            }
-        };
+        return new Deferred<V>(throwable);
     }
 
     /**

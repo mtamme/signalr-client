@@ -15,25 +15,41 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.json.gson;
+package net.signalr.client.hub;
 
-import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
 
-import net.signalr.client.json.JsonException;
-import net.signalr.client.json.JsonName;
+import net.signalr.client.json.JsonWriteable;
+import net.signalr.client.json.JsonWriter;
 
-import com.google.gson.FieldNamingStrategy;
+/**
+ * Represents a set of hub names.
+ */
+final class HubNames implements JsonWriteable {
 
-final class ReflectiveFieldNamingStrategy implements FieldNamingStrategy {
+    private final Set<String> _names;
+
+    public HubNames() {
+        _names = new HashSet<String>();
+    }
+
+    public void add(final String name) {
+        _names.add(name);
+    }
 
     @Override
-    public String translateName(final Field field) {
-        final JsonName name = field.getAnnotation(JsonName.class);
+    public void writeJson(final JsonWriter writer) {
+        writer.beginArray();
 
-        if (name == null) {
-            throw new JsonException("Name annotation is missing");
+        for (final String name : _names) {
+            writer.beginObject();
+            writer.name("name");
+            writer.stringValue(name);
+            writer.endObject();
         }
 
-        return name.value();
+        writer.endArray();
+
     }
 }

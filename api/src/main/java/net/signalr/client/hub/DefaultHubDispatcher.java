@@ -17,7 +17,6 @@
 
 package net.signalr.client.hub;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -54,7 +53,7 @@ final class DefaultHubDispatcher implements HubDispatcher {
     /**
      * The deferred responses.
      */
-    private final Map<String, Deferred<HubResponse>> _responses;
+    private final ConcurrentHashMap<String, Deferred<HubResponse>> _responses;
 
     /**
      * Initializes a new instance of the {@link DefaultHubDispatcher} class.
@@ -86,7 +85,7 @@ final class DefaultHubDispatcher implements HubDispatcher {
     @Override
     public void onReceived(final String message) {
         final JsonSerializer serializer = _connection.getSerializer();
-        final HubResponse response = serializer.deserialize(message, HubResponse.class);
+        final HubResponse response = serializer.fromJson(message, new HubResponse());
         final String callbackId = response.getCallbackId();
         final Deferred<HubResponse> deferred = _responses.remove(callbackId);
 
@@ -108,7 +107,7 @@ final class DefaultHubDispatcher implements HubDispatcher {
 
         request.setCallbackId(callbackId);
         final JsonSerializer serializer = _connection.getSerializer();
-        final String message = serializer.serialize(request);
+        final String message = serializer.toJson(request);
         final Deferred<HubResponse> deferred = new Deferred<HubResponse>();
 
         _responses.put(callbackId, deferred);

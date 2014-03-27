@@ -18,7 +18,7 @@
 package net.signalr.client.json;
 
 public interface JsonSerializer {
-    <T> String serialize(final T graph);
+    <T extends JsonReadable> T fromJson(String json, T object);
 
-    <T> T deserialize(String data, Class<T> clazz);
+    String toJson(JsonWriteable object);
 }

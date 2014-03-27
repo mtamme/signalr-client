@@ -17,9 +17,7 @@
 
 package net.signalr.client.hub;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.signalr.client.Connection;
@@ -37,6 +35,8 @@ public final class HubConnection {
     private final HubDispatcher _dispatcher;
 
     private final Connection _connection;
+
+    private final HubNames _hubNames;
 
     private final Map<String, HubProxy> _hubProxies;
 
@@ -59,19 +59,14 @@ public final class HubConnection {
         _dispatcher = dispatcher;
         _connection = connection;
 
+        _hubNames = new HubNames();
         _hubProxies = new HashMap<String, HubProxy>();
     }
 
-    private void updateConnectionData(final Iterable<String> names, String newName) {
-        final List<HubName> hubNames = new ArrayList<HubName>();
-
-        for (final String name : names) {
-            hubNames.add(new HubName(name));
-        }
-
-        hubNames.add(new HubName(newName));
+    private void updateConnectionData(String newHubName) {
+        _hubNames.add(newHubName);
         final JsonSerializer serializer = _connection.getSerializer();
-        final String connectionData = serializer.serialize(hubNames);
+        final String connectionData = serializer.toJson(_hubNames);
 
         _connection.setConnectionData(connectionData);
     }
@@ -89,9 +84,9 @@ public final class HubConnection {
         HubProxy hubProxy = _hubProxies.get(lowerCaseHubName);
 
         if (hubProxy == null) {
-            updateConnectionData(_hubProxies.keySet(), hubName);
             hubProxy = new DefaultHubProxy(hubName, _dispatcher);
             _hubProxies.put(lowerCaseHubName, hubProxy);
+            updateConnectionData(hubName);
         }
 
         return hubProxy;

@@ -17,6 +17,9 @@
 
 package net.signalr.client.json;
 
+/**
+ * Represents a JSON exception.
+ */
 public final class JsonException extends RuntimeException {
 
     /**
@@ -24,10 +27,20 @@ public final class JsonException extends RuntimeException {
      */
     private static final long serialVersionUID = -4454146458602222646L;
 
+    /**
+     * Initializes a new instance of the {@link JsonException} class.
+     * 
+     * @param message The message.
+     */
     public JsonException(final String message) {
         super(message);
     }
 
+    /**
+     * Initializes a new instance of the {@link JsonException} class.
+     * 
+     * @param cause The cause.
+     */
     public JsonException(final Throwable cause) {
         super(cause);
     }

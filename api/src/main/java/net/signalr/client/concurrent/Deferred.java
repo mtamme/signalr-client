@@ -43,6 +43,32 @@ public final class Deferred<V> extends AbstractPromise<V> {
     }
 
     /**
+     * Initializes a new instance of the {@link Deferred} class.
+     * 
+     * @param value The value.
+     */
+    public Deferred(final V value) {
+        final State<V> initialState = new ResolvedState<V>(value);
+
+        _state = new AtomicReference<State<V>>(initialState);
+    }
+
+    /**
+     * Initializes a new instance of the {@link Deferred} class.
+     * 
+     * @param throwable The throwable.
+     */
+    public Deferred(final Throwable throwable) {
+        if (throwable == null) {
+            throw new IllegalArgumentException("Throwable must not be null");
+        }
+
+        final State<V> initialState = new RejectedState<V>(throwable);
+
+        _state = new AtomicReference<State<V>>(initialState);
+    }
+
+    /**
      * Tries to resolves the {@link Deferred} with the specified value.
      * 
      * @param value The value.

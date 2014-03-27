@@ -116,7 +116,7 @@ final class ConnectedConnectionState implements ConnectionState {
 
         _channel.close().thenCompose(new Function<Void, Promise<Void>>() {
             @Override
-            public Promise<Void> apply(final Void source) throws Exception {
+            public Promise<Void> apply(final Void value) throws Exception {
                 logger.info("Aborting transport...");
 
                 final Transport transport = context.getTransport();

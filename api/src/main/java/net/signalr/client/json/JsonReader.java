@@ -17,12 +17,42 @@
 
 package net.signalr.client.json;
 
+import java.io.Closeable;
+
 /**
  * Defines a JSON reader.
  */
-public interface JsonReader {
+public interface JsonReader extends Closeable {
 
-    JsonObject readObject();
+    void beginArray();
 
-    JsonArray readArray();
+    void endArray();
+
+    void beginObject();
+
+    void endObject();
+
+    boolean hasNext();
+
+    JsonToken peek();
+
+    String nextName();
+
+    JsonElement nextElement();
+
+    <V> V nextValue(Class<V> valueClass);
+
+    void nextNull();
+
+    String nextString();
+
+    boolean nextBoolean();
+
+    double nextDouble();
+
+    long nextLong();
+
+    int nextInt();
+
+    void close();
 }

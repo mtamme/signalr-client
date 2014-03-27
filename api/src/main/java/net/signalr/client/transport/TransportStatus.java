@@ -15,12 +15,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.json;
+package net.signalr.client.transport;
 
 /**
- * Defines a JSON array.
+ * Defines all transport statuses.
  */
-public interface JsonArray extends JsonValue {
+public enum TransportStatus {
 
-    JsonObject getObject(int index);
+    /**
+     * Transport is vital.
+     */
+    VITAL,
+
+    /**
+     * Transport may be dead/slow.
+     */
+    SLOW,
+
+    /**
+     * Transport has been lost.
+     */
+    LOST
 }

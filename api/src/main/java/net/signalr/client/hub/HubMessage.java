@@ -17,9 +17,7 @@
 
 package net.signalr.client.hub;
 
-import net.signalr.client.json.JsonArray;
-import net.signalr.client.json.JsonName;
-import net.signalr.client.json.JsonObject;
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
 
@@ -31,20 +29,17 @@ final class HubMessage implements JsonReadable {
     /**
      * The hub name.
      */
-    @JsonName("H")
     private String _hubName;
 
     /**
      * The method name.
      */
-    @JsonName("M")
     private String _methodName;
 
     /**
      * The arguments.
      */
-    @JsonName("A")
-    private JsonArray _arguments;
+    private JsonElement _arguments;
 
     public String getHubName() {
         return _hubName;
@@ -54,16 +49,22 @@ final class HubMessage implements JsonReadable {
         return _methodName;
     }
 
-    public JsonArray getArguments() {
+    public JsonElement getArguments() {
         return _arguments;
     }
 
     @Override
     public void readJson(final JsonReader reader) {
-        final JsonObject object = reader.readObject();
+        while (reader.hasNext()) {
+            final String name = reader.nextName();
 
-        _hubName = object.getString("H");
-        _methodName = object.getString("M");
-        _arguments = object.getArray("A");
+            if (name.equalsIgnoreCase("H")) {
+                _hubName = reader.nextString();
+            } else if (name.equalsIgnoreCase("M")) {
+                _methodName = reader.nextString();
+            } else if (name.equalsIgnoreCase("A")) {
+                _arguments = reader.nextElement();
+            }
+        }
     }
 }

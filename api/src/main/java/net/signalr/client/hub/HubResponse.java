@@ -17,10 +17,9 @@
 
 package net.signalr.client.hub;
 
-import net.signalr.client.json.JsonArray;
-import net.signalr.client.json.JsonName;
-import net.signalr.client.json.JsonObject;
-import net.signalr.client.json.JsonValue;
+import java.util.Map;
+
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
 
@@ -32,63 +31,54 @@ final class HubResponse implements JsonReadable {
     /**
      * The changes made the the round tripped state.
      */
-    @JsonName("S")
-    private JsonObject _state;
+    private Map<String, Object> _state;
 
     /**
      * The data of the invocation.
      */
-    @JsonName("R")
-    private JsonObject _date;
+    private JsonElement _data;
 
     /**
      * The ID of the operation.
      */
-    @JsonName("I")
     private String _callbackId;
 
     /**
      * Indicates whether the error is a <code>HubException</code>.
      */
-    @JsonName("H")
     private Boolean _isHubException;
 
     /**
      * The exception that occurs as a result of invoking the hub method.
      */
-    @JsonName("E")
     private String _errorMessage;
 
     /**
      * The stack trace of the exception that occurs as a result of invoking the hub method.
      */
-    @JsonName("T")
     private String _stackTrace;
 
     /**
      * Extra error data contained in the <code>HubException</code>.
      */
-    @JsonName("D")
     private String _errorData;
 
     /**
      * The message ID.
      */
-    @JsonName("C")
     private String _messageId;
 
     /**
      * The hub messages.
      */
-    @JsonName("M")
-    private JsonArray _messages;
+    private JsonElement _messages;
 
-    public JsonObject getState() {
+    public Map<String, Object> getState() {
         return _state;
     }
 
-    public JsonValue getData() {
-        return _date;
+    public JsonElement getData() {
+        return _data;
     }
 
     public String getCallbackId() {
@@ -115,22 +105,41 @@ final class HubResponse implements JsonReadable {
         return _messageId;
     }
 
-    public JsonArray getMessages() {
+    public JsonElement getMessages() {
         return _messages;
     }
 
     @Override
     public void readJson(final JsonReader reader) {
-        final JsonObject object = reader.readObject();
+        reader.beginObject();
 
-        _state = object.getObject("S");
-        _date = object.getObject("R");
-        _callbackId = object.getString("I");
-        _isHubException = object.getBoolean("H", false);
-        _errorMessage = object.getString("E");
-        _stackTrace = object.getString("T");
-        _errorData = object.getString("D");
-        _messageId = object.getString("C");
-        _messages = object.getArray("M");
+        while (reader.hasNext()) {
+            final String name = reader.nextName();
+
+            if (name.equalsIgnoreCase("S")) {
+                @SuppressWarnings("unchecked")
+                final Map<String, Object> state = reader.nextValue(Map.class);
+
+                _state = state;
+            } else if (name.equalsIgnoreCase("R")) {
+                _data = reader.nextElement();
+            } else if (name.equalsIgnoreCase("I")) {
+                _callbackId = reader.nextString();
+            } else if (name.equalsIgnoreCase("H")) {
+                _isHubException = reader.nextBoolean();
+            } else if (name.equalsIgnoreCase("E")) {
+                _errorMessage = reader.nextString();
+            } else if (name.equalsIgnoreCase("T")) {
+                _stackTrace = reader.nextString();
+            } else if (name.equalsIgnoreCase("D")) {
+                _errorData = reader.nextString();
+            } else if (name.equalsIgnoreCase("C")) {
+                _messageId = reader.nextString();
+            } else if (name.equalsIgnoreCase("M")) {
+                _messages = reader.nextElement();
+            }
+        }
+
+        reader.endObject();
     }
 }

@@ -17,21 +17,35 @@
 
 package net.signalr.client.hub;
 
-import net.signalr.client.json.JsonName;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.jackson.JacksonSerializer;
 
-/**
- * Represents a hub name.
- */
-final class HubName {
+import org.junit.Before;
+import org.junit.Test;
 
-    @JsonName("name")
-    private String _name;
+public final class HubRequestTests {
 
-    public HubName(final String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name must not be null");
-        }
+    private JsonSerializer _serializer;
 
-        _name = name;
+    @Before
+    public void setUp() {
+        _serializer = new JacksonSerializer();
+    }
+
+    @Test
+    public void deserializeTest() {
+        // Arrange
+        final HubRequest request = new HubRequest();
+
+        request.setCallbackId("1");
+
+        // Act
+        final String data = _serializer.toJson(request);
+
+        // Assert
+        assertNotNull(data);
+        assertThat(data, is("{\"I\":\"1\"}"));
     }
 }

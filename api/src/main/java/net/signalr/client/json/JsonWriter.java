@@ -17,9 +17,38 @@
 
 package net.signalr.client.json;
 
-public interface JsonWriter {
+import java.io.Closeable;
+import java.io.Flushable;
 
-    void writeObject(JsonObject object);
+public interface JsonWriter extends Closeable, Flushable {
 
-    void writeArray(JsonArray array);
+    void beginArray();
+
+    void endArray();
+
+    void beginObject();
+
+    void endObject();
+
+    void name(String name);
+
+    void elementValue(JsonElement element);
+
+    <V> void value(V value);
+
+    void nullValue();
+
+    void stringValue(String value);
+
+    void booleanValue(boolean value);
+
+    void doubleValue(double value);
+
+    void longValue(long value);
+
+    void intValue(int value);
+
+    void flush();
+
+    void close();
 }

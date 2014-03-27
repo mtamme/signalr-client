@@ -15,49 +15,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.hub;
+package net.signalr.client.transport;
 
-import net.signalr.client.hub.HubResponse;
 import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.gson.GsonSerializer;
+import net.signalr.client.json.jackson.JacksonSerializer;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public final class HubResponseTests {
+public final class PingResponseTests {
 
     private JsonSerializer _serializer;
 
     @Before
     public void setUp() {
-        _serializer = new GsonSerializer();
+        _serializer = new JacksonSerializer();
     }
 
     @Test
-    public void deserializeCallbackIdResponseTest() {
+    public void deserializeTest() {
         // Arrange
-        final String data = "{\"I\":\"1\"}";
+        final String data = "{\"Response\":\"pong\"}";
 
         // Act
-        final HubResponse response = _serializer.fromJson(data, new HubResponse());
+        final PingResponse response = _serializer.fromJson(data, new PingResponse());
 
         // Assert
         assertNotNull(response);
-        assertThat(response.getCallbackId(), is("1"));
-    }
-
-    @Test
-    public void deserializeMessageResponseTest() {
-        // Arrange
-        final String data = "{\"C\":\"s-0,298F690\",\"M\":[{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":1}]},{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":2}]}]}";
-
-        // Act
-        final HubResponse response = _serializer.fromJson(data, new HubResponse());
-
-        // Assert
-        assertNotNull(response);
-        assertThat(response.getMessageId(), is("s-0,298F690"));
+        assertThat(response.getValue(), is("pong"));
     }
 }

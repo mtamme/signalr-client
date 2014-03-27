@@ -17,8 +17,6 @@
 
 package net.signalr.client.transport;
 
-import net.signalr.client.json.JsonName;
-import net.signalr.client.json.JsonObject;
 import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
 
@@ -27,38 +25,30 @@ import net.signalr.client.json.JsonReader;
  */
 public final class NegotiationResponse implements JsonReadable {
 
-    @JsonName("Url")
     private String _url;
 
-    @JsonName("ConnectionToken")
     private String _connectionToken;
 
-    @JsonName("ConnectionId")
     private String _connectionId;
 
-    @JsonName("ProtocolVersion")
     private String _protocolVersion;
 
-    @JsonName("TryWebSockets")
     private boolean _tryWebSockets;
 
     /**
      * The keep-alive timeout in seconds.
      */
-    @JsonName("KeepAliveTimeout")
     private Double _keepAliveTimeout;
 
     /**
      * The disconnect timeout in seconds.
      */
-    @JsonName("DisconnectTimeout")
-    private double _disconnectTimeout;
+    private Double _disconnectTimeout;
 
     /**
      * The transport connect timeout in seconds.
      */
-    @JsonName("TransportConnectTimeout")
-    private double _transportConnectTimeout;
+    private Double _transportConnectTimeout;
 
     public String getUrl() {
         return _url;
@@ -94,15 +84,31 @@ public final class NegotiationResponse implements JsonReadable {
 
     @Override
     public void readJson(final JsonReader reader) {
-        final JsonObject object = reader.readObject();
+        reader.beginObject();
 
-        _url = object.getString("Url");
-        _connectionToken = object.getString("ConnectionToken");
-        _connectionId = object.getString("ConnectionId");
-        _protocolVersion = object.getString("ProtocolVersion");
-        _tryWebSockets = object.getBoolean("TryWebSockets", false);
-        _keepAliveTimeout = object.getDouble("KeepAliveTimeout", 0.0);
-        _disconnectTimeout = object.getDouble("DisconnectTimeout", 0.0);
-        _transportConnectTimeout = object.getDouble("TransportConnectTimeout", 0.0);
+        while (reader.hasNext()) {
+            final String name = reader.nextName();
+
+            if (name.equalsIgnoreCase("Url")) {
+                _url = reader.nextString();
+            } else if (name.equalsIgnoreCase("ConnectionToken")) {
+                _connectionToken = reader.nextString();
+            } else if (name.equalsIgnoreCase("ConnectionId")) {
+                _connectionId = reader.nextString();
+            } else if (name.equalsIgnoreCase("ProtocolVersion")) {
+                _protocolVersion = reader.nextString();
+            } else if (name.equalsIgnoreCase("TryWebSockets")) {
+                _tryWebSockets = reader.nextBoolean();
+            } else if (name.equalsIgnoreCase("KeepAliveTimeout")) {
+                _keepAliveTimeout = reader.nextDouble();
+            } else if (name.equalsIgnoreCase("DisconnectTimeout")) {
+                _disconnectTimeout = reader.nextDouble();
+            } else if (name.equalsIgnoreCase("TransportConnectTimeout")) {
+                _transportConnectTimeout = reader.nextDouble();
+            }
+        }
+
+        reader.endObject();
+
     }
 }

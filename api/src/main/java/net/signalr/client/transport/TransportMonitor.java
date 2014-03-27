@@ -35,13 +35,6 @@ final class TransportMonitor implements Runnable, TransportChannelHandler {
     private static final Logger logger = LoggerFactory.getLogger(TransportMonitor.class);
 
     /**
-     * Defines heart beat states.
-     */
-    private enum HeartbeatState {
-        NORMAL, WARNING_TIMEOUT, TIMEOUT
-    }
-
-    /**
      * The transport manager.
      */
     private final TransportManager _manager;
@@ -52,108 +45,113 @@ final class TransportMonitor implements Runnable, TransportChannelHandler {
     private final TimeProvider _timeProvider;
 
     /**
-     * The timeout.
+     * The lost timeout.
      */
-    private final long _keepAliveTimeout;
+    private final long _lostTimeout;
 
     /**
-     * The warning timeout.
+     * The slow timeout.
      */
-    private final long _keepAliveWarningTimeout;
+    private final long _slowTimeout;
 
     /**
-     * The last heart beat time.
+     * The heart beat time.
      */
-    private final AtomicLong _lastHeartbeatTime;
+    private final AtomicLong _heartbeatTime;
 
     /**
-     * The last heart beat state.
+     * The transport status.
      */
-    private HeartbeatState _lastHeartbeatState;
+    private TransportStatus _status;
 
     /**
      * Initializes a new instance of the {@link TransportMonitor} class.
      * 
      * @param timeProvider The time provider.
      * @param manager The transport manager.
-     * @param keepAliveTimeout The keep-alive timeout.
+     * @param timeout The timeout.
      */
-    public TransportMonitor(final TransportManager manager, final TimeProvider timeProvider, final long keepAliveTimeout) {
+    public TransportMonitor(final TransportManager manager, final TimeProvider timeProvider, final long timeout) {
         if (manager == null) {
             throw new IllegalArgumentException("Manager must not be null");
         }
         if (timeProvider == null) {
             throw new IllegalArgumentException("Time provider must not be null");
         }
-        if (keepAliveTimeout <= 0) {
-            throw new IllegalArgumentException("Keep alive timeout must be greater than 0");
+        if (timeout <= 0) {
+            throw new IllegalArgumentException("Timeout must be greater than 0");
         }
 
         _manager = manager;
         _timeProvider = timeProvider;
-        _keepAliveTimeout = keepAliveTimeout;
-        _keepAliveWarningTimeout = (keepAliveTimeout * 2) / 3;
+        _lostTimeout = timeout;
+        _slowTimeout = (timeout * 2) / 3;
         final long currentTime = _timeProvider.currentTimeMillis();
 
-        _lastHeartbeatTime = new AtomicLong(currentTime);
-        _lastHeartbeatState = HeartbeatState.NORMAL;
+        _heartbeatTime = new AtomicLong(currentTime);
+        _status = TransportStatus.VITAL;
     }
 
     /**
-     * Returns the current heart beat state.
+     * Returns the transport status.
      * 
-     * @return The current heart beat state.
+     * @return The transport status.
      */
-    private HeartbeatState getCurrentHeartbeatState() {
-        final long lastHeartbeatTime = _lastHeartbeatTime.get();
+    private TransportStatus getStatus() {
+        final long heartbeatTime = _heartbeatTime.get();
         final long currentTime = _timeProvider.currentTimeMillis();
-        final long elapsedTime = currentTime - lastHeartbeatTime;
+        final long elapsedTime = currentTime - heartbeatTime;
 
-        if (elapsedTime >= _keepAliveTimeout) {
-            return HeartbeatState.TIMEOUT;
+        if (elapsedTime >= _lostTimeout) {
+            return TransportStatus.LOST;
         }
-        if (elapsedTime >= _keepAliveWarningTimeout) {
-            return HeartbeatState.WARNING_TIMEOUT;
+        if (elapsedTime >= _slowTimeout) {
+            return TransportStatus.SLOW;
         }
 
-        return HeartbeatState.NORMAL;
+        return TransportStatus.VITAL;
     }
 
     /**
-     * Updates the last hear beat time.
+     * Updates the hear beat time.
      */
-    private void updateLastHeartbeatTime() {
+    private void updateHeartbeatTime() {
         final long currentTime = _timeProvider.currentTimeMillis();
 
-        _lastHeartbeatTime.set(currentTime);
+        _heartbeatTime.set(currentTime);
     }
 
+    /**
+     * Returns the monitor interval.
+     * 
+     * @return The monitor interval.
+     */
     public long getInterval() {
-        return _keepAliveTimeout - _keepAliveWarningTimeout;
+        return _lostTimeout - _slowTimeout;
     }
 
     @Override
     public void run() {
-        final HeartbeatState currentHeartbeatState = getCurrentHeartbeatState();
+        final TransportStatus status = getStatus();
 
-        if (currentHeartbeatState == _lastHeartbeatState) {
+        if (status == _status) {
             return;
         }
-        if (currentHeartbeatState == HeartbeatState.TIMEOUT) {
+        if (status == TransportStatus.LOST) {
             logger.error("Keep alive timed out, connection has been lost.");
 
             _manager.handleConnectionLost();
-        } else if (currentHeartbeatState == HeartbeatState.WARNING_TIMEOUT) {
+        } else if (status == TransportStatus.SLOW) {
             logger.warn("Keep alive has been missed, connection may be dead/slow.");
 
             _manager.handleConnectionSlow();
         }
-        _lastHeartbeatState = currentHeartbeatState;
+        _status = status;
     }
 
     @Override
     public void onOpen() {
-        updateLastHeartbeatTime();
+        updateHeartbeatTime();
     }
 
     @Override
@@ -166,7 +164,7 @@ final class TransportMonitor implements Runnable, TransportChannelHandler {
 
     @Override
     public void onReceived(final String message) {
-        updateLastHeartbeatTime();
+        updateHeartbeatTime();
     }
 
     @Override

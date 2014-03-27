@@ -17,13 +17,18 @@
 
 package net.signalr.client.json.gson;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.lang.reflect.Modifier;
 
-import net.signalr.client.json.JsonException;
+import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonWriteable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 public final class GsonSerializer implements JsonSerializer {
 
@@ -37,26 +42,27 @@ public final class GsonSerializer implements JsonSerializer {
         GsonBuilder gsonBuilder = new GsonBuilder();
 
         gsonBuilder.excludeFieldsWithModifiers(Modifier.STATIC);
-        gsonBuilder.setFieldNamingStrategy(new ReflectiveFieldNamingStrategy());
+        // gsonBuilder.setFieldNamingStrategy(new ReflectiveFieldNamingStrategy());
 
         return gsonBuilder.create();
     }
 
     @Override
-    public <T> String serialize(final T graph) {
-        try {
-            return _gson.toJson(graph);
-        } catch (Exception e) {
-            throw new JsonException(e);
-        }
+    public <T extends JsonReadable> T fromJson(String json, T object) {
+        final GsonReader reader = new GsonReader(_gson, new JsonReader(new StringReader(json)));
+
+        object.readJson(reader);
+
+        return object;
     }
 
     @Override
-    public <T> T deserialize(final String data, final Class<T> clazz) {
-        try {
-            return _gson.fromJson(data, clazz);
-        } catch (Exception e) {
-            throw new JsonException(e);
-        }
+    public String toJson(JsonWriteable object) {
+        final StringWriter json = new StringWriter();
+        final GsonWriter writer = new GsonWriter(_gson, new JsonWriter(json));
+
+        object.writeJson(writer);
+
+        return json.toString();
     }
 }
