@@ -33,16 +33,16 @@ public final class PingResponse implements JsonReadable {
 
     @Override
     public void readJson(final JsonReader reader) {
-        reader.beginObject();
+        reader.readBeginObject();
 
-        while (reader.hasNext()) {
-            final String name = reader.nextName();
+        while (reader.read()) {
+            final String name = reader.getName();
 
             if (name.equalsIgnoreCase("Response")) {
-                _value = reader.nextString();
+                _value = reader.readString();
             }
         }
 
-        reader.endObject();
+        reader.readEndObject();
     }
 }

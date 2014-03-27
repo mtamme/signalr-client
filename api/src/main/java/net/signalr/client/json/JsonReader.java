@@ -24,35 +24,35 @@ import java.io.Closeable;
  */
 public interface JsonReader extends Closeable {
 
-    void beginArray();
+    void readBeginArray();
 
-    void endArray();
+    void readEndArray();
 
-    void beginObject();
+    void readBeginObject();
 
-    void endObject();
+    void readEndObject();
 
-    boolean hasNext();
+    boolean read();
 
-    JsonToken peek();
+    JsonToken getToken();
 
-    String nextName();
+    String getName();
 
-    JsonValue nextValue();
+    JsonValue readValue();
 
-    <V> V nextObject(Class<V> objectClass);
+    <V> V readObject(Class<V> objectClass);
 
-    void nextNull();
+    void readNull();
 
-    String nextString();
+    String readString();
 
-    boolean nextBoolean();
+    boolean readBoolean();
 
-    double nextDouble();
+    double readDouble();
 
-    long nextLong();
+    long readLong();
 
-    int nextInt();
+    int readInt();
 
     void close();
 }

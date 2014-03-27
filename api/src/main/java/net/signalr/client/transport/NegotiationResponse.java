@@ -84,31 +84,31 @@ public final class NegotiationResponse implements JsonReadable {
 
     @Override
     public void readJson(final JsonReader reader) {
-        reader.beginObject();
+        reader.readBeginObject();
 
-        while (reader.hasNext()) {
-            final String name = reader.nextName();
+        while (reader.read()) {
+            final String name = reader.getName();
 
             if (name.equalsIgnoreCase("Url")) {
-                _url = reader.nextString();
+                _url = reader.readString();
             } else if (name.equalsIgnoreCase("ConnectionToken")) {
-                _connectionToken = reader.nextString();
+                _connectionToken = reader.readString();
             } else if (name.equalsIgnoreCase("ConnectionId")) {
-                _connectionId = reader.nextString();
+                _connectionId = reader.readString();
             } else if (name.equalsIgnoreCase("ProtocolVersion")) {
-                _protocolVersion = reader.nextString();
+                _protocolVersion = reader.readString();
             } else if (name.equalsIgnoreCase("TryWebSockets")) {
-                _tryWebSockets = reader.nextBoolean();
+                _tryWebSockets = reader.readBoolean();
             } else if (name.equalsIgnoreCase("KeepAliveTimeout")) {
-                _keepAliveTimeout = reader.nextDouble();
+                _keepAliveTimeout = reader.readDouble();
             } else if (name.equalsIgnoreCase("DisconnectTimeout")) {
-                _disconnectTimeout = reader.nextDouble();
+                _disconnectTimeout = reader.readDouble();
             } else if (name.equalsIgnoreCase("TransportConnectTimeout")) {
-                _transportConnectTimeout = reader.nextDouble();
+                _transportConnectTimeout = reader.readDouble();
             }
         }
 
-        reader.endObject();
+        reader.readEndObject();
 
     }
 }

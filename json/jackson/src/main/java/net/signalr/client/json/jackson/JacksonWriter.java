@@ -47,7 +47,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void beginArray() {
+    public void writeBeginArray() {
         try {
             _generator.writeStartArray();
         } catch (final Exception e) {
@@ -56,7 +56,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void endArray() {
+    public void writeEndArray() {
         try {
             _generator.writeEndArray();
         } catch (final Exception e) {
@@ -65,7 +65,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void beginObject() {
+    public void writeBeginObject() {
         try {
             _generator.writeStartObject();
         } catch (final Exception e) {
@@ -74,7 +74,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void endObject() {
+    public void writeEndObject() {
         try {
             _generator.writeEndObject();
         } catch (final Exception e) {
@@ -83,7 +83,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void name(final String name) {
+    public void writeName(final String name) {
         try {
             _generator.writeFieldName(name);
         } catch (final Exception e) {
@@ -92,7 +92,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void value(final JsonValue value) {
+    public void writeValue(final JsonValue value) {
         final JsonNode node = value.adapt(JsonNode.class);
 
         try {
@@ -103,7 +103,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public <V> void objectValue(final V value) {
+    public <V> void writeObject(final V value) {
         try {
             _generator.writeObject(value);
         } catch (final Exception e) {
@@ -112,7 +112,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void nullValue() {
+    public void writeNull() {
         try {
             _generator.writeNull();
         } catch (final Exception e) {
@@ -121,7 +121,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void stringValue(final String value) {
+    public void writeString(final String value) {
         try {
             _generator.writeString(value);
         } catch (final Exception e) {
@@ -130,7 +130,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void booleanValue(final boolean value) {
+    public void writeBoolean(final boolean value) {
         try {
             _generator.writeBoolean(value);
         } catch (final Exception e) {
@@ -139,7 +139,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void doubleValue(final double value) {
+    public void writeDouble(final double value) {
         try {
             _generator.writeNumber(value);
         } catch (final Exception e) {
@@ -148,7 +148,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void longValue(final long value) {
+    public void writeLong(final long value) {
         try {
             _generator.writeNumber(value);
         } catch (final Exception e) {
@@ -157,7 +157,7 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void intValue(final int value) {
+    public void writeInt(final int value) {
         try {
             _generator.writeNumber(value);
         } catch (final Exception e) {

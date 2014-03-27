@@ -40,16 +40,16 @@ final class HubNames implements JsonWriteable {
 
     @Override
     public void writeJson(final JsonWriter writer) {
-        writer.beginArray();
+        writer.writeBeginArray();
 
         for (final String name : _names) {
-            writer.beginObject();
-            writer.name("name");
-            writer.stringValue(name);
-            writer.endObject();
+            writer.writeBeginObject();
+            writer.writeName("name");
+            writer.writeString(name);
+            writer.writeEndObject();
         }
 
-        writer.endArray();
+        writer.writeEndArray();
 
     }
 }

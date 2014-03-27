@@ -20,6 +20,7 @@ package net.signalr.client.json.jackson;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import net.signalr.client.json.JsonValue;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReader;
@@ -59,43 +60,67 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public void beginArray() {
+    public void readBeginArray() {
+        final com.fasterxml.jackson.core.JsonToken token;
+
         try {
-            _parser.nextToken();
+            token = _parser.nextToken();
         } catch (final Exception e) {
             throw new JsonException(e);
+        }
+
+        if (token != com.fasterxml.jackson.core.JsonToken.START_ARRAY) {
+            throw new JsonException("Current token is not a begin array");
         }
     }
 
     @Override
-    public void endArray() {
+    public void readEndArray() {
+        final com.fasterxml.jackson.core.JsonToken token;
+
         try {
-            _parser.nextToken();
+            token = _parser.getCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
+        }
+
+        if (token != com.fasterxml.jackson.core.JsonToken.END_ARRAY) {
+            throw new JsonException("Current token is not a end array");
         }
     }
 
     @Override
-    public void beginObject() {
+    public void readBeginObject() {
+        final com.fasterxml.jackson.core.JsonToken token;
+
         try {
-            _parser.nextToken();
+            token = _parser.nextToken();
         } catch (final Exception e) {
             throw new JsonException(e);
+        }
+
+        if (token != com.fasterxml.jackson.core.JsonToken.START_OBJECT) {
+            throw new JsonException("Current token is not a begin object");
         }
     }
 
     @Override
-    public void endObject() {
+    public void readEndObject() {
+        final com.fasterxml.jackson.core.JsonToken token;
+
         try {
-            _parser.nextToken();
+            token = _parser.getCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
+        }
+
+        if (token != com.fasterxml.jackson.core.JsonToken.END_OBJECT) {
+            throw new JsonException("Current token is not a end object");
         }
     }
 
     @Override
-    public boolean hasNext() {
+    public boolean read() {
         final com.fasterxml.jackson.core.JsonToken token;
 
         try {
@@ -121,7 +146,7 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public JsonToken peek() {
+    public JsonToken getToken() {
         final com.fasterxml.jackson.core.JsonToken token;
 
         try {
@@ -163,7 +188,7 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public String nextName() {
+    public String getName() {
         try {
             return _parser.getCurrentName();
         } catch (final Exception e) {
@@ -172,19 +197,23 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public JsonValue nextValue() {
-        try {
-            final JsonNode node = _mapper.readTree(_parser);
+    public JsonValue readValue() {
+        final JsonNode node;
 
-            return new JacksonValue(_mapper, node);
+        try {
+            _parser.nextToken();
+            node = _mapper.readTree(_parser);
         } catch (final Exception e) {
             throw new JsonException(e);
         }
+
+        return new JacksonValue(_mapper, node);
     }
 
     @Override
-    public <V> V nextObject(final Class<V> objectClass) {
+    public <V> V readObject(final Class<V> objectClass) {
         try {
+            _parser.nextToken();
             return _mapper.readTree(_parser);
         } catch (final Exception e) {
             throw new JsonException(e);
@@ -192,7 +221,7 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public String nextString() {
+    public String readString() {
         try {
             _parser.nextToken();
             return _parser.getText();
@@ -202,7 +231,7 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public boolean nextBoolean() {
+    public boolean readBoolean() {
         try {
             _parser.nextToken();
             return _parser.getBooleanValue();
@@ -212,16 +241,22 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public void nextNull() {
+    public void readNull() {
+        final com.fasterxml.jackson.core.JsonToken token;
+
         try {
-            _parser.nextToken();
+            token = _parser.nextToken();
         } catch (final Exception e) {
             throw new JsonException(e);
+        }
+
+        if (token != com.fasterxml.jackson.core.JsonToken.VALUE_NULL) {
+            throw new JsonException("Current token (" + token + ") is not null");
         }
     }
 
     @Override
-    public double nextDouble() {
+    public double readDouble() {
         try {
             _parser.nextToken();
             return _parser.getDoubleValue();
@@ -231,7 +266,7 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public long nextLong() {
+    public long readLong() {
         try {
             _parser.nextToken();
             return _parser.getLongValue();
@@ -241,7 +276,7 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public int nextInt() {
+    public int readInt() {
         try {
             _parser.nextToken();
             return _parser.getIntValue();

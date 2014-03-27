@@ -22,31 +22,31 @@ import java.io.Flushable;
 
 public interface JsonWriter extends Closeable, Flushable {
 
-    void beginArray();
+    void writeBeginArray();
 
-    void endArray();
+    void writeEndArray();
 
-    void beginObject();
+    void writeBeginObject();
 
-    void endObject();
+    void writeEndObject();
 
-    void name(String name);
+    void writeName(String name);
 
-    void value(JsonValue element);
+    void writeValue(JsonValue element);
 
-    <V> void objectValue(V value);
+    <V> void writeObject(V value);
 
-    void nullValue();
+    void writeNull();
 
-    void stringValue(String value);
+    void writeString(String value);
 
-    void booleanValue(boolean value);
+    void writeBoolean(boolean value);
 
-    void doubleValue(double value);
+    void writeDouble(double value);
 
-    void longValue(long value);
+    void writeLong(long value);
 
-    void intValue(int value);
+    void writeInt(int value);
 
     void flush();
 

@@ -59,27 +59,27 @@ final class HubRequest implements JsonWriteable {
 
     @Override
     public void writeJson(final JsonWriter writer) {
-        writer.beginObject();
+        writer.writeBeginObject();
 
-        writer.name("I");
-        writer.stringValue(_callbackId);
+        writer.writeName("I");
+        writer.writeString(_callbackId);
         if (_hubName != null) {
-            writer.name("H");
-            writer.stringValue(_hubName);
+            writer.writeName("H");
+            writer.writeString(_hubName);
         }
         if (_methodName != null) {
-            writer.name("M");
-            writer.stringValue(_methodName);
+            writer.writeName("M");
+            writer.writeString(_methodName);
         }
         if (_arguments != null) {
-            writer.name("A");
-            writer.objectValue(_arguments);
+            writer.writeName("A");
+            writer.writeObject(_arguments);
         }
         if (_state != null) {
-            writer.name("S");
-            writer.objectValue(_state);
+            writer.writeName("S");
+            writer.writeObject(_state);
         }
 
-        writer.endObject();
+        writer.writeEndObject();
     }
 }

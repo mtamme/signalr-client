@@ -55,15 +55,15 @@ final class HubMessage implements JsonReadable {
 
     @Override
     public void readJson(final JsonReader reader) {
-        while (reader.hasNext()) {
-            final String name = reader.nextName();
+        while (reader.read()) {
+            final String name = reader.getName();
 
             if (name.equalsIgnoreCase("H")) {
-                _hubName = reader.nextString();
+                _hubName = reader.readString();
             } else if (name.equalsIgnoreCase("M")) {
-                _methodName = reader.nextString();
+                _methodName = reader.readString();
             } else if (name.equalsIgnoreCase("A")) {
-                _arguments = reader.nextValue();
+                _arguments = reader.readValue();
             }
         }
     }

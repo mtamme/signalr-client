@@ -111,35 +111,35 @@ final class HubResponse implements JsonReadable {
 
     @Override
     public void readJson(final JsonReader reader) {
-        reader.beginObject();
+        reader.readBeginObject();
 
-        while (reader.hasNext()) {
-            final String name = reader.nextName();
+        while (reader.read()) {
+            final String name = reader.getName();
 
             if (name.equalsIgnoreCase("S")) {
                 @SuppressWarnings("unchecked")
-                final Map<String, Object> state = reader.nextObject(Map.class);
+                final Map<String, Object> state = reader.readObject(Map.class);
 
                 _state = state;
             } else if (name.equalsIgnoreCase("R")) {
-                _data = reader.nextValue();
+                _data = reader.readValue();
             } else if (name.equalsIgnoreCase("I")) {
-                _callbackId = reader.nextString();
+                _callbackId = reader.readString();
             } else if (name.equalsIgnoreCase("H")) {
-                _isHubException = reader.nextBoolean();
+                _isHubException = reader.readBoolean();
             } else if (name.equalsIgnoreCase("E")) {
-                _errorMessage = reader.nextString();
+                _errorMessage = reader.readString();
             } else if (name.equalsIgnoreCase("T")) {
-                _stackTrace = reader.nextString();
+                _stackTrace = reader.readString();
             } else if (name.equalsIgnoreCase("D")) {
-                _errorData = reader.nextString();
+                _errorData = reader.readString();
             } else if (name.equalsIgnoreCase("C")) {
-                _messageId = reader.nextString();
+                _messageId = reader.readString();
             } else if (name.equalsIgnoreCase("M")) {
-                _messages = reader.nextValue();
+                _messages = reader.readValue();
             }
         }
 
-        reader.endObject();
+        reader.readEndObject();
     }
 }

@@ -59,7 +59,7 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void beginArray() {
+    public void writeBeginArray() {
         try {
             _writer.beginArray();
         } catch (final Exception e) {
@@ -68,7 +68,7 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void endArray() {
+    public void writeEndArray() {
         try {
             _writer.endArray();
         } catch (final Exception e) {
@@ -77,7 +77,7 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void beginObject() {
+    public void writeBeginObject() {
         try {
             _writer.beginObject();
         } catch (final Exception e) {
@@ -86,7 +86,7 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void endObject() {
+    public void writeEndObject() {
         try {
             _writer.endObject();
         } catch (final Exception e) {
@@ -95,7 +95,7 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void name(final String name) {
+    public void writeName(final String name) {
         try {
             _writer.name(name);
         } catch (final Exception e) {
@@ -104,14 +104,14 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void value(final JsonValue value) {
+    public void writeValue(final JsonValue value) {
         final JsonElement element = value.adapt(JsonElement.class);
 
         _gson.toJson(element, _writer);
     }
 
     @Override
-    public <V> void objectValue(final V value) {
+    public <V> void writeObject(final V value) {
         if (value == null) {
             _gson.toJson(null, JsonNull.class, _writer);
             return;
@@ -122,7 +122,7 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void nullValue() {
+    public void writeNull() {
         try {
             _writer.nullValue();
         } catch (final Exception e) {
@@ -131,7 +131,7 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void stringValue(final String value) {
+    public void writeString(final String value) {
         try {
             _writer.value(value);
         } catch (final Exception e) {
@@ -140,7 +140,7 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void booleanValue(final boolean value) {
+    public void writeBoolean(final boolean value) {
         try {
             _writer.value(value);
         } catch (final Exception e) {
@@ -149,7 +149,7 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void doubleValue(final double value) {
+    public void writeDouble(final double value) {
         try {
             _writer.value(value);
         } catch (final Exception e) {
@@ -158,7 +158,7 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void longValue(final long value) {
+    public void writeLong(final long value) {
         try {
             _writer.value(value);
         } catch (final Exception e) {
@@ -167,7 +167,7 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void intValue(final int value) {
+    public void writeInt(final int value) {
         try {
             _writer.value(value);
         } catch (final Exception e) {

@@ -70,28 +70,28 @@ final class PersistentResponse implements JsonReadable {
 
     @Override
     public void readJson(final JsonReader reader) {
-        reader.beginObject();
+        reader.readBeginObject();
 
-        while (reader.hasNext()) {
-            final String name = reader.nextName();
+        while (reader.read()) {
+            final String name = reader.getName();
 
             if (name.equalsIgnoreCase("C")) {
-                _messageId = reader.nextString();
+                _messageId = reader.readString();
             } else if (name.equalsIgnoreCase("S")) {
-                _initialize = reader.nextInt();
+                _initialize = reader.readInt();
             } else if (name.equalsIgnoreCase("D")) {
-                _disconnect = reader.nextInt();
+                _disconnect = reader.readInt();
             } else if (name.equalsIgnoreCase("T")) {
-                _reconnect = reader.nextInt();
+                _reconnect = reader.readInt();
             } else if (name.equalsIgnoreCase("G")) {
-                _groupsToken = reader.nextString();
+                _groupsToken = reader.readString();
             } else if (name.equalsIgnoreCase("L")) {
-                _longPollDelay = reader.nextLong();
+                _longPollDelay = reader.readLong();
             } else if (name.equalsIgnoreCase("M")) {
-                _messages = reader.nextValue();
+                _messages = reader.readValue();
             }
         }
 
-        reader.endObject();
+        reader.readEndObject();
     }
 }

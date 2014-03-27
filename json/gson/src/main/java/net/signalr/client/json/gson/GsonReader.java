@@ -59,7 +59,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public void beginArray() {
+    public void readBeginArray() {
         try {
             _reader.beginArray();
         } catch (final Exception e) {
@@ -68,7 +68,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public void endArray() {
+    public void readEndArray() {
         try {
             _reader.endArray();
         } catch (final Exception e) {
@@ -77,7 +77,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public void beginObject() {
+    public void readBeginObject() {
         try {
             _reader.beginObject();
         } catch (final Exception e) {
@@ -86,7 +86,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public void endObject() {
+    public void readEndObject() {
         try {
             _reader.endObject();
         } catch (final Exception e) {
@@ -95,7 +95,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public boolean hasNext() {
+    public boolean read() {
         try {
             return _reader.hasNext();
         } catch (final Exception e) {
@@ -104,7 +104,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public JsonToken peek() {
+    public JsonToken getToken() {
         final com.google.gson.stream.JsonToken token;
 
         try {
@@ -140,7 +140,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public String nextName() {
+    public String getName() {
         try {
             return _reader.nextName();
         } catch (final Exception e) {
@@ -149,19 +149,19 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public JsonValue nextValue() {
+    public JsonValue readValue() {
         final JsonElement element = _gson.fromJson(_reader, JsonElement.class);
 
         return new GsonValue(_gson, element);
     }
 
     @Override
-    public <V> V nextObject(final Class<V> objectClass) {
+    public <V> V readObject(final Class<V> objectClass) {
         return _gson.fromJson(_reader, objectClass);
     }
 
     @Override
-    public String nextString() {
+    public String readString() {
         try {
             return _reader.nextString();
         } catch (final Exception e) {
@@ -170,7 +170,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public boolean nextBoolean() {
+    public boolean readBoolean() {
         try {
             return _reader.nextBoolean();
         } catch (final Exception e) {
@@ -179,7 +179,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public void nextNull() {
+    public void readNull() {
         try {
             _reader.nextNull();
         } catch (final Exception e) {
@@ -188,7 +188,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public double nextDouble() {
+    public double readDouble() {
         try {
             return _reader.nextDouble();
         } catch (final Exception e) {
@@ -197,7 +197,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public long nextLong() {
+    public long readLong() {
         try {
             return _reader.nextLong();
         } catch (final Exception e) {
@@ -206,7 +206,7 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public int nextInt() {
+    public int readInt() {
         try {
             return _reader.nextInt();
         } catch (final Exception e) {
