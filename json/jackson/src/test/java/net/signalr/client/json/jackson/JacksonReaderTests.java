@@ -19,6 +19,9 @@ package net.signalr.client.json.jackson;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+
+import java.util.Map;
+
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReader;
 import net.signalr.client.json.JsonValue;
@@ -349,7 +352,7 @@ public final class JacksonReaderTests {
     }
 
     @Test
-    public void readArrayWithObjectTest() {
+    public void readArrayWithIntegerObjectTest() {
         // Arrange
         final JsonReader reader = createReader("[1]");
         final Integer value;
@@ -361,5 +364,22 @@ public final class JacksonReaderTests {
 
         // Assert
         assertThat(value, is(1));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void readArrayWithMapObjectTest() {
+        // Arrange
+        final JsonReader reader = createReader("[{\"A\":\"1\",\"B\":2.0}]");
+        final Map<String, Object> value;
+
+        // Act
+        reader.readBeginArray();
+        value = reader.readObject(Map.class);
+        reader.readEndArray();
+
+        // Assert
+        assertThat(value.get("A"), is((Object) "1"));
+        assertThat(value.get("B"), is((Object) 2.0));
     }
 }
