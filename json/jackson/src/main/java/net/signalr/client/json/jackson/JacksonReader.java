@@ -70,7 +70,7 @@ final class JacksonReader implements JsonReader {
         }
 
         if (token != com.fasterxml.jackson.core.JsonToken.START_ARRAY) {
-            throw new JsonException("Current token is not a begin array");
+            throw new JsonException("Expected START_ARRAY but was " + token);
         }
     }
 
@@ -85,7 +85,7 @@ final class JacksonReader implements JsonReader {
         }
 
         if (token != com.fasterxml.jackson.core.JsonToken.END_ARRAY) {
-            throw new JsonException("Current token is not a end array");
+            throw new JsonException("Expected END_ARRAY but was " + token);
         }
     }
 
@@ -100,7 +100,7 @@ final class JacksonReader implements JsonReader {
         }
 
         if (token != com.fasterxml.jackson.core.JsonToken.START_OBJECT) {
-            throw new JsonException("Current token is not a begin object");
+            throw new JsonException("Expected START_OBJECT but was " + token);
         }
     }
 
@@ -115,7 +115,7 @@ final class JacksonReader implements JsonReader {
         }
 
         if (token != com.fasterxml.jackson.core.JsonToken.END_OBJECT) {
-            throw new JsonException("Current token is not a end object");
+            throw new JsonException("Expected END_OBJECT but was " + token);
         }
     }
 
@@ -251,7 +251,7 @@ final class JacksonReader implements JsonReader {
         }
 
         if (token != com.fasterxml.jackson.core.JsonToken.VALUE_NULL) {
-            throw new JsonException("Current token (" + token + ") is not null");
+            throw new JsonException("Expected VALUE_NULL but was " + token);
         }
     }
 
