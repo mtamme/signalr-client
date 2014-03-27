@@ -110,7 +110,7 @@ public final class HubConnectionTests {
 
         Promises.toFuture(start).get();
 
-        hubProxy.invoke(Void.class, METHOD_NAME, new int[] { 1 }, true);
+        hubProxy.invoke(METHOD_NAME, Void.class, new int[] { 1 }, true);
 
         System.in.read();
         final Promise<Void> stop = connection.stop();
