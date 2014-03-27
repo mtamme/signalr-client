@@ -23,7 +23,7 @@ package net.signalr.client.json;
 public interface JsonValue {
 
     /**
-     * The JSON none element.
+     * The JSON null value.
      */
     public static final JsonValue NULL = new JsonNull();
 
