@@ -123,8 +123,8 @@ public class JacksonValue implements JsonValue {
     }
 
     @Override
-    public <T> T adapt(final Class<T> clazz) {
-        return clazz.cast(_node);
+    public <T> T adapt(final Class<T> adaptClass) {
+        return adaptClass.cast(_node);
     }
 
     @Override
@@ -133,8 +133,8 @@ public class JacksonValue implements JsonValue {
     }
 
     @Override
-    public <T> T toObject(final Class<T> clazz) {
-        return _mapper.convertValue(_node, clazz);
+    public <T> T toObject(final Class<T> objectClass) {
+        return _mapper.convertValue(_node, objectClass);
     }
 
     @Override

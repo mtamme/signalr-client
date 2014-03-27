@@ -93,17 +93,18 @@ public interface JsonValue {
     /**
      * Adapts the JSON value to the specified class.
      * 
+     * @param adaptClass
      * @return The adapted JSON value value.
      */
-    <T> T adapt(Class<T> clazz);
+    <T> T adapt(Class<T> adaptClass);
 
     /**
      * 
      * 
-     * @param clazz
+     * @param objectClass
      * @return
      */
-    <T> T toObject(Class<T> clazz);
+    <T> T toObject(Class<T> objectClass);
 
     /**
      * Returns a string representation of the object.

@@ -18,7 +18,7 @@
 package net.signalr.client.json;
 
 /**
- * Represents a JSON null element.
+ * Represents a JSON null value.
  */
 final class JsonNull implements JsonValue {
 

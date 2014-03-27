@@ -133,8 +133,8 @@ final class GsonValue implements JsonValue {
     }
 
     @Override
-    public <T> T adapt(final Class<T> clazz) {
-        return clazz.cast(_element);
+    public <T> T adapt(final Class<T> adaptClass) {
+        return adaptClass.cast(_element);
     }
 
     @Override
@@ -148,8 +148,8 @@ final class GsonValue implements JsonValue {
     }
 
     @Override
-    public <T> T toObject(final Class<T> clazz) {
-        return _gson.fromJson(_element, clazz);
+    public <T> T toObject(final Class<T> objectClass) {
+        return _gson.fromJson(_element, objectClass);
     }
 
     @Override
