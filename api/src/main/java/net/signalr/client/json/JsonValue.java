@@ -18,25 +18,30 @@
 package net.signalr.client.json;
 
 /**
- * Defines a JSON element.
+ * Defines a JSON value.
  */
-public interface JsonElement {
+public interface JsonValue {
 
     /**
-     * Returns a JSON element for the specified index.
+     * The JSON none element.
+     */
+    public static final JsonValue NULL = new JsonNull();
+
+    /**
+     * Returns a JSON value at the specified index.
      * 
      * @param index The index.
      * @return The JSON element.
      */
-    JsonElement get(int index);
+    JsonValue get(int index);
 
     /**
-     * Returns a JSON element for the specified name.
+     * Returns a JSON value for the specified name.
      * 
      * @param name The name.
      * @return The JSON element.
      */
-    JsonElement get(String name);
+    JsonValue get(String name);
 
     /**
      * Returns the value as a boolean.
@@ -86,11 +91,11 @@ public interface JsonElement {
     int size();
 
     /**
-     * Returns the underlying JSON element.
+     * Adapts the JSON value to the specified class.
      * 
-     * @return The underlying JSON element.
+     * @return The adapted JSON value value.
      */
-    Object getUnderlyingElement();
+    <T> T adapt(Class<T> clazz);
 
     /**
      * 

@@ -18,8 +18,9 @@
 package net.signalr.client.json.gson;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
-import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonValue;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReader;
 import net.signalr.client.json.JsonToken;
@@ -148,15 +149,15 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public JsonElement nextElement() {
-        final com.google.gson.JsonElement element = _gson.fromJson(_reader, com.google.gson.JsonArray.class);
+    public JsonValue nextValue() {
+        final JsonElement element = _gson.fromJson(_reader, JsonElement.class);
 
-        return new GsonElement(_gson, element);
+        return new GsonValue(_gson, element);
     }
 
     @Override
-    public <V> V nextValue(final Class<V> valueClass) {
-        return _gson.fromJson(_reader, valueClass);
+    public <V> V nextObject(final Class<V> objectClass) {
+        return _gson.fromJson(_reader, objectClass);
     }
 
     @Override

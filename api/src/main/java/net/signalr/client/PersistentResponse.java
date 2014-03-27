@@ -17,7 +17,7 @@
 
 package net.signalr.client;
 
-import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonValue;
 import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
 
@@ -38,7 +38,7 @@ final class PersistentResponse implements JsonReadable {
 
     private Long _longPollDelay;
 
-    private JsonElement _messages;
+    private JsonValue _messages;
 
     public String getMessageId() {
         return _messageId;
@@ -64,7 +64,7 @@ final class PersistentResponse implements JsonReadable {
         return _longPollDelay;
     }
 
-    public JsonElement getMessage() {
+    public JsonValue getMessage() {
         return _messages;
     }
 
@@ -88,7 +88,7 @@ final class PersistentResponse implements JsonReadable {
             } else if (name.equalsIgnoreCase("L")) {
                 _longPollDelay = reader.nextLong();
             } else if (name.equalsIgnoreCase("M")) {
-                _messages = reader.nextElement();
+                _messages = reader.nextValue();
             }
         }
 

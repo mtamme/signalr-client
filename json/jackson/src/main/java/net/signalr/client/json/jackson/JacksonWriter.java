@@ -19,7 +19,7 @@ package net.signalr.client.json.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
-import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonValue;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonWriter;
 
@@ -92,18 +92,18 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void elementValue(final JsonElement element) {
-        final JsonNode underlyingElement = (JsonNode) element.getUnderlyingElement();
+    public void value(final JsonValue value) {
+        final JsonNode node = value.adapt(JsonNode.class);
 
         try {
-            _generator.writeTree(underlyingElement);
+            _generator.writeTree(node);
         } catch (final Exception e) {
             throw new JsonException(e);
         }
     }
 
     @Override
-    public <V> void value(final V value) {
+    public <V> void objectValue(final V value) {
         try {
             _generator.writeObject(value);
         } catch (final Exception e) {

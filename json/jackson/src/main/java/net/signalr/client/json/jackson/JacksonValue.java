@@ -20,13 +20,12 @@ package net.signalr.client.json.jackson;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.signalr.client.json.JsonElement;
-import net.signalr.client.json.JsonNull;
+import net.signalr.client.json.JsonValue;
 
 /**
- * Represents a Jackson based JSON element.
+ * Represents a Jackson based JSON value.
  */
-public class JacksonElement implements JsonElement {
+public class JacksonValue implements JsonValue {
 
     /**
      * The object mapper.
@@ -39,12 +38,12 @@ public class JacksonElement implements JsonElement {
     private final JsonNode _node;
 
     /**
-     * Initializes a new instance of the {@link JacksonElement} class.
+     * Initializes a new instance of the {@link JacksonValue} class.
      * 
      * @param mapper The object mapper.
      * @param node The underlying JSON node.
      */
-    public JacksonElement(final ObjectMapper mapper, final JsonNode node) {
+    public JacksonValue(final ObjectMapper mapper, final JsonNode node) {
         if (mapper == null) {
             throw new IllegalArgumentException("Mapper must not be null");
         }
@@ -57,25 +56,25 @@ public class JacksonElement implements JsonElement {
     }
 
     @Override
-    public JsonElement get(final int index) {
+    public JsonValue get(final int index) {
         final JsonNode node = _node.get(index);
 
         if (node == null) {
-            return JsonNull.instance;
+            return JsonValue.NULL;
         }
 
-        return new JacksonElement(_mapper, node);
+        return new JacksonValue(_mapper, node);
     }
 
     @Override
-    public JsonElement get(final String name) {
+    public JsonValue get(final String name) {
         final JsonNode node = _node.get(name);
 
         if (node == null) {
-            return JsonNull.instance;
+            return JsonValue.NULL;
         }
 
-        return new JacksonElement(_mapper, node);
+        return new JacksonValue(_mapper, node);
     }
 
     @Override
@@ -124,8 +123,8 @@ public class JacksonElement implements JsonElement {
     }
 
     @Override
-    public Object getUnderlyingElement() {
-        return _node;
+    public <T> T adapt(final Class<T> clazz) {
+        return clazz.cast(_node);
     }
 
     @Override

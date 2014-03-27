@@ -38,9 +38,9 @@ public interface JsonReader extends Closeable {
 
     String nextName();
 
-    JsonElement nextElement();
+    JsonValue nextValue();
 
-    <V> V nextValue(Class<V> valueClass);
+    <V> V nextObject(Class<V> objectClass);
 
     void nextNull();
 

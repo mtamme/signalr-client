@@ -18,9 +18,10 @@
 package net.signalr.client.json.gson;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 
-import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonValue;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonWriter;
 
@@ -103,14 +104,14 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void elementValue(final JsonElement element) {
-        final com.google.gson.JsonElement underlyingElement = (com.google.gson.JsonElement) element.getUnderlyingElement();
+    public void value(final JsonValue value) {
+        final JsonElement element = value.adapt(JsonElement.class);
 
-        _gson.toJson(underlyingElement, _writer);
+        _gson.toJson(element, _writer);
     }
 
     @Override
-    public <V> void value(final V value) {
+    public <V> void objectValue(final V value) {
         if (value == null) {
             _gson.toJson(null, JsonNull.class, _writer);
             return;

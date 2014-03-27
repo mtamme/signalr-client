@@ -19,7 +19,7 @@ package net.signalr.client.hub;
 
 import java.util.Map;
 
-import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonValue;
 import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
 
@@ -36,7 +36,7 @@ final class HubResponse implements JsonReadable {
     /**
      * The data of the invocation.
      */
-    private JsonElement _data;
+    private JsonValue _data;
 
     /**
      * The ID of the operation.
@@ -71,13 +71,13 @@ final class HubResponse implements JsonReadable {
     /**
      * The hub messages.
      */
-    private JsonElement _messages;
+    private JsonValue _messages;
 
     public Map<String, Object> getState() {
         return _state;
     }
 
-    public JsonElement getData() {
+    public JsonValue getData() {
         return _data;
     }
 
@@ -105,7 +105,7 @@ final class HubResponse implements JsonReadable {
         return _messageId;
     }
 
-    public JsonElement getMessages() {
+    public JsonValue getMessages() {
         return _messages;
     }
 
@@ -118,11 +118,11 @@ final class HubResponse implements JsonReadable {
 
             if (name.equalsIgnoreCase("S")) {
                 @SuppressWarnings("unchecked")
-                final Map<String, Object> state = reader.nextValue(Map.class);
+                final Map<String, Object> state = reader.nextObject(Map.class);
 
                 _state = state;
             } else if (name.equalsIgnoreCase("R")) {
-                _data = reader.nextElement();
+                _data = reader.nextValue();
             } else if (name.equalsIgnoreCase("I")) {
                 _callbackId = reader.nextString();
             } else if (name.equalsIgnoreCase("H")) {
@@ -136,7 +136,7 @@ final class HubResponse implements JsonReadable {
             } else if (name.equalsIgnoreCase("C")) {
                 _messageId = reader.nextString();
             } else if (name.equalsIgnoreCase("M")) {
-                _messages = reader.nextElement();
+                _messages = reader.nextValue();
             }
         }
 

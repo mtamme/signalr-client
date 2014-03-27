@@ -19,15 +19,15 @@ package net.signalr.client.json.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import net.signalr.client.json.JsonElement;
-import net.signalr.client.json.JsonNull;
+import net.signalr.client.json.JsonValue;
 
 /**
- * Represents a GSON based JSON element.
+ * Represents a GSON based JSON value.
  */
-final class GsonElement implements JsonElement {
+final class GsonValue implements JsonValue {
 
     /**
      * The GSON instance.
@@ -37,15 +37,15 @@ final class GsonElement implements JsonElement {
     /**
      * The underlying JSON element.
      */
-    private final com.google.gson.JsonElement _element;
+    private final JsonElement _element;
 
     /**
-     * Initializes a new instance of the {@link GsonElement} class.
+     * Initializes a new instance of the {@link GsonValue} class.
      * 
      * @param gson The GSON instance.
      * @param element The underlying JSON element.
      */
-    public GsonElement(final Gson gson, final com.google.gson.JsonElement element) {
+    public GsonValue(final Gson gson, final JsonElement element) {
         if (gson == null) {
             throw new IllegalArgumentException("Gson must not be null");
         }
@@ -58,33 +58,33 @@ final class GsonElement implements JsonElement {
     }
 
     @Override
-    public JsonElement get(final int index) {
+    public JsonValue get(final int index) {
         if (!_element.isJsonArray()) {
-            return JsonNull.instance;
+            return JsonValue.NULL;
         }
         final JsonArray array = (JsonArray) _element;
-        final com.google.gson.JsonElement element = array.get(index);
+        final JsonElement element = array.get(index);
 
         if (element == null) {
-            return JsonNull.instance;
+            return JsonValue.NULL;
         }
 
-        return new GsonElement(_gson, element);
+        return new GsonValue(_gson, element);
     }
 
     @Override
-    public JsonElement get(final String name) {
+    public JsonValue get(final String name) {
         if (!_element.isJsonObject()) {
-            return JsonNull.instance;
+            return JsonValue.NULL;
         }
         final JsonObject object = (JsonObject) _element;
-        final com.google.gson.JsonElement element = object.get(name);
+        final JsonElement element = object.get(name);
 
         if (element == null) {
-            return JsonNull.instance;
+            return JsonValue.NULL;
         }
 
-        return new GsonElement(_gson, element);
+        return new GsonValue(_gson, element);
     }
 
     @Override
@@ -133,8 +133,8 @@ final class GsonElement implements JsonElement {
     }
 
     @Override
-    public Object getUnderlyingElement() {
-        return _element;
+    public <T> T adapt(final Class<T> clazz) {
+        return clazz.cast(_element);
     }
 
     @Override

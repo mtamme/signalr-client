@@ -73,11 +73,11 @@ final class HubRequest implements JsonWriteable {
         }
         if (_arguments != null) {
             writer.name("A");
-            writer.value(_arguments);
+            writer.objectValue(_arguments);
         }
         if (_state != null) {
             writer.name("S");
-            writer.value(_state);
+            writer.objectValue(_state);
         }
 
         writer.endObject();

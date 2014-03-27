@@ -32,9 +32,9 @@ public interface JsonWriter extends Closeable, Flushable {
 
     void name(String name);
 
-    void elementValue(JsonElement element);
+    void value(JsonValue element);
 
-    <V> void value(V value);
+    <V> void objectValue(V value);
 
     void nullValue();
 

@@ -20,26 +20,15 @@ package net.signalr.client.json;
 /**
  * Represents a JSON null element.
  */
-public final class JsonNull implements JsonElement {
-
-    /**
-     * The singleton instance.
-     */
-    public static final JsonNull instance = new JsonNull();
-
-    /**
-     * Initializes a new instance of the {@link JsonNull} class.
-     */
-    private JsonNull() {
-    }
+final class JsonNull implements JsonValue {
 
     @Override
-    public JsonElement get(final int index) {
+    public JsonValue get(final int index) {
         return this;
     }
 
     @Override
-    public JsonElement get(final String name) {
+    public JsonValue get(final String name) {
         return this;
     }
 
@@ -74,7 +63,7 @@ public final class JsonNull implements JsonElement {
     }
 
     @Override
-    public Object getUnderlyingElement() {
+    public <T> T adapt(final Class<T> clazz) {
         return null;
     }
 

@@ -20,7 +20,7 @@ package net.signalr.client.json.jackson;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonValue;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReader;
 import net.signalr.client.json.JsonToken;
@@ -172,18 +172,18 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public JsonElement nextElement() {
+    public JsonValue nextValue() {
         try {
             final JsonNode node = _mapper.readTree(_parser);
 
-            return new JacksonElement(_mapper, node);
+            return new JacksonValue(_mapper, node);
         } catch (final Exception e) {
             throw new JsonException(e);
         }
     }
 
     @Override
-    public <V> V nextValue(final Class<V> valueClass) {
+    public <V> V nextObject(final Class<V> objectClass) {
         try {
             return _mapper.readTree(_parser);
         } catch (final Exception e) {
