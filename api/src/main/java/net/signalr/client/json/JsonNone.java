@@ -18,9 +18,9 @@
 package net.signalr.client.json;
 
 /**
- * Represents a JSON null value.
+ * Represents a JSON none value.
  */
-final class JsonNull implements JsonValue {
+final class JsonNone implements JsonValue {
 
     @Override
     public JsonValue get(final int index) {

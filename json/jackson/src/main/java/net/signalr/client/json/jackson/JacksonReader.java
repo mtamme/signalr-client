@@ -180,10 +180,8 @@ final class JacksonReader implements JsonReader {
             return JsonToken.BOOLEAN;
         case VALUE_NULL:
             return JsonToken.NULL;
-        case NOT_AVAILABLE:
-            return JsonToken.END_DOCUMENT;
         default:
-            return JsonToken.UNKNOWN;
+            return JsonToken.NONE;
         }
     }
 

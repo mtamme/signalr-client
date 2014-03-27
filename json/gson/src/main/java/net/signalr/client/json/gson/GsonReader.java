@@ -135,7 +135,7 @@ final class GsonReader implements JsonReader {
         case END_DOCUMENT:
             return JsonToken.END_DOCUMENT;
         default:
-            return JsonToken.UNKNOWN;
+            return JsonToken.NONE;
         }
     }
 

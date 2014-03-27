@@ -60,7 +60,7 @@ public class JacksonValue implements JsonValue {
         final JsonNode node = _node.get(index);
 
         if (node == null) {
-            return JsonValue.NULL;
+            return JsonValue.NONE;
         }
 
         return new JacksonValue(_mapper, node);
@@ -71,7 +71,7 @@ public class JacksonValue implements JsonValue {
         final JsonNode node = _node.get(name);
 
         if (node == null) {
-            return JsonValue.NULL;
+            return JsonValue.NONE;
         }
 
         return new JacksonValue(_mapper, node);

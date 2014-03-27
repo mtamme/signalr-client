@@ -6,9 +6,9 @@ package net.signalr.client.json;
 public enum JsonToken {
 
     /**
-     * An unknown JSON token.
+     * An none JSON token.
      */
-    UNKNOWN,
+    NONE,
 
     /**
      * The opening of a JSON array.

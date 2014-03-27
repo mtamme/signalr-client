@@ -60,13 +60,13 @@ final class GsonValue implements JsonValue {
     @Override
     public JsonValue get(final int index) {
         if (!_element.isJsonArray()) {
-            return JsonValue.NULL;
+            return JsonValue.NONE;
         }
         final JsonArray array = (JsonArray) _element;
         final JsonElement element = array.get(index);
 
         if (element == null) {
-            return JsonValue.NULL;
+            return JsonValue.NONE;
         }
 
         return new GsonValue(_gson, element);
@@ -75,13 +75,13 @@ final class GsonValue implements JsonValue {
     @Override
     public JsonValue get(final String name) {
         if (!_element.isJsonObject()) {
-            return JsonValue.NULL;
+            return JsonValue.NONE;
         }
         final JsonObject object = (JsonObject) _element;
         final JsonElement element = object.get(name);
 
         if (element == null) {
-            return JsonValue.NULL;
+            return JsonValue.NONE;
         }
 
         return new GsonValue(_gson, element);

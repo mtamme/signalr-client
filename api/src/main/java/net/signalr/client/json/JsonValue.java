@@ -23,9 +23,9 @@ package net.signalr.client.json;
 public interface JsonValue {
 
     /**
-     * The JSON null value.
+     * The JSON none value.
      */
-    public static final JsonValue NULL = new JsonNull();
+    public static final JsonValue NONE = new JsonNone();
 
     /**
      * Returns a JSON value at the specified index.
