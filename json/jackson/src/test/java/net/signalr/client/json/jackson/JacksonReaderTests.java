@@ -20,34 +20,30 @@ package net.signalr.client.json.jackson;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReader;
+import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.json.JsonValue;
 
+import org.junit.Before;
 import org.junit.Test;
-
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class JacksonReaderTests {
 
-    private static JsonReader createReader(final String json) {
-        final ObjectMapper mapper = new ObjectMapper();
-        final JsonFactory factory = new JsonFactory();
-        JsonParser parser;
-        try {
-            parser = factory.createParser(json);
-        } catch (final Exception e) {
-            throw new JsonException(e);
-        }
+    private JsonSerializer _serializer;
 
-        return new JacksonReader(mapper, parser);
+    @Before
+    public void setUp() {
+        _serializer = new JacksonSerializer();
+    }
+
+    private JsonReader createReader(final String json) {
+        return _serializer.createReader(new StringReader(json));
     }
 
     @Test

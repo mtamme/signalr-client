@@ -17,8 +17,9 @@
 
 package net.signalr.client.json.gson;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -27,20 +28,23 @@ import java.util.List;
 import java.util.Map;
 
 import net.signalr.client.json.JsonReader;
+import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.json.JsonValue;
 
+import org.junit.Before;
 import org.junit.Test;
-
-import com.google.gson.Gson;
 
 public final class GsonReaderTests {
 
-    private static JsonReader createReader(final String json) {
-        final Gson gson = new Gson();
-        final StringReader buffer = new StringReader(json);
-        final com.google.gson.stream.JsonReader reader = new com.google.gson.stream.JsonReader(buffer);
+    private JsonSerializer _serializer;
 
-        return new GsonReader(gson, reader);
+    @Before
+    public void setUp() {
+        _serializer = new GsonSerializer();
+    }
+
+    private JsonReader createReader(final String json) {
+        return _serializer.createReader(new StringReader(json));
     }
 
     @Test

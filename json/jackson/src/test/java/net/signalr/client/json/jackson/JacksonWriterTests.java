@@ -15,39 +15,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.json;
+package net.signalr.client.json.jackson;
 
-import java.io.Reader;
-import java.io.Writer;
+import java.io.StringWriter;
 
-public interface JsonSerializer {
+import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonWriter;
 
-    /**
-     * 
-     * @param buffer
-     * @return
-     */
-    JsonReader createReader(Reader buffer);
+import org.junit.Before;
 
-    /**
-     * 
-     * @param buffer
-     * @return
-     */
-    JsonWriter createWriter(Writer buffer);
+public final class JacksonWriterTests {
 
-    /**
-     * 
-     * @param json
-     * @param object
-     * @return
-     */
-    <T extends JsonReadable> T fromJson(String json, T object);
+    private JsonSerializer _serializer;
 
-    /**
-     * 
-     * @param object
-     * @return
-     */
-    String toJson(JsonWriteable object);
+    @Before
+    public void setUp() {
+        _serializer = new JacksonSerializer();
+    }
+
+    private JsonWriter createWriter(final StringWriter json) {
+        return _serializer.createWriter(json);
+    }
 }

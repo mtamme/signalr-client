@@ -17,7 +17,10 @@
 
 package net.signalr.client.json.jackson;
 
+import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -26,12 +29,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReadable;
+import net.signalr.client.json.JsonReader;
 import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.json.JsonWriteable;
+import net.signalr.client.json.JsonWriter;
 
-/**
- * 
- */
 public class JacksonSerializer implements JsonSerializer {
 
     private final ObjectMapper _mapper;
@@ -44,44 +46,50 @@ public class JacksonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T extends JsonReadable> T fromJson(final String json, final T object) {
+    public JsonReader createReader(Reader buffer) {
         final JsonParser parser;
 
         try {
-            parser = _factory.createParser(json);
+            parser = _factory.createParser(buffer);
         } catch (final Exception e) {
             throw new JsonException(e);
         }
-        final JacksonReader reader = new JacksonReader(_mapper, parser);
+
+        return new JacksonReader(_mapper, parser);
+    }
+
+    @Override
+    public JsonWriter createWriter(Writer buffer) {
+        final JsonGenerator generator;
 
         try {
+            generator = _factory.createGenerator(buffer);
+        } catch (final Exception e) {
+            throw new JsonException(e);
+        }
+
+        return new JacksonWriter(_mapper, generator);
+    }
+
+    @Override
+    public <T extends JsonReadable> T fromJson(String json, T object) {
+        final StringReader buffer = new StringReader(json);
+
+        try (final JsonReader reader = createReader(buffer)) {
             object.readJson(reader);
-        } finally {
-            reader.close();
         }
 
         return object;
     }
 
     @Override
-    public String toJson(final JsonWriteable object) {
-        final StringWriter json = new StringWriter();
-        final JsonGenerator generator;
+    public String toJson(JsonWriteable object) {
+        final StringWriter buffer = new StringWriter();
 
-        try {
-            generator = _factory.createGenerator(json);
-        } catch (final Exception e) {
-            throw new JsonException(e);
-        }
-        final JacksonWriter writer = new JacksonWriter(_mapper, generator);
-
-        try {
+        try (final JsonWriter writer = createWriter(buffer)) {
             object.writeJson(writer);
-        } finally {
-            writer.flush();
-            writer.close();
         }
 
-        return json.toString();
+        return buffer.toString();
     }
 }

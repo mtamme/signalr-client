@@ -17,18 +17,21 @@
 
 package net.signalr.client.json.gson;
 
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Modifier;
 
+import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReadable;
+import net.signalr.client.json.JsonReader;
 import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.json.JsonWriteable;
+import net.signalr.client.json.JsonWriter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
 public final class GsonSerializer implements JsonSerializer {
 
@@ -42,27 +45,55 @@ public final class GsonSerializer implements JsonSerializer {
         GsonBuilder gsonBuilder = new GsonBuilder();
 
         gsonBuilder.excludeFieldsWithModifiers(Modifier.STATIC);
-        // gsonBuilder.setFieldNamingStrategy(new ReflectiveFieldNamingStrategy());
 
         return gsonBuilder.create();
     }
 
     @Override
-    public <T extends JsonReadable> T fromJson(String json, T object) {
-        final GsonReader reader = new GsonReader(_gson, new JsonReader(new StringReader(json)));
+    public JsonReader createReader(final Reader buffer) {
+        final com.google.gson.stream.JsonReader reader;
 
-        object.readJson(reader);
+        try {
+            reader = new com.google.gson.stream.JsonReader(buffer);
+        } catch (final Exception e) {
+            throw new JsonException(e);
+        }
+
+        return new GsonReader(_gson, reader);
+    }
+
+    @Override
+    public JsonWriter createWriter(final Writer buffer) {
+        final com.google.gson.stream.JsonWriter writer;
+
+        try {
+            writer = new com.google.gson.stream.JsonWriter(buffer);
+        } catch (final Exception e) {
+            throw new JsonException(e);
+        }
+
+        return new GsonWriter(_gson, writer);
+    }
+
+    @Override
+    public <T extends JsonReadable> T fromJson(String json, T object) {
+        final StringReader buffer = new StringReader(json);
+
+        try (final JsonReader reader = createReader(buffer)) {
+            object.readJson(reader);
+        }
 
         return object;
     }
 
     @Override
     public String toJson(JsonWriteable object) {
-        final StringWriter json = new StringWriter();
-        final GsonWriter writer = new GsonWriter(_gson, new JsonWriter(json));
+        final StringWriter buffer = new StringWriter();
 
-        object.writeJson(writer);
+        try (final JsonWriter writer = createWriter(buffer)) {
+            object.writeJson(writer);
+        }
 
-        return json.toString();
+        return buffer.toString();
     }
 }
