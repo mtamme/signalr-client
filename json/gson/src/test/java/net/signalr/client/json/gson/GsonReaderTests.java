@@ -315,6 +315,7 @@ public final class GsonReaderTests {
 
         // Assert
         assertNotNull(value);
+        assertThat(value.size(), is(2));
         assertThat(value.get("A"), is((Object) "1"));
         assertThat(value.get("B"), is((Object) true));
     }
@@ -499,6 +500,7 @@ public final class GsonReaderTests {
         reader.readEndArray();
 
         // Assert
+        assertThat(value.size(), is(2));
         assertThat(value.get("A"), is((Object) "1"));
         assertThat(value.get("B"), is((Object) true));
     }
