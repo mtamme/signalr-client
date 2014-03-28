@@ -18,16 +18,11 @@
 package net.signalr.client.json.gson;
 
 import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
-import java.lang.reflect.Constructor;
 
+import net.signalr.client.json.AbstractJsonSerializer;
 import net.signalr.client.json.JsonException;
-import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
-import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.JsonWriteable;
 import net.signalr.client.json.JsonWriter;
 
 import com.google.gson.Gson;
@@ -35,7 +30,7 @@ import com.google.gson.Gson;
 /**
  * Represents a GSON based JSON serializer.
  */
-public final class GsonSerializer implements JsonSerializer {
+public final class GsonSerializer extends AbstractJsonSerializer {
 
     /**
      * The GSON instance.
@@ -73,38 +68,5 @@ public final class GsonSerializer implements JsonSerializer {
         }
 
         return new GsonWriter(_gson, writer);
-    }
-
-    @Override
-    public <T extends JsonReadable> T fromJson(final String json, final Class<T> objectClass) {
-        final T object;
-
-        try {
-            final Constructor<T> constructor = objectClass.getDeclaredConstructor();
-
-            constructor.setAccessible(true);
-            object = constructor.newInstance();
-        } catch (final Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-
-        final StringReader buffer = new StringReader(json);
-
-        try (final JsonReader reader = createReader(buffer)) {
-            object.readJson(reader);
-        }
-
-        return object;
-    }
-
-    @Override
-    public String toJson(final JsonWriteable object) {
-        final StringWriter buffer = new StringWriter();
-
-        try (final JsonWriter writer = createWriter(buffer)) {
-            object.writeJson(writer);
-        }
-
-        return buffer.toString();
     }
 }

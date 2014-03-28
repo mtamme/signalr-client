@@ -18,27 +18,22 @@
 package net.signalr.client.json.jackson;
 
 import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
-import java.lang.reflect.Constructor;
+
+import net.signalr.client.json.AbstractJsonSerializer;
+import net.signalr.client.json.JsonException;
+import net.signalr.client.json.JsonReader;
+import net.signalr.client.json.JsonWriter;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.signalr.client.json.JsonException;
-import net.signalr.client.json.JsonReadable;
-import net.signalr.client.json.JsonReader;
-import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.JsonWriteable;
-import net.signalr.client.json.JsonWriter;
-
 /**
  * Represents a Jackson based JSON serializer.
  */
-public final class JacksonSerializer implements JsonSerializer {
+public final class JacksonSerializer extends AbstractJsonSerializer {
 
     /**
      * The object mapper.
@@ -82,38 +77,5 @@ public final class JacksonSerializer implements JsonSerializer {
         }
 
         return new JacksonWriter(_mapper, generator);
-    }
-
-    @Override
-    public <T extends JsonReadable> T fromJson(final String json, final Class<T> objectClass) {
-        final T object;
-
-        try {
-            final Constructor<T> constructor = objectClass.getDeclaredConstructor();
-
-            constructor.setAccessible(true);
-            object = constructor.newInstance();
-        } catch (final Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-
-        final StringReader buffer = new StringReader(json);
-
-        try (final JsonReader reader = createReader(buffer)) {
-            object.readJson(reader);
-        }
-
-        return object;
-    }
-
-    @Override
-    public String toJson(final JsonWriteable object) {
-        final StringWriter buffer = new StringWriter();
-
-        try (final JsonWriter writer = createWriter(buffer)) {
-            object.writeJson(writer);
-        }
-
-        return buffer.toString();
     }
 }
