@@ -28,7 +28,7 @@ public interface JsonValue {
     public static final JsonValue NONE = new JsonNone();
 
     /**
-     * Returns a JSON value at the specified index.
+     * Returns the value at the specified index.
      * 
      * @param index The index.
      * @return The JSON element.
@@ -36,7 +36,7 @@ public interface JsonValue {
     JsonValue get(int index);
 
     /**
-     * Returns a JSON value for the specified name.
+     * Returns the value for the specified name.
      * 
      * @param name The name.
      * @return The JSON element.
@@ -46,63 +46,63 @@ public interface JsonValue {
     /**
      * Returns the value as a boolean.
      * 
-     * @param defaultValue
-     * @return
+     * @param defaultValue The default value.
+     * @return The value as a boolean.
      */
     boolean getBoolean(boolean defaultValue);
 
     /**
      * Returns the value as a double.
      * 
-     * @param defaultValue
-     * @return
+     * @param defaultValue The default value.
+     * @return The value as a double.
      */
     double getDouble(double defaultValue);
 
     /**
      * Returns the value as an integer.
      * 
-     * @param defaultValue
-     * @return
+     * @param defaultValue The default value.
+     * @return The value as an integer.
      */
     int getInt(int defaultValue);
 
     /**
      * Returns the value as a long.
      * 
-     * @param defaultValue
-     * @return
+     * @param defaultValue The default value.
+     * @return The value as a long.
      */
     long getLong(long defaultValue);
 
     /**
      * Returns the value as a string.
      * 
-     * @param defaultValue
-     * @return
+     * @param defaultValue The default value.
+     * @return The value as a string.
      */
     String getString(String defaultValue);
 
     /**
-     * Returns the size.
+     * Returns the size of the value.
      * 
-     * @return
+     * @return The size of the value.
      */
     int size();
 
     /**
-     * Adapts the JSON value to the specified class.
+     * Adapts the value to the specified class.
      * 
-     * @param adaptClass
-     * @return The adapted JSON value value.
+     * @param adaptClass The class to adapt the value to.
+     * @return The adapted value.
      */
     <T> T adapt(Class<T> adaptClass);
 
     /**
+     * Returns the value as an object.
      * 
-     * 
-     * @param objectClass
-     * @return
+     * @param objectClass The object class.
+     * @return The object.
      */
     <T> T toObject(Class<T> objectClass);
 

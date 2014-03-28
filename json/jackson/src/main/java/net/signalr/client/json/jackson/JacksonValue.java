@@ -20,6 +20,7 @@ package net.signalr.client.json.jackson;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonValue;
 
 /**
@@ -68,6 +69,10 @@ public class JacksonValue implements JsonValue {
 
     @Override
     public JsonValue get(final String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name must not be null");
+        }
+
         final JsonNode node = _node.get(name);
 
         if (node == null) {
@@ -124,21 +129,33 @@ public class JacksonValue implements JsonValue {
 
     @Override
     public <T> T adapt(final Class<T> adaptClass) {
+        if (adaptClass == null) {
+            throw new IllegalArgumentException("Adapt class must not be null");
+        }
+
         return adaptClass.cast(_node);
     }
 
     @Override
     public int size() {
-        if (_node.isArray()) {
-            return _node.size();
+        if (!_node.isArray()) {
+            return 0;
         }
 
-        return 0;
+        return _node.size();
     }
 
     @Override
     public <T> T toObject(final Class<T> objectClass) {
-        return _mapper.convertValue(_node, objectClass);
+        if (objectClass == null) {
+            throw new IllegalArgumentException("Object class must not be null");
+        }
+
+        try {
+            return _mapper.convertValue(_node, objectClass);
+        } catch (final Exception e) {
+            throw new JsonException(e);
+        }
     }
 
     @Override

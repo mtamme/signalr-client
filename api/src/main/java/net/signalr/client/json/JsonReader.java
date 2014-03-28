@@ -40,7 +40,7 @@ public interface JsonReader extends Closeable {
 
     JsonValue readValue();
 
-    <V> V readObject(Class<V> valueClass);
+    <T> T readObject(Class<T> objectClass);
 
     void readNull();
 

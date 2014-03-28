@@ -123,13 +123,14 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public <V> void writeObject(final V value) {
-        if (value == null) {
+    public <T> void writeObject(final T object) {
+        if (object == null) {
             writeNull();
             return;
         }
+
         try {
-            _mapper.writeValue(_generator, value);
+            _mapper.writeValue(_generator, object);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

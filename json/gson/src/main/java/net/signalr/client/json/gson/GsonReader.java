@@ -162,13 +162,13 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public <V> V readObject(final Class<V> valueClass) {
-        if (valueClass == null) {
-            throw new IllegalArgumentException("Value class must not be null");
+    public <T> T readObject(final Class<T> objectClass) {
+        if (objectClass == null) {
+            throw new IllegalArgumentException("Object class must not be null");
         }
 
         try {
-            return _gson.fromJson(_reader, valueClass);
+            return _gson.fromJson(_reader, objectClass);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

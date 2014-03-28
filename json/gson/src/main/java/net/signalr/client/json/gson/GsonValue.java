@@ -22,6 +22,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonValue;
 
 /**
@@ -74,6 +75,10 @@ final class GsonValue implements JsonValue {
 
     @Override
     public JsonValue get(final String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name must not be null");
+        }
+
         if (!_element.isJsonObject()) {
             return JsonValue.NONE;
         }
@@ -134,6 +139,10 @@ final class GsonValue implements JsonValue {
 
     @Override
     public <T> T adapt(final Class<T> adaptClass) {
+        if (adaptClass == null) {
+            throw new IllegalArgumentException("Adapt class must not be null");
+        }
+
         return adaptClass.cast(_element);
     }
 
@@ -142,6 +151,7 @@ final class GsonValue implements JsonValue {
         if (!_element.isJsonArray()) {
             return 0;
         }
+
         final JsonArray array = (JsonArray) _element;
 
         return array.size();
@@ -149,7 +159,15 @@ final class GsonValue implements JsonValue {
 
     @Override
     public <T> T toObject(final Class<T> objectClass) {
-        return _gson.fromJson(_element, objectClass);
+        if (objectClass == null) {
+            throw new IllegalArgumentException("Object class must not be null");
+        }
+
+        try {
+            return _gson.fromJson(_element, objectClass);
+        } catch (final Exception e) {
+            throw new JsonException(e);
+        }
     }
 
     @Override

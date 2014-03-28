@@ -122,16 +122,16 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public <V> void writeObject(final V value) {
-        if (value == null) {
+    public <T> void writeObject(final T object) {
+        if (object == null) {
             writeNull();
             return;
         }
 
-        final Class<?> valueClass = value.getClass();
+        final Class<?> objectClass = object.getClass();
 
         try {
-            _gson.toJson(value, valueClass, _writer);
+            _gson.toJson(object, objectClass, _writer);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

@@ -34,7 +34,7 @@ public interface JsonWriter extends Closeable, Flushable {
 
     void writeValue(JsonValue value);
 
-    <V> void writeObject(V value);
+    <T> void writeObject(T object);
 
     void writeNull();
 
