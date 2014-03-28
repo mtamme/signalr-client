@@ -46,7 +46,7 @@ public class JacksonSerializer implements JsonSerializer {
     }
 
     @Override
-    public JsonReader createReader(Reader buffer) {
+    public JsonReader createReader(final Reader buffer) {
         final JsonParser parser;
 
         try {
@@ -59,7 +59,7 @@ public class JacksonSerializer implements JsonSerializer {
     }
 
     @Override
-    public JsonWriter createWriter(Writer buffer) {
+    public JsonWriter createWriter(final Writer buffer) {
         final JsonGenerator generator;
 
         try {
@@ -72,7 +72,7 @@ public class JacksonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T extends JsonReadable> T fromJson(String json, T object) {
+    public <T extends JsonReadable> T fromJson(final String json, final T object) {
         final StringReader buffer = new StringReader(json);
 
         try (final JsonReader reader = createReader(buffer)) {
@@ -83,7 +83,7 @@ public class JacksonSerializer implements JsonSerializer {
     }
 
     @Override
-    public String toJson(JsonWriteable object) {
+    public String toJson(final JsonWriteable object) {
         final StringWriter buffer = new StringWriter();
 
         try (final JsonWriter writer = createWriter(buffer)) {
