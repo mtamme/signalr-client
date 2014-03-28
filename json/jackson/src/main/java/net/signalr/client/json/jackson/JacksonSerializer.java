@@ -73,7 +73,7 @@ public class JacksonSerializer implements JsonSerializer {
         } catch (final Exception e) {
             throw new JsonException(e);
         }
-        final JacksonWriter writer = new JacksonWriter(generator);
+        final JacksonWriter writer = new JacksonWriter(_mapper, generator);
 
         try {
             object.writeJson(writer);

@@ -19,7 +19,6 @@ package net.signalr.client.json.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 
 import net.signalr.client.json.JsonValue;
 import net.signalr.client.json.JsonException;
@@ -96,6 +95,10 @@ final class GsonWriter implements JsonWriter {
 
     @Override
     public void writeName(final String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name must not be null");
+        }
+
         try {
             _writer.name(name);
         } catch (final Exception e) {
@@ -105,20 +108,33 @@ final class GsonWriter implements JsonWriter {
 
     @Override
     public void writeValue(final JsonValue value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value must not be null");
+        }
+
         final JsonElement element = value.adapt(JsonElement.class);
 
-        _gson.toJson(element, _writer);
+        try {
+            _gson.toJson(element, _writer);
+        } catch (final Exception e) {
+            throw new JsonException(e);
+        }
     }
 
     @Override
     public <V> void writeObject(final V value) {
         if (value == null) {
-            _gson.toJson(null, JsonNull.class, _writer);
+            writeNull();
             return;
         }
+
         final Class<?> valueClass = value.getClass();
 
-        _gson.toJson(value, valueClass, _writer);
+        try {
+            _gson.toJson(value, valueClass, _writer);
+        } catch (final Exception e) {
+            throw new JsonException(e);
+        }
     }
 
     @Override

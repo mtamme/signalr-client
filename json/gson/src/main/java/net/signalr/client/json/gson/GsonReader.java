@@ -150,14 +150,28 @@ final class GsonReader implements JsonReader {
 
     @Override
     public JsonValue readValue() {
-        final JsonElement element = _gson.fromJson(_reader, JsonElement.class);
+        final JsonElement element;
+
+        try {
+            element = _gson.fromJson(_reader, JsonElement.class);
+        } catch (final Exception e) {
+            throw new JsonException(e);
+        }
 
         return new GsonValue(_gson, element);
     }
 
     @Override
     public <V> V readObject(final Class<V> valueClass) {
-        return _gson.fromJson(_reader, valueClass);
+        if (valueClass == null) {
+            throw new IllegalArgumentException("Value class must not be null");
+        }
+
+        try {
+            return _gson.fromJson(_reader, valueClass);
+        } catch (final Exception e) {
+            throw new JsonException(e);
+        }
     }
 
     @Override

@@ -19,6 +19,8 @@ package net.signalr.client.json.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import net.signalr.client.json.JsonValue;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonWriter;
@@ -29,6 +31,11 @@ import net.signalr.client.json.JsonWriter;
 final class JacksonWriter implements JsonWriter {
 
     /**
+     * The object mapper.
+     */
+    private final ObjectMapper _mapper;
+
+    /**
      * The underlying JSON generator.
      */
     private final JsonGenerator _generator;
@@ -36,13 +43,18 @@ final class JacksonWriter implements JsonWriter {
     /**
      * Initializes a new instance of the {@link JacksonWriter}.
      * 
+     * @param mapper The object mapper.
      * @param generator The underlying JSON generator.
      */
-    public JacksonWriter(final JsonGenerator generator) {
+    public JacksonWriter(final ObjectMapper mapper, final JsonGenerator generator) {
+        if (mapper == null) {
+            throw new IllegalArgumentException("Mapper must not be null");
+        }
         if (generator == null) {
             throw new IllegalArgumentException("Generator must not be null");
         }
 
+        _mapper = mapper;
         _generator = generator;
     }
 
@@ -84,6 +96,10 @@ final class JacksonWriter implements JsonWriter {
 
     @Override
     public void writeName(final String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name must not be null");
+        }
+
         try {
             _generator.writeFieldName(name);
         } catch (final Exception e) {
@@ -93,10 +109,14 @@ final class JacksonWriter implements JsonWriter {
 
     @Override
     public void writeValue(final JsonValue value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value must not be null");
+        }
+
         final JsonNode node = value.adapt(JsonNode.class);
 
         try {
-            _generator.writeTree(node);
+            _mapper.writeTree(_generator, node);
         } catch (final Exception e) {
             throw new JsonException(e);
         }
@@ -104,8 +124,12 @@ final class JacksonWriter implements JsonWriter {
 
     @Override
     public <V> void writeObject(final V value) {
+        if (value == null) {
+            writeNull();
+            return;
+        }
         try {
-            _generator.writeObject(value);
+            _mapper.writeValue(_generator, value);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

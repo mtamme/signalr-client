@@ -223,6 +223,10 @@ final class JacksonReader implements JsonReader {
 
     @Override
     public <V> V readObject(final Class<V> valueClass) {
+        if (valueClass == null) {
+            throw new IllegalArgumentException("Value class must not be null");
+        }
+
         final V value;
 
         try {
