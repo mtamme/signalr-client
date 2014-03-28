@@ -17,6 +17,15 @@
 
 package net.signalr.client.json;
 
+/**
+ * Defines a JSON readable.
+ */
 public interface JsonReadable {
+
+    /**
+     * Reads from a JSON reader.
+     * 
+     * @param reader The JSON reader.
+     */
     void readJson(JsonReader reader);
 }

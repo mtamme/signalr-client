@@ -17,6 +17,15 @@
 
 package net.signalr.client.json;
 
+/**
+ * Defines a JSON writeable.
+ */
 public interface JsonWriteable {
+
+    /**
+     * Writes to the JSON writer.
+     * 
+     * @param writer The JSON writer.
+     */
     void writeJson(JsonWriter writer);
 }

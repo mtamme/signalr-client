@@ -20,35 +20,99 @@ package net.signalr.client.json;
 import java.io.Closeable;
 import java.io.Flushable;
 
+/**
+ * Defines a JSON writer.
+ */
 public interface JsonWriter extends Closeable, Flushable {
 
+    /**
+     * Writes a begin array.
+     */
     void writeBeginArray();
 
+    /**
+     * Writes an end array.
+     */
     void writeEndArray();
 
+    /**
+     * Writes a begin object.
+     */
     void writeBeginObject();
 
+    /**
+     * Writes an end object.
+     */
     void writeEndObject();
 
+    /**
+     * Writes a name.
+     * 
+     * @param name The name.
+     */
     void writeName(String name);
 
+    /**
+     * Writes a value.
+     * 
+     * @param value The value.
+     */
     void writeValue(JsonValue value);
 
+    /**
+     * Writes an object.
+     * 
+     * @param object The object.
+     */
     <T> void writeObject(T object);
 
+    /**
+     * Writes a null value.
+     */
     void writeNull();
 
+    /**
+     * Writes a string value.
+     * 
+     * @param value The string value.
+     */
     void writeString(String value);
 
+    /**
+     * Writes a boolean value.
+     * 
+     * @param value The boolean value.
+     */
     void writeBoolean(boolean value);
 
+    /**
+     * Writes a double value.
+     * 
+     * @param value The double value.
+     */
     void writeDouble(double value);
 
+    /**
+     * Writes a long value.
+     * 
+     * @param value The long value.
+     */
     void writeLong(long value);
 
+    /**
+     * Writes an integer value.
+     * 
+     * @param value The integer value.
+     */
     void writeInt(int value);
 
+    /**
+     * Flushes the writer.
+     */
     void flush();
 
+    /**
+     * Closes the writer.
+     */
     void close();
 }
