@@ -20,34 +20,41 @@ package net.signalr.client.json;
 import java.io.Reader;
 import java.io.Writer;
 
+/**
+ * Defines a JSON serializer.
+ */
 public interface JsonSerializer {
 
     /**
+     * Creates a new JSON reader.
      * 
-     * @param buffer
-     * @return
+     * @param buffer The JSON buffer.
+     * @return The new JSON reader.
      */
     JsonReader createReader(Reader buffer);
 
     /**
+     * Creates a new JSON writer.
      * 
-     * @param buffer
-     * @return
+     * @param buffer The JSON buffer.
+     * @return The new JSON writer.
      */
     JsonWriter createWriter(Writer buffer);
 
     /**
+     * Deserializes a JSON string into an object.
      * 
-     * @param json
-     * @param object
-     * @return
+     * @param json The JSON string.
+     * @param objectClass The object class.
+     * @return The object.
      */
-    <T extends JsonReadable> T fromJson(String json, T object);
+    <T extends JsonReadable> T fromJson(String json, Class<T> objectClass);
 
     /**
+     * Serializes an object into a JSON string.
      * 
-     * @param object
-     * @return
+     * @param object The object.
+     * @return The JSON string.
      */
     String toJson(JsonWriteable object);
 }

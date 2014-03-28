@@ -85,7 +85,7 @@ final class DefaultHubDispatcher implements HubDispatcher {
     @Override
     public void onReceived(final String message) {
         final JsonSerializer serializer = _connection.getSerializer();
-        final HubResponse response = serializer.fromJson(message, new HubResponse());
+        final HubResponse response = serializer.fromJson(message, HubResponse.class);
         final String callbackId = response.getCallbackId();
         final Deferred<HubResponse> deferred = _responses.remove(callbackId);
 

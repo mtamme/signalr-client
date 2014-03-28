@@ -21,6 +21,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Constructor;
 
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReadable;
@@ -75,7 +76,18 @@ public final class GsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T extends JsonReadable> T fromJson(final String json, final T object) {
+    public <T extends JsonReadable> T fromJson(final String json, final Class<T> objectClass) {
+        final T object;
+
+        try {
+            final Constructor<T> constructor = objectClass.getDeclaredConstructor();
+
+            constructor.setAccessible(true);
+            object = constructor.newInstance();
+        } catch (final Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+
         final StringReader buffer = new StringReader(json);
 
         try (final JsonReader reader = createReader(buffer)) {

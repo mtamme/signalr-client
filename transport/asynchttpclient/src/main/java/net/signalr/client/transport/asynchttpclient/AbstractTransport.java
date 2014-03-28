@@ -106,7 +106,7 @@ public abstract class AbstractTransport implements Transport {
                 final JsonSerializer serializer = context.getSerializer();
                 final String body = response.getResponseBody();
 
-                return serializer.fromJson(body, new NegotiationResponse());
+                return serializer.fromJson(body, NegotiationResponse.class);
             }
         });
     }
@@ -146,7 +146,7 @@ public abstract class AbstractTransport implements Transport {
                 final JsonSerializer serializer = context.getSerializer();
                 final String body = response.getResponseBody();
 
-                return serializer.fromJson(body, new PingResponse());
+                return serializer.fromJson(body, PingResponse.class);
             }
         });
     }

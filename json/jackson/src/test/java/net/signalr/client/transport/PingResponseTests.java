@@ -40,7 +40,7 @@ public final class PingResponseTests {
         final String data = "{\"Response\":\"pong\"}";
 
         // Act
-        final PingResponse response = _serializer.fromJson(data, new PingResponse());
+        final PingResponse response = _serializer.fromJson(data, PingResponse.class);
 
         // Assert
         assertNotNull(response);

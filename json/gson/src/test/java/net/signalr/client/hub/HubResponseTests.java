@@ -41,7 +41,7 @@ public final class HubResponseTests {
         final String data = "{\"I\":\"1\"}";
 
         // Act
-        final HubResponse response = _serializer.fromJson(data, new HubResponse());
+        final HubResponse response = _serializer.fromJson(data, HubResponse.class);
 
         // Assert
         assertNotNull(response);
@@ -54,7 +54,7 @@ public final class HubResponseTests {
         final String data = "{\"C\":\"s-0,298F690\",\"M\":[{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":1}]},{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":2}]}]}";
 
         // Act
-        final HubResponse response = _serializer.fromJson(data, new HubResponse());
+        final HubResponse response = _serializer.fromJson(data, HubResponse.class);
 
         // Assert
         assertNotNull(response);
