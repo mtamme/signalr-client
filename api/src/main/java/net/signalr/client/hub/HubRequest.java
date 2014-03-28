@@ -61,8 +61,10 @@ final class HubRequest implements JsonWriteable {
     public void writeJson(final JsonWriter writer) {
         writer.writeBeginObject();
 
-        writer.writeName("I");
-        writer.writeString(_callbackId);
+        if (_callbackId != null) {
+            writer.writeName("I");
+            writer.writeString(_callbackId);
+        }
         if (_hubName != null) {
             writer.writeName("H");
             writer.writeString(_hubName);

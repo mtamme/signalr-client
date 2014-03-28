@@ -55,6 +55,8 @@ final class HubMessage implements JsonReadable {
 
     @Override
     public void readJson(final JsonReader reader) {
+        reader.readBeginObject();
+
         while (reader.read()) {
             final String name = reader.getName();
 
@@ -66,5 +68,7 @@ final class HubMessage implements JsonReadable {
                 _arguments = reader.readValue();
             }
         }
+
+        reader.readEndObject();
     }
 }
