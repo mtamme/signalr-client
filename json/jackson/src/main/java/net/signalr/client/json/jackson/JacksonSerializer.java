@@ -34,12 +34,24 @@ import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.json.JsonWriteable;
 import net.signalr.client.json.JsonWriter;
 
-public class JacksonSerializer implements JsonSerializer {
+/**
+ * Represents a Jackson based JSON serializer.
+ */
+public final class JacksonSerializer implements JsonSerializer {
 
+    /**
+     * The object mapper.
+     */
     private final ObjectMapper _mapper;
 
+    /**
+     * The JSON factory.
+     */
     private final JsonFactory _factory;
 
+    /**
+     * Initializes a new instance of the {@link JacksonSerializer} class.
+     */
     public JacksonSerializer() {
         _mapper = new ObjectMapper();
         _factory = new JsonFactory();

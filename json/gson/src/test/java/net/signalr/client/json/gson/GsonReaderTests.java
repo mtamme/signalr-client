@@ -17,9 +17,8 @@
 
 package net.signalr.client.json.gson;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import java.io.StringReader;
 import java.util.ArrayList;

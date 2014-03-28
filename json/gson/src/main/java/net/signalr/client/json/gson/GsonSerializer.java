@@ -21,7 +21,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.lang.reflect.Modifier;
 
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReadable;
@@ -31,22 +30,22 @@ import net.signalr.client.json.JsonWriteable;
 import net.signalr.client.json.JsonWriter;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
+/**
+ * Represents a GSON based JSON serializer.
+ */
 public final class GsonSerializer implements JsonSerializer {
 
+    /**
+     * The GSON instance.
+     */
     private final Gson _gson;
 
+    /**
+     * Initializes a new instance of the {@link GsonSerializer} class.
+     */
     public GsonSerializer() {
-        _gson = build();
-    }
-
-    private static Gson build() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-
-        gsonBuilder.excludeFieldsWithModifiers(Modifier.STATIC);
-
-        return gsonBuilder.create();
+        _gson = new Gson();
     }
 
     @Override
