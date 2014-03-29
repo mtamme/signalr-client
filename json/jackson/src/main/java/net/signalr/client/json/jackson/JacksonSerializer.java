@@ -41,7 +41,7 @@ public final class JacksonSerializer extends AbstractJsonSerializer {
     private final ObjectMapper _mapper;
 
     /**
-     * The JSON factory.
+     * The factory.
      */
     private final JsonFactory _factory;
 
@@ -54,11 +54,11 @@ public final class JacksonSerializer extends AbstractJsonSerializer {
     }
 
     @Override
-    public JsonReader createReader(final Reader buffer) {
+    public JsonReader createReader(final Reader input) {
         final JsonParser parser;
 
         try {
-            parser = _factory.createParser(buffer);
+            parser = _factory.createParser(input);
         } catch (final Exception e) {
             throw new JsonException(e);
         }
@@ -67,11 +67,11 @@ public final class JacksonSerializer extends AbstractJsonSerializer {
     }
 
     @Override
-    public JsonWriter createWriter(final Writer buffer) {
+    public JsonWriter createWriter(final Writer output) {
         final JsonGenerator generator;
 
         try {
-            generator = _factory.createGenerator(buffer);
+            generator = _factory.createGenerator(output);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

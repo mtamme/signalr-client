@@ -45,40 +45,33 @@ public interface JsonReader extends Closeable {
     void readEndObject();
 
     /**
-     * Reads the next token.
+     * Reads the next element.
      * 
-     * @return A value indicating whether a next token is available.
+     * @return A value indicating whether a next element is available.
      */
     boolean read();
 
     /**
-     * Returns the current token type.
+     * Returns the current element name.
      * 
-     * @return The current token type.
-     */
-    JsonToken getToken();
-
-    /**
-     * Returns the current name.
-     * 
-     * @return The current name.
+     * @return The current element name.
      */
     String getName();
 
     /**
-     * Reads a value.
+     * Reads an element.
      * 
-     * @return The value.
+     * @return The element.
      */
-    JsonValue readValue();
+    JsonElement readElement();
 
     /**
      * Reads an object.
      * 
-     * @param objectClass The object class.
+     * @param type The object type.
      * @return The object.
      */
-    <T> T readObject(Class<T> objectClass);
+    <T> T readObject(Class<T> type);
 
     /**
      * Reads a null value.

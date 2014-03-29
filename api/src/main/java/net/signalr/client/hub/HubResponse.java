@@ -19,7 +19,7 @@ package net.signalr.client.hub;
 
 import java.util.Map;
 
-import net.signalr.client.json.JsonValue;
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonReadable;
 import net.signalr.client.json.JsonReader;
 
@@ -36,7 +36,7 @@ final class HubResponse implements JsonReadable {
     /**
      * The data of the invocation.
      */
-    private JsonValue _data;
+    private JsonElement _data;
 
     /**
      * The ID of the operation.
@@ -71,13 +71,13 @@ final class HubResponse implements JsonReadable {
     /**
      * The hub messages.
      */
-    private JsonValue _messages;
+    private JsonElement _messages;
 
     public Map<String, Object> getState() {
         return _state;
     }
 
-    public JsonValue getData() {
+    public JsonElement getData() {
         return _data;
     }
 
@@ -105,7 +105,7 @@ final class HubResponse implements JsonReadable {
         return _messageId;
     }
 
-    public JsonValue getMessages() {
+    public JsonElement getMessages() {
         return _messages;
     }
 
@@ -122,7 +122,7 @@ final class HubResponse implements JsonReadable {
 
                 _state = state;
             } else if (name.equalsIgnoreCase("R")) {
-                _data = reader.readValue();
+                _data = reader.readElement();
             } else if (name.equalsIgnoreCase("I")) {
                 _callbackId = reader.readString();
             } else if (name.equalsIgnoreCase("H")) {
@@ -136,7 +136,7 @@ final class HubResponse implements JsonReadable {
             } else if (name.equalsIgnoreCase("C")) {
                 _messageId = reader.readString();
             } else if (name.equalsIgnoreCase("M")) {
-                _messages = reader.readValue();
+                _messages = reader.readElement();
             }
         }
 

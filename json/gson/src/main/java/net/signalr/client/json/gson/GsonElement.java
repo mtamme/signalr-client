@@ -19,16 +19,15 @@ package net.signalr.client.json.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.signalr.client.json.JsonException;
-import net.signalr.client.json.JsonValue;
+import net.signalr.client.json.JsonElement;
 
 /**
- * Represents a GSON based JSON value.
+ * Represents a GSON based JSON element.
  */
-final class GsonValue implements JsonValue {
+final class GsonElement implements JsonElement {
 
     /**
      * The GSON instance.
@@ -36,17 +35,17 @@ final class GsonValue implements JsonValue {
     private final Gson _gson;
 
     /**
-     * The underlying JSON element.
+     * The underlying element.
      */
-    private final JsonElement _element;
+    private final com.google.gson.JsonElement _element;
 
     /**
-     * Initializes a new instance of the {@link GsonValue} class.
+     * Initializes a new instance of the {@link GsonElement} class.
      * 
      * @param gson The GSON instance.
      * @param element The underlying JSON element.
      */
-    public GsonValue(final Gson gson, final JsonElement element) {
+    public GsonElement(final Gson gson, final com.google.gson.JsonElement element) {
         if (gson == null) {
             throw new IllegalArgumentException("Gson must not be null");
         }
@@ -59,41 +58,45 @@ final class GsonValue implements JsonValue {
     }
 
     @Override
-    public JsonValue get(final int index) {
+    public JsonElement get(final int index) {
         if (!_element.isJsonArray()) {
-            return JsonValue.NONE;
+            return JsonElement.NONE;
         }
         final JsonArray array = (JsonArray) _element;
-        final JsonElement element = array.get(index);
+        final com.google.gson.JsonElement element = array.get(index);
 
         if (element == null) {
-            return JsonValue.NONE;
+            return JsonElement.NONE;
         }
 
-        return new GsonValue(_gson, element);
+        return new GsonElement(_gson, element);
     }
 
     @Override
-    public JsonValue get(final String name) {
+    public JsonElement get(final String name) {
         if (name == null) {
             throw new IllegalArgumentException("Name must not be null");
         }
 
         if (!_element.isJsonObject()) {
-            return JsonValue.NONE;
+            return JsonElement.NONE;
         }
         final JsonObject object = (JsonObject) _element;
-        final JsonElement element = object.get(name);
+        final com.google.gson.JsonElement element = object.get(name);
 
         if (element == null) {
-            return JsonValue.NONE;
+            return JsonElement.NONE;
         }
 
-        return new GsonValue(_gson, element);
+        return new GsonElement(_gson, element);
     }
 
     @Override
     public boolean getBoolean(final boolean defaultValue) {
+        if (!_element.isJsonPrimitive()) {
+            return defaultValue;
+        }
+
         try {
             return _element.getAsBoolean();
         } catch (final Exception e) {
@@ -103,6 +106,10 @@ final class GsonValue implements JsonValue {
 
     @Override
     public double getDouble(final double defaultValue) {
+        if (!_element.isJsonPrimitive()) {
+            return defaultValue;
+        }
+
         try {
             return _element.getAsDouble();
         } catch (final Exception e) {
@@ -112,6 +119,10 @@ final class GsonValue implements JsonValue {
 
     @Override
     public int getInt(final int defaultValue) {
+        if (!_element.isJsonPrimitive()) {
+            return defaultValue;
+        }
+
         try {
             return _element.getAsInt();
         } catch (final Exception e) {
@@ -121,6 +132,10 @@ final class GsonValue implements JsonValue {
 
     @Override
     public long getLong(final long defaultValue) {
+        if (!_element.isJsonPrimitive()) {
+            return defaultValue;
+        }
+
         try {
             return _element.getAsLong();
         } catch (final Exception e) {
@@ -130,6 +145,10 @@ final class GsonValue implements JsonValue {
 
     @Override
     public String getString(final String defaultValue) {
+        if (!_element.isJsonPrimitive()) {
+            return defaultValue;
+        }
+
         try {
             return _element.getAsString();
         } catch (final Exception e) {
@@ -138,12 +157,12 @@ final class GsonValue implements JsonValue {
     }
 
     @Override
-    public <T> T adapt(final Class<T> adaptClass) {
-        if (adaptClass == null) {
-            throw new IllegalArgumentException("Adapt class must not be null");
+    public <T> T unwrap(final Class<T> type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Type must not be null");
         }
 
-        return adaptClass.cast(_element);
+        return type.cast(_element);
     }
 
     @Override
@@ -158,13 +177,13 @@ final class GsonValue implements JsonValue {
     }
 
     @Override
-    public <T> T toObject(final Class<T> objectClass) {
-        if (objectClass == null) {
-            throw new IllegalArgumentException("Object class must not be null");
+    public <T> T toObject(final Class<T> type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Type must not be null");
         }
 
         try {
-            return _gson.fromJson(_element, objectClass);
+            return _gson.fromJson(_element, type);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

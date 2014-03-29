@@ -26,43 +26,43 @@ import java.io.Writer;
 public interface JsonSerializer {
 
     /**
-     * Creates a new JSON reader.
+     * Creates a new reader.
      * 
-     * @param buffer The JSON buffer.
-     * @return The new JSON reader.
+     * @param input The input.
+     * @return The new reader.
      */
-    JsonReader createReader(Reader buffer);
+    JsonReader createReader(Reader input);
 
     /**
-     * Creates a new JSON writer.
+     * Creates a new writer.
      * 
-     * @param buffer The JSON buffer.
-     * @return The new JSON writer.
+     * @param output The output.
+     * @return The new writer.
      */
-    JsonWriter createWriter(Writer buffer);
+    JsonWriter createWriter(Writer output);
 
     /**
-     * Deserializes a JSON string into a value.
+     * Deserializes a text into an element.
      * 
-     * @param json The JSON string.
-     * @return The value.
+     * @param text The text.
+     * @return The element.
      */
-    JsonValue fromJson(String json);
+    JsonElement fromJson(String text);
 
     /**
-     * Deserializes a JSON string into an object.
+     * Deserializes a text into an object.
      * 
-     * @param json The JSON string.
-     * @param objectClass The object class.
+     * @param text The text.
+     * @param type The object type.
      * @return The object.
      */
-    <T extends JsonReadable> T fromJson(String json, Class<T> objectClass);
+    <T extends JsonReadable> T fromJson(String text, Class<T> type);
 
     /**
-     * Serializes an object into a JSON string.
+     * Serializes an object into a text.
      * 
      * @param object The object.
-     * @return The JSON string.
+     * @return The text.
      */
     String toJson(JsonWriteable object);
 }

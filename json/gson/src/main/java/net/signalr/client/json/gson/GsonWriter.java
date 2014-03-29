@@ -18,9 +18,8 @@
 package net.signalr.client.json.gson;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
-import net.signalr.client.json.JsonValue;
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonWriter;
 
@@ -35,15 +34,15 @@ final class GsonWriter implements JsonWriter {
     private final Gson _gson;
 
     /**
-     * The underlying JSON writer.
+     * The underlying writer.
      */
     private final com.google.gson.stream.JsonWriter _writer;
 
     /**
      * Initializes a new instance of the {@link GsonWriter}.
      * 
-     * @param hson The GSON instance.
-     * @param writer The underlying JSON writer.
+     * @param gson The GSON instance.
+     * @param writer The underlying writer.
      */
     public GsonWriter(final Gson gson, final com.google.gson.stream.JsonWriter writer) {
         if (gson == null) {
@@ -107,15 +106,15 @@ final class GsonWriter implements JsonWriter {
     }
 
     @Override
-    public void writeValue(final JsonValue value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value must not be null");
+    public void writeElement(final JsonElement element) {
+        if (element == null) {
+            throw new IllegalArgumentException("Element must not be null");
         }
 
-        final JsonElement element = value.adapt(JsonElement.class);
+        final com.google.gson.JsonElement object = element.unwrap(com.google.gson.JsonElement.class);
 
         try {
-            _gson.toJson(element, _writer);
+            _gson.toJson(object, _writer);
         } catch (final Exception e) {
             throw new JsonException(e);
         }
@@ -128,10 +127,10 @@ final class GsonWriter implements JsonWriter {
             return;
         }
 
-        final Class<?> objectClass = object.getClass();
+        final Class<?> type = object.getClass();
 
         try {
-            _gson.toJson(object, objectClass, _writer);
+            _gson.toJson(object, type, _writer);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

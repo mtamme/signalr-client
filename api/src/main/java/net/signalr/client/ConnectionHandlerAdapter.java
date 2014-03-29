@@ -18,7 +18,7 @@
 package net.signalr.client;
 
 import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.JsonValue;
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.transport.TransportChannelHandler;
 
 /**
@@ -60,13 +60,13 @@ final class ConnectionHandlerAdapter implements TransportChannelHandler {
     @Override
     public void onReceived(final String message) {
         final JsonSerializer serializer = _context.getSerializer();
-        final JsonValue value = serializer.fromJson(message);
-        final String callbackId = value.get("I").getString(null);
+        final JsonElement element = serializer.fromJson(message);
+        final String callbackId = element.get("I").getString(null);
 
         if (callbackId != null) {
             _handler.onReceived(message);
         } else {
-            final JsonValue messages = value.get("M");
+            final JsonElement messages = element.get("M");
 
             for (int i = 0; i < messages.size(); i++) {
                 _handler.onReceived(messages.get(i).toString());

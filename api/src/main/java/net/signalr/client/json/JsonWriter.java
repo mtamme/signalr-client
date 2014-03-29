@@ -53,11 +53,11 @@ public interface JsonWriter extends Closeable, Flushable {
     void writeName(String name);
 
     /**
-     * Writes a value.
+     * Writes an element.
      * 
-     * @param value The value.
+     * @param element The element.
      */
-    void writeValue(JsonValue value);
+    void writeElement(JsonElement element);
 
     /**
      * Writes an object.

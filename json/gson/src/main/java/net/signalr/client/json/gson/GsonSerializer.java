@@ -45,11 +45,11 @@ public final class GsonSerializer extends AbstractJsonSerializer {
     }
 
     @Override
-    public JsonReader createReader(final Reader buffer) {
+    public JsonReader createReader(final Reader input) {
         final com.google.gson.stream.JsonReader reader;
 
         try {
-            reader = new com.google.gson.stream.JsonReader(buffer);
+            reader = new com.google.gson.stream.JsonReader(input);
         } catch (final Exception e) {
             throw new JsonException(e);
         }
@@ -58,11 +58,11 @@ public final class GsonSerializer extends AbstractJsonSerializer {
     }
 
     @Override
-    public JsonWriter createWriter(final Writer buffer) {
+    public JsonWriter createWriter(final Writer output) {
         final com.google.gson.stream.JsonWriter writer;
 
         try {
-            writer = new com.google.gson.stream.JsonWriter(buffer);
+            writer = new com.google.gson.stream.JsonWriter(output);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

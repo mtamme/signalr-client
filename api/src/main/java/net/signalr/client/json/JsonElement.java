@@ -18,98 +18,98 @@
 package net.signalr.client.json;
 
 /**
- * Defines a JSON value.
+ * Defines a JSON element.
  */
-public interface JsonValue {
+public interface JsonElement {
 
     /**
-     * The JSON none value.
+     * The none element.
      */
-    public static final JsonValue NONE = new JsonNone();
+    public static final JsonElement NONE = new JsonNone();
 
     /**
-     * Returns the value at the specified index.
+     * Returns the element at the specified index.
      * 
      * @param index The index.
-     * @return The JSON element.
+     * @return The element.
      */
-    JsonValue get(int index);
+    JsonElement get(int index);
 
     /**
-     * Returns the value for the specified name.
+     * Returns the element for the specified name.
      * 
      * @param name The name.
-     * @return The JSON element.
+     * @return The element.
      */
-    JsonValue get(String name);
+    JsonElement get(String name);
 
     /**
-     * Returns the value as a boolean.
+     * Returns the element as a boolean value.
      * 
      * @param defaultValue The default value.
-     * @return The value as a boolean.
+     * @return The boolean value.
      */
     boolean getBoolean(boolean defaultValue);
 
     /**
-     * Returns the value as a double.
+     * Returns the element as a double value.
      * 
      * @param defaultValue The default value.
-     * @return The value as a double.
+     * @return The double value.
      */
     double getDouble(double defaultValue);
 
     /**
-     * Returns the value as an integer.
+     * Returns the element as an integer value.
      * 
      * @param defaultValue The default value.
-     * @return The value as an integer.
+     * @return The integer value.
      */
     int getInt(int defaultValue);
 
     /**
-     * Returns the value as a long.
+     * Returns the element as a long value.
      * 
      * @param defaultValue The default value.
-     * @return The value as a long.
+     * @return The long value.
      */
     long getLong(long defaultValue);
 
     /**
-     * Returns the value as a string.
+     * Returns the element as a string value.
      * 
      * @param defaultValue The default value.
-     * @return The value as a string.
+     * @return The string value.
      */
     String getString(String defaultValue);
 
     /**
-     * Returns the size of the value.
+     * Returns the size of the element.
      * 
-     * @return The size of the value.
+     * @return The size of the element.
      */
     int size();
 
     /**
-     * Adapts the value to the specified class.
+     * Unwraps the element.
      * 
-     * @param adaptClass The class to adapt the value to.
-     * @return The adapted value.
+     * @param type The wrapped object type.
+     * @return The wrapped object.
      */
-    <T> T adapt(Class<T> adaptClass);
+    <T> T unwrap(Class<T> type);
 
     /**
-     * Returns the value as an object.
+     * Returns the element as an object.
      * 
-     * @param objectClass The object class.
+     * @param type The object type.
      * @return The object.
      */
-    <T> T toObject(Class<T> objectClass);
+    <T> T toObject(Class<T> type);
 
     /**
-     * Returns a string representation of the object.
+     * Returns a string representation of the element.
      * 
-     * @return A string representation of the object.
+     * @return A string representation of the element.
      */
     String toString();
 }

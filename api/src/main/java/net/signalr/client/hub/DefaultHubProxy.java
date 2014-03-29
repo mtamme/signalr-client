@@ -19,7 +19,7 @@ package net.signalr.client.hub;
 
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Promise;
-import net.signalr.client.json.JsonValue;
+import net.signalr.client.json.JsonElement;
 
 /**
  * Represents the default hub proxy.
@@ -43,14 +43,14 @@ final class DefaultHubProxy implements HubProxy {
     }
 
     @Override
-    public <T> Promise<T> invoke(final String methodName, final Class<T> returnClass, final Object... args) {
+    public <R> Promise<R> invoke(final String methodName, final Class<R> returnType, final Object... arguments) {
         if (methodName == null) {
             throw new IllegalArgumentException("Method name must not e null");
         }
-        if (returnClass == null) {
-            throw new IllegalArgumentException("Return class name must not e null");
+        if (returnType == null) {
+            throw new IllegalArgumentException("Return type must not e null");
         }
-        if (args == null) {
+        if (arguments == null) {
             throw new IllegalArgumentException("Arguments must not e null");
         }
 
@@ -58,18 +58,18 @@ final class DefaultHubProxy implements HubProxy {
 
         request.setHubName(_hubName);
         request.setMethodName(methodName);
-        request.setArguments(args);
+        request.setArguments(arguments);
 
-        return _dispatcher.invoke(request).thenApply(new Function<HubResponse, T>() {
-            public T apply(final HubResponse response) throws Exception {
+        return _dispatcher.invoke(request).thenApply(new Function<HubResponse, R>() {
+            public R apply(final HubResponse response) throws Exception {
                 if (response.isHubException()) {
                     final String message = response.getErrorMessage();
 
                     throw new HubException(message);
                 }
-                final JsonValue data = response.getData();
+                final JsonElement data = response.getData();
 
-                return data.toObject(returnClass);
+                return data.toObject(returnType);
             }
         });
     }

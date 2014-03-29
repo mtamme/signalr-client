@@ -21,12 +21,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.signalr.client.json.JsonException;
-import net.signalr.client.json.JsonValue;
+import net.signalr.client.json.JsonElement;
 
 /**
- * Represents a Jackson based JSON value.
+ * Represents a Jackson based JSON element.
  */
-public class JacksonValue implements JsonValue {
+public class JacksonElement implements JsonElement {
 
     /**
      * The object mapper.
@@ -34,17 +34,17 @@ public class JacksonValue implements JsonValue {
     private final ObjectMapper _mapper;
 
     /**
-     * The underlying JSON node.
+     * The underlying node.
      */
     private final JsonNode _node;
 
     /**
-     * Initializes a new instance of the {@link JacksonValue} class.
+     * Initializes a new instance of the {@link JacksonElement} class.
      * 
      * @param mapper The object mapper.
-     * @param node The underlying JSON node.
+     * @param node The underlying node.
      */
-    public JacksonValue(final ObjectMapper mapper, final JsonNode node) {
+    public JacksonElement(final ObjectMapper mapper, final JsonNode node) {
         if (mapper == null) {
             throw new IllegalArgumentException("Mapper must not be null");
         }
@@ -57,18 +57,18 @@ public class JacksonValue implements JsonValue {
     }
 
     @Override
-    public JsonValue get(final int index) {
+    public JsonElement get(final int index) {
         final JsonNode node = _node.get(index);
 
         if (node == null) {
-            return JsonValue.NONE;
+            return JsonElement.NONE;
         }
 
-        return new JacksonValue(_mapper, node);
+        return new JacksonElement(_mapper, node);
     }
 
     @Override
-    public JsonValue get(final String name) {
+    public JsonElement get(final String name) {
         if (name == null) {
             throw new IllegalArgumentException("Name must not be null");
         }
@@ -76,10 +76,10 @@ public class JacksonValue implements JsonValue {
         final JsonNode node = _node.get(name);
 
         if (node == null) {
-            return JsonValue.NONE;
+            return JsonElement.NONE;
         }
 
-        return new JacksonValue(_mapper, node);
+        return new JacksonElement(_mapper, node);
     }
 
     @Override
@@ -128,12 +128,12 @@ public class JacksonValue implements JsonValue {
     }
 
     @Override
-    public <T> T adapt(final Class<T> adaptClass) {
-        if (adaptClass == null) {
-            throw new IllegalArgumentException("Adapt class must not be null");
+    public <T> T unwrap(final Class<T> type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Type must not be null");
         }
 
-        return adaptClass.cast(_node);
+        return type.cast(_node);
     }
 
     @Override
@@ -146,13 +146,13 @@ public class JacksonValue implements JsonValue {
     }
 
     @Override
-    public <T> T toObject(final Class<T> objectClass) {
-        if (objectClass == null) {
-            throw new IllegalArgumentException("Object class must not be null");
+    public <T> T toObject(final Class<T> type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Type must not be null");
         }
 
         try {
-            return _mapper.convertValue(_node, objectClass);
+            return _mapper.convertValue(_node, type);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

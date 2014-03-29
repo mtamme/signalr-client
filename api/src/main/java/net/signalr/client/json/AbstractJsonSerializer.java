@@ -27,20 +27,31 @@ import java.lang.reflect.Constructor;
 public abstract class AbstractJsonSerializer implements JsonSerializer {
 
     @Override
-    public final JsonValue fromJson(final String json) {
-        final StringReader buffer = new StringReader(json);
+    public final JsonElement fromJson(final String text) {
+        if (text == null) {
+            throw new IllegalArgumentException("Text must not be null");
+        }
 
-        try (final JsonReader reader = createReader(buffer)) {
-            return reader.readValue();
+        final StringReader input = new StringReader(text);
+
+        try (final JsonReader reader = createReader(input)) {
+            return reader.readElement();
         }
     }
 
     @Override
-    public final <T extends JsonReadable> T fromJson(final String json, final Class<T> objectClass) {
+    public final <T extends JsonReadable> T fromJson(final String text, final Class<T> type) {
+        if (text == null) {
+            throw new IllegalArgumentException("Text must not be null");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Type must not be null");
+        }
+
         final T object;
 
         try {
-            final Constructor<T> constructor = objectClass.getDeclaredConstructor();
+            final Constructor<T> constructor = type.getDeclaredConstructor();
 
             constructor.setAccessible(true);
             object = constructor.newInstance();
@@ -48,9 +59,9 @@ public abstract class AbstractJsonSerializer implements JsonSerializer {
             throw new IllegalArgumentException(e);
         }
 
-        final StringReader buffer = new StringReader(json);
+        final StringReader input = new StringReader(text);
 
-        try (final JsonReader reader = createReader(buffer)) {
+        try (final JsonReader reader = createReader(input)) {
             object.readJson(reader);
         }
 
@@ -59,12 +70,16 @@ public abstract class AbstractJsonSerializer implements JsonSerializer {
 
     @Override
     public final String toJson(final JsonWriteable object) {
-        final StringWriter buffer = new StringWriter();
+        if (object == null) {
+            throw new IllegalArgumentException("Object must not be null");
+        }
 
-        try (final JsonWriter writer = createWriter(buffer)) {
+        final StringWriter output = new StringWriter();
+
+        try (final JsonWriter writer = createWriter(output)) {
             object.writeJson(writer);
         }
 
-        return buffer.toString();
+        return output.toString();
     }
 }

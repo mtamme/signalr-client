@@ -23,9 +23,9 @@ package net.signalr.client.json;
 public interface JsonReadable {
 
     /**
-     * Reads from a JSON reader.
+     * Reads from a reader.
      * 
-     * @param reader The JSON reader.
+     * @param reader The reader.
      */
     void readJson(JsonReader reader);
 }

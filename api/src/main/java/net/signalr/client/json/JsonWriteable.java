@@ -23,9 +23,9 @@ package net.signalr.client.json;
 public interface JsonWriteable {
 
     /**
-     * Writes to the JSON writer.
+     * Writes to the writer.
      * 
-     * @param writer The JSON writer.
+     * @param writer The writer.
      */
     void writeJson(JsonWriter writer);
 }

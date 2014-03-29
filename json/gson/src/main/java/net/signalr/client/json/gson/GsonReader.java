@@ -18,12 +18,10 @@
 package net.signalr.client.json.gson;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
-import net.signalr.client.json.JsonValue;
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReader;
-import net.signalr.client.json.JsonToken;
 
 /**
  * Represents a GSON based JSON reader.
@@ -36,7 +34,7 @@ final class GsonReader implements JsonReader {
     private final Gson _gson;
 
     /**
-     * The underlying JSON reader.
+     * The underlying reader.
      */
     private final com.google.gson.stream.JsonReader _reader;
 
@@ -44,7 +42,7 @@ final class GsonReader implements JsonReader {
      * Initializes a new instance of the {@link GsonReader}.
      * 
      * @param hson The GSON instance.
-     * @param reader The underlying JSON reader.
+     * @param reader The underlying reader.
      */
     public GsonReader(final Gson gson, final com.google.gson.stream.JsonReader reader) {
         if (gson == null) {
@@ -104,42 +102,6 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public JsonToken getToken() {
-        final com.google.gson.stream.JsonToken token;
-
-        try {
-            token = _reader.peek();
-        } catch (final Exception e) {
-            throw new JsonException(e);
-        }
-
-        switch (token) {
-        case BEGIN_ARRAY:
-            return JsonToken.BEGIN_ARRAY;
-        case END_ARRAY:
-            return JsonToken.END_ARRAY;
-        case BEGIN_OBJECT:
-            return JsonToken.BEGIN_OBJECT;
-        case END_OBJECT:
-            return JsonToken.END_OBJECT;
-        case NAME:
-            return JsonToken.NAME;
-        case STRING:
-            return JsonToken.STRING;
-        case NUMBER:
-            return JsonToken.NUMBER;
-        case BOOLEAN:
-            return JsonToken.BOOLEAN;
-        case NULL:
-            return JsonToken.NULL;
-        case END_DOCUMENT:
-            return JsonToken.END_DOCUMENT;
-        default:
-            return JsonToken.NONE;
-        }
-    }
-
-    @Override
     public String getName() {
         try {
             return _reader.nextName();
@@ -149,26 +111,26 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
-    public JsonValue readValue() {
-        final JsonElement element;
+    public JsonElement readElement() {
+        final com.google.gson.JsonElement element;
 
         try {
-            element = _gson.fromJson(_reader, JsonElement.class);
+            element = _gson.fromJson(_reader, com.google.gson.JsonElement.class);
         } catch (final Exception e) {
             throw new JsonException(e);
         }
 
-        return new GsonValue(_gson, element);
+        return new GsonElement(_gson, element);
     }
 
     @Override
-    public <T> T readObject(final Class<T> objectClass) {
-        if (objectClass == null) {
-            throw new IllegalArgumentException("Object class must not be null");
+    public <T> T readObject(final Class<T> type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Type must not be null");
         }
 
         try {
-            return _gson.fromJson(_reader, objectClass);
+            return _gson.fromJson(_reader, type);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

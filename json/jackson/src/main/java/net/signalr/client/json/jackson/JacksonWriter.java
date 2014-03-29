@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.signalr.client.json.JsonValue;
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonWriter;
 
@@ -36,7 +36,7 @@ final class JacksonWriter implements JsonWriter {
     private final ObjectMapper _mapper;
 
     /**
-     * The underlying JSON generator.
+     * The underlying generator.
      */
     private final JsonGenerator _generator;
 
@@ -44,7 +44,7 @@ final class JacksonWriter implements JsonWriter {
      * Initializes a new instance of the {@link JacksonWriter}.
      * 
      * @param mapper The object mapper.
-     * @param generator The underlying JSON generator.
+     * @param generator The underlying generator.
      */
     public JacksonWriter(final ObjectMapper mapper, final JsonGenerator generator) {
         if (mapper == null) {
@@ -108,15 +108,15 @@ final class JacksonWriter implements JsonWriter {
     }
 
     @Override
-    public void writeValue(final JsonValue value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value must not be null");
+    public void writeElement(final JsonElement element) {
+        if (element == null) {
+            throw new IllegalArgumentException("Element must not be null");
         }
 
-        final JsonNode node = value.adapt(JsonNode.class);
+        final JsonNode object = element.unwrap(JsonNode.class);
 
         try {
-            _mapper.writeTree(_generator, node);
+            _mapper.writeTree(_generator, object);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

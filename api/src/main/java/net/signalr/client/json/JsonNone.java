@@ -18,17 +18,17 @@
 package net.signalr.client.json;
 
 /**
- * Represents a JSON none value.
+ * Represents a JSON none element.
  */
-final class JsonNone implements JsonValue {
+final class JsonNone implements JsonElement {
 
     @Override
-    public JsonValue get(final int index) {
+    public JsonElement get(final int index) {
         return this;
     }
 
     @Override
-    public JsonValue get(final String name) {
+    public JsonElement get(final String name) {
         return this;
     }
 
@@ -63,12 +63,12 @@ final class JsonNone implements JsonValue {
     }
 
     @Override
-    public <T> T adapt(final Class<T> adaptClass) {
+    public <T> T unwrap(final Class<T> type) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <T> T toObject(final Class<T> objectClass) {
+    public <T> T toObject(final Class<T> type) {
         throw new UnsupportedOperationException();
     }
 

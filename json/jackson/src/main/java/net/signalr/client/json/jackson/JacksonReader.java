@@ -18,13 +18,13 @@
 package net.signalr.client.json.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.signalr.client.json.JsonValue;
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReader;
-import net.signalr.client.json.JsonToken;
 
 /**
  * Represents a Jackson based JSON reader.
@@ -37,7 +37,7 @@ final class JacksonReader implements JsonReader {
     private final ObjectMapper _mapper;
 
     /**
-     * The underlying JSON parser.
+     * The underlying parser.
      */
     private final JsonParser _parser;
 
@@ -45,7 +45,7 @@ final class JacksonReader implements JsonReader {
      * Initializes a new instance of the {@link JacksonReader}.
      * 
      * @param mapper The object mapper.
-     * @param parser The underlying JSON parser.
+     * @param parser The underlying parser.
      */
     public JacksonReader(final ObjectMapper mapper, final JsonParser parser) {
         if (mapper == null) {
@@ -61,7 +61,7 @@ final class JacksonReader implements JsonReader {
 
     @Override
     public void readBeginArray() {
-        final com.fasterxml.jackson.core.JsonToken token;
+        final JsonToken token;
 
         try {
             token = _parser.nextToken();
@@ -70,14 +70,14 @@ final class JacksonReader implements JsonReader {
             throw new JsonException(e);
         }
 
-        if (token != com.fasterxml.jackson.core.JsonToken.START_ARRAY) {
+        if (token != JsonToken.START_ARRAY) {
             throw new JsonException("Expected START_ARRAY but was " + token);
         }
     }
 
     @Override
     public void readEndArray() {
-        final com.fasterxml.jackson.core.JsonToken token;
+        final JsonToken token;
 
         try {
             if (_parser.hasCurrentToken()) {
@@ -90,14 +90,14 @@ final class JacksonReader implements JsonReader {
             throw new JsonException(e);
         }
 
-        if (token != com.fasterxml.jackson.core.JsonToken.END_ARRAY) {
+        if (token != JsonToken.END_ARRAY) {
             throw new JsonException("Expected END_ARRAY but was " + token);
         }
     }
 
     @Override
     public void readBeginObject() {
-        final com.fasterxml.jackson.core.JsonToken token;
+        final JsonToken token;
 
         try {
             token = _parser.nextToken();
@@ -106,14 +106,14 @@ final class JacksonReader implements JsonReader {
             throw new JsonException(e);
         }
 
-        if (token != com.fasterxml.jackson.core.JsonToken.START_OBJECT) {
+        if (token != JsonToken.START_OBJECT) {
             throw new JsonException("Expected START_OBJECT but was " + token);
         }
     }
 
     @Override
     public void readEndObject() {
-        final com.fasterxml.jackson.core.JsonToken token;
+        final JsonToken token;
 
         try {
             if (_parser.hasCurrentToken()) {
@@ -126,14 +126,14 @@ final class JacksonReader implements JsonReader {
             throw new JsonException(e);
         }
 
-        if (token != com.fasterxml.jackson.core.JsonToken.END_OBJECT) {
+        if (token != JsonToken.END_OBJECT) {
             throw new JsonException("Expected END_OBJECT but was " + token);
         }
     }
 
     @Override
     public boolean read() {
-        final com.fasterxml.jackson.core.JsonToken token;
+        final JsonToken token;
 
         try {
             token = _parser.nextToken();
@@ -144,57 +144,17 @@ final class JacksonReader implements JsonReader {
         if (token == null) {
             return false;
         }
-        if (token == com.fasterxml.jackson.core.JsonToken.NOT_AVAILABLE) {
+        if (token == JsonToken.NOT_AVAILABLE) {
             return false;
         }
-        if (token == com.fasterxml.jackson.core.JsonToken.END_ARRAY) {
+        if (token == JsonToken.END_ARRAY) {
             return false;
         }
-        if (token == com.fasterxml.jackson.core.JsonToken.END_OBJECT) {
+        if (token == JsonToken.END_OBJECT) {
             return false;
         }
 
         return true;
-    }
-
-    @Override
-    public JsonToken getToken() {
-        final com.fasterxml.jackson.core.JsonToken token;
-
-        try {
-            token = _parser.getCurrentToken();
-        } catch (final Exception e) {
-            throw new JsonException(e);
-        }
-
-        if (token == null) {
-            return JsonToken.END_DOCUMENT;
-        }
-
-        switch (token) {
-        case START_ARRAY:
-            return JsonToken.BEGIN_ARRAY;
-        case END_ARRAY:
-            return JsonToken.END_ARRAY;
-        case START_OBJECT:
-            return JsonToken.BEGIN_OBJECT;
-        case END_OBJECT:
-            return JsonToken.END_OBJECT;
-        case FIELD_NAME:
-            return JsonToken.NAME;
-        case VALUE_STRING:
-            return JsonToken.STRING;
-        case VALUE_NUMBER_INT:
-        case VALUE_NUMBER_FLOAT:
-            return JsonToken.NUMBER;
-        case VALUE_TRUE:
-        case VALUE_FALSE:
-            return JsonToken.BOOLEAN;
-        case VALUE_NULL:
-            return JsonToken.NULL;
-        default:
-            return JsonToken.NONE;
-        }
     }
 
     @Override
@@ -207,7 +167,7 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
-    public JsonValue readValue() {
+    public JsonElement readElement() {
         final JsonNode node;
 
         try {
@@ -218,20 +178,20 @@ final class JacksonReader implements JsonReader {
             throw new JsonException(e);
         }
 
-        return new JacksonValue(_mapper, node);
+        return new JacksonElement(_mapper, node);
     }
 
     @Override
-    public <T> T readObject(final Class<T> objectClass) {
-        if (objectClass == null) {
-            throw new IllegalArgumentException("Object class must not be null");
+    public <T> T readObject(final Class<T> type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Type must not be null");
         }
 
         final T object;
 
         try {
             _parser.nextToken();
-            object = _mapper.readValue(_parser, objectClass);
+            object = _mapper.readValue(_parser, type);
             _parser.clearCurrentToken();
         } catch (final Exception e) {
             throw new JsonException(e);
@@ -272,7 +232,7 @@ final class JacksonReader implements JsonReader {
 
     @Override
     public void readNull() {
-        final com.fasterxml.jackson.core.JsonToken token;
+        final JsonToken token;
 
         try {
             token = _parser.nextToken();
@@ -281,7 +241,7 @@ final class JacksonReader implements JsonReader {
             throw new JsonException(e);
         }
 
-        if (token != com.fasterxml.jackson.core.JsonToken.VALUE_NULL) {
+        if (token != JsonToken.VALUE_NULL) {
             throw new JsonException("Expected VALUE_NULL but was " + token);
         }
     }

@@ -46,8 +46,8 @@ public final class GsonWriterTest {
     @Test
     public void writeEmptyObjectTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -55,14 +55,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("{}"));
+        assertThat(output.toString(), is("{}"));
     }
 
     @Test
     public void writeObjectWithNullValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -72,14 +72,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("{\"A\":null}"));
+        assertThat(output.toString(), is("{\"A\":null}"));
     }
 
     @Test
     public void writeObjectWithBooleanValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -89,14 +89,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("{\"A\":true}"));
+        assertThat(output.toString(), is("{\"A\":true}"));
     }
 
     @Test
     public void writeObjectWithIntValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -106,14 +106,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("{\"A\":1}"));
+        assertThat(output.toString(), is("{\"A\":1}"));
     }
 
     @Test
     public void writeObjectWithLongValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -123,14 +123,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("{\"A\":1}"));
+        assertThat(output.toString(), is("{\"A\":1}"));
     }
 
     @Test
     public void writeObjectWithDoubleValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -140,14 +140,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("{\"A\":1.0}"));
+        assertThat(output.toString(), is("{\"A\":1.0}"));
     }
 
     @Test
     public void writeObjectWithStringValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -157,14 +157,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("{\"A\":\"1\"}"));
+        assertThat(output.toString(), is("{\"A\":\"1\"}"));
     }
 
     @Test
     public void writeObjectWithIntegerObjectTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -174,14 +174,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("{\"A\":1}"));
+        assertThat(output.toString(), is("{\"A\":1}"));
     }
 
     @Test
     public void writeObjectWithMapObjectTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
         final Map<String, Object> value = new HashMap<String, Object>();
 
         value.put("A", "1");
@@ -195,14 +195,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("{\"A\":{\"A\":\"1\",\"B\":true}}"));
+        assertThat(output.toString(), is("{\"A\":{\"A\":\"1\",\"B\":true}}"));
     }
 
     @Test
     public void writeEmptyArrayTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -210,14 +210,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("[]"));
+        assertThat(output.toString(), is("[]"));
     }
 
     @Test
     public void writeArrayWithNullValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -226,14 +226,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("[null]"));
+        assertThat(output.toString(), is("[null]"));
     }
 
     @Test
     public void writeArrayWithBooleanValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -242,14 +242,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("[true]"));
+        assertThat(output.toString(), is("[true]"));
     }
 
     @Test
     public void writeArrayWithIntValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -258,14 +258,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("[1]"));
+        assertThat(output.toString(), is("[1]"));
     }
 
     @Test
     public void writeArrayWithLongValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -274,14 +274,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("[1]"));
+        assertThat(output.toString(), is("[1]"));
     }
 
     @Test
     public void writeArrayWithDoubleValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -290,14 +290,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("[1.0]"));
+        assertThat(output.toString(), is("[1.0]"));
     }
 
     @Test
     public void writeArrayWithStringValueTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -306,14 +306,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("[\"1\"]"));
+        assertThat(output.toString(), is("[\"1\"]"));
     }
 
     @Test
     public void writeArrayWithIntegerObjectTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -322,14 +322,14 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("[1]"));
+        assertThat(output.toString(), is("[1]"));
     }
 
     @Test
     public void writeArrayWithMapObjectTest() {
         // Arrange
-        final StringWriter json = new StringWriter();
-        final JsonWriter writer = createWriter(json);
+        final StringWriter output = new StringWriter();
+        final JsonWriter writer = createWriter(output);
         final Map<String, Object> value = new HashMap<String, Object>();
 
         value.put("A", "1");
@@ -342,6 +342,6 @@ public final class GsonWriterTest {
         writer.close();
 
         // Assert
-        assertThat(json.toString(), is("[{\"A\":\"1\",\"B\":true}]"));
+        assertThat(output.toString(), is("[{\"A\":\"1\",\"B\":true}]"));
     }
 }

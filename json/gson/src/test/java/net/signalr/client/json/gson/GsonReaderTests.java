@@ -28,7 +28,7 @@ import java.util.Map;
 
 import net.signalr.client.json.JsonReader;
 import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.JsonValue;
+import net.signalr.client.json.JsonElement;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -189,7 +189,7 @@ public final class GsonReaderTests {
     public void readObjectWithValueTest() {
         // Arrange
         final JsonReader reader = createReader("{\"A\":1}");
-        JsonValue value = null;
+        JsonElement element = null;
 
         // Act
         reader.readBeginObject();
@@ -197,21 +197,21 @@ public final class GsonReaderTests {
             final String name = reader.getName();
 
             if (name.equalsIgnoreCase("A")) {
-                value = reader.readValue();
+                element = reader.readElement();
             }
         }
         reader.readEndObject();
 
         // Assert
-        assertNotNull(value);
-        assertThat(value.getInt(0), is(1));
+        assertNotNull(element);
+        assertThat(element.getInt(0), is(1));
     }
 
     @Test
-    public void readObjectWithPrimitiveValueTest() {
+    public void readObjectWithIntegerElementTest() {
         // Arrange
         final JsonReader reader = createReader("{\"A\":1}");
-        JsonValue value = null;
+        JsonElement element = null;
 
         // Act
         reader.readBeginObject();
@@ -219,29 +219,29 @@ public final class GsonReaderTests {
             final String name = reader.getName();
 
             if (name.equalsIgnoreCase("A")) {
-                value = reader.readValue();
+                element = reader.readElement();
             }
         }
         reader.readEndObject();
 
         // Assert
-        assertNotNull(value);
-        assertThat(value.getInt(0), is(1));
+        assertNotNull(element);
+        assertThat(element.getInt(0), is(1));
     }
 
     @Test
-    public void readObjectWithObjectValueTest() {
+    public void readObjectWithObjectElementsTest() {
         // Arrange
         final JsonReader reader = createReader("{\"A\":{\"A\":1},\"B\":{\"B\":2}}");
-        final Map<String, JsonValue> values = new HashMap<String, JsonValue>();
+        final Map<String, JsonElement> values = new HashMap<String, JsonElement>();
 
         // Act
         reader.readBeginObject();
         while (reader.read()) {
             final String name = reader.getName();
-            final JsonValue value = reader.readValue();
+            final JsonElement element = reader.readElement();
 
-            values.put(name, value);
+            values.put(name, element);
         }
         reader.readEndObject();
 
@@ -254,10 +254,10 @@ public final class GsonReaderTests {
     }
 
     @Test
-    public void readObjectWithArrayValueTest() {
+    public void readObjectWithArrayElementTest() {
         // Arrange
         final JsonReader reader = createReader("{\"A\":[1,2]}");
-        JsonValue value = null;
+        JsonElement element = null;
 
         // Act
         reader.readBeginObject();
@@ -265,22 +265,22 @@ public final class GsonReaderTests {
             final String name = reader.getName();
 
             if (name.equalsIgnoreCase("A")) {
-                value = reader.readValue();
+                element = reader.readElement();
             }
         }
         reader.readEndObject();
 
         // Assert
-        assertNotNull(value);
-        assertThat(value.size(), is(2));
-        assertThat(value.get(0).getInt(0), is(1));
+        assertNotNull(element);
+        assertThat(element.size(), is(2));
+        assertThat(element.get(0).getInt(0), is(1));
     }
 
     @Test
     public void readObjectWithIntegerObjectTest() {
         // Arrange
         final JsonReader reader = createReader("{\"A\":1}");
-        Integer value = null;
+        Integer object = null;
 
         // Act
         reader.readBeginObject();
@@ -288,14 +288,14 @@ public final class GsonReaderTests {
             final String name = reader.getName();
 
             if (name.equalsIgnoreCase("A")) {
-                value = reader.readObject(Integer.class);
+                object = reader.readObject(Integer.class);
             }
         }
         reader.readEndObject();
 
         // Assert
-        assertNotNull(value);
-        assertThat(value, is(1));
+        assertNotNull(object);
+        assertThat(object, is(1));
     }
 
     @Test
@@ -303,7 +303,7 @@ public final class GsonReaderTests {
     public void readObjectWithMapObjectTest() {
         // Arrange
         final JsonReader reader = createReader("{\"A\":{\"A\":\"1\",\"B\":true}}");
-        Map<String, Object> value = null;
+        Map<String, Object> object = null;
 
         // Act
         reader.readBeginObject();
@@ -311,16 +311,16 @@ public final class GsonReaderTests {
             final String name = reader.getName();
 
             if (name.equalsIgnoreCase("A")) {
-                value = reader.readObject(Map.class);
+                object = reader.readObject(Map.class);
             }
         }
         reader.readEndObject();
 
         // Assert
-        assertNotNull(value);
-        assertThat(value.size(), is(2));
-        assertThat(value.get("A"), is((Object) "1"));
-        assertThat(value.get("B"), is((Object) true));
+        assertNotNull(object);
+        assertThat(object.size(), is(2));
+        assertThat(object.get("A"), is((Object) "1"));
+        assertThat(object.get("B"), is((Object) true));
     }
 
     @Test
@@ -422,72 +422,72 @@ public final class GsonReaderTests {
     }
 
     @Test
-    public void readArrayWithPrimitiveValueTest() {
+    public void readArrayWithIntegerElementTest() {
         // Arrange
         final JsonReader reader = createReader("[1]");
-        final JsonValue value;
+        final JsonElement element;
 
         // Act
         reader.readBeginArray();
-        value = reader.readValue();
+        element = reader.readElement();
         reader.readEndArray();
 
         // Assert
-        assertThat(value.getInt(0), is(1));
+        assertThat(element.getInt(0), is(1));
     }
 
     @Test
-    public void readArrayWithObjectValueTest() {
+    public void readArrayWithObjectElementsTest() {
         // Arrange
         final JsonReader reader = createReader("[{\"A\":1},{\"B\":2}]");
-        final List<JsonValue> values = new ArrayList<JsonValue>();
+        final List<JsonElement> elements = new ArrayList<JsonElement>();
 
         // Act
         reader.readBeginArray();
         while (reader.read()) {
-            final JsonValue value = reader.readValue();
+            final JsonElement element = reader.readElement();
 
-            values.add(value);
+            elements.add(element);
         }
         reader.readEndArray();
 
         // Assert
-        assertThat(values.size(), is(2));
-        assertThat(values.get(0).size(), is(0));
-        assertThat(values.get(0).get("A").getInt(0), is(1));
-        assertThat(values.get(1).size(), is(0));
-        assertThat(values.get(1).get("B").getInt(0), is(2));
+        assertThat(elements.size(), is(2));
+        assertThat(elements.get(0).size(), is(0));
+        assertThat(elements.get(0).get("A").getInt(0), is(1));
+        assertThat(elements.get(1).size(), is(0));
+        assertThat(elements.get(1).get("B").getInt(0), is(2));
     }
 
     @Test
-    public void readArrayWithArrayValueTest() {
+    public void readArrayWithArrayElementTest() {
         // Arrange
         final JsonReader reader = createReader("[[1,2]]");
-        final JsonValue value;
+        final JsonElement element;
 
         // Act
         reader.readBeginArray();
-        value = reader.readValue();
+        element = reader.readElement();
         reader.readEndArray();
 
         // Assert
-        assertThat(value.size(), is(2));
-        assertThat(value.get(0).getInt(0), is(1));
+        assertThat(element.size(), is(2));
+        assertThat(element.get(0).getInt(0), is(1));
     }
 
     @Test
     public void readArrayWithIntegerObjectTest() {
         // Arrange
         final JsonReader reader = createReader("[1]");
-        final Integer value;
+        final Integer object;
 
         // Act
         reader.readBeginArray();
-        value = reader.readObject(Integer.class);
+        object = reader.readObject(Integer.class);
         reader.readEndArray();
 
         // Assert
-        assertThat(value, is(1));
+        assertThat(object, is(1));
     }
 
     @Test
@@ -495,16 +495,16 @@ public final class GsonReaderTests {
     public void readArrayWithMapObjectTest() {
         // Arrange
         final JsonReader reader = createReader("[{\"A\":\"1\",\"B\":true}]");
-        final Map<String, Object> value;
+        final Map<String, Object> object;
 
         // Act
         reader.readBeginArray();
-        value = reader.readObject(Map.class);
+        object = reader.readObject(Map.class);
         reader.readEndArray();
 
         // Assert
-        assertThat(value.size(), is(2));
-        assertThat(value.get("A"), is((Object) "1"));
-        assertThat(value.get("B"), is((Object) true));
+        assertThat(object.size(), is(2));
+        assertThat(object.get("A"), is((Object) "1"));
+        assertThat(object.get("B"), is((Object) true));
     }
 }
