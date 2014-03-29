@@ -77,11 +77,14 @@ final class GsonElement implements JsonElement {
         if (!_element.isJsonArray()) {
             return JsonElement.NONE;
         }
-        final JsonArray array = (JsonArray) _element;
-        final com.google.gson.JsonElement element = array.get(index);
 
-        if (element == null) {
-            return JsonElement.NONE;
+        final JsonArray array = (JsonArray) _element;
+        final com.google.gson.JsonElement element;
+
+        try {
+            element = array.get(index);
+        } catch (final Exception e) {
+            throw new IndexOutOfBoundsException(String.valueOf(index));
         }
 
         return new GsonElement(_gson, element);
@@ -92,10 +95,10 @@ final class GsonElement implements JsonElement {
         if (name == null) {
             throw new IllegalArgumentException("Name must not be null");
         }
-
         if (!_element.isJsonObject()) {
             return JsonElement.NONE;
         }
+
         final JsonObject object = (JsonObject) _element;
         final com.google.gson.JsonElement element = object.get(name);
 

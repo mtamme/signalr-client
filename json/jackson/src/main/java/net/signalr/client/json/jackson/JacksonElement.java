@@ -73,10 +73,14 @@ public class JacksonElement implements JsonElement {
 
     @Override
     public JsonElement get(final int index) {
+        if (!_node.isArray()) {
+            return JsonElement.NONE;
+        }
+
         final JsonNode node = _node.get(index);
 
         if (node == null) {
-            return JsonElement.NONE;
+            throw new IndexOutOfBoundsException(String.valueOf(index));
         }
 
         return new JacksonElement(_mapper, node);
@@ -86,6 +90,9 @@ public class JacksonElement implements JsonElement {
     public JsonElement get(final String name) {
         if (name == null) {
             throw new IllegalArgumentException("Name must not be null");
+        }
+        if (!_node.isObject()) {
+            return JsonElement.NONE;
         }
 
         final JsonNode node = _node.get(name);

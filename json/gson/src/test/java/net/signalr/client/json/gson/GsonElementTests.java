@@ -18,7 +18,6 @@
 package net.signalr.client.json.gson;
 
 import static org.junit.Assert.*;
-
 import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonSerializer;
 
@@ -53,44 +52,188 @@ public final class GsonElementTests {
 
         // Act
         // Assert
+        assertNotNull(element);
         assertFalse(element.isArray());
         assertFalse(element.isObject());
         assertFalse(element.isValue());
     }
 
     @Test
-    public void emptyObjectTest() {
+    public void isObjectWithEmptyObjectTest() {
         // Arrange
         final JsonElement element = fromJson("{}");
 
         // Act
         // Assert
+        assertNotNull(element);
         assertFalse(element.isArray());
         assertTrue(element.isObject());
         assertFalse(element.isValue());
     }
 
     @Test
-    public void emptyArrayTest() {
+    public void isArrayWithEmptyArrayTest() {
         // Arrange
         final JsonElement element = fromJson("[]");
 
         // Act
         // Assert
+        assertNotNull(element);
         assertTrue(element.isArray());
         assertFalse(element.isObject());
         assertFalse(element.isValue());
     }
 
     @Test
-    public void integerValueTest() {
+    public void isValueWithIntegerValueTest() {
         // Arrange
         final JsonElement element = fromJson("1");
 
         // Act
         // Assert
+        assertNotNull(element);
         assertFalse(element.isArray());
         assertFalse(element.isObject());
         assertTrue(element.isValue());
+    }
+
+    @Test
+    public void getWithIndexAndArrayTest() {
+        // Arrange
+        final JsonElement array = fromJson("[[1]]");
+
+        // Act
+        final JsonElement element = array.get(0);
+
+        // Assert
+        assertNotNull(element);
+        assertTrue(element.isArray());
+        assertFalse(element.isObject());
+        assertFalse(element.isValue());
+    }
+
+    @Test
+    public void getWithIndexAndObjectTest() {
+        // Arrange
+        final JsonElement array = fromJson("[{\"A\":1}]");
+
+        // Act
+        final JsonElement element = array.get(0);
+
+        // Assert
+        assertNotNull(element);
+        assertFalse(element.isArray());
+        assertTrue(element.isObject());
+        assertFalse(element.isValue());
+    }
+
+    @Test
+    public void getWithIndexAndValueTest() {
+        // Arrange
+        final JsonElement array = fromJson("[1]");
+
+        // Act
+        final JsonElement element = array.get(0);
+
+        // Assert
+        assertNotNull(element);
+        assertFalse(element.isArray());
+        assertFalse(element.isObject());
+        assertTrue(element.isValue());
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void getWithInvalidIndexTest() {
+        // Arrange
+        final JsonElement array = fromJson("[1]");
+
+        // Act
+        // Assert
+        array.get(-1);
+    }
+
+    @Test
+    public void getWithNameAndArrayTest() {
+        // Arrange
+        final JsonElement object = fromJson("{\"A\":[1]}");
+
+        // Act
+        final JsonElement element = object.get("A");
+
+        // Assert
+        assertNotNull(element);
+        assertTrue(element.isArray());
+        assertFalse(element.isObject());
+        assertFalse(element.isValue());
+    }
+
+    @Test
+    public void getWithNameAndObjectTest() {
+        // Arrange
+        final JsonElement object = fromJson("{\"A\":{\"A\":1}}");
+
+        // Act
+        final JsonElement element = object.get("A");
+
+        // Assert
+        assertNotNull(element);
+        assertFalse(element.isArray());
+        assertTrue(element.isObject());
+        assertFalse(element.isValue());
+    }
+
+    @Test
+    public void getWithNameAndValueTest() {
+        // Arrange
+        final JsonElement object = fromJson("{\"A\":1}");
+
+        // Act
+        final JsonElement element = object.get("A");
+
+        // Assert
+        assertNotNull(element);
+        assertFalse(element.isArray());
+        assertFalse(element.isObject());
+        assertTrue(element.isValue());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getWithNullNameTest() {
+        // Arrange
+        final JsonElement object = fromJson("{\"A\":1}");
+
+        // Act
+        // Assert
+        object.get(null);
+    }
+
+    @Test
+    public void getWithEmptyNameTest() {
+        // Arrange
+        final JsonElement object = fromJson("{\"A\":1}");
+
+        // Act
+        final JsonElement element = object.get("");
+
+        // Assert
+        assertNotNull(element);
+        assertFalse(element.isArray());
+        assertFalse(element.isObject());
+        assertFalse(element.isValue());
+    }
+
+    @Test
+    public void getWithUnknownNameTest() {
+        // Arrange
+        final JsonElement object = fromJson("{\"A\":1}");
+
+        // Act
+        final JsonElement element = object.get("B");
+
+        // Assert
+        assertNotNull(element);
+        assertFalse(element.isArray());
+        assertFalse(element.isObject());
+        assertFalse(element.isValue());
     }
 }
