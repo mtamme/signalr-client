@@ -74,7 +74,7 @@ public class JacksonElement implements JsonElement {
     @Override
     public JsonElement get(final int index) {
         if (!_node.isArray()) {
-            return JsonElement.NONE;
+            throw new IndexOutOfBoundsException(String.valueOf(index));
         }
 
         final JsonNode node = _node.get(index);

@@ -75,7 +75,7 @@ final class GsonElement implements JsonElement {
     @Override
     public JsonElement get(final int index) {
         if (!_element.isJsonArray()) {
-            return JsonElement.NONE;
+            throw new IndexOutOfBoundsException(String.valueOf(index));
         }
 
         final JsonArray array = (JsonArray) _element;
