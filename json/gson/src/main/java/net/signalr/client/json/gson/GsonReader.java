@@ -119,6 +119,9 @@ final class GsonReader implements JsonReader {
         } catch (final Exception e) {
             throw new JsonException(e);
         }
+        if (element == null) {
+            return JsonElement.NONE;
+        }
 
         return new GsonElement(_gson, element);
     }

@@ -177,6 +177,9 @@ final class JacksonReader implements JsonReader {
         } catch (final Exception e) {
             throw new JsonException(e);
         }
+        if (node == null) {
+            return JsonElement.NONE;
+        }
 
         return new JacksonElement(_mapper, node);
     }

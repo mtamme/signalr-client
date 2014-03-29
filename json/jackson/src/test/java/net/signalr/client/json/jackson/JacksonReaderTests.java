@@ -42,8 +42,10 @@ public final class JacksonReaderTests {
         _serializer = new JacksonSerializer();
     }
 
-    private JsonReader createReader(final String json) {
-        return _serializer.createReader(new StringReader(json));
+    private JsonReader createReader(final String text) {
+        final StringReader input = new StringReader(text);
+
+        return _serializer.createReader(input);
     }
 
     @Test
