@@ -18,6 +18,7 @@
 package net.signalr.client.json.jackson;
 
 import static org.junit.Assert.*;
+
 import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonSerializer;
 
