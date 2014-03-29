@@ -52,9 +52,9 @@ public interface JsonReader extends Closeable {
     boolean read();
 
     /**
-     * Returns the current element name.
+     * Returns the current name.
      * 
-     * @return The current element name.
+     * @return The current name.
      */
     String getName();
 
