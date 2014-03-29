@@ -27,6 +27,15 @@ import java.lang.reflect.Constructor;
 public abstract class AbstractJsonSerializer implements JsonSerializer {
 
     @Override
+    public final JsonValue fromJson(final String json) {
+        final StringReader buffer = new StringReader(json);
+
+        try (final JsonReader reader = createReader(buffer)) {
+            return reader.readValue();
+        }
+    }
+
+    @Override
     public final <T extends JsonReadable> T fromJson(final String json, final Class<T> objectClass) {
         final T object;
 

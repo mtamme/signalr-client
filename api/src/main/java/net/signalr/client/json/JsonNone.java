@@ -63,12 +63,17 @@ final class JsonNone implements JsonValue {
     }
 
     @Override
-    public <T> T adapt(final Class<T> clazz) {
-        return null;
+    public <T> T adapt(final Class<T> adaptClass) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public <T> T toObject(final Class<T> clazz) {
-        return null;
+    public <T> T toObject(final Class<T> objectClass) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String toString() {
+        throw new UnsupportedOperationException();
     }
 }

@@ -42,6 +42,14 @@ public interface JsonSerializer {
     JsonWriter createWriter(Writer buffer);
 
     /**
+     * Deserializes a JSON string into a value.
+     * 
+     * @param json The JSON string.
+     * @return The value.
+     */
+    JsonValue fromJson(String json);
+
+    /**
      * Deserializes a JSON string into an object.
      * 
      * @param json The JSON string.

@@ -17,6 +17,8 @@
 
 package net.signalr.client;
 
+import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonValue;
 import net.signalr.client.transport.TransportChannelHandler;
 
 /**
@@ -24,13 +26,19 @@ import net.signalr.client.transport.TransportChannelHandler;
  */
 final class ConnectionHandlerAdapter implements TransportChannelHandler {
 
+    private final ConnectionContext _context;
+
     private final ConnectionHandler _handler;
 
-    public ConnectionHandlerAdapter(final ConnectionHandler handler) {
+    public ConnectionHandlerAdapter(final ConnectionContext context, final ConnectionHandler handler) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null");
+        }
         if (handler == null) {
             throw new IllegalArgumentException("Handler must not be null");
         }
 
+        _context = context;
         _handler = handler;
     }
 
@@ -51,7 +59,19 @@ final class ConnectionHandlerAdapter implements TransportChannelHandler {
 
     @Override
     public void onReceived(final String message) {
-        _handler.onReceived(message);
+        final JsonSerializer serializer = _context.getSerializer();
+        final JsonValue value = serializer.fromJson(message);
+        final String callbackId = value.get("I").getString(null);
+
+        if (callbackId != null) {
+            _handler.onReceived(message);
+        } else {
+            final JsonValue messages = value.get("M");
+
+            for (int i = 0; i < messages.size(); i++) {
+                _handler.onReceived(messages.get(i).toString());
+            }
+        }
     }
 
     @Override
