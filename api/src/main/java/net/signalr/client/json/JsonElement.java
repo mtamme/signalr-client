@@ -28,6 +28,27 @@ public interface JsonElement {
     public static final JsonElement NONE = new JsonNone();
 
     /**
+     * Returns a value indicating whether the element is an array.
+     * 
+     * @return A value indicating whether the element is an array.
+     */
+    boolean isArray();
+
+    /**
+     * Returns a value indicating whether the element is an object.
+     * 
+     * @return A value indicating whether the element is an object.
+     */
+    boolean isObject();
+
+    /**
+     * Returns a value indicating whether the element is a value.
+     * 
+     * @return A value indicating whether the element is a value.
+     */
+    boolean isValue();
+
+    /**
      * Returns the element at the specified index.
      * 
      * @param index The index.

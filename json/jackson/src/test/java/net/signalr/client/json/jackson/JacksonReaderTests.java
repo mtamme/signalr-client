@@ -186,28 +186,6 @@ public final class JacksonReaderTests {
     }
 
     @Test
-    public void readObjectWithValueTest() {
-        // Arrange
-        final JsonReader reader = createReader("{\"A\":1}");
-        JsonElement element = null;
-
-        // Act
-        reader.readBeginObject();
-        while (reader.read()) {
-            final String name = reader.getName();
-
-            if (name.equalsIgnoreCase("A")) {
-                element = reader.readElement();
-            }
-        }
-        reader.readEndObject();
-
-        // Assert
-        assertNotNull(element);
-        assertThat(element.getInt(0), is(1));
-    }
-
-    @Test
     public void readObjectWithIntegerElementTest() {
         // Arrange
         final JsonReader reader = createReader("{\"A\":1}");
@@ -226,6 +204,7 @@ public final class JacksonReaderTests {
 
         // Assert
         assertNotNull(element);
+        assertTrue(element.isValue());
         assertThat(element.getInt(0), is(1));
     }
 
@@ -233,7 +212,7 @@ public final class JacksonReaderTests {
     public void readObjectWithObjectElementsTest() {
         // Arrange
         final JsonReader reader = createReader("{\"A\":{\"A\":1},\"B\":{\"B\":2}}");
-        final Map<String, JsonElement> values = new HashMap<String, JsonElement>();
+        final Map<String, JsonElement> elements = new HashMap<String, JsonElement>();
 
         // Act
         reader.readBeginObject();
@@ -241,16 +220,18 @@ public final class JacksonReaderTests {
             final String name = reader.getName();
             final JsonElement element = reader.readElement();
 
-            values.put(name, element);
+            elements.put(name, element);
         }
         reader.readEndObject();
 
         // Assert
-        assertThat(values.size(), is(2));
-        assertThat(values.get("A").size(), is(0));
-        assertThat(values.get("A").get("A").getInt(0), is(1));
-        assertThat(values.get("B").size(), is(0));
-        assertThat(values.get("B").get("B").getInt(0), is(2));
+        assertThat(elements.size(), is(2));
+        assertTrue(elements.get("A").isObject());
+        assertThat(elements.get("A").size(), is(0));
+        assertThat(elements.get("A").get("A").getInt(0), is(1));
+        assertTrue(elements.get("B").isObject());
+        assertThat(elements.get("B").size(), is(0));
+        assertThat(elements.get("B").get("B").getInt(0), is(2));
     }
 
     @Test
@@ -272,6 +253,7 @@ public final class JacksonReaderTests {
 
         // Assert
         assertNotNull(element);
+        assertTrue(element.isArray());
         assertThat(element.size(), is(2));
         assertThat(element.get(0).getInt(0), is(1));
     }
@@ -433,6 +415,7 @@ public final class JacksonReaderTests {
         reader.readEndArray();
 
         // Assert
+        assertTrue(element.isValue());
         assertThat(element.getInt(0), is(1));
     }
 
@@ -453,8 +436,10 @@ public final class JacksonReaderTests {
 
         // Assert
         assertThat(elements.size(), is(2));
+        assertTrue(elements.get(0).isObject());
         assertThat(elements.get(0).size(), is(0));
         assertThat(elements.get(0).get("A").getInt(0), is(1));
+        assertTrue(elements.get(1).isObject());
         assertThat(elements.get(1).size(), is(0));
         assertThat(elements.get(1).get("B").getInt(0), is(2));
     }
@@ -471,6 +456,7 @@ public final class JacksonReaderTests {
         reader.readEndArray();
 
         // Assert
+        assertTrue(element.isArray());
         assertThat(element.size(), is(2));
         assertThat(element.get(0).getInt(0), is(1));
     }

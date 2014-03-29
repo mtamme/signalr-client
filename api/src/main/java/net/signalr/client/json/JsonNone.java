@@ -23,6 +23,21 @@ package net.signalr.client.json;
 final class JsonNone implements JsonElement {
 
     @Override
+    public boolean isArray() {
+        return false;
+    }
+
+    @Override
+    public boolean isObject() {
+        return false;
+    }
+
+    @Override
+    public boolean isValue() {
+        return false;
+    }
+
+    @Override
     public JsonElement get(final int index) {
         return this;
     }

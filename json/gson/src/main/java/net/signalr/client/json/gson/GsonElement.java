@@ -58,6 +58,21 @@ final class GsonElement implements JsonElement {
     }
 
     @Override
+    public boolean isArray() {
+        return _element.isJsonArray();
+    }
+
+    @Override
+    public boolean isObject() {
+        return _element.isJsonObject();
+    }
+
+    @Override
+    public boolean isValue() {
+        return _element.isJsonPrimitive() || _element.isJsonNull();
+    }
+
+    @Override
     public JsonElement get(final int index) {
         if (!_element.isJsonArray()) {
             return JsonElement.NONE;

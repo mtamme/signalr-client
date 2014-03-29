@@ -57,6 +57,21 @@ public class JacksonElement implements JsonElement {
     }
 
     @Override
+    public boolean isArray() {
+        return _node.isArray();
+    }
+
+    @Override
+    public boolean isObject() {
+        return _node.isObject();
+    }
+
+    @Override
+    public boolean isValue() {
+        return !_node.isArray() && !_node.isObject();
+    }
+
+    @Override
     public JsonElement get(final int index) {
         final JsonNode node = _node.get(index);
 
