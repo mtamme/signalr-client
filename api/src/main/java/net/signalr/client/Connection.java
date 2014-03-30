@@ -26,26 +26,85 @@ import net.signalr.client.transport.Transport;
  */
 public interface Connection {
 
+    /**
+     * Returns the protocol version.
+     * 
+     * @return The protocol version.
+     */
     String getProtocolVersion();
 
+    /**
+     * Returns the connection URL.
+     * 
+     * @return The connection URL.
+     */
     String getUrl();
 
+    /**
+     * Returns the transport.
+     * 
+     * @return The transport.
+     */
     Transport getTransport();
 
+    /**
+     * Returns the serializer.
+     * 
+     * @return The serializer.
+     */
     JsonSerializer getSerializer();
 
+    /**
+     * Returns a value indicating whether the connection is connected.
+     * 
+     * @return A value indicating whether the connection is connected.
+     */
     boolean isConnected();
 
+    /**
+     * Adds a header.
+     * 
+     * @param name The header name.
+     * @param value The header value.
+     */
     void addHeader(String name, String value);
 
+    /**
+     * Adds a query parameter.
+     * 
+     * @param name The query parameter name.
+     * @param value The query parameter value.
+     */
     void addQueryParameter(String name, String value);
 
+    /**
+     * Sets the connection data.
+     * 
+     * @param connectionData The connection data.
+     */
     void setConnectionData(String connectionData);
 
+    /**
+     * Starts the connection.
+     * 
+     * @param handler The connection handler.
+     * @return The start promise.
+     */
     Promise<Void> start(ConnectionHandler handler);
 
+    /**
+     * Stops the connection.
+     * 
+     * @return The stop promise.
+     */
     Promise<Void> stop();
 
+    /**
+     * Sends a message.
+     * 
+     * @param message The message.
+     * @return The send promise.
+     */
     Promise<Void> send(String message);
 
 }

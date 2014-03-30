@@ -27,12 +27,27 @@ import net.signalr.client.transport.Transport;
  */
 public final class PersistentConnection implements Connection {
 
+    /**
+     * The connection context.
+     */
     private final ConnectionContext _context;
 
+    /**
+     * Initializes a new instance of the {@link PersistentConnection} class.
+     * 
+     * @param url The connection URL.
+     * @param transport The transport.
+     * @param serializer The serializer.
+     */
     public PersistentConnection(final String url, final Transport transport, JsonSerializer serializer) {
         this(new PersistentConnectionContext(url, transport, new TimerScheduler(), serializer));
     }
 
+    /**
+     * Initializes a new instance of the {@link PersistentConnection} class.
+     * 
+     * @param context The connection context.
+     */
     PersistentConnection(final ConnectionContext context) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
