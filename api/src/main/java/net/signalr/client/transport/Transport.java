@@ -25,17 +25,88 @@ import net.signalr.client.concurrent.Promise;
 public interface Transport {
 
     /**
+     * The negotiate URI path.
+     */
+    public static final String NEGOTIATE_PATH = "negotiate";
+
+    /**
+     * The ping URI path.
+     */
+    public static final String PING_PATH = "ping";
+
+    /**
+     * The abort URI path.
+     */
+    public static final String ABORT_PATH = "abort";
+
+    /**
+     * The connect URI path.
+     */
+    public static final String CONNECT_PATH = "connect";
+
+    /**
+     * The reconnect URI path.
+     */
+    public static final String RECONNECT_PATH = "reconnect";
+
+    /**
+     * The protocol version query parameter name.
+     */
+    public static final String PROTOCOL_VERSION_PARAMETER = "clientProtocol";
+
+    /**
+     * The connection data query parameter name.
+     */
+    public static final String CONNECTION_DATA_PARAMETER = "connectionData";
+
+    /**
+     * The connection token query parameter name.
+     */
+    public static final String CONNECTION_TOKEN_PARAMETER = "connectionToken";
+
+    /**
+     * The transport query parameter name.
+     */
+    public static final String TRANSPORT_PARAMETER = "transport";
+
+    /**
      * Returns the transport name.
      * 
      * @return the transport name.
      */
     String getName();
 
+    /**
+     * Negotiates the transport.
+     * 
+     * @param context The transport context.
+     * @return The negotiation response.
+     */
     Promise<NegotiationResponse> negotiate(TransportContext context);
 
+    /**
+     * Connects the transport.
+     * 
+     * @param context The transport context.
+     * @param handler The transport channel handler.
+     * @param reconnect A value indicating whether to reconnect.
+     * @return The transport channel.
+     */
     Promise<TransportChannel> connect(TransportContext context, TransportChannelHandler handler, boolean reconnect);
 
+    /**
+     * Performs a transport ping.
+     * 
+     * @param context The transport context.
+     * @return The ping response.
+     */
     Promise<PingResponse> ping(TransportContext context);
 
+    /**
+     * Aborts the transport.
+     * 
+     * @param context The transport context.
+     * @return The abort response.
+     */
     Promise<Void> abort(TransportContext context);
 }

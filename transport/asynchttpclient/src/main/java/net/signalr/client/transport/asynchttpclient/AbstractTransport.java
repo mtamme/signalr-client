@@ -76,15 +76,15 @@ public abstract class AbstractTransport implements Transport {
             throw new IllegalArgumentException("Context must not be null");
         }
 
-        final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), "negotiate");
+        final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), NEGOTIATE_PATH);
         final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
 
         // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
         boundRequestBuilder.setQueryParameters(new FluentStringsMap(queryParameters));
-        boundRequestBuilder.addQueryParameter("clientProtocol", context.getProtocolVersion());
-        boundRequestBuilder.addQueryParameter("connectionData", context.getConnectionData());
+        boundRequestBuilder.addQueryParameter(PROTOCOL_VERSION_PARAMETER, context.getProtocolVersion());
+        boundRequestBuilder.addQueryParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
 
         // Set headers.
         final Map<String, Collection<String>> headers = context.getHeaders();
@@ -117,14 +117,14 @@ public abstract class AbstractTransport implements Transport {
             throw new IllegalArgumentException("Context must not be null");
         }
 
-        final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), "ping");
+        final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), PING_PATH);
         final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
 
         // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
         boundRequestBuilder.setQueryParameters(new FluentStringsMap(queryParameters));
-        boundRequestBuilder.addQueryParameter("connectionData", context.getConnectionData());
+        boundRequestBuilder.addQueryParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
 
         // Set headers.
         final Map<String, Collection<String>> headers = context.getHeaders();
@@ -157,18 +157,18 @@ public abstract class AbstractTransport implements Transport {
             throw new IllegalArgumentException("Context must not be null");
         }
 
-        final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), "abort");
+        final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), ABORT_PATH);
         final BoundRequestBuilder boundRequestBuilder = _client.preparePost(uriBuilder.toString());
 
         // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
         boundRequestBuilder.setQueryParameters(new FluentStringsMap(queryParameters));
-        boundRequestBuilder.addQueryParameter("connectionToken", context.getConnectionToken());
-        boundRequestBuilder.addQueryParameter("connectionData", context.getConnectionData());
+        boundRequestBuilder.addQueryParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
+        boundRequestBuilder.addQueryParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
         final String transportName = getName();
 
-        boundRequestBuilder.addQueryParameter("transport", transportName);
+        boundRequestBuilder.addQueryParameter(TRANSPORT_PARAMETER, transportName);
 
         // Set headers.
         final Map<String, Collection<String>> headers = context.getHeaders();

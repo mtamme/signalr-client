@@ -38,6 +38,21 @@ import net.signalr.client.util.URIBuilder;
 public final class WebSocketTransport extends AbstractTransport {
 
     /**
+     * The HTTPS URI schema.
+     */
+    private static final String HTTPS_SCHEMA = "https";
+
+    /**
+     * The WS URI schema.
+     */
+    private static final String WS_SCHEMA = "ws";
+
+    /**
+     * The WSS URI schema.
+     */
+    private static final String WSS_SCHEMA = "wss";
+
+    /**
      * The transport name.
      */
     private static final String NAME = "webSockets";
@@ -59,8 +74,8 @@ public final class WebSocketTransport extends AbstractTransport {
             throw new IllegalStateException("WebSockets are not supported by the server");
         }
 
-        final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), reconnect ? "reconnect" : "connect");
-        final String schema = uriBuilder.getSchema().equals("https") ? "wss" : "ws";
+        final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), reconnect ? RECONNECT_PATH : CONNECT_PATH);
+        final String schema = uriBuilder.getSchema().equals(HTTPS_SCHEMA) ? WSS_SCHEMA : WS_SCHEMA;
 
         uriBuilder.setSchema(schema);
         final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
@@ -69,11 +84,11 @@ public final class WebSocketTransport extends AbstractTransport {
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
         boundRequestBuilder.setQueryParameters(new FluentStringsMap(queryParameters));
-        boundRequestBuilder.addQueryParameter("connectionToken", context.getConnectionToken());
-        boundRequestBuilder.addQueryParameter("connectionData", context.getConnectionData());
+        boundRequestBuilder.addQueryParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
+        boundRequestBuilder.addQueryParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
         final String transportName = getName();
 
-        boundRequestBuilder.addQueryParameter("transport", transportName);
+        boundRequestBuilder.addQueryParameter(TRANSPORT_PARAMETER, transportName);
 
         // Set headers.
         final Map<String, Collection<String>> headers = context.getHeaders();
