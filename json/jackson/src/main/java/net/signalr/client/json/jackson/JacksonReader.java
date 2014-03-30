@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonEmpty;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReader;
 
@@ -178,7 +179,7 @@ final class JacksonReader implements JsonReader {
             throw new JsonException(e);
         }
         if (node == null) {
-            return JsonElement.NONE;
+            return JsonEmpty.INSTANCE;
         }
 
         return new JacksonElement(_mapper, node);

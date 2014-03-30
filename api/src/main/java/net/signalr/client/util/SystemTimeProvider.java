@@ -25,16 +25,7 @@ public final class SystemTimeProvider implements TimeProvider {
     /**
      * The singleton instance.
      */
-    private static final SystemTimeProvider instance = new SystemTimeProvider();
-
-    /**
-     * Returns the singleton instance.
-     * 
-     * @return The singleton instance.
-     */
-    public static SystemTimeProvider getInstance() {
-        return instance;
-    }
+    public static final SystemTimeProvider INSTANCE = new SystemTimeProvider();
 
     /**
      * Initializes a new instance of the {@link SystemTimeProvider} class.

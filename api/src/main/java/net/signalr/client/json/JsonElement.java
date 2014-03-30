@@ -23,11 +23,6 @@ package net.signalr.client.json;
 public interface JsonElement {
 
     /**
-     * The none element.
-     */
-    public static final JsonElement NONE = new JsonNone();
-
-    /**
      * Returns a value indicating whether the element is an array.
      * 
      * @return A value indicating whether the element is an array.

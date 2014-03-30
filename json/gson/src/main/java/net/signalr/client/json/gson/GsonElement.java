@@ -17,12 +17,13 @@
 
 package net.signalr.client.json.gson;
 
+import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonEmpty;
+import net.signalr.client.json.JsonException;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
-import net.signalr.client.json.JsonException;
-import net.signalr.client.json.JsonElement;
 
 /**
  * Represents a GSON based JSON element.
@@ -96,14 +97,14 @@ final class GsonElement implements JsonElement {
             throw new IllegalArgumentException("Name must not be null");
         }
         if (!_element.isJsonObject()) {
-            return JsonElement.NONE;
+            return JsonEmpty.INSTANCE;
         }
 
         final JsonObject object = (JsonObject) _element;
         final com.google.gson.JsonElement element = object.get(name);
 
         if (element == null) {
-            return JsonElement.NONE;
+            return JsonEmpty.INSTANCE;
         }
 
         return new GsonElement(_gson, element);

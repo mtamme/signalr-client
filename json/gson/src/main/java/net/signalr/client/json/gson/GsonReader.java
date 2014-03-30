@@ -20,6 +20,7 @@ package net.signalr.client.json.gson;
 import com.google.gson.Gson;
 
 import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonEmpty;
 import net.signalr.client.json.JsonException;
 import net.signalr.client.json.JsonReader;
 
@@ -120,7 +121,7 @@ final class GsonReader implements JsonReader {
             throw new JsonException(e);
         }
         if (element == null) {
-            return JsonElement.NONE;
+            return JsonEmpty.INSTANCE;
         }
 
         return new GsonElement(_gson, element);

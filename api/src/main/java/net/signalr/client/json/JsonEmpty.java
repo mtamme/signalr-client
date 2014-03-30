@@ -18,9 +18,20 @@
 package net.signalr.client.json;
 
 /**
- * Represents a JSON none element.
+ * Represents an empty JSON element.
  */
-final class JsonNone implements JsonElement {
+public final class JsonEmpty implements JsonElement {
+
+    /**
+     * The singleton instance.
+     */
+    public static final JsonEmpty INSTANCE = new JsonEmpty();
+
+    /**
+     * Initializes a new instance of the {@link JsonEmpty} class.
+     */
+    private JsonEmpty() {
+    }
 
     @Override
     public boolean isArray() {
@@ -89,12 +100,12 @@ final class JsonNone implements JsonElement {
 
     @Override
     public int hashCode() {
-        return JsonNone.class.hashCode();
+        return JsonEmpty.class.hashCode();
     }
 
     @Override
     public boolean equals(final Object other) {
-        return (other instanceof JsonNone);
+        return (other instanceof JsonEmpty);
     }
 
     @Override

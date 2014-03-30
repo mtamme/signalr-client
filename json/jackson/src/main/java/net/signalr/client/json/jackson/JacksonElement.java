@@ -18,6 +18,7 @@
 package net.signalr.client.json.jackson;
 
 import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonEmpty;
 import net.signalr.client.json.JsonException;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -92,13 +93,13 @@ public class JacksonElement implements JsonElement {
             throw new IllegalArgumentException("Name must not be null");
         }
         if (!_node.isObject()) {
-            return JsonElement.NONE;
+            return JsonEmpty.INSTANCE;
         }
 
         final JsonNode node = _node.get(name);
 
         if (node == null) {
-            return JsonElement.NONE;
+            return JsonEmpty.INSTANCE;
         }
 
         return new JacksonElement(_mapper, node);
