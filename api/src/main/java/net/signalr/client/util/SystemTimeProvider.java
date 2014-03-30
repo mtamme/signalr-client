@@ -23,7 +23,7 @@ package net.signalr.client.util;
 public final class SystemTimeProvider implements TimeProvider {
 
     /**
-     * The singleton instance.
+     * The immutable singleton instance.
      */
     public static final SystemTimeProvider INSTANCE = new SystemTimeProvider();
 

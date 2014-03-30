@@ -23,7 +23,7 @@ package net.signalr.client.json;
 public final class JsonEmpty implements JsonElement {
 
     /**
-     * The singleton instance.
+     * The immutable singleton instance.
      */
     public static final JsonEmpty INSTANCE = new JsonEmpty();
 
