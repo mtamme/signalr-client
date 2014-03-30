@@ -42,7 +42,7 @@ public interface JsonSerializer {
     JsonWriter createWriter(Writer output);
 
     /**
-     * Deserializes a text into an element.
+     * Converts the specified text into an element.
      * 
      * @param text The text.
      * @return The element.
@@ -50,7 +50,7 @@ public interface JsonSerializer {
     JsonElement fromJson(String text);
 
     /**
-     * Deserializes a text into an object.
+     * Converts the specified text into an object.
      * 
      * @param text The text.
      * @param type The object type.
@@ -59,7 +59,7 @@ public interface JsonSerializer {
     <T extends JsonReadable> T fromJson(String text, Class<T> type);
 
     /**
-     * Serializes an object into a text.
+     * Converts the specified object into a text.
      * 
      * @param object The object.
      * @return The text.
