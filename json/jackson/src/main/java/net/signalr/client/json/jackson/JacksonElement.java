@@ -78,6 +78,9 @@ public class JacksonElement implements JsonElement {
             throw new IndexOutOfBoundsException(String.valueOf(index));
         }
 
+        // Returns: Node that represent value of the specified element,
+        // if this node is an array and has specified element.
+        // Null otherwise.
         final JsonNode node = _node.get(index);
 
         if (node == null) {
@@ -96,6 +99,9 @@ public class JacksonElement implements JsonElement {
             return JsonEmpty.INSTANCE;
         }
 
+        // Returns: Node that represent value of the specified field,
+        // if this node is an object and has value for the specified field.
+        // Null otherwise.
         final JsonNode node = _node.get(name);
 
         if (node == null) {

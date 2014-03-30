@@ -80,13 +80,9 @@ final class GsonElement implements JsonElement {
         }
 
         final JsonArray array = (JsonArray) _element;
-        final com.google.gson.JsonElement element;
-
-        try {
-            element = array.get(index);
-        } catch (final Exception e) {
-            throw new IndexOutOfBoundsException(String.valueOf(index));
-        }
+        // Throws: IndexOutOfBoundsException - if index is negative or
+        // greater than or equal to the size() of the array.
+        final com.google.gson.JsonElement element = array.get(index);
 
         return new GsonElement(_gson, element);
     }
@@ -101,6 +97,7 @@ final class GsonElement implements JsonElement {
         }
 
         final JsonObject object = (JsonObject) _element;
+        // Returns: The member matching the name. Null if no such member exists.
         final com.google.gson.JsonElement element = object.get(name);
 
         if (element == null) {
