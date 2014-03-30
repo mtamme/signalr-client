@@ -208,6 +208,22 @@ final class GsonElement implements JsonElement {
     }
 
     @Override
+    public int hashCode() {
+        return _element.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof GsonElement)) {
+            return false;
+        }
+
+        final GsonElement element = (GsonElement) other;
+
+        return _element.equals(element._element);
+    }
+
+    @Override
     public String toString() {
         return _element.toString();
     }

@@ -88,7 +88,17 @@ final class JsonNone implements JsonElement {
     }
 
     @Override
+    public int hashCode() {
+        return JsonNone.class.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        return (other instanceof JsonNone);
+    }
+
+    @Override
     public String toString() {
-        throw new UnsupportedOperationException();
+        return "";
     }
 }

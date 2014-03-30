@@ -17,11 +17,11 @@
 
 package net.signalr.client.json.jackson;
 
+import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonException;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import net.signalr.client.json.JsonException;
-import net.signalr.client.json.JsonElement;
 
 /**
  * Represents a Jackson based JSON element.
@@ -178,6 +178,22 @@ public class JacksonElement implements JsonElement {
         } catch (final Exception e) {
             throw new JsonException(e);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return _node.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof JacksonElement)) {
+            return false;
+        }
+
+        final JacksonElement element = (JacksonElement) other;
+
+        return _node.equals(element._node);
     }
 
     @Override
