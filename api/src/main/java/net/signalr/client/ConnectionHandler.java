@@ -22,23 +22,59 @@ package net.signalr.client;
  */
 public interface ConnectionHandler {
 
+    /**
+     * Called when the connection is going to be connected.
+     */
     void onConnecting();
 
+    /**
+     * Called when the connection has been connected.
+     */
     void onConnected();
 
+    /**
+     * Called when the connection is going to be reconnected.
+     */
     void onReconnecting();
 
+    /**
+     * Called when the connection has been reconnected.
+     */
     void onReconnected();
 
+    /**
+     * Called when the connection is going to be disconnected.
+     */
     void onDisconnecting();
 
+    /**
+     * Called when the connection has been disconnected.
+     */
     void onDisconnected();
 
+    /**
+     * Called when the connection is slow.
+     */
     void onConnectionSlow();
 
+    /**
+     * Called when a message is going to be sent.
+     * 
+     * @param message The message.
+     */
     void onSending(String message);
 
+    /**
+     * Called when a message has been received.
+     * 
+     * @param message The message.
+     */
     void onReceived(String message);
 
+    /**
+     * Called when an error occurred.
+     * 
+     * @param throwable The error.
+     */
     void onError(Throwable throwable);
 }
