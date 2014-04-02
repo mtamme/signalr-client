@@ -47,7 +47,7 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     private final String _url;
 
-    private final TransportManager _transportManager;
+    private final TransportManager _manager;
 
     private final Scheduler _scheduler;
 
@@ -71,12 +71,12 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     private long _keepAliveTimeout;
 
-    protected PersistentConnectionContext(final String url, final TransportManager transportManager, final Scheduler scheduler, final JsonSerializer serializer) {
+    protected PersistentConnectionContext(final String url, final TransportManager manager, final Scheduler scheduler, final JsonSerializer serializer) {
         if (url == null) {
             throw new IllegalArgumentException("URL must not be null");
         }
-        if (transportManager == null) {
-            throw new IllegalArgumentException("Transport manager must not be null");
+        if (manager == null) {
+            throw new IllegalArgumentException("Manager must not be null");
         }
         if (scheduler == null) {
             throw new IllegalArgumentException("Scheduler must not be null");
@@ -86,7 +86,7 @@ final class PersistentConnectionContext implements ConnectionContext {
         }
 
         _url = url;
-        _transportManager = transportManager;
+        _manager = manager;
         _scheduler = scheduler;
         _serializer = serializer;
         final ConnectionState initialState = new DisconnectedConnectionState();
@@ -154,7 +154,7 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     @Override
     public TransportManager getTransportManager() {
-        return _transportManager;
+        return _manager;
     }
 
     @Override

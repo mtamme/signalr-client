@@ -90,9 +90,9 @@ final class ConnectedConnectionState implements ConnectionState {
         }
 
         _handler.onDisconnecting();
-        final TransportManager transportManager = context.getTransportManager();
+        final TransportManager manager = context.getTransportManager();
 
-        transportManager.stop(context);
+        manager.stop(context);
 
         logger.info("Closing transport channel...");
 
@@ -101,7 +101,7 @@ final class ConnectedConnectionState implements ConnectionState {
             public Promise<Void> apply(final Void value) throws Exception {
                 logger.info("Aborting transport...");
 
-                final Transport transport = transportManager.getTransport();
+                final Transport transport = manager.getTransport();
 
                 return transport.abort(context);
             }

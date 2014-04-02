@@ -70,9 +70,9 @@ public final class PersistentConnection implements Connection {
 
     @Override
     public Transport getTransport() {
-        final TransportManager transportManager = _context.getTransportManager();
+        final TransportManager manager = _context.getTransportManager();
 
-        return transportManager.getTransport();
+        return manager.getTransport();
     }
 
     @Override

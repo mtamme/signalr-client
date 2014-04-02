@@ -73,8 +73,8 @@ final class DisconnectedConnectionState implements ConnectionState {
 
         logger.info("Negotiating transport...");
 
-        final TransportManager transportManager = context.getTransportManager();
-        final Transport transport = transportManager.getTransport();
+        final TransportManager manager = context.getTransportManager();
+        final Transport transport = manager.getTransport();
 
         transport.negotiate(context).thenCompose(new Function<NegotiationResponse, Promise<TransportChannel>>() {
             @Override
@@ -102,7 +102,7 @@ final class DisconnectedConnectionState implements ConnectionState {
 
                 context.changeState(connecting, connected);
                 handler.onConnected();
-                transportManager.start(context);
+                manager.start(context);
             }
 
             @Override
