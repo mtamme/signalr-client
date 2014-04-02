@@ -99,7 +99,7 @@ final class DisconnectedConnectionState implements ConnectionState {
 
                 logger.info("Connecting transport...");
 
-                return transport.connect(context, new ConnectionHandlerAdapter(context, handler), false);
+                return transport.connect(context, new TransportChannelHandlerAdapter(context, handler), false);
             }
         }).thenCall(new Callback<TransportChannel>() {
             @Override

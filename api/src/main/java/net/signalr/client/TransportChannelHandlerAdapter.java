@@ -22,15 +22,15 @@ import net.signalr.client.json.JsonElement;
 import net.signalr.client.transport.TransportChannelHandler;
 
 /**
- * Represents a connection handler adapter.
+ * Represents a transport channel handler adapter.
  */
-final class ConnectionHandlerAdapter implements TransportChannelHandler {
+final class TransportChannelHandlerAdapter implements TransportChannelHandler {
 
     private final ConnectionContext _context;
 
     private final ConnectionHandler _handler;
 
-    public ConnectionHandlerAdapter(final ConnectionContext context, final ConnectionHandler handler) {
+    public TransportChannelHandlerAdapter(final ConnectionContext context, final ConnectionHandler handler) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
