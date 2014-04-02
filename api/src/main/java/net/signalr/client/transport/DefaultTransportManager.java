@@ -54,6 +54,34 @@ public final class DefaultTransportManager implements TransportManager {
     }
 
     @Override
+    public void notifyOnOpened() {
+    }
+
+    @Override
+    public void notifyOnClosed() {
+    }
+
+    @Override
+    public void notifyOnSending(final String message) {
+    }
+
+    @Override
+    public void notifyOnReceived(final String message) {
+    }
+
+    @Override
+    public void notifyOnError(final Throwable throwable) {
+    }
+
+    @Override
+    public void notifyOnConnectionLost() {
+    }
+
+    @Override
+    public void notifyOnConnectionSlow() {
+    }
+
+    @Override
     public void start(final TransportContext context) {
         final Scheduler scheduler = context.getScheduler();
         final long keepAliveTimeout = context.getKeepAliveTimeout();
@@ -79,33 +107,5 @@ public final class DefaultTransportManager implements TransportManager {
         if (keepAliveTimeout > 0) {
             scheduler.unscheduleJob(MONITOR_NAME);
         }
-    }
-
-    @Override
-    public void notifyOnConnectionLost() {
-    }
-
-    @Override
-    public void notifyOnConnectionSlow() {
-    }
-
-    @Override
-    public void notifyOnOpened() {
-    }
-
-    @Override
-    public void notifyOnClosed() {
-    }
-
-    @Override
-    public void notifyOnSending(final String message) {
-    }
-
-    @Override
-    public void notifyOnReceived(final String message) {
-    }
-
-    @Override
-    public void notifyOnError(final Throwable throwable) {
     }
 }

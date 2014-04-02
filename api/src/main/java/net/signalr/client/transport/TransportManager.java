@@ -24,10 +24,6 @@ public interface TransportManager {
 
     Transport getTransport();
 
-    void start(TransportContext context);
-
-    void stop(TransportContext context);
-
     void notifyOnOpened();
 
     void notifyOnClosed();
@@ -41,4 +37,8 @@ public interface TransportManager {
     void notifyOnConnectionLost();
 
     void notifyOnConnectionSlow();
+
+    void start(TransportContext context);
+
+    void stop(TransportContext context);
 }
