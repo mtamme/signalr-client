@@ -22,13 +22,34 @@ package net.signalr.client.transport;
  */
 public interface TransportChannelHandler {
 
-    void onOpen();
+    /**
+     * Called when the transport channel has been opened.
+     */
+    void onOpened();
 
-    void onClose();
+    /**
+     * Called when the transport channel has been closed.
+     */
+    void onClosed();
 
+    /**
+     * Called when a message is going to be sent.
+     * 
+     * @param message The message.
+     */
     void onSending(String message);
 
+    /**
+     * Called when a message has been received.
+     * 
+     * @param message The message.
+     */
     void onReceived(String message);
 
+    /**
+     * Called when an error occurred.
+     * 
+     * @param throwable The error.
+     */
     void onError(Throwable throwable);
 }

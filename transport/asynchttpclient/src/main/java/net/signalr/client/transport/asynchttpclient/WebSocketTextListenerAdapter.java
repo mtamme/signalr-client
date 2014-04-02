@@ -68,13 +68,13 @@ final class WebSocketTextListenerAdapter implements WebSocketTextListener {
         final TransportChannel channel = new WebSocketTransportChannel(_handler, webSocket);
 
         if (_channel.resolve(channel)) {
-            _handler.onOpen();
+            _handler.onOpened();
         }
     }
 
     @Override
     public void onClose(final WebSocket webSocket) {
-        _handler.onClose();
+        _handler.onClosed();
     }
 
     @Override

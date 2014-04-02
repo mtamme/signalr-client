@@ -28,17 +28,17 @@ public interface TransportManager {
 
     void stop(TransportContext context);
 
-    void handleOpen();
+    void notifyOnOpened();
 
-    void handleClose();
+    void notifyOnClosed();
 
-    void handleSending(String message);
+    void notifyOnSending(String message);
 
-    void handleReceived(String message);
+    void notifyOnReceived(String message);
 
-    void handleError(Throwable throwable);
+    void notifyOnError(Throwable throwable);
 
-    void handleConnectionLost();
+    void notifyOnConnectionLost();
 
-    void handleConnectionSlow();
+    void notifyOnConnectionSlow();
 }

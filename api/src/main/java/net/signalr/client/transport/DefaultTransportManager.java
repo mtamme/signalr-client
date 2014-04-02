@@ -82,30 +82,30 @@ public final class DefaultTransportManager implements TransportManager {
     }
 
     @Override
-    public void handleConnectionLost() {
+    public void notifyOnConnectionLost() {
     }
 
     @Override
-    public void handleConnectionSlow() {
+    public void notifyOnConnectionSlow() {
     }
 
     @Override
-    public void handleOpen() {
+    public void notifyOnOpened() {
     }
 
     @Override
-    public void handleClose() {
+    public void notifyOnClosed() {
     }
 
     @Override
-    public void handleSending(final String message) {
+    public void notifyOnSending(final String message) {
     }
 
     @Override
-    public void handleReceived(final String message) {
+    public void notifyOnReceived(final String message) {
     }
 
     @Override
-    public void handleError(final Throwable throwable) {
+    public void notifyOnError(final Throwable throwable) {
     }
 }

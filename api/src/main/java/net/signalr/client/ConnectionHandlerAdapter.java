@@ -43,12 +43,12 @@ final class ConnectionHandlerAdapter implements TransportChannelHandler {
     }
 
     @Override
-    public void onOpen() {
+    public void onOpened() {
         // _handler.onConnected();
     }
 
     @Override
-    public void onClose() {
+    public void onClosed() {
         // _handler.onDisconnected();
     }
 

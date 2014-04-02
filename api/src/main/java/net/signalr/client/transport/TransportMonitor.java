@@ -140,22 +140,22 @@ final class TransportMonitor implements Runnable, TransportChannelHandler {
         if (status == TransportStatus.LOST) {
             logger.error("Keep alive timed out, connection has been lost.");
 
-            _manager.handleConnectionLost();
+            _manager.notifyOnConnectionLost();
         } else if (status == TransportStatus.SLOW) {
             logger.warn("Keep alive has been missed, connection may be dead/slow.");
 
-            _manager.handleConnectionSlow();
+            _manager.notifyOnConnectionSlow();
         }
         _status = status;
     }
 
     @Override
-    public void onOpen() {
+    public void onOpened() {
         updateHeartbeatTime();
     }
 
     @Override
-    public void onClose() {
+    public void onClosed() {
     }
 
     @Override

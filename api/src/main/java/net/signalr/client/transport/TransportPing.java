@@ -78,7 +78,7 @@ final class TransportPing implements Runnable {
                 logger.info("Received transport ping response: '{}'", value);
 
                 if (!PING_RESPONSE_VALUE.equalsIgnoreCase(value)) {
-                    _manager.handleError(new IOException("Received invalid transport ping response: '" + value + "'."));
+                    _manager.notifyOnError(new IOException("Received invalid transport ping response: '" + value + "'."));
                 }
             }
 
@@ -86,7 +86,7 @@ final class TransportPing implements Runnable {
             public void onRejected(final Throwable throwable) {
                 logger.warn("Transport ping failed", throwable);
 
-                _manager.handleError(throwable);
+                _manager.notifyOnError(throwable);
             }
         });
     }
