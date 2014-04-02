@@ -24,10 +24,6 @@ import net.signalr.client.concurrent.Promise;
  */
 interface ConnectionState {
 
-    void onEnterState();
-
-    void onLeaveState();
-
     boolean isConnected();
 
     void addHeader(ConnectionContext context, String name, String value);

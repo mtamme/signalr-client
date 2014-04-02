@@ -20,7 +20,9 @@ package net.signalr.client;
 import net.signalr.client.concurrent.Promise;
 import net.signalr.client.concurrent.TimerScheduler;
 import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.transport.DefaultTransportManager;
 import net.signalr.client.transport.Transport;
+import net.signalr.client.transport.TransportManager;
 
 /**
  * Represents a persistent connection.
@@ -40,7 +42,7 @@ public final class PersistentConnection implements Connection {
      * @param serializer The serializer.
      */
     public PersistentConnection(final String url, final Transport transport, JsonSerializer serializer) {
-        this(new PersistentConnectionContext(url, transport, new TimerScheduler(), serializer));
+        this(new PersistentConnectionContext(url, new DefaultTransportManager(transport), new TimerScheduler(), serializer));
     }
 
     /**
@@ -68,7 +70,9 @@ public final class PersistentConnection implements Connection {
 
     @Override
     public Transport getTransport() {
-        return _context.getTransport();
+        final TransportManager transportManager = _context.getTransportManager();
+
+        return transportManager.getTransport();
     }
 
     @Override

@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import net.signalr.client.concurrent.Scheduler;
 import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.transport.Transport;
+import net.signalr.client.transport.TransportManager;
 
 /**
  * Represents a persistent connection context.
@@ -47,7 +47,7 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     private final String _url;
 
-    private final Transport _transport;
+    private final TransportManager _transportManager;
 
     private final Scheduler _scheduler;
 
@@ -71,12 +71,12 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     private long _keepAliveTimeout;
 
-    protected PersistentConnectionContext(final String url, final Transport transport, final Scheduler scheduler, final JsonSerializer serializer) {
+    protected PersistentConnectionContext(final String url, final TransportManager transportManager, final Scheduler scheduler, final JsonSerializer serializer) {
         if (url == null) {
             throw new IllegalArgumentException("URL must not be null");
         }
-        if (transport == null) {
-            throw new IllegalArgumentException("Transport must not be null");
+        if (transportManager == null) {
+            throw new IllegalArgumentException("Transport manager must not be null");
         }
         if (scheduler == null) {
             throw new IllegalArgumentException("Scheduler must not be null");
@@ -86,7 +86,7 @@ final class PersistentConnectionContext implements ConnectionContext {
         }
 
         _url = url;
-        _transport = transport;
+        _transportManager = transportManager;
         _scheduler = scheduler;
         _serializer = serializer;
         final ConnectionState initialState = new DisconnectedConnectionState();
@@ -153,8 +153,8 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
-    public Transport getTransport() {
-        return _transport;
+    public TransportManager getTransportManager() {
+        return _transportManager;
     }
 
     @Override
@@ -255,13 +255,7 @@ final class PersistentConnectionContext implements ConnectionContext {
             return false;
         }
 
-        logger.info("Leaving connection state '{}'", oldState);
-
-        oldState.onLeaveState();
-
-        logger.info("Entering connection state '{}'", newState);
-
-        newState.onEnterState();
+        logger.info("Changing connection state from '{}' to '{}'", oldState, newState);
 
         return true;
     }

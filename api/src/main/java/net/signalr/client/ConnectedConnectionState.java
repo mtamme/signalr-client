@@ -20,12 +20,11 @@ package net.signalr.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.signalr.client.concurrent.Callback;
 import net.signalr.client.concurrent.Deferred;
 import net.signalr.client.concurrent.Function;
+import net.signalr.client.concurrent.OnCompleted;
 import net.signalr.client.concurrent.Promise;
 import net.signalr.client.concurrent.Promises;
-import net.signalr.client.transport.DefaultTransportManager;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportChannel;
 import net.signalr.client.transport.TransportManager;
@@ -42,38 +41,18 @@ final class ConnectedConnectionState implements ConnectionState {
 
     private final ConnectionHandler _handler;
 
-    private final ConnectionContext _context;
-
     private final TransportChannel _channel;
 
-    private final TransportManager _manager;
-
-    public ConnectedConnectionState(final ConnectionHandler handler, final ConnectionContext context, final TransportChannel channel) {
+    public ConnectedConnectionState(final ConnectionHandler handler, final TransportChannel channel) {
         if (handler == null) {
             throw new IllegalArgumentException("Handler must not be null");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("Context must not be null");
         }
         if (channel == null) {
             throw new IllegalArgumentException("Channel must not be null");
         }
 
         _handler = handler;
-        _context = context;
         _channel = channel;
-
-        _manager = new DefaultTransportManager(context.getTransport());
-    }
-
-    @Override
-    public void onEnterState() {
-        _manager.start(_context);
-    }
-
-    @Override
-    public void onLeaveState() {
-        _manager.stop(_context);
     }
 
     @Override
@@ -111,6 +90,9 @@ final class ConnectedConnectionState implements ConnectionState {
         }
 
         _handler.onDisconnecting();
+        final TransportManager transportManager = context.getTransportManager();
+
+        transportManager.stop(context);
 
         logger.info("Closing transport channel...");
 
@@ -119,13 +101,13 @@ final class ConnectedConnectionState implements ConnectionState {
             public Promise<Void> apply(final Void value) throws Exception {
                 logger.info("Aborting transport...");
 
-                final Transport transport = context.getTransport();
+                final Transport transport = transportManager.getTransport();
 
                 return transport.abort(context);
             }
-        }).thenCall(new Callback<Void>() {
+        }).thenCall(new OnCompleted<Void>() {
             @Override
-            public void onResolved(final Void value) {
+            public void onCompleted(final Void value, final Throwable throwable) {
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
                 context.setTryWebSockets(false);
@@ -136,12 +118,6 @@ final class ConnectedConnectionState implements ConnectionState {
 
                 context.changeState(disconnecting, disconnected);
                 _handler.onDisconnected();
-            }
-
-            @Override
-            public void onRejected(final Throwable throwable) {
-                context.changeState(disconnecting, ConnectedConnectionState.this);
-                _handler.onConnected();
             }
         }).thenPropagate(deferred);
 

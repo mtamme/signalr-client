@@ -17,8 +17,8 @@
 
 package net.signalr.client;
 
-import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportContext;
+import net.signalr.client.transport.TransportManager;
 
 /**
  * Defines a connection context.
@@ -26,11 +26,11 @@ import net.signalr.client.transport.TransportContext;
 interface ConnectionContext extends TransportContext {
 
     /**
-     * Returns the transport.
+     * Returns the transport manager.
      * 
-     * @return The transport.
+     * @return The transport manager.
      */
-    Transport getTransport();
+    TransportManager getTransportManager();
 
     /**
      * Returns the connection ID.

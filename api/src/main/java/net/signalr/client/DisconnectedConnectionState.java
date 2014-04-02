@@ -28,6 +28,7 @@ import net.signalr.client.concurrent.Promises;
 import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportChannel;
+import net.signalr.client.transport.TransportManager;
 
 /**
  * Represents the disconnected connection state.
@@ -38,14 +39,6 @@ final class DisconnectedConnectionState implements ConnectionState {
      * The private logger.
      */
     private static final Logger logger = LoggerFactory.getLogger(DisconnectedConnectionState.class);
-
-    @Override
-    public void onEnterState() {
-    }
-
-    @Override
-    public void onLeaveState() {
-    }
 
     @Override
     public boolean isConnected() {
@@ -80,7 +73,8 @@ final class DisconnectedConnectionState implements ConnectionState {
 
         logger.info("Negotiating transport...");
 
-        final Transport transport = context.getTransport();
+        final TransportManager transportManager = context.getTransportManager();
+        final Transport transport = transportManager.getTransport();
 
         transport.negotiate(context).thenCompose(new Function<NegotiationResponse, Promise<TransportChannel>>() {
             @Override
@@ -104,10 +98,11 @@ final class DisconnectedConnectionState implements ConnectionState {
         }).thenCall(new Callback<TransportChannel>() {
             @Override
             public void onResolved(final TransportChannel channel) {
-                final ConnectedConnectionState connected = new ConnectedConnectionState(handler, context, channel);
+                final ConnectedConnectionState connected = new ConnectedConnectionState(handler, channel);
 
                 context.changeState(connecting, connected);
                 handler.onConnected();
+                transportManager.start(context);
             }
 
             @Override

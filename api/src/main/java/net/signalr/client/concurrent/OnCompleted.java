@@ -18,23 +18,25 @@
 package net.signalr.client.concurrent;
 
 /**
- * Defines a {@link Promise} callback.
- * 
- * @param <V> The value type
+ * Represents a complete {@link Promise} callback.
  */
-public interface Callback<V> {
+public abstract class OnCompleted<V> implements Callback<V> {
 
     /**
-     * Called when the {@link Promise} was resolved.
+     * Called when the {@link Promise} was completed.
      * 
      * @param value The value.
+     * @param throwable The throwable.
      */
-    void onResolved(V value);
+    public abstract void onCompleted(V value, Throwable throwable);
 
-    /**
-     * Called when the {@link Promise} was rejected.
-     * 
-     * @param throwable The {@link Throwable}.
-     */
-    void onRejected(Throwable throwable);
+    @Override
+    public final void onResolved(final V value) {
+        onCompleted(value, null);
+    }
+
+    @Override
+    public final void onRejected(final Throwable throwable) {
+        onCompleted(null, throwable);
+    }
 }

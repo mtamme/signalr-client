@@ -35,14 +35,6 @@ final class ConnectingConnectionState implements ConnectionState {
     }
 
     @Override
-    public void onEnterState() {
-    }
-
-    @Override
-    public void onLeaveState() {
-    }
-
-    @Override
     public boolean isConnected() {
         return false;
     }
