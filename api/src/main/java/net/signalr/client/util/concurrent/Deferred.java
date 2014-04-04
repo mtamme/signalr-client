@@ -252,7 +252,7 @@ public final class Deferred<V> extends AbstractPromise<V> {
     }
 
     /**
-     * Represents a resolved state of a {@link Deferred}.
+     * Represents the resolved state of a {@link Deferred}.
      * 
      * @param <V> The value type.
      */
@@ -283,7 +283,7 @@ public final class Deferred<V> extends AbstractPromise<V> {
     }
 
     /**
-     * Represents a rejected state of a {@link Deferred}.
+     * Represents the rejected state of a {@link Deferred}.
      * 
      * @param <V> The value type.
      */
