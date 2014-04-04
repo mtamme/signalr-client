@@ -79,7 +79,7 @@ public final class HubConnection {
         _connection.addQueryParameter(name, value);
     }
 
-    public HubProxy createProxy(final String hubName) {
+    public HubProxy getProxy(final String hubName) {
         final String lowerCaseHubName = hubName.toLowerCase();
         HubProxy hubProxy = _hubProxies.get(lowerCaseHubName);
 

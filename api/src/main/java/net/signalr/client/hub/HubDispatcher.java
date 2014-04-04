@@ -35,7 +35,7 @@ interface HubDispatcher {
      * Invokes a method on the server side hub asynchronously.
      * 
      * @param request The hub request.
-     * @return A promise that represents the hub response.
+     * @return The hub response.
      */
     Promise<HubResponse> invoke(HubRequest request);
 

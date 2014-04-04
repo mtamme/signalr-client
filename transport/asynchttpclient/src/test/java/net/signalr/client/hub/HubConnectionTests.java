@@ -43,7 +43,7 @@ public final class HubConnectionTests {
     private static void log(final String format, final Object... args) {
         final String line = String.format(format, args);
 
-        System.out.printf("[%20s] %s\n", Thread.currentThread().getName(), line);
+        System.out.printf("[%s] %s\n", Thread.currentThread().getName(), line);
         System.out.flush();
     }
 
@@ -53,7 +53,7 @@ public final class HubConnectionTests {
 
         connection.addHeader(ACCESS_ID_NAME, ACCESS_ID_VALUE);
         connection.addQueryParameter("culture", "en");
-        final HubProxy hubProxy = connection.createProxy(HUB_NAME);
+        final HubProxy hubProxy = connection.getProxy(HUB_NAME);
         final Promise<Void> start = connection.start(new ConnectionHandler() {
             @Override
             public void onReconnecting() {

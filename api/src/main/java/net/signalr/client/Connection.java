@@ -88,14 +88,14 @@ public interface Connection {
      * Starts the connection.
      * 
      * @param handler The connection handler.
-     * @return The start promise.
+     * @return The start result.
      */
     Promise<Void> start(ConnectionHandler handler);
 
     /**
      * Stops the connection.
      * 
-     * @return The stop promise.
+     * @return The stop result.
      */
     Promise<Void> stop();
 
@@ -103,7 +103,7 @@ public interface Connection {
      * Sends a message.
      * 
      * @param message The message.
-     * @return The send promise.
+     * @return The send result.
      */
     Promise<Void> send(String message);
 

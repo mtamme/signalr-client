@@ -30,7 +30,7 @@ public interface HubProxy {
      * @param methodName The name of the method.
      * @param returnType The type of the return value.
      * @param arguments The arguments.
-     * @return A promise representing the return value.
+     * @return The invocation result.
      */
     <R> Promise<R> invoke(String methodName, Class<R> returnType, Object... arguments);
 
