@@ -49,8 +49,8 @@ final class TransportPing implements Runnable {
     /**
      * Initializes a new instance of the {@link TransportPing} class.
      * 
-     * @param context The transport context.
      * @param manager The transport manager.
+     * @param context The transport context.
      */
     public TransportPing(final TransportManager manager, final TransportContext context) {
         if (manager == null) {
@@ -78,15 +78,15 @@ final class TransportPing implements Runnable {
                 logger.info("Received transport ping response: '{}'", value);
 
                 if (!PING_RESPONSE_VALUE.equalsIgnoreCase(value)) {
-                    _manager.notifyOnError(new IOException("Received invalid transport ping response: '" + value + "'."));
+                    _manager.handleError(new IOException("Received invalid transport ping response: '" + value + "'."));
                 }
             }
 
             @Override
-            public void onRejected(final Throwable throwable) {
-                logger.warn("Transport ping failed", throwable);
+            public void onRejected(final Throwable cause) {
+                logger.warn("Transport ping failed", cause);
 
-                _manager.notifyOnError(throwable);
+                _manager.handleError(cause);
             }
         });
     }

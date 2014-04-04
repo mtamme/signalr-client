@@ -42,7 +42,7 @@ public final class AbstractPromiseTests {
             }
 
             @Override
-            public void onRejected(final Throwable throwable) {
+            public void onRejected(final Throwable cause) {
             }
         });
 
@@ -58,18 +58,18 @@ public final class AbstractPromiseTests {
         // Arrange
         @SuppressWarnings("unchecked")
         final Callback<Integer> callback = (Callback<Integer>) createStrictMock(Callback.class);
-        final Throwable throwable = new Throwable();
+        final Throwable cause = new Throwable();
 
-        callback.onRejected(throwable);
+        callback.onRejected(cause);
         replay(callback);
-        final Promise<Integer> promise = Promises.rejected(throwable);
+        final Promise<Integer> promise = Promises.rejected(cause);
         final Promise<Integer> result = promise.thenCall(new Callback<Integer>() {
             @Override
             public void onResolved(final Integer value) {
             }
 
             @Override
-            public void onRejected(final Throwable throwable) {
+            public void onRejected(final Throwable cause) {
             }
         });
 
@@ -108,11 +108,11 @@ public final class AbstractPromiseTests {
         // Arrange
         @SuppressWarnings("unchecked")
         final Callback<String> callback = (Callback<String>) createStrictMock(Callback.class);
-        final Throwable throwable = new Throwable();
+        final Throwable cause = new Throwable();
 
-        callback.onRejected(throwable);
+        callback.onRejected(cause);
         replay(callback);
-        final Promise<Integer> promise = Promises.rejected(throwable);
+        final Promise<Integer> promise = Promises.rejected(cause);
         final Promise<String> result = promise.thenApply(new Function<Integer, String>() {
             @Override
             public String apply(final Integer value) throws Exception {
@@ -155,11 +155,11 @@ public final class AbstractPromiseTests {
         // Arrange
         @SuppressWarnings("unchecked")
         final Callback<String> callback = (Callback<String>) createStrictMock(Callback.class);
-        final Throwable throwable = new Throwable();
+        final Throwable cause = new Throwable();
 
-        callback.onRejected(throwable);
+        callback.onRejected(cause);
         replay(callback);
-        final Promise<Integer> promise = Promises.rejected(throwable);
+        final Promise<Integer> promise = Promises.rejected(cause);
         final Promise<String> result = promise.thenCompose(new Function<Integer, Promise<String>>() {
             @Override
             public Promise<String> apply(final Integer value) throws Exception {
@@ -198,11 +198,11 @@ public final class AbstractPromiseTests {
         // Arrange
         @SuppressWarnings("unchecked")
         final Callback<Integer> callback = (Callback<Integer>) createStrictMock(Callback.class);
-        final Throwable throwable = new Throwable();
+        final Throwable cause = new Throwable();
 
-        callback.onRejected(throwable);
+        callback.onRejected(cause);
         replay(callback);
-        final Promise<Integer> promise = Promises.rejected(throwable);
+        final Promise<Integer> promise = Promises.rejected(cause);
 
         // Act
         final Promise<Integer> result = promise.thenCall(callback);
@@ -238,12 +238,12 @@ public final class AbstractPromiseTests {
         // Arrange
         @SuppressWarnings("unchecked")
         final Callback<Integer> callback = (Callback<Integer>) createStrictMock(Callback.class);
-        final Throwable throwable = new Throwable();
+        final Throwable cause = new Throwable();
 
-        callback.onRejected(throwable);
+        callback.onRejected(cause);
         expectLastCall().andThrow(new RuntimeException());
         replay(callback);
-        final Promise<Integer> promise = Promises.rejected(throwable);
+        final Promise<Integer> promise = Promises.rejected(cause);
 
         // Act
         final Promise<Integer> result = promise.thenCall(callback);
@@ -280,8 +280,8 @@ public final class AbstractPromiseTests {
         final Function<Integer, String> function = (Function<Integer, String>) createStrictMock(Function.class);
 
         replay(function);
-        final Throwable throwable = new Throwable();
-        final Promise<Integer> promise = Promises.rejected(throwable);
+        final Throwable cause = new Throwable();
+        final Promise<Integer> promise = Promises.rejected(cause);
 
         // Act
         final Promise<String> result = promise.thenApply(function);
@@ -318,8 +318,8 @@ public final class AbstractPromiseTests {
         final Function<Integer, String> function = (Function<Integer, String>) createStrictMock(Function.class);
 
         replay(function);
-        final Throwable throwable = new Throwable();
-        final Promise<Integer> promise = Promises.rejected(throwable);
+        final Throwable cause = new Throwable();
+        final Promise<Integer> promise = Promises.rejected(cause);
 
         // Act
         final Promise<String> result = promise.thenApply(function);
@@ -356,8 +356,8 @@ public final class AbstractPromiseTests {
         final Function<Integer, Promise<String>> function = (Function<Integer, Promise<String>>) createStrictMock(Function.class);
 
         replay(function);
-        final Throwable throwable = new Throwable();
-        final Promise<Integer> promise = Promises.rejected(throwable);
+        final Throwable cause = new Throwable();
+        final Promise<Integer> promise = Promises.rejected(cause);
 
         // Act
         final Promise<String> result = promise.thenCompose(function);
@@ -394,8 +394,8 @@ public final class AbstractPromiseTests {
         final Function<Integer, Promise<String>> function = (Function<Integer, Promise<String>>) createStrictMock(Function.class);
 
         replay(function);
-        final Throwable throwable = new Throwable();
-        final Promise<Integer> promise = Promises.rejected(throwable);
+        final Throwable cause = new Throwable();
+        final Promise<Integer> promise = Promises.rejected(cause);
 
         // Act
         final Promise<String> result = promise.thenCompose(function);

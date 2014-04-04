@@ -27,8 +27,8 @@ import com.ning.http.client.websocket.WebSocketUpgradeHandler;
 
 import net.signalr.client.concurrent.Promise;
 import net.signalr.client.concurrent.Promises;
-import net.signalr.client.transport.TransportChannel;
-import net.signalr.client.transport.TransportChannelHandler;
+import net.signalr.client.transport.Channel;
+import net.signalr.client.transport.ChannelHandler;
 import net.signalr.client.transport.TransportContext;
 import net.signalr.client.util.URIBuilder;
 
@@ -63,7 +63,7 @@ public final class WebSocketTransport extends AbstractTransport {
     }
 
     @Override
-    public Promise<TransportChannel> connect(final TransportContext context, final TransportChannelHandler handler, boolean reconnect) {
+    public Promise<Channel> connect(final TransportContext context, final ChannelHandler handler, boolean reconnect) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }

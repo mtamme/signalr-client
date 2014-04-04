@@ -117,16 +117,16 @@ public final class DeferredTests {
         // Arrange
         @SuppressWarnings("unchecked")
         final Callback<Integer> callback = (Callback<Integer>) createStrictMock(Callback.class);
-        final Throwable throwable = new Throwable();
+        final Throwable cause = new Throwable();
 
-        callback.onRejected(throwable);
+        callback.onRejected(cause);
         replay(callback);
         final Deferred<Integer> deferred = new Deferred<Integer>();
 
         deferred.addCallback(callback);
 
         // Act
-        final boolean rejected = deferred.reject(throwable);
+        final boolean rejected = deferred.reject(cause);
 
         // Assert
         verify(callback);
@@ -174,13 +174,13 @@ public final class DeferredTests {
         // Arrange
         @SuppressWarnings("unchecked")
         final Callback<Integer> callback = (Callback<Integer>) createStrictMock(Callback.class);
-        final Throwable throwable = new Throwable();
+        final Throwable cause = new Throwable();
 
-        callback.onRejected(throwable);
+        callback.onRejected(cause);
         replay(callback);
         final Deferred<Integer> deferred = new Deferred<Integer>();
 
-        deferred.reject(throwable);
+        deferred.reject(cause);
 
         // Act
         deferred.addCallback(callback);

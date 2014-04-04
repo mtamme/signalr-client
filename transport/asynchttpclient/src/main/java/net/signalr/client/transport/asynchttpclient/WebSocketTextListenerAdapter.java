@@ -19,8 +19,8 @@ package net.signalr.client.transport.asynchttpclient;
 
 import net.signalr.client.concurrent.Deferred;
 import net.signalr.client.concurrent.Promise;
-import net.signalr.client.transport.TransportChannel;
-import net.signalr.client.transport.TransportChannelHandler;
+import net.signalr.client.transport.Channel;
+import net.signalr.client.transport.ChannelHandler;
 
 import com.ning.http.client.websocket.WebSocket;
 import com.ning.http.client.websocket.WebSocketTextListener;
@@ -33,25 +33,25 @@ final class WebSocketTextListenerAdapter implements WebSocketTextListener {
     /**
      * The transport channel handler.
      */
-    private final TransportChannelHandler _handler;
+    private final ChannelHandler _handler;
 
     /**
      * The transport channel.
      */
-    private final Deferred<TransportChannel> _channel;
+    private final Deferred<Channel> _channel;
 
     /**
      * Initializes a new instance of the {@link WebSocketTextListenerAdapter} class.
      * 
      * @param handler The transport channel handler.
      */
-    public WebSocketTextListenerAdapter(final TransportChannelHandler handler) {
+    public WebSocketTextListenerAdapter(final ChannelHandler handler) {
         if (handler == null) {
             throw new IllegalArgumentException("Handler must not be null");
         }
 
         _handler = handler;
-        _channel = new Deferred<TransportChannel>();
+        _channel = new Deferred<Channel>();
     }
 
     /**
@@ -59,22 +59,22 @@ final class WebSocketTextListenerAdapter implements WebSocketTextListener {
      * 
      * @return The transport channel.
      */
-    public Promise<TransportChannel> getChannel() {
+    public Promise<Channel> getChannel() {
         return _channel;
     }
 
     @Override
     public void onOpen(final WebSocket webSocket) {
-        final TransportChannel channel = new WebSocketTransportChannel(_handler, webSocket);
+        final Channel channel = new WebSocketChannel(_handler, webSocket);
 
         if (_channel.resolve(channel)) {
-            _handler.onOpened();
+            _handler.handleChannelOpened();
         }
     }
 
     @Override
     public void onClose(final WebSocket webSocket) {
-        _handler.onClosed();
+        _handler.handleChannelClosed();
     }
 
     @Override
@@ -83,13 +83,13 @@ final class WebSocketTextListenerAdapter implements WebSocketTextListener {
 
     @Override
     public void onMessage(final String message) {
-        _handler.onReceived(message);
+        _handler.handleMessageReceived(message);
     }
 
     @Override
-    public void onError(final Throwable throwable) {
-        if (!_channel.reject(throwable)) {
-            _handler.onError(throwable);
+    public void onError(final Throwable cause) {
+        if (!_channel.reject(cause)) {
+            _handler.handleError(cause);
         }
     }
 }

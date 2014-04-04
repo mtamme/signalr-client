@@ -26,7 +26,7 @@ import net.signalr.client.concurrent.OnCompleted;
 import net.signalr.client.concurrent.Promise;
 import net.signalr.client.concurrent.Promises;
 import net.signalr.client.transport.Transport;
-import net.signalr.client.transport.TransportChannel;
+import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.TransportManager;
 
 /**
@@ -41,9 +41,9 @@ final class ConnectedConnectionState implements ConnectionState {
 
     private final ConnectionHandler _handler;
 
-    private final TransportChannel _channel;
+    private final Channel _channel;
 
-    public ConnectedConnectionState(final ConnectionHandler handler, final TransportChannel channel) {
+    public ConnectedConnectionState(final ConnectionHandler handler, final Channel channel) {
         if (handler == null) {
             throw new IllegalArgumentException("Handler must not be null");
         }
@@ -107,7 +107,7 @@ final class ConnectedConnectionState implements ConnectionState {
             }
         }).thenCall(new OnCompleted<Void>() {
             @Override
-            public void onCompleted(final Void value, final Throwable throwable) {
+            public void onCompleted(final Void value, final Throwable cause) {
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
                 context.setTryWebSockets(false);

@@ -19,18 +19,18 @@ package net.signalr.client;
 
 import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.json.JsonElement;
-import net.signalr.client.transport.TransportChannelHandler;
+import net.signalr.client.transport.ChannelHandler;
 
 /**
- * Represents a transport channel handler adapter.
+ * Represents a channel handler adapter.
  */
-final class TransportChannelHandlerAdapter implements TransportChannelHandler {
+final class ChannelHandlerAdapter implements ChannelHandler {
 
     private final ConnectionContext _context;
 
     private final ConnectionHandler _handler;
 
-    public TransportChannelHandlerAdapter(final ConnectionContext context, final ConnectionHandler handler) {
+    public ChannelHandlerAdapter(final ConnectionContext context, final ConnectionHandler handler) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
@@ -43,22 +43,27 @@ final class TransportChannelHandlerAdapter implements TransportChannelHandler {
     }
 
     @Override
-    public void onOpened() {
+    public void handleChannelOpened() {
         // _handler.onConnected();
     }
 
     @Override
-    public void onClosed() {
+    public void handleChannelClosed() {
         // _handler.onDisconnected();
     }
 
     @Override
-    public void onSending(final String message) {
+    public void handleError(final Throwable cause) {
+        _handler.onError(cause);
+    }
+
+    @Override
+    public void handleMessageSending(final String message) {
         _handler.onSending(message);
     }
 
     @Override
-    public void onReceived(final String message) {
+    public void handleMessageReceived(final String message) {
         final JsonSerializer serializer = _context.getSerializer();
         final JsonElement element = serializer.fromJson(message);
         final String callbackId = element.get("I").getString(null);
@@ -72,10 +77,5 @@ final class TransportChannelHandlerAdapter implements TransportChannelHandler {
                 _handler.onReceived(messages.get(i).toString());
             }
         }
-    }
-
-    @Override
-    public void onError(final Throwable throwable) {
-        _handler.onError(throwable);
     }
 }

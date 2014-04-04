@@ -55,11 +55,11 @@ public final class Promises {
     /**
      * Returns a rejected {@link Promise}.
      * 
-     * @param throwable The {@link Throwable}.
+     * @param cause The cause.
      * @return A rejected {@link Promise}.
      */
-    public static <V> Promise<V> rejected(final Throwable throwable) {
-        return new Deferred<V>(throwable);
+    public static <V> Promise<V> rejected(final Throwable cause) {
+        return new Deferred<V>(cause);
     }
 
     /**

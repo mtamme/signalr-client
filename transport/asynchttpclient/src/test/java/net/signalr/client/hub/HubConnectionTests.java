@@ -20,15 +20,13 @@ package net.signalr.client.hub;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import org.junit.Test;
-
 import net.signalr.client.ConnectionHandler;
 import net.signalr.client.concurrent.Promise;
 import net.signalr.client.concurrent.Promises;
-import net.signalr.client.hub.HubConnection;
-import net.signalr.client.hub.HubProxy;
 import net.signalr.client.json.gson.GsonSerializer;
 import net.signalr.client.transport.asynchttpclient.WebSocketTransport;
+
+import org.junit.Test;
 
 public final class HubConnectionTests {
 
@@ -45,7 +43,7 @@ public final class HubConnectionTests {
     private static void log(final String format, final Object... args) {
         final String line = String.format(format, args);
 
-        System.out.printf("[%s] %s\n", Thread.currentThread().getName(), line);
+        System.out.printf("[%20s] %s\n", Thread.currentThread().getName(), line);
         System.out.flush();
     }
 
@@ -78,8 +76,8 @@ public final class HubConnectionTests {
             }
 
             @Override
-            public void onError(final Throwable throwable) {
-                log("onError: %s", throwable);
+            public void onError(final Throwable cause) {
+                log("onError: %s", cause);
             }
 
             @Override

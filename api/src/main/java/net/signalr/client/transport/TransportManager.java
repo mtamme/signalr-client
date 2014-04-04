@@ -20,25 +20,36 @@ package net.signalr.client.transport;
 /**
  * Defines a transport manager.
  */
-public interface TransportManager {
+public interface TransportManager extends ChannelHandler {
 
+    /**
+     * Returns the transport.
+     * 
+     * @return The transport.
+     */
     Transport getTransport();
 
-    void notifyOnOpened();
+    /**
+     * Invoked when the connection has been lost.
+     */
+    void handleConnectionLost();
 
-    void notifyOnClosed();
+    /**
+     * Invoked when the connection is slow.
+     */
+    void handleConnectionSlow();
 
-    void notifyOnSending(String message);
-
-    void notifyOnReceived(String message);
-
-    void notifyOnError(Throwable throwable);
-
-    void notifyOnConnectionLost();
-
-    void notifyOnConnectionSlow();
-
+    /**
+     * Starts the transport manager.
+     * 
+     * @param context The transport context.
+     */
     void start(TransportContext context);
 
+    /**
+     * Stops the transport manager.
+     * 
+     * @param context The transport context.
+     */
     void stop(TransportContext context);
 }

@@ -52,8 +52,8 @@ final class AsyncResponseHandler extends AsyncCompletionHandler<Response> {
     }
 
     @Override
-    public void onThrowable(final Throwable throwable) {
-        _response.reject(throwable);
+    public void onThrowable(final Throwable cause) {
+        _response.reject(cause);
     }
 
     @Override
@@ -61,9 +61,9 @@ final class AsyncResponseHandler extends AsyncCompletionHandler<Response> {
         final int statusCode = response.getStatusCode();
 
         if (statusCode != 200) {
-            final Throwable throwable = new IOException("The request failed with HTTP status " + statusCode + ": " + response.getStatusText());
+            final Throwable cause = new IOException("The request failed with HTTP status " + statusCode + ": " + response.getStatusText());
 
-            _response.reject(throwable);
+            _response.reject(cause);
         } else {
             _response.resolve(response);
         }

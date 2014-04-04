@@ -21,18 +21,18 @@ import com.ning.http.client.websocket.WebSocket;
 
 import net.signalr.client.concurrent.Promise;
 import net.signalr.client.concurrent.Promises;
-import net.signalr.client.transport.TransportChannel;
-import net.signalr.client.transport.TransportChannelHandler;
+import net.signalr.client.transport.Channel;
+import net.signalr.client.transport.ChannelHandler;
 
 /**
- * Represents a web socket transport channel.
+ * Represents a web socket channel.
  */
-final class WebSocketTransportChannel implements TransportChannel {
+final class WebSocketChannel implements Channel {
 
     /**
-     * The transport channel handler.
+     * The transport handler.
      */
-    private final TransportChannelHandler _handler;
+    private final ChannelHandler _handler;
 
     /**
      * The web socket.
@@ -40,12 +40,12 @@ final class WebSocketTransportChannel implements TransportChannel {
     private final WebSocket _webSocket;
 
     /**
-     * Initializes a new instance of the {@link WebSocketTransportChannel} class.
+     * Initializes a new instance of the {@link WebSocketChannel} class.
      * 
      * @param handlerThe transport channel handler.
      * @param webSocket The web socket.
      */
-    public WebSocketTransportChannel(final TransportChannelHandler handler, final WebSocket webSocket) {
+    public WebSocketChannel(final ChannelHandler handler, final WebSocket webSocket) {
         if (handler == null) {
             throw new IllegalArgumentException("Handler must not be null");
         }
@@ -59,7 +59,7 @@ final class WebSocketTransportChannel implements TransportChannel {
 
     @Override
     public Promise<Void> send(final String message) {
-        _handler.onSending(message);
+        _handler.handleMessageSending(message);
 
         try {
             _webSocket.sendTextMessage(message);

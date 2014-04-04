@@ -27,7 +27,7 @@ import net.signalr.client.util.TimeProvider;
 /**
  * Represents the transport monitor.
  */
-final class TransportMonitor implements Runnable, TransportChannelHandler {
+final class TransportMonitor implements Runnable {
 
     /**
      * The private logger.
@@ -113,21 +113,21 @@ final class TransportMonitor implements Runnable, TransportChannelHandler {
     }
 
     /**
-     * Updates the hear beat time.
-     */
-    private void updateHeartbeatTime() {
-        final long currentTime = _timeProvider.currentTimeMillis();
-
-        _heartbeatTime.set(currentTime);
-    }
-
-    /**
      * Returns the monitor interval.
      * 
      * @return The monitor interval.
      */
     public long getInterval() {
         return _lostTimeout - _slowTimeout;
+    }
+
+    /**
+     * Handles a heartbeat.
+     */
+    public void handleHeartbeat() {
+        final long currentTime = _timeProvider.currentTimeMillis();
+
+        _heartbeatTime.set(currentTime);
     }
 
     @Override
@@ -140,34 +140,12 @@ final class TransportMonitor implements Runnable, TransportChannelHandler {
         if (status == TransportStatus.LOST) {
             logger.error("Keep alive timed out, connection has been lost.");
 
-            _manager.notifyOnConnectionLost();
+            _manager.handleConnectionLost();
         } else if (status == TransportStatus.SLOW) {
             logger.warn("Keep alive has been missed, connection may be dead/slow.");
 
-            _manager.notifyOnConnectionSlow();
+            _manager.handleConnectionSlow();
         }
         _status = status;
-    }
-
-    @Override
-    public void onOpened() {
-        updateHeartbeatTime();
-    }
-
-    @Override
-    public void onClosed() {
-    }
-
-    @Override
-    public void onSending(final String message) {
-    }
-
-    @Override
-    public void onReceived(final String message) {
-        updateHeartbeatTime();
-    }
-
-    @Override
-    public void onError(final Throwable throwable) {
     }
 }

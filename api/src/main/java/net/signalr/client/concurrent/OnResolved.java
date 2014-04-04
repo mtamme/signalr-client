@@ -23,6 +23,6 @@ package net.signalr.client.concurrent;
 public abstract class OnResolved<V> implements Callback<V> {
 
     @Override
-    public final void onRejected(final Throwable throwable) {
+    public final void onRejected(final Throwable cause) {
     }
 }

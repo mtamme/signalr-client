@@ -18,7 +18,7 @@
 package net.signalr.client.concurrent;
 
 /**
- * Defines a promise.
+ * Defines a result of an asynchronous operation.
  * 
  * @param <V> The value type.
  */

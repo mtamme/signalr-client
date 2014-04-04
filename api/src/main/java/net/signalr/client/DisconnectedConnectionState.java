@@ -27,7 +27,7 @@ import net.signalr.client.concurrent.Promise;
 import net.signalr.client.concurrent.Promises;
 import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.Transport;
-import net.signalr.client.transport.TransportChannel;
+import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.TransportManager;
 
 /**
@@ -76,9 +76,9 @@ final class DisconnectedConnectionState implements ConnectionState {
         final TransportManager manager = context.getTransportManager();
         final Transport transport = manager.getTransport();
 
-        transport.negotiate(context).thenCompose(new Function<NegotiationResponse, Promise<TransportChannel>>() {
+        transport.negotiate(context).thenCompose(new Function<NegotiationResponse, Promise<Channel>>() {
             @Override
-            public Promise<TransportChannel> apply(final NegotiationResponse response) throws Exception {
+            public Promise<Channel> apply(final NegotiationResponse response) throws Exception {
                 final String protocolVersion = response.getProtocolVersion();
 
                 if (!protocolVersion.equals(context.getProtocolVersion())) {
@@ -93,11 +93,11 @@ final class DisconnectedConnectionState implements ConnectionState {
 
                 logger.info("Connecting transport...");
 
-                return transport.connect(context, new TransportChannelHandlerAdapter(context, handler), false);
+                return transport.connect(context, new ChannelHandlerAdapter(context, handler), false);
             }
-        }).thenCall(new Callback<TransportChannel>() {
+        }).thenCall(new Callback<Channel>() {
             @Override
-            public void onResolved(final TransportChannel channel) {
+            public void onResolved(final Channel channel) {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(handler, channel);
 
                 context.changeState(connecting, connected);
@@ -106,7 +106,7 @@ final class DisconnectedConnectionState implements ConnectionState {
             }
 
             @Override
-            public void onRejected(final Throwable throwable) {
+            public void onRejected(final Throwable cause) {
                 context.changeState(connecting, DisconnectedConnectionState.this);
                 handler.onDisconnected();
             }

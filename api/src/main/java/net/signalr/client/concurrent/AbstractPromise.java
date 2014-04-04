@@ -33,8 +33,8 @@ public abstract class AbstractPromise<V> implements Promise<V> {
             }
 
             @Override
-            public void onRejected(final Throwable throwable) {
-                deferred.reject(throwable);
+            public void onRejected(final Throwable cause) {
+                deferred.reject(cause);
             }
         });
     }
@@ -48,8 +48,8 @@ public abstract class AbstractPromise<V> implements Promise<V> {
             }
 
             @Override
-            public void onRejected(final Throwable throwable) {
-                deferred.reject(throwable);
+            public void onRejected(final Throwable cause) {
+                deferred.reject(cause);
             }
         });
     }
@@ -74,12 +74,12 @@ public abstract class AbstractPromise<V> implements Promise<V> {
             }
 
             @Override
-            public void onRejected(final Throwable throwable) {
+            public void onRejected(final Throwable cause) {
                 try {
-                    callback.onRejected(throwable);
-                    deferred.reject(throwable);
+                    callback.onRejected(cause);
+                    deferred.reject(cause);
                 } catch (final Throwable t) {
-                    t.addSuppressed(throwable);
+                    t.addSuppressed(cause);
                     deferred.reject(t);
                 }
             }
@@ -109,8 +109,8 @@ public abstract class AbstractPromise<V> implements Promise<V> {
             }
 
             @Override
-            public void onRejected(final Throwable throwable) {
-                deferred.reject(throwable);
+            public void onRejected(final Throwable cause) {
+                deferred.reject(cause);
             }
         });
 
@@ -138,8 +138,8 @@ public abstract class AbstractPromise<V> implements Promise<V> {
             }
 
             @Override
-            public void onRejected(final Throwable throwable) {
-                deferred.reject(throwable);
+            public void onRejected(final Throwable cause) {
+                deferred.reject(cause);
             }
         });
 

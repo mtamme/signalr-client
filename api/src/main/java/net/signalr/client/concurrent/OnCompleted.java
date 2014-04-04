@@ -23,12 +23,12 @@ package net.signalr.client.concurrent;
 public abstract class OnCompleted<V> implements Callback<V> {
 
     /**
-     * Called when the {@link Promise} was completed.
+     * Invoked when the {@link Promise} was completed.
      * 
      * @param value The value.
-     * @param throwable The throwable.
+     * @param cause The cause.
      */
-    public abstract void onCompleted(V value, Throwable throwable);
+    public abstract void onCompleted(V value, Throwable cause);
 
     @Override
     public final void onResolved(final V value) {
@@ -36,7 +36,7 @@ public abstract class OnCompleted<V> implements Callback<V> {
     }
 
     @Override
-    public final void onRejected(final Throwable throwable) {
-        onCompleted(null, throwable);
+    public final void onRejected(final Throwable cause) {
+        onCompleted(null, cause);
     }
 }

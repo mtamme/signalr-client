@@ -25,16 +25,16 @@ package net.signalr.client.concurrent;
 public interface Callback<V> {
 
     /**
-     * Called when the {@link Promise} was resolved.
+     * Invoked when the {@link Promise} was resolved.
      * 
      * @param value The value.
      */
     void onResolved(V value);
 
     /**
-     * Called when the {@link Promise} was rejected.
+     * Invoked when the {@link Promise} was rejected.
      * 
-     * @param throwable The {@link Throwable}.
+     * @param cause The cause.
      */
-    void onRejected(Throwable throwable);
+    void onRejected(Throwable cause);
 }

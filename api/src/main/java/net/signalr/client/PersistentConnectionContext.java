@@ -19,6 +19,7 @@ package net.signalr.client;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -144,12 +145,12 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     @Override
     public Map<String, Collection<String>> getHeaders() {
-        return _headers;
+        return Collections.unmodifiableMap(_headers);
     }
 
     @Override
     public Map<String, Collection<String>> getQueryParameters() {
-        return _queryParameters;
+        return Collections.unmodifiableMap(_queryParameters);
     }
 
     @Override

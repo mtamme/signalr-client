@@ -88,11 +88,11 @@ public interface Transport {
      * Connects the transport.
      * 
      * @param context The transport context.
-     * @param handler The transport channel handler.
+     * @param handler The channel handler.
      * @param reconnect A value indicating whether to reconnect.
-     * @return The transport channel.
+     * @return The channel.
      */
-    Promise<TransportChannel> connect(TransportContext context, TransportChannelHandler handler, boolean reconnect);
+    Promise<Channel> connect(TransportContext context, ChannelHandler handler, boolean reconnect);
 
     /**
      * Performs a transport ping.
@@ -106,7 +106,7 @@ public interface Transport {
      * Aborts the transport.
      * 
      * @param context The transport context.
-     * @return The abort response.
+     * @return The abort result.
      */
     Promise<Void> abort(TransportContext context);
 }

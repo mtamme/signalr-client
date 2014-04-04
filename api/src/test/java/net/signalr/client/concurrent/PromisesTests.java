@@ -77,11 +77,11 @@ public final class PromisesTests {
         // Arrange
         @SuppressWarnings("unchecked")
         final Callback<Integer> callback = (Callback<Integer>) createStrictMock(Callback.class);
-        final Throwable throwable = new Throwable();
+        final Throwable cause = new Throwable();
 
-        callback.onRejected(throwable);
+        callback.onRejected(cause);
         replay(callback);
-        final Promise<Integer> promise = Promises.rejected(throwable);
+        final Promise<Integer> promise = Promises.rejected(cause);
 
         // Act
         promise.addCallback(callback);

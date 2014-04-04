@@ -118,11 +118,11 @@ final class Awaiter<V> implements Callback<V> {
     }
 
     @Override
-    public void onRejected(final Throwable throwable) {
+    public void onRejected(final Throwable cause) {
         _result = new Result<V>() {
             @Override
             public V get() throws ExecutionException {
-                throw new ExecutionException(throwable);
+                throw new ExecutionException(cause);
             }
         };
 

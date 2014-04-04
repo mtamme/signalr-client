@@ -17,39 +17,25 @@
 
 package net.signalr.client.transport;
 
+import net.signalr.client.concurrent.Promise;
+
 /**
- * Defines a transport channel handler.
+ * Defines a channel.
  */
-public interface TransportChannelHandler {
+public interface Channel {
 
     /**
-     * Called when the transport channel has been opened.
-     */
-    void onOpened();
-
-    /**
-     * Called when the transport channel has been closed.
-     */
-    void onClosed();
-
-    /**
-     * Called when a message is going to be sent.
+     * Sends the specified message.
      * 
      * @param message The message.
+     * @return The send result.
      */
-    void onSending(String message);
+    Promise<Void> send(String message);
 
     /**
-     * Called when a message has been received.
+     * Closes the channel.
      * 
-     * @param message The message.
+     * @return The close result.
      */
-    void onReceived(String message);
-
-    /**
-     * Called when an error occurred.
-     * 
-     * @param throwable The error.
-     */
-    void onError(Throwable throwable);
+    Promise<Void> close();
 }

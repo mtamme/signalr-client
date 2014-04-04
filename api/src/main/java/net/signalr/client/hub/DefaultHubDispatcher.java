@@ -114,7 +114,7 @@ final class DefaultHubDispatcher implements HubDispatcher {
 
         return _connection.send(message).thenCall(new OnRejected<Void>() {
             @Override
-            public void onRejected(final Throwable throwable) {
+            public void onRejected(final Throwable cause) {
                 _responses.remove(callbackId);
             }
         }).thenCompose(new Function<Void, Promise<HubResponse>>() {
