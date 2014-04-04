@@ -122,9 +122,9 @@ final class TransportMonitor implements Runnable {
     }
 
     /**
-     * Handles a heart beat.
+     * Updates the heart beat time.
      */
-    public void handleHeartbeat() {
+    public void updateHeartbeatTime() {
         final long currentTime = _timeProvider.currentTimeMillis();
 
         _lastHeartbeatTime.set(currentTime);
