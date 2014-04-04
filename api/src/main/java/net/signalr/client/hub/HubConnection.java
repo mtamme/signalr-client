@@ -32,22 +32,52 @@ import net.signalr.client.transport.Transport;
  */
 public final class HubConnection {
 
+    /**
+     * The hub dispatcher.
+     */
     private final HubDispatcher _dispatcher;
 
+    /**
+     * The connection.
+     */
     private final Connection _connection;
 
+    /**
+     * the hub names.
+     */
     private final HubNames _hubNames;
 
+    /**
+     * The hub proxies.
+     */
     private final Map<String, HubProxy> _hubProxies;
 
+    /**
+     * Initializes a new instance of the {@link HubConnection} class.
+     * 
+     * @param url The URL.
+     * @param transport The transport.
+     * @param serializer The serializer.
+     */
     public HubConnection(final String url, final Transport transport, JsonSerializer serializer) {
         this(new PersistentConnection(url, transport, serializer));
     }
 
+    /**
+     * Initializes a new instance of the {@link HubConnection} class.
+     * 
+     * @param connection The connection.
+     */
     public HubConnection(final Connection connection) {
         this(new DefaultHubDispatcher(connection), connection);
     }
 
+    /**
+     * Initializes a new instance of the {@link HubConnection} class.
+     * 
+     * @param dispatcher The hub dispatcher.
+     * @param connection The connection.
+     */
     HubConnection(final HubDispatcher dispatcher, final Connection connection) {
         if (dispatcher == null) {
             throw new IllegalArgumentException("Dispatcher must not be null");
@@ -63,6 +93,11 @@ public final class HubConnection {
         _hubProxies = new HashMap<String, HubProxy>();
     }
 
+    /**
+     * Updates the connection data.
+     * 
+     * @param newHubName The new hub name.
+     */
     private void updateConnectionData(String newHubName) {
         _hubNames.add(newHubName);
         final JsonSerializer serializer = _connection.getSerializer();
@@ -71,14 +106,32 @@ public final class HubConnection {
         _connection.setConnectionData(connectionData);
     }
 
+    /**
+     * Adds a header.
+     * 
+     * @param name The header name.
+     * @param value The header value.
+     */
     public final void addHeader(final String name, final String value) {
         _connection.addHeader(name, value);
     }
 
+    /**
+     * Adds a query parameter.
+     * 
+     * @param name The query parameter name.
+     * @param value The query parameter value.
+     */
     public final void addQueryParameter(final String name, final String value) {
         _connection.addQueryParameter(name, value);
     }
 
+    /**
+     * Returns a hub proxy for the specified hub name.
+     * 
+     * @param hubName The hub name.
+     * @return The hub proxy.
+     */
     public HubProxy getProxy(final String hubName) {
         final String lowerCaseHubName = hubName.toLowerCase();
         HubProxy hubProxy = _hubProxies.get(lowerCaseHubName);
@@ -92,10 +145,21 @@ public final class HubConnection {
         return hubProxy;
     }
 
+    /**
+     * Starts the connection.
+     * 
+     * @param handler The connection handler.
+     * @return The start result.
+     */
     public final Promise<Void> start(final ConnectionHandler handler) {
         return _connection.start(handler);
     }
 
+    /**
+     * Stops the connection.
+     * 
+     * @return The stop result.
+     */
     public final Promise<Void> stop() {
         return _connection.stop();
     }

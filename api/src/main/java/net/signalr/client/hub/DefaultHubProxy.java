@@ -26,10 +26,22 @@ import net.signalr.client.json.JsonElement;
  */
 final class DefaultHubProxy implements HubProxy {
 
+    /**
+     * The hub name.
+     */
     private final String _hubName;
 
+    /**
+     * The hub dispatcher.
+     */
     private final HubDispatcher _dispatcher;
 
+    /**
+     * Initializes a new instance of the {@link DefaultHubProxy} class.
+     * 
+     * @param hubName The hub name.
+     * @param dispatcher hub dispatcher.
+     */
     public DefaultHubProxy(final String hubName, final HubDispatcher dispatcher) {
         if (hubName == null) {
             throw new IllegalArgumentException("Hub name must not be null");
