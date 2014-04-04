@@ -326,7 +326,7 @@ public final class Deferred<V> extends AbstractPromise<V> {
         private final Callback<? super V> _callback;
 
         /**
-         * The completed flag.
+         * A value indicating whether the stage completed.
          */
         private final AtomicBoolean _completed;
 
