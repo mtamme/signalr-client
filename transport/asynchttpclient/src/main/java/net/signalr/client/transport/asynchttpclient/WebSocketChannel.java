@@ -30,7 +30,7 @@ import net.signalr.client.transport.ChannelHandler;
 final class WebSocketChannel implements Channel {
 
     /**
-     * The transport handler.
+     * The channel handler.
      */
     private final ChannelHandler _handler;
 
@@ -42,7 +42,7 @@ final class WebSocketChannel implements Channel {
     /**
      * Initializes a new instance of the {@link WebSocketChannel} class.
      * 
-     * @param handlerThe transport channel handler.
+     * @param handler The channel handler.
      * @param webSocket The web socket.
      */
     public WebSocketChannel(final ChannelHandler handler, final WebSocket webSocket) {

@@ -55,9 +55,9 @@ final class TransportMonitor implements Runnable {
     private final long _slowTimeout;
 
     /**
-     * The heart beat time.
+     * The last heart beat time.
      */
-    private final AtomicLong _heartbeatTime;
+    private final AtomicLong _lastHeartbeatTime;
 
     /**
      * The transport status.
@@ -88,7 +88,7 @@ final class TransportMonitor implements Runnable {
         _slowTimeout = (timeout * 2) / 3;
         final long currentTime = _timeProvider.currentTimeMillis();
 
-        _heartbeatTime = new AtomicLong(currentTime);
+        _lastHeartbeatTime = new AtomicLong(currentTime);
         _status = TransportStatus.VITAL;
     }
 
@@ -98,9 +98,9 @@ final class TransportMonitor implements Runnable {
      * @return The transport status.
      */
     private TransportStatus getStatus() {
-        final long heartbeatTime = _heartbeatTime.get();
+        final long lastHeartbeatTime = _lastHeartbeatTime.get();
         final long currentTime = _timeProvider.currentTimeMillis();
-        final long elapsedTime = currentTime - heartbeatTime;
+        final long elapsedTime = currentTime - lastHeartbeatTime;
 
         if (elapsedTime >= _lostTimeout) {
             return TransportStatus.LOST;
@@ -122,12 +122,12 @@ final class TransportMonitor implements Runnable {
     }
 
     /**
-     * Handles a heartbeat.
+     * Handles a heart beat.
      */
     public void handleHeartbeat() {
         final long currentTime = _timeProvider.currentTimeMillis();
 
-        _heartbeatTime.set(currentTime);
+        _lastHeartbeatTime.set(currentTime);
     }
 
     @Override

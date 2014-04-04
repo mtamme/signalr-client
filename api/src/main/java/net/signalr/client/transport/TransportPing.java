@@ -34,6 +34,9 @@ final class TransportPing implements Runnable {
      */
     private static final Logger logger = LoggerFactory.getLogger(TransportPing.class);
 
+    /**
+     * The transport ping response value.
+     */
     private static final String PING_RESPONSE_VALUE = "pong";
 
     /**

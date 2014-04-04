@@ -23,16 +23,28 @@ import net.signalr.client.concurrent.Scheduler;
 import net.signalr.client.util.SystemTimeProvider;
 
 /**
- * Represents the default manager controller.
+ * Represents the default transport manager.
  */
 public final class DefaultTransportManager implements TransportManager {
 
+    /**
+     * The transport monitor job name.
+     */
     private static final String MONITOR_NAME = "Transport-Monitor";
 
+    /**
+     * The transport ping job name.
+     */
     private static final String PING_NAME = "Transport-Ping";
 
+    /**
+     * The transport ping interval in seconds.
+     */
     private static final long PING_INTERVAL = 5;
 
+    /**
+     * The transport.
+     */
     private final Transport _transport;
 
     /**

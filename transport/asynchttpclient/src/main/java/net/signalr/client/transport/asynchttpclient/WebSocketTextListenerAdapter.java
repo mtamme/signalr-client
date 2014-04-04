@@ -31,19 +31,19 @@ import com.ning.http.client.websocket.WebSocketTextListener;
 final class WebSocketTextListenerAdapter implements WebSocketTextListener {
 
     /**
-     * The transport channel handler.
+     * The channel handler.
      */
     private final ChannelHandler _handler;
 
     /**
-     * The transport channel.
+     * The channel.
      */
     private final Deferred<Channel> _channel;
 
     /**
      * Initializes a new instance of the {@link WebSocketTextListenerAdapter} class.
      * 
-     * @param handler The transport channel handler.
+     * @param handler The channel handler.
      */
     public WebSocketTextListenerAdapter(final ChannelHandler handler) {
         if (handler == null) {
@@ -55,9 +55,9 @@ final class WebSocketTextListenerAdapter implements WebSocketTextListener {
     }
 
     /**
-     * Returns the transport channel.
+     * Returns the channel.
      * 
-     * @return The transport channel.
+     * @return The channel.
      */
     public Promise<Channel> getChannel() {
         return _channel;

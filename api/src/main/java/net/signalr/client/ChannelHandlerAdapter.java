@@ -26,10 +26,22 @@ import net.signalr.client.transport.ChannelHandler;
  */
 final class ChannelHandlerAdapter implements ChannelHandler {
 
+    /**
+     * The connection context.
+     */
     private final ConnectionContext _context;
 
+    /**
+     * The connection handler.
+     */
     private final ConnectionHandler _handler;
 
+    /**
+     * Initializes a new instance of the {@link ChannelHandlerAdapter} class.
+     * 
+     * @param context The connection context.
+     * @param handler The connection handler.
+     */
     public ChannelHandlerAdapter(final ConnectionContext context, final ConnectionHandler handler) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
