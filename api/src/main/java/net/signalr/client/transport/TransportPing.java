@@ -19,7 +19,7 @@ package net.signalr.client.transport;
 
 import java.io.IOException;
 
-import net.signalr.client.concurrent.Callback;
+import net.signalr.client.util.concurrent.Callback;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

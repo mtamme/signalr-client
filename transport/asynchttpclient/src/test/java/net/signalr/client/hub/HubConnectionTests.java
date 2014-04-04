@@ -21,10 +21,10 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import net.signalr.client.ConnectionHandler;
-import net.signalr.client.concurrent.Promise;
-import net.signalr.client.concurrent.Promises;
 import net.signalr.client.json.gson.GsonSerializer;
 import net.signalr.client.transport.asynchttpclient.WebSocketTransport;
+import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
 
 import org.junit.Test;
 

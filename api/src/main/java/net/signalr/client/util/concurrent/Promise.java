@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.concurrent;
+package net.signalr.client.util.concurrent;
 
 /**
  * Defines a result of an asynchronous operation.

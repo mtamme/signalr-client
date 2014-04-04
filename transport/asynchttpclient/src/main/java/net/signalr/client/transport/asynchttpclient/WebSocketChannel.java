@@ -19,10 +19,10 @@ package net.signalr.client.transport.asynchttpclient;
 
 import com.ning.http.client.websocket.WebSocket;
 
-import net.signalr.client.concurrent.Promise;
-import net.signalr.client.concurrent.Promises;
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
+import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
 
 /**
  * Represents a web socket channel.

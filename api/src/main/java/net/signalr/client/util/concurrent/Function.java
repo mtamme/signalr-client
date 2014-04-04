@@ -15,14 +15,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.concurrent;
+package net.signalr.client.util.concurrent;
 
 /**
- * Represents a reject {@link Promise} callback.
+ * Defines a function.
+ * 
+ * @param <V> The value type.
+ * @param <R> The result type.
  */
-public abstract class OnRejected<V> implements Callback<V> {
+public interface Function<V, R> {
 
-    @Override
-    public final void onResolved(final V value) {
-    }
+    /**
+     * Applies the {@link Function} to the specified value.
+     * 
+     * @param value The value.
+     * @return The result.
+     * @throws Exception
+     */
+    R apply(V value) throws Exception;
 }

@@ -26,15 +26,15 @@ import com.ning.http.client.Response;
 import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
 import com.ning.http.client.AsyncHttpClientConfig.Builder;
 
-import net.signalr.client.concurrent.Function;
-import net.signalr.client.concurrent.Promise;
-import net.signalr.client.concurrent.Promises;
 import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.PingResponse;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportContext;
 import net.signalr.client.util.URIBuilder;
+import net.signalr.client.util.concurrent.Function;
+import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
 
 /**
  * Represents an abstract transport.

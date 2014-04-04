@@ -19,8 +19,8 @@ package net.signalr.client.transport;
 
 import java.util.concurrent.TimeUnit;
 
-import net.signalr.client.concurrent.Scheduler;
 import net.signalr.client.util.SystemTimeProvider;
+import net.signalr.client.util.concurrent.Scheduler;
 
 /**
  * Represents the default transport manager.

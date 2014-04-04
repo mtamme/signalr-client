@@ -15,30 +15,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.concurrent;
-
-import java.util.concurrent.TimeUnit;
+package net.signalr.client.util.concurrent;
 
 /**
- * Defines a scheduler.
+ * Defines a {@link Promise} callback.
+ * 
+ * @param <V> The value type
  */
-public interface Scheduler {
+public interface Callback<V> {
 
     /**
-     * Adds a new job to the scheduler.
+     * Invoked when the {@link Promise} was resolved.
      * 
-     * @param name The job name.
-     * @param runnable The runnable.
-     * @param initialDelay The initial delay.
-     * @param period The period.
-     * @param timeUnit The time unit.
+     * @param value The value.
      */
-    void scheduleJob(String name, Runnable runnable, long initialDelay, long period, TimeUnit timeUnit);
+    void onResolved(V value);
 
     /**
-     * Removes a job from the scheduler.
+     * Invoked when the {@link Promise} was rejected.
      * 
-     * @param name The job name.
+     * @param cause The cause.
      */
-    void unscheduleJob(String name);
+    void onRejected(Throwable cause);
 }

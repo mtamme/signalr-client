@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.concurrent;
+package net.signalr.client.util.concurrent;
 
 /**
  * Represents a complete {@link Promise} callback.

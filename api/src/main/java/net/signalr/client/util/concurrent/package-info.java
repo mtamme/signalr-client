@@ -15,22 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.concurrent;
-
 /**
- * Defines a function.
  * 
- * @param <V> The value type.
- * @param <R> The result type.
  */
-public interface Function<V, R> {
-
-    /**
-     * Applies the {@link Function} to the specified value.
-     * 
-     * @param value The value.
-     * @return The result.
-     * @throws Exception
-     */
-    R apply(V value) throws Exception;
-}
+package net.signalr.client.util.concurrent;

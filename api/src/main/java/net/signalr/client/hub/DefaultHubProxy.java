@@ -17,9 +17,9 @@
 
 package net.signalr.client.hub;
 
-import net.signalr.client.concurrent.Function;
-import net.signalr.client.concurrent.Promise;
 import net.signalr.client.json.JsonElement;
+import net.signalr.client.util.concurrent.Function;
+import net.signalr.client.util.concurrent.Promise;
 
 /**
  * Represents the default hub proxy.

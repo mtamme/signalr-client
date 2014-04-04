@@ -23,9 +23,9 @@ import java.util.Map;
 import net.signalr.client.Connection;
 import net.signalr.client.ConnectionHandler;
 import net.signalr.client.PersistentConnection;
-import net.signalr.client.concurrent.Promise;
 import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.transport.Transport;
+import net.signalr.client.util.concurrent.Promise;
 
 /**
  * Represents a hub connection.

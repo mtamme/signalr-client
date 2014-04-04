@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.concurrent;
+package net.signalr.client.util.concurrent;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -25,6 +25,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import net.signalr.client.util.concurrent.Callback;
+import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

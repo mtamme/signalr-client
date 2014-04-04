@@ -17,7 +17,7 @@
 
 package net.signalr.client;
 
-import net.signalr.client.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promise;
 
 /**
  * Defines a connection state.

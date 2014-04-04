@@ -27,9 +27,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.signalr.client.concurrent.Scheduler;
 import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.transport.TransportManager;
+import net.signalr.client.util.concurrent.Scheduler;
 
 /**
  * Represents a persistent connection context.

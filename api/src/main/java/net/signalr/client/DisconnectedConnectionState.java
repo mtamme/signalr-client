@@ -20,15 +20,15 @@ package net.signalr.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.signalr.client.concurrent.Callback;
-import net.signalr.client.concurrent.Deferred;
-import net.signalr.client.concurrent.Function;
-import net.signalr.client.concurrent.Promise;
-import net.signalr.client.concurrent.Promises;
 import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.TransportManager;
+import net.signalr.client.util.concurrent.Callback;
+import net.signalr.client.util.concurrent.Deferred;
+import net.signalr.client.util.concurrent.Function;
+import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
 
 /**
  * Represents the disconnected connection state.

@@ -24,11 +24,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.signalr.client.Connection;
-import net.signalr.client.concurrent.Deferred;
-import net.signalr.client.concurrent.Function;
-import net.signalr.client.concurrent.OnRejected;
-import net.signalr.client.concurrent.Promise;
 import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.util.concurrent.Deferred;
+import net.signalr.client.util.concurrent.Function;
+import net.signalr.client.util.concurrent.OnRejected;
+import net.signalr.client.util.concurrent.Promise;
 
 /**
  * Represents the default hub dispatcher.

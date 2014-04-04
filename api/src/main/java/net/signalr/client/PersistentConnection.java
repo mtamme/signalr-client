@@ -17,12 +17,12 @@
 
 package net.signalr.client;
 
-import net.signalr.client.concurrent.Promise;
-import net.signalr.client.concurrent.TimerScheduler;
 import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.transport.DefaultTransportManager;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportManager;
+import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.TimerScheduler;
 
 /**
  * Represents a persistent connection.

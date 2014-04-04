@@ -20,8 +20,8 @@ package net.signalr.client.transport;
 import java.util.Collection;
 import java.util.Map;
 
-import net.signalr.client.concurrent.Scheduler;
 import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.util.concurrent.Scheduler;
 
 /**
  * Defines a transport context.

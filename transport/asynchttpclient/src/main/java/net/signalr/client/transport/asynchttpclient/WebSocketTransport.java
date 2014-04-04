@@ -25,12 +25,12 @@ import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
 import com.ning.http.client.FluentStringsMap;
 import com.ning.http.client.websocket.WebSocketUpgradeHandler;
 
-import net.signalr.client.concurrent.Promise;
-import net.signalr.client.concurrent.Promises;
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
 import net.signalr.client.transport.TransportContext;
 import net.signalr.client.util.URIBuilder;
+import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
 
 /**
  * Represents the web socket transport.
