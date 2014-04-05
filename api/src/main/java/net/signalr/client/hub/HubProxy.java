@@ -25,10 +25,10 @@ import net.signalr.client.util.concurrent.Promise;
 public interface HubProxy {
 
     /**
-     * Invokes a method on the server side hub asynchronously.
+     * Invokes a method on the server side hub.
      * 
-     * @param methodName The name of the method.
-     * @param returnType The type of the return value.
+     * @param methodName The method name.
+     * @param returnType The return type.
      * @param arguments The arguments.
      * @return The invocation result.
      */
