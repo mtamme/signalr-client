@@ -18,8 +18,8 @@
 package net.signalr.client.hub;
 
 /**
-*
-*/
+ * Represents a hub exception.
+ */
 public final class HubException extends RuntimeException {
 
     /**
@@ -27,7 +27,41 @@ public final class HubException extends RuntimeException {
      */
     private static final long serialVersionUID = 2962258989233090645L;
 
-    public HubException(final String message) {
+    /**
+     * The error data.
+     */
+    private final String _data;
+
+    /**
+     * The remote stack trace.
+     */
+    private final String _remoteStackTrace;
+
+    /**
+     * Initializes a new instance of the {@link HubException} class.
+     * 
+     * @param message The error message.
+     * @param data The error data.
+     * @param remoteStackTrace The remote stack trace.
+     */
+    public HubException(final String message, final String data, final String remoteStackTrace) {
         super(message);
+
+        _data = data;
+        _remoteStackTrace = remoteStackTrace;
+    }
+
+    /**
+     * Returns the error data.
+     */
+    public String getData() {
+        return _data;
+    }
+
+    /**
+     * Returns the remote stack trace.
+     */
+    public String getRemoteStackTrace() {
+        return _remoteStackTrace;
     }
 }

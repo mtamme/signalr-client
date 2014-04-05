@@ -75,9 +75,11 @@ final class DefaultHubProxy implements HubProxy {
         return _dispatcher.invoke(request).thenApply(new Function<HubResponse, R>() {
             public R apply(final HubResponse response) throws Exception {
                 if (response.isHubException()) {
-                    final String message = response.getErrorMessage();
+                    final String errorMessage = response.getErrorMessage();
+                    final String errorData = response.getErrorData();
+                    final String stackTrace = response.getStackTrace();
 
-                    throw new HubException(message);
+                    throw new HubException(errorMessage, errorData, stackTrace);
                 }
                 final JsonElement data = response.getData();
 
