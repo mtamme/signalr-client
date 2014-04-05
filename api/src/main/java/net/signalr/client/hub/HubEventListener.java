@@ -18,7 +18,7 @@
 package net.signalr.client.hub;
 
 /**
- * Defines a hub listener.
+ * Defines an event hub listener.
  */
 public interface HubEventListener {
     void onReceived(String data);

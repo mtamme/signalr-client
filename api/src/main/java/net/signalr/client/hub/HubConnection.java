@@ -130,6 +130,10 @@ public final class HubConnection {
      * @return The hub proxy.
      */
     public HubProxy getProxy(final String hubName) {
+        if (hubName == null) {
+            throw new IllegalArgumentException("Hub name must not be null");
+        }
+
         final String lowerCaseHubName = hubName.toLowerCase();
         HubProxy hubProxy = _hubProxies.get(lowerCaseHubName);
 
