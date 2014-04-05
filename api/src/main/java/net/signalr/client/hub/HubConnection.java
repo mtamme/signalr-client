@@ -135,7 +135,7 @@ public final class HubConnection {
 
         if (hubProxy == null) {
             // Update the connection data upfront since it could fail when
-            // the underlying connection is not closed.
+            // the underlying connection is not disconnected.
             updateConnectionData(hubName);
             hubProxy = new DefaultHubProxy(hubName, _dispatcher);
             _hubProxies.put(lowerCaseHubName, hubProxy);
