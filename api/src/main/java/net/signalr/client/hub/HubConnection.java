@@ -38,14 +38,9 @@ public final class HubConnection {
     private final HubDispatcher _dispatcher;
 
     /**
-     * The connection.
+     * The underlying connection.
      */
     private final Connection _connection;
-
-    /**
-     * the hub names.
-     */
-    private final HubNames _hubNames;
 
     /**
      * The hub proxies.
@@ -66,7 +61,7 @@ public final class HubConnection {
     /**
      * Initializes a new instance of the {@link HubConnection} class.
      * 
-     * @param connection The connection.
+     * @param connection The underlying connection.
      */
     public HubConnection(final Connection connection) {
         this(new DefaultHubDispatcher(connection), connection);
@@ -76,7 +71,7 @@ public final class HubConnection {
      * Initializes a new instance of the {@link HubConnection} class.
      * 
      * @param dispatcher The hub dispatcher.
-     * @param connection The connection.
+     * @param connection The underlying connection.
      */
     HubConnection(final HubDispatcher dispatcher, final Connection connection) {
         if (dispatcher == null) {
@@ -89,7 +84,6 @@ public final class HubConnection {
         _dispatcher = dispatcher;
         _connection = connection;
 
-        _hubNames = new HubNames();
         _hubProxies = new HashMap<String, HubProxy>();
     }
 
@@ -99,9 +93,12 @@ public final class HubConnection {
      * @param newHubName The new hub name.
      */
     private void updateConnectionData(String newHubName) {
-        _hubNames.add(newHubName);
+        final HubNames hubNames = new HubNames();
+
+        hubNames.addAll(_hubProxies.keySet());
+        hubNames.add(newHubName);
         final JsonSerializer serializer = _connection.getSerializer();
-        final String connectionData = serializer.toJson(_hubNames);
+        final String connectionData = serializer.toJson(hubNames);
 
         _connection.setConnectionData(connectionData);
     }
@@ -137,9 +134,11 @@ public final class HubConnection {
         HubProxy hubProxy = _hubProxies.get(lowerCaseHubName);
 
         if (hubProxy == null) {
+            // Update the connection data upfront since it could fail when
+            // the underlying connection is not closed.
+            updateConnectionData(hubName);
             hubProxy = new DefaultHubProxy(hubName, _dispatcher);
             _hubProxies.put(lowerCaseHubName, hubProxy);
-            updateConnectionData(hubName);
         }
 
         return hubProxy;

@@ -17,6 +17,7 @@
 
 package net.signalr.client.hub;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,6 +37,10 @@ final class HubNames implements JsonWriteable {
 
     public void add(final String name) {
         _names.add(name);
+    }
+
+    public void addAll(final Collection<String> names) {
+        _names.addAll(names);
     }
 
     @Override
