@@ -92,7 +92,7 @@ public final class HubConnection {
      * 
      * @param newHubName The new hub name.
      */
-    private void updateConnectionData(String newHubName) {
+    private void updateConnectionData(final String newHubName) {
         final HubNames hubNames = new HubNames();
 
         hubNames.addAll(_hubProxies.keySet());
@@ -138,8 +138,8 @@ public final class HubConnection {
         HubProxy hubProxy = _hubProxies.get(lowerCaseHubName);
 
         if (hubProxy == null) {
-            // Update the connection data upfront since it could fail when
-            // the underlying connection is not disconnected.
+            // Update the connection data before adding the new hub proxy
+            // since it could fail when the underlying connection is not disconnected.
             updateConnectionData(hubName);
             hubProxy = new DefaultHubProxy(hubName, _dispatcher);
             _hubProxies.put(lowerCaseHubName, hubProxy);
