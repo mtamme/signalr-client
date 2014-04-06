@@ -28,7 +28,7 @@ public interface JsonMapper {
      * @param text The text.
      * @return The element.
      */
-    JsonElement fromJson(String text);
+    JsonElement toElement(String text);
 
     /**
      * Converts the specified text into an object.
@@ -37,7 +37,7 @@ public interface JsonMapper {
      * @param type The object type.
      * @return The object.
      */
-    <T extends JsonReadable> T fromJson(String text, Class<T> type);
+    <T extends JsonReadable> T toObject(String text, Class<T> type);
 
     /**
      * Converts the specified object into a text.

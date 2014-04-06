@@ -37,8 +37,8 @@ public final class JacksonElementTests {
         _mapper = new DefaultJsonMapper(factory);
     }
 
-    private JsonElement fromJson(final String text) {
-        return _mapper.fromJson(text);
+    private JsonElement toElement(final String text) {
+        return _mapper.toElement(text);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -46,13 +46,13 @@ public final class JacksonElementTests {
         // Arrange
         // Act
         // Assert
-        fromJson(null);
+        toElement(null);
     }
 
     @Test
     public void emptyTextTest() {
         // Arrange
-        final JsonElement element = fromJson("");
+        final JsonElement element = toElement("");
 
         // Act
         // Assert
@@ -65,7 +65,7 @@ public final class JacksonElementTests {
     @Test
     public void isObjectWithEmptyObjectTest() {
         // Arrange
-        final JsonElement element = fromJson("{}");
+        final JsonElement element = toElement("{}");
 
         // Act
         // Assert
@@ -78,7 +78,7 @@ public final class JacksonElementTests {
     @Test
     public void isArrayWithEmptyArrayTest() {
         // Arrange
-        final JsonElement element = fromJson("[]");
+        final JsonElement element = toElement("[]");
 
         // Act
         // Assert
@@ -91,7 +91,7 @@ public final class JacksonElementTests {
     @Test
     public void isValueWithIntegerValueTest() {
         // Arrange
-        final JsonElement element = fromJson("1");
+        final JsonElement element = toElement("1");
 
         // Act
         // Assert
@@ -104,7 +104,7 @@ public final class JacksonElementTests {
     @Test
     public void getWithIndexAndArrayTest() {
         // Arrange
-        final JsonElement array = fromJson("[[1]]");
+        final JsonElement array = toElement("[[1]]");
 
         // Act
         final JsonElement element = array.get(0);
@@ -119,7 +119,7 @@ public final class JacksonElementTests {
     @Test
     public void getWithIndexAndObjectTest() {
         // Arrange
-        final JsonElement array = fromJson("[{\"A\":1}]");
+        final JsonElement array = toElement("[{\"A\":1}]");
 
         // Act
         final JsonElement element = array.get(0);
@@ -134,7 +134,7 @@ public final class JacksonElementTests {
     @Test
     public void getWithIndexAndValueTest() {
         // Arrange
-        final JsonElement array = fromJson("[1]");
+        final JsonElement array = toElement("[1]");
 
         // Act
         final JsonElement element = array.get(0);
@@ -149,7 +149,7 @@ public final class JacksonElementTests {
     @Test(expected = IndexOutOfBoundsException.class)
     public void getWithInvalidIndexTest() {
         // Arrange
-        final JsonElement array = fromJson("[1]");
+        final JsonElement array = toElement("[1]");
 
         // Act
         // Assert
@@ -159,7 +159,7 @@ public final class JacksonElementTests {
     @Test
     public void getWithNameAndArrayTest() {
         // Arrange
-        final JsonElement object = fromJson("{\"A\":[1]}");
+        final JsonElement object = toElement("{\"A\":[1]}");
 
         // Act
         final JsonElement element = object.get("A");
@@ -174,7 +174,7 @@ public final class JacksonElementTests {
     @Test
     public void getWithNameAndObjectTest() {
         // Arrange
-        final JsonElement object = fromJson("{\"A\":{\"A\":1}}");
+        final JsonElement object = toElement("{\"A\":{\"A\":1}}");
 
         // Act
         final JsonElement element = object.get("A");
@@ -189,7 +189,7 @@ public final class JacksonElementTests {
     @Test
     public void getWithNameAndValueTest() {
         // Arrange
-        final JsonElement object = fromJson("{\"A\":1}");
+        final JsonElement object = toElement("{\"A\":1}");
 
         // Act
         final JsonElement element = object.get("A");
@@ -204,7 +204,7 @@ public final class JacksonElementTests {
     @Test(expected = IllegalArgumentException.class)
     public void getWithNullNameTest() {
         // Arrange
-        final JsonElement object = fromJson("{\"A\":1}");
+        final JsonElement object = toElement("{\"A\":1}");
 
         // Act
         // Assert
@@ -214,7 +214,7 @@ public final class JacksonElementTests {
     @Test
     public void getWithEmptyNameTest() {
         // Arrange
-        final JsonElement object = fromJson("{\"A\":1}");
+        final JsonElement object = toElement("{\"A\":1}");
 
         // Act
         final JsonElement element = object.get("");
@@ -229,7 +229,7 @@ public final class JacksonElementTests {
     @Test
     public void getWithUnknownNameTest() {
         // Arrange
-        final JsonElement object = fromJson("{\"A\":1}");
+        final JsonElement object = toElement("{\"A\":1}");
 
         // Act
         final JsonElement element = object.get("B");

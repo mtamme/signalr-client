@@ -106,7 +106,7 @@ public abstract class AbstractTransport implements Transport {
                 final JsonMapper mapper = context.getMapper();
                 final String body = response.getResponseBody();
 
-                return mapper.fromJson(body, NegotiationResponse.class);
+                return mapper.toObject(body, NegotiationResponse.class);
             }
         });
     }
@@ -146,7 +146,7 @@ public abstract class AbstractTransport implements Transport {
                 final JsonMapper mapper = context.getMapper();
                 final String body = response.getResponseBody();
 
-                return mapper.fromJson(body, PingResponse.class);
+                return mapper.toObject(body, PingResponse.class);
             }
         });
     }

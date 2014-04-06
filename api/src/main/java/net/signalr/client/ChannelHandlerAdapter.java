@@ -77,7 +77,7 @@ final class ChannelHandlerAdapter implements ChannelHandler {
     @Override
     public void handleMessageReceived(final String message) {
         final JsonMapper mapper = _context.getMapper();
-        final JsonElement element = mapper.fromJson(message);
+        final JsonElement element = mapper.toElement(message);
         final String callbackId = element.get("I").getString(null);
 
         if (callbackId != null) {

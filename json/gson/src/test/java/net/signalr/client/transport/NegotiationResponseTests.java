@@ -44,7 +44,7 @@ public final class NegotiationResponseTests {
         final String data = "{\"Url\":\"/signalr\",\"ConnectionToken\":\"Z1IuK7USZw4BwrDFbF8S+Hec4Mitkwe0+3N/FEZoQD8yVObSvtFdUfUJhKprVhjfXYlu1OLv2em/zMGN5ZK0Vr5H6ZqTvXaH+7Y8ee7yGjATfvZB\",\"ConnectionId\":\"0fa8593e-448e-4c98-9b21-2d95dce3adcc\",\"KeepAliveTimeout\":80.0,\"DisconnectTimeout\":120.0,\"TryWebSockets\":true,\"ProtocolVersion\":\"1.3\",\"TransportConnectTimeout\":5.0}";
 
         // Act
-        final NegotiationResponse response = _mapper.fromJson(data, NegotiationResponse.class);
+        final NegotiationResponse response = _mapper.toObject(data, NegotiationResponse.class);
 
         // Assert
         assertNotNull(response);
@@ -64,7 +64,7 @@ public final class NegotiationResponseTests {
         final String data = "{\"Url\":\"/signalr\",\"ConnectionToken\":\"Z1IuK7USZw4BwrDFbF8S+Hec4Mitkwe0+3N/FEZoQD8yVObSvtFdUfUJhKprVhjfXYlu1OLv2em/zMGN5ZK0Vr5H6ZqTvXaH+7Y8ee7yGjATfvZB\",\"ConnectionId\":\"0fa8593e-448e-4c98-9b21-2d95dce3adcc\",\"DisconnectTimeout\":120.0,\"TryWebSockets\":true,\"ProtocolVersion\":\"1.3\",\"TransportConnectTimeout\":5.0}";
 
         // Act
-        final NegotiationResponse response = _mapper.fromJson(data, NegotiationResponse.class);
+        final NegotiationResponse response = _mapper.toObject(data, NegotiationResponse.class);
 
         // Assert
         assertNotNull(response);

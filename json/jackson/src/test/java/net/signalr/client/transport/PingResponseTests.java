@@ -44,7 +44,7 @@ public final class PingResponseTests {
         final String data = "{\"Response\":\"pong\"}";
 
         // Act
-        final PingResponse response = _mapper.fromJson(data, PingResponse.class);
+        final PingResponse response = _mapper.toObject(data, PingResponse.class);
 
         // Assert
         assertNotNull(response);

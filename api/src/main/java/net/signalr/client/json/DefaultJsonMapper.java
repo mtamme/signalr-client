@@ -45,7 +45,7 @@ public final class DefaultJsonMapper implements JsonMapper {
     }
 
     @Override
-    public final JsonElement fromJson(final String text) {
+    public final JsonElement toElement(final String text) {
         if (text == null) {
             throw new IllegalArgumentException("Text must not be null");
         }
@@ -58,7 +58,7 @@ public final class DefaultJsonMapper implements JsonMapper {
     }
 
     @Override
-    public final <T extends JsonReadable> T fromJson(final String text, final Class<T> type) {
+    public final <T extends JsonReadable> T toObject(final String text, final Class<T> type) {
         if (text == null) {
             throw new IllegalArgumentException("Text must not be null");
         }
