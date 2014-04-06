@@ -17,26 +17,25 @@
 
 package net.signalr.client.transport;
 
-import net.signalr.client.json.DefaultJsonSerializer;
-import net.signalr.client.json.JsonFactory;
-import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.gson.GsonFactory;
-import net.signalr.client.transport.NegotiationResponse;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import net.signalr.client.json.DefaultJsonMapper;
+import net.signalr.client.json.JsonFactory;
+import net.signalr.client.json.JsonMapper;
+import net.signalr.client.json.gson.GsonFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public final class NegotiationResponseTests {
 
-    private JsonSerializer _serializer;
+    private JsonMapper _mapper;
 
     @Before
     public void setUp() {
         final JsonFactory factory = new GsonFactory();
 
-        _serializer = new DefaultJsonSerializer(factory);
+        _mapper = new DefaultJsonMapper(factory);
     }
 
     @Test
@@ -45,7 +44,7 @@ public final class NegotiationResponseTests {
         final String data = "{\"Url\":\"/signalr\",\"ConnectionToken\":\"Z1IuK7USZw4BwrDFbF8S+Hec4Mitkwe0+3N/FEZoQD8yVObSvtFdUfUJhKprVhjfXYlu1OLv2em/zMGN5ZK0Vr5H6ZqTvXaH+7Y8ee7yGjATfvZB\",\"ConnectionId\":\"0fa8593e-448e-4c98-9b21-2d95dce3adcc\",\"KeepAliveTimeout\":80.0,\"DisconnectTimeout\":120.0,\"TryWebSockets\":true,\"ProtocolVersion\":\"1.3\",\"TransportConnectTimeout\":5.0}";
 
         // Act
-        final NegotiationResponse response = _serializer.fromJson(data, NegotiationResponse.class);
+        final NegotiationResponse response = _mapper.fromJson(data, NegotiationResponse.class);
 
         // Assert
         assertNotNull(response);
@@ -65,7 +64,7 @@ public final class NegotiationResponseTests {
         final String data = "{\"Url\":\"/signalr\",\"ConnectionToken\":\"Z1IuK7USZw4BwrDFbF8S+Hec4Mitkwe0+3N/FEZoQD8yVObSvtFdUfUJhKprVhjfXYlu1OLv2em/zMGN5ZK0Vr5H6ZqTvXaH+7Y8ee7yGjATfvZB\",\"ConnectionId\":\"0fa8593e-448e-4c98-9b21-2d95dce3adcc\",\"DisconnectTimeout\":120.0,\"TryWebSockets\":true,\"ProtocolVersion\":\"1.3\",\"TransportConnectTimeout\":5.0}";
 
         // Act
-        final NegotiationResponse response = _serializer.fromJson(data, NegotiationResponse.class);
+        final NegotiationResponse response = _mapper.fromJson(data, NegotiationResponse.class);
 
         // Assert
         assertNotNull(response);

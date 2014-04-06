@@ -17,25 +17,25 @@
 
 package net.signalr.client.transport;
 
-import net.signalr.client.json.DefaultJsonSerializer;
-import net.signalr.client.json.JsonFactory;
-import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.jackson.JacksonFactory;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import net.signalr.client.json.DefaultJsonMapper;
+import net.signalr.client.json.JsonFactory;
+import net.signalr.client.json.JsonMapper;
+import net.signalr.client.json.jackson.JacksonFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public final class PingResponseTests {
 
-    private JsonSerializer _serializer;
+    private JsonMapper _mapper;
 
     @Before
     public void setUp() {
         final JsonFactory factory = new JacksonFactory();
 
-        _serializer = new DefaultJsonSerializer(factory);
+        _mapper = new DefaultJsonMapper(factory);
     }
 
     @Test
@@ -44,7 +44,7 @@ public final class PingResponseTests {
         final String data = "{\"Response\":\"pong\"}";
 
         // Act
-        final PingResponse response = _serializer.fromJson(data, PingResponse.class);
+        final PingResponse response = _mapper.fromJson(data, PingResponse.class);
 
         // Assert
         assertNotNull(response);

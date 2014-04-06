@@ -20,7 +20,7 @@ package net.signalr.client.transport;
 import java.util.Collection;
 import java.util.Map;
 
-import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonMapper;
 import net.signalr.client.util.concurrent.Scheduler;
 
 /**
@@ -34,7 +34,7 @@ public interface TransportContext {
 
     Scheduler getScheduler();
 
-    JsonSerializer getSerializer();
+    JsonMapper getMapper();
 
     boolean getTryWebSockets();
 

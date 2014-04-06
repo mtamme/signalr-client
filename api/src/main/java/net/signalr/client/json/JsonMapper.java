@@ -18,16 +18,9 @@
 package net.signalr.client.json;
 
 /**
- * Defines a JSON serializer.
+ * Defines a JSON mapper.
  */
-public interface JsonSerializer {
-
-    /**
-     * Returns the factory.
-     * 
-     * @return The factory.
-     */
-    JsonFactory getFactory();
+public interface JsonMapper {
 
     /**
      * Converts the specified text into an element.

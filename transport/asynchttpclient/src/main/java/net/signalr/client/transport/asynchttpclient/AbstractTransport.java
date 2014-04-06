@@ -26,7 +26,7 @@ import com.ning.http.client.Response;
 import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
 import com.ning.http.client.AsyncHttpClientConfig.Builder;
 
-import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonMapper;
 import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.PingResponse;
 import net.signalr.client.transport.Transport;
@@ -103,10 +103,10 @@ public abstract class AbstractTransport implements Transport {
         return handler.getResponse().thenApply(new Function<Response, NegotiationResponse>() {
             @Override
             public NegotiationResponse apply(final Response response) throws Exception {
-                final JsonSerializer serializer = context.getSerializer();
+                final JsonMapper mapper = context.getMapper();
                 final String body = response.getResponseBody();
 
-                return serializer.fromJson(body, NegotiationResponse.class);
+                return mapper.fromJson(body, NegotiationResponse.class);
             }
         });
     }
@@ -143,10 +143,10 @@ public abstract class AbstractTransport implements Transport {
         return handler.getResponse().thenApply(new Function<Response, PingResponse>() {
             @Override
             public PingResponse apply(final Response response) throws Exception {
-                final JsonSerializer serializer = context.getSerializer();
+                final JsonMapper mapper = context.getMapper();
                 final String body = response.getResponseBody();
 
-                return serializer.fromJson(body, PingResponse.class);
+                return mapper.fromJson(body, PingResponse.class);
             }
         });
     }

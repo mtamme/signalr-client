@@ -17,26 +17,25 @@
 
 package net.signalr.client.hub;
 
-import net.signalr.client.hub.HubResponse;
-import net.signalr.client.json.DefaultJsonSerializer;
-import net.signalr.client.json.JsonFactory;
-import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.gson.GsonFactory;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import net.signalr.client.json.DefaultJsonMapper;
+import net.signalr.client.json.JsonFactory;
+import net.signalr.client.json.JsonMapper;
+import net.signalr.client.json.gson.GsonFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public final class HubResponseTests {
 
-    private JsonSerializer _serializer;
+    private JsonMapper _mapper;
 
     @Before
     public void setUp() {
         final JsonFactory factory = new GsonFactory();
 
-        _serializer = new DefaultJsonSerializer(factory);
+        _mapper = new DefaultJsonMapper(factory);
     }
 
     @Test
@@ -45,7 +44,7 @@ public final class HubResponseTests {
         final String data = "{\"I\":\"1\"}";
 
         // Act
-        final HubResponse response = _serializer.fromJson(data, HubResponse.class);
+        final HubResponse response = _mapper.fromJson(data, HubResponse.class);
 
         // Assert
         assertNotNull(response);
@@ -58,7 +57,7 @@ public final class HubResponseTests {
         final String data = "{\"C\":\"s-0,298F690\",\"M\":[{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":1}]},{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":2}]}]}";
 
         // Act
-        final HubResponse response = _serializer.fromJson(data, HubResponse.class);
+        final HubResponse response = _mapper.fromJson(data, HubResponse.class);
 
         // Assert
         assertNotNull(response);

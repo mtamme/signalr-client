@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonMapper;
 import net.signalr.client.transport.TransportManager;
 import net.signalr.client.util.concurrent.Scheduler;
 
@@ -52,7 +52,7 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     private final Scheduler _scheduler;
 
-    private final JsonSerializer _serializer;
+    private final JsonMapper _mapper;
 
     private final AtomicReference<ConnectionState> _state;
 
@@ -72,7 +72,15 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     private long _keepAliveTimeout;
 
-    protected PersistentConnectionContext(final String url, final TransportManager manager, final Scheduler scheduler, final JsonSerializer serializer) {
+    /**
+     * Initializes a new instancer of the {@link PersistentConnectionContext} class.
+     * 
+     * @param url The connection URL.
+     * @param manager The transport manager.
+     * @param scheduler The scheduler.
+     * @param mapper The mapper.
+     */
+    protected PersistentConnectionContext(final String url, final TransportManager manager, final Scheduler scheduler, final JsonMapper mapper) {
         if (url == null) {
             throw new IllegalArgumentException("URL must not be null");
         }
@@ -82,14 +90,14 @@ final class PersistentConnectionContext implements ConnectionContext {
         if (scheduler == null) {
             throw new IllegalArgumentException("Scheduler must not be null");
         }
-        if (serializer == null) {
-            throw new IllegalArgumentException("Serializer must not be null");
+        if (mapper == null) {
+            throw new IllegalArgumentException("Mapper must not be null");
         }
 
         _url = url;
         _manager = manager;
         _scheduler = scheduler;
-        _serializer = serializer;
+        _mapper = mapper;
         final ConnectionState initialState = new DisconnectedConnectionState();
 
         _state = new AtomicReference<ConnectionState>(initialState);
@@ -119,8 +127,8 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
-    public JsonSerializer getSerializer() {
-        return _serializer;
+    public JsonMapper getMapper() {
+        return _mapper;
     }
 
     @Override

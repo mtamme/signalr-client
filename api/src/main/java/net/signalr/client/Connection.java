@@ -17,7 +17,7 @@
 
 package net.signalr.client;
 
-import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonMapper;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.util.concurrent.Promise;
 
@@ -48,11 +48,11 @@ public interface Connection {
     Transport getTransport();
 
     /**
-     * Returns the serializer.
+     * Returns the mapper.
      * 
-     * @return The serializer.
+     * @return The mapper.
      */
-    JsonSerializer getSerializer();
+    JsonMapper getMapper();
 
     /**
      * Returns a value indicating whether the connection is connected.

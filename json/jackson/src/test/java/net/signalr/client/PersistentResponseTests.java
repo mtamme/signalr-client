@@ -17,25 +17,25 @@
 
 package net.signalr.client;
 
-import net.signalr.client.json.DefaultJsonSerializer;
-import net.signalr.client.json.JsonFactory;
-import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.jackson.JacksonFactory;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import net.signalr.client.json.DefaultJsonMapper;
+import net.signalr.client.json.JsonFactory;
+import net.signalr.client.json.JsonMapper;
+import net.signalr.client.json.jackson.JacksonFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public final class PersistentResponseTests {
 
-    private JsonSerializer _serializer;
+    private JsonMapper _mapper;
 
     @Before
     public void setUp() {
         final JsonFactory factory = new JacksonFactory();
 
-        _serializer = new DefaultJsonSerializer(factory);
+        _mapper = new DefaultJsonMapper(factory);
     }
 
     @Test
@@ -44,7 +44,7 @@ public final class PersistentResponseTests {
         final String data = "{\"C\":\"s-0,298F386\",\"S\":1,\"M\":[]}";
 
         // Act
-        final PersistentResponse response = _serializer.fromJson(data, PersistentResponse.class);
+        final PersistentResponse response = _mapper.fromJson(data, PersistentResponse.class);
 
         // Assert
         assertNotNull(response);
@@ -58,7 +58,7 @@ public final class PersistentResponseTests {
         final String data = "{\"C\":\"s-0,298F388\",\"G\":\"jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=\",\"M\":[]}";
 
         // Act
-        final PersistentResponse response = _serializer.fromJson(data, PersistentResponse.class);
+        final PersistentResponse response = _mapper.fromJson(data, PersistentResponse.class);
 
         // Assert
         assertNotNull(response);

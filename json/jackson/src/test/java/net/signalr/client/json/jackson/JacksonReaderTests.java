@@ -26,9 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonReader;
-import net.signalr.client.json.JsonElement;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -17,7 +17,7 @@
 
 package net.signalr.client;
 
-import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonMapper;
 import net.signalr.client.json.JsonElement;
 import net.signalr.client.transport.ChannelHandler;
 
@@ -76,8 +76,8 @@ final class ChannelHandlerAdapter implements ChannelHandler {
 
     @Override
     public void handleMessageReceived(final String message) {
-        final JsonSerializer serializer = _context.getSerializer();
-        final JsonElement element = serializer.fromJson(message);
+        final JsonMapper mapper = _context.getMapper();
+        final JsonElement element = mapper.fromJson(message);
         final String callbackId = element.get("I").getString(null);
 
         if (callbackId != null) {

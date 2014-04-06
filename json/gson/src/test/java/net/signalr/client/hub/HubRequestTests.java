@@ -19,9 +19,9 @@ package net.signalr.client.hub;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import net.signalr.client.json.DefaultJsonSerializer;
+import net.signalr.client.json.DefaultJsonMapper;
 import net.signalr.client.json.JsonFactory;
-import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonMapper;
 import net.signalr.client.json.gson.GsonFactory;
 
 import org.junit.Before;
@@ -29,13 +29,13 @@ import org.junit.Test;
 
 public final class HubRequestTests {
 
-    private JsonSerializer _serializer;
+    private JsonMapper _mapper;
 
     @Before
     public void setUp() {
         final JsonFactory factory = new GsonFactory();
 
-        _serializer = new DefaultJsonSerializer(factory);
+        _mapper = new DefaultJsonMapper(factory);
     }
 
     @Test
@@ -46,7 +46,7 @@ public final class HubRequestTests {
         request.setCallbackId("1");
 
         // Act
-        final String data = _serializer.toJson(request);
+        final String data = _mapper.toJson(request);
 
         // Assert
         assertNotNull(data);

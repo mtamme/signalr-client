@@ -22,9 +22,9 @@ import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 
 /**
- * Represents the default JSON serializer.
+ * Represents the default JSON mapper.
  */
-public final class DefaultJsonSerializer implements JsonSerializer {
+public final class DefaultJsonMapper implements JsonMapper {
 
     /**
      * The factory.
@@ -32,21 +32,16 @@ public final class DefaultJsonSerializer implements JsonSerializer {
     private final JsonFactory _factory;
 
     /**
-     * Initializes a new instance of the {@link DefaultJsonSerializer}.
+     * Initializes a new instance of the {@link DefaultJsonMapper}.
      * 
      * @param factory The factory.
      */
-    public DefaultJsonSerializer(final JsonFactory factory) {
+    public DefaultJsonMapper(final JsonFactory factory) {
         if (factory == null) {
             throw new IllegalArgumentException("Factory must not be null");
         }
 
         _factory = factory;
-    }
-
-    @Override
-    public JsonFactory getFactory() {
-        return _factory;
     }
 
     @Override

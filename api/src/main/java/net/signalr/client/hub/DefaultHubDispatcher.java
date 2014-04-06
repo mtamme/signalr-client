@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.signalr.client.Connection;
-import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonMapper;
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.Function;
 import net.signalr.client.util.concurrent.OnRejected;
@@ -84,8 +84,8 @@ final class DefaultHubDispatcher implements HubDispatcher {
 
     @Override
     public void onReceived(final String message) {
-        final JsonSerializer serializer = _connection.getSerializer();
-        final HubResponse response = serializer.fromJson(message, HubResponse.class);
+        final JsonMapper mapper = _connection.getMapper();
+        final HubResponse response = mapper.fromJson(message, HubResponse.class);
         final String callbackId = response.getCallbackId();
         final Deferred<HubResponse> deferred = _responses.remove(callbackId);
 
@@ -106,8 +106,8 @@ final class DefaultHubDispatcher implements HubDispatcher {
         final String callbackId = nextCallbackId();
 
         request.setCallbackId(callbackId);
-        final JsonSerializer serializer = _connection.getSerializer();
-        final String message = serializer.toJson(request);
+        final JsonMapper mapper = _connection.getMapper();
+        final String message = mapper.toJson(request);
         final Deferred<HubResponse> deferred = new Deferred<HubResponse>();
 
         _responses.put(callbackId, deferred);

@@ -18,27 +18,27 @@
 package net.signalr.client.json.jackson;
 
 import static org.junit.Assert.*;
-import net.signalr.client.json.DefaultJsonSerializer;
+import net.signalr.client.json.DefaultJsonMapper;
 import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonFactory;
-import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonMapper;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public final class JacksonElementTests {
 
-    private JsonSerializer _serializer;
+    private JsonMapper _mapper;
 
     @Before
     public void setUp() {
         final JsonFactory factory = new JacksonFactory();
 
-        _serializer = new DefaultJsonSerializer(factory);
+        _mapper = new DefaultJsonMapper(factory);
     }
 
     private JsonElement fromJson(final String text) {
-        return _serializer.fromJson(text);
+        return _mapper.fromJson(text);
     }
 
     @Test(expected = IllegalArgumentException.class)
