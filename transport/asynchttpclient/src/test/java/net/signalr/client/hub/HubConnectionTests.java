@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import net.signalr.client.ConnectionHandler;
-import net.signalr.client.json.gson.GsonSerializer;
+import net.signalr.client.json.gson.GsonFactory;
 import net.signalr.client.transport.asynchttpclient.WebSocketTransport;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
@@ -38,7 +38,9 @@ public final class HubConnectionTests {
 
     private static final String HUB_NAME = "hub";
 
-    private static final String METHOD_NAME = "join";
+    private static final String JOIN_METHOD_NAME = "join";
+
+    private static final String LEAVE_METHOD_NAME = "leave";
 
     private static void log(final String format, final Object... args) {
         final String line = String.format(format, args);
@@ -49,7 +51,7 @@ public final class HubConnectionTests {
 
     @Test
     public void test() throws InterruptedException, ExecutionException, IOException {
-        final HubConnection connection = new HubConnection(URL, new WebSocketTransport(), new GsonSerializer());
+        final HubConnection connection = new HubConnection(URL, new WebSocketTransport(), new GsonFactory());
 
         connection.addHeader(ACCESS_ID_NAME, ACCESS_ID_VALUE);
         connection.addQueryParameter("culture", "en");
@@ -108,9 +110,12 @@ public final class HubConnectionTests {
 
         Promises.toFuture(start).get();
 
-        hubProxy.invoke(METHOD_NAME, Void.class, new int[] { 1 }, true);
+        hubProxy.invoke(JOIN_METHOD_NAME, Void.class, new int[] { 1 }, true);
 
         System.in.read();
+
+        hubProxy.invoke(LEAVE_METHOD_NAME, Void.class, new int[] { 1 });
+
         final Promise<Void> stop = connection.stop();
 
         Promises.toFuture(stop).get();

@@ -17,8 +17,10 @@
 
 package net.signalr.client;
 
+import net.signalr.client.json.DefaultJsonSerializer;
+import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.jackson.JacksonSerializer;
+import net.signalr.client.json.jackson.JacksonFactory;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -31,7 +33,9 @@ public final class PersistentResponseTests {
 
     @Before
     public void setUp() {
-        _serializer = new JacksonSerializer();
+        final JsonFactory factory = new JacksonFactory();
+
+        _serializer = new DefaultJsonSerializer(factory);
     }
 
     @Test

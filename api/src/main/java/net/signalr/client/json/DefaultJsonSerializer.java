@@ -22,9 +22,27 @@ import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 
 /**
- * Represents an abstract JSON serializer.
+ * Represents the default JSON serializer.
  */
-public abstract class AbstractJsonSerializer implements JsonSerializer {
+public final class DefaultJsonSerializer implements JsonSerializer {
+
+    /**
+     * The JSON factory.
+     */
+    private final JsonFactory _factory;
+
+    /**
+     * Initializes a new instance of the {@link DefaultJsonSerializer}.
+     * 
+     * @param factory The JSON factory.
+     */
+    public DefaultJsonSerializer(final JsonFactory factory) {
+        if (factory == null) {
+            throw new IllegalArgumentException("Factory must not be null");
+        }
+
+        _factory = factory;
+    }
 
     @Override
     public final JsonElement fromJson(final String text) {
@@ -34,7 +52,7 @@ public abstract class AbstractJsonSerializer implements JsonSerializer {
 
         final StringReader input = new StringReader(text);
 
-        try (final JsonReader reader = createReader(input)) {
+        try (final JsonReader reader = _factory.createReader(input)) {
             return reader.readElement();
         }
     }
@@ -61,7 +79,7 @@ public abstract class AbstractJsonSerializer implements JsonSerializer {
 
         final StringReader input = new StringReader(text);
 
-        try (final JsonReader reader = createReader(input)) {
+        try (final JsonReader reader = _factory.createReader(input)) {
             object.readJson(reader);
         }
 
@@ -76,7 +94,7 @@ public abstract class AbstractJsonSerializer implements JsonSerializer {
 
         final StringWriter output = new StringWriter();
 
-        try (final JsonWriter writer = createWriter(output)) {
+        try (final JsonWriter writer = _factory.createWriter(output)) {
             object.writeJson(writer);
         }
 

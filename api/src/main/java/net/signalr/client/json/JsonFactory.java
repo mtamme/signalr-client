@@ -17,33 +17,27 @@
 
 package net.signalr.client.json;
 
+import java.io.Reader;
+import java.io.Writer;
+
 /**
- * Defines a JSON serializer.
+ * Defines JSON factory.
  */
-public interface JsonSerializer {
+public interface JsonFactory {
 
     /**
-     * Converts the specified text into an element.
+     * Creates a new reader.
      * 
-     * @param text The text.
-     * @return The element.
+     * @param input The reader.
+     * @return The new reader.
      */
-    JsonElement fromJson(String text);
+    JsonReader createReader(Reader input);
 
     /**
-     * Converts the specified text into an object.
+     * Creates a new writer.
      * 
-     * @param text The text.
-     * @param type The object type.
-     * @return The object.
+     * @param output The writer.
+     * @return The new writer.
      */
-    <T extends JsonReadable> T fromJson(String text, Class<T> type);
-
-    /**
-     * Converts the specified object into a text.
-     * 
-     * @param object The object.
-     * @return The text.
-     */
-    String toJson(JsonWriteable object);
+    JsonWriter createWriter(Writer output);
 }

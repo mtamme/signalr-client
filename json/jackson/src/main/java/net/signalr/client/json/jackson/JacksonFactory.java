@@ -20,20 +20,19 @@ package net.signalr.client.json.jackson;
 import java.io.Reader;
 import java.io.Writer;
 
-import net.signalr.client.json.AbstractJsonSerializer;
 import net.signalr.client.json.JsonException;
+import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonReader;
 import net.signalr.client.json.JsonWriter;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Represents a Jackson based JSON serializer.
+ * Represents a Jackson based JSON factory.
  */
-public final class JacksonSerializer extends AbstractJsonSerializer {
+public final class JacksonFactory implements JsonFactory {
 
     /**
      * The object mapper.
@@ -41,24 +40,37 @@ public final class JacksonSerializer extends AbstractJsonSerializer {
     private final ObjectMapper _mapper;
 
     /**
-     * The factory.
+     * Initializes a new instance of the {@link JacksonFactory} class.
      */
-    private final JsonFactory _factory;
+    public JacksonFactory() {
+        this(new ObjectMapper());
+    }
 
     /**
-     * Initializes a new instance of the {@link JacksonSerializer} class.
+     * Initializes a new instance of the {@link JacksonFactory} class.
+     * 
+     * @param mapper The object mapper.
      */
-    public JacksonSerializer() {
-        _mapper = new ObjectMapper();
-        _factory = new JsonFactory();
+    public JacksonFactory(final ObjectMapper mapper) {
+        if (mapper == null) {
+            throw new IllegalArgumentException("Mapper must not be null");
+        }
+
+        _mapper = mapper;
     }
 
     @Override
     public JsonReader createReader(final Reader input) {
+        if (input == null) {
+            throw new IllegalArgumentException("Input must not be null");
+        }
+
         final JsonParser parser;
 
         try {
-            parser = _factory.createParser(input);
+            final com.fasterxml.jackson.core.JsonFactory factory = _mapper.getFactory();
+
+            parser = factory.createParser(input);
         } catch (final Exception e) {
             throw new JsonException(e);
         }
@@ -68,10 +80,16 @@ public final class JacksonSerializer extends AbstractJsonSerializer {
 
     @Override
     public JsonWriter createWriter(final Writer output) {
+        if (output == null) {
+            throw new IllegalArgumentException("Output must not be null");
+        }
+
         final JsonGenerator generator;
 
         try {
-            generator = _factory.createGenerator(output);
+            final com.fasterxml.jackson.core.JsonFactory factory = _mapper.getFactory();
+
+            generator = factory.createGenerator(output);
         } catch (final Exception e) {
             throw new JsonException(e);
         }

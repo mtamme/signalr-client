@@ -18,7 +18,9 @@
 package net.signalr.client.json.gson;
 
 import static org.junit.Assert.*;
+import net.signalr.client.json.DefaultJsonSerializer;
 import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonSerializer;
 
 import org.junit.Before;
@@ -30,7 +32,9 @@ public final class GsonElementTests {
 
     @Before
     public void setUp() {
-        _serializer = new GsonSerializer();
+        final JsonFactory factory = new GsonFactory();
+
+        _serializer = new DefaultJsonSerializer(factory);
     }
 
     private JsonElement fromJson(final String text) {

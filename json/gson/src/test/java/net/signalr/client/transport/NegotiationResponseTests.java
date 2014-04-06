@@ -17,8 +17,10 @@
 
 package net.signalr.client.transport;
 
+import net.signalr.client.json.DefaultJsonSerializer;
+import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonSerializer;
-import net.signalr.client.json.gson.GsonSerializer;
+import net.signalr.client.json.gson.GsonFactory;
 import net.signalr.client.transport.NegotiationResponse;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -32,7 +34,9 @@ public final class NegotiationResponseTests {
 
     @Before
     public void setUp() {
-        _serializer = new GsonSerializer();
+        final JsonFactory factory = new GsonFactory();
+
+        _serializer = new DefaultJsonSerializer(factory);
     }
 
     @Test

@@ -23,6 +23,7 @@ import java.util.Map;
 import net.signalr.client.Connection;
 import net.signalr.client.ConnectionHandler;
 import net.signalr.client.PersistentConnection;
+import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.util.concurrent.Promise;
@@ -52,10 +53,10 @@ public final class HubConnection {
      * 
      * @param url The URL.
      * @param transport The transport.
-     * @param serializer The serializer.
+     * @param factory The JSON factory.
      */
-    public HubConnection(final String url, final Transport transport, JsonSerializer serializer) {
-        this(new PersistentConnection(url, transport, serializer));
+    public HubConnection(final String url, final Transport transport, final JsonFactory factory) {
+        this(new PersistentConnection(url, transport, factory));
     }
 
     /**

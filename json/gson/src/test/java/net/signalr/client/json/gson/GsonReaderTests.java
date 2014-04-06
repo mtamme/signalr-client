@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonReader;
-import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.json.JsonElement;
 
 import org.junit.Before;
@@ -35,17 +35,17 @@ import org.junit.Test;
 
 public final class GsonReaderTests {
 
-    private JsonSerializer _serializer;
+    private JsonFactory _factory;
 
     @Before
     public void setUp() {
-        _serializer = new GsonSerializer();
+        _factory = new GsonFactory();
     }
 
     private JsonReader createReader(final String text) {
         final StringReader input = new StringReader(text);
 
-        return _serializer.createReader(input);
+        return _factory.createReader(input);
     }
 
     @Test

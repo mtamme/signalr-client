@@ -24,7 +24,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.signalr.client.json.JsonSerializer;
+import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonWriter;
 
 import org.junit.Before;
@@ -32,15 +32,15 @@ import org.junit.Test;
 
 public final class GsonWriterTest {
 
-    private JsonSerializer _serializer;
+    private JsonFactory _factory;
 
     @Before
     public void setUp() {
-        _serializer = new GsonSerializer();
+        _factory = new GsonFactory();
     }
 
     private JsonWriter createWriter(final StringWriter json) {
-        return _serializer.createWriter(json);
+        return _factory.createWriter(json);
     }
 
     @Test

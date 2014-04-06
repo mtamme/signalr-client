@@ -17,6 +17,8 @@
 
 package net.signalr.client;
 
+import net.signalr.client.json.DefaultJsonSerializer;
+import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonSerializer;
 import net.signalr.client.transport.DefaultTransportManager;
 import net.signalr.client.transport.Transport;
@@ -39,10 +41,10 @@ public final class PersistentConnection implements Connection {
      * 
      * @param url The connection URL.
      * @param transport The transport.
-     * @param serializer The serializer.
+     * @param factory The JSON factory.
      */
-    public PersistentConnection(final String url, final Transport transport, JsonSerializer serializer) {
-        this(new PersistentConnectionContext(url, new DefaultTransportManager(transport), new TimerScheduler(), serializer));
+    public PersistentConnection(final String url, final Transport transport, final JsonFactory factory) {
+        this(new PersistentConnectionContext(url, new DefaultTransportManager(transport), new TimerScheduler(), new DefaultJsonSerializer(factory)));
     }
 
     /**

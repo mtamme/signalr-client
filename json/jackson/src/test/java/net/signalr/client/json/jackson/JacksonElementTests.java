@@ -18,8 +18,9 @@
 package net.signalr.client.json.jackson;
 
 import static org.junit.Assert.*;
-
+import net.signalr.client.json.DefaultJsonSerializer;
 import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonSerializer;
 
 import org.junit.Before;
@@ -31,7 +32,9 @@ public final class JacksonElementTests {
 
     @Before
     public void setUp() {
-        _serializer = new JacksonSerializer();
+        final JsonFactory factory = new JacksonFactory();
+
+        _serializer = new DefaultJsonSerializer(factory);
     }
 
     private JsonElement fromJson(final String text) {

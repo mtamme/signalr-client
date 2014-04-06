@@ -20,17 +20,17 @@ package net.signalr.client.json.gson;
 import java.io.Reader;
 import java.io.Writer;
 
-import net.signalr.client.json.AbstractJsonSerializer;
 import net.signalr.client.json.JsonException;
+import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonReader;
 import net.signalr.client.json.JsonWriter;
 
 import com.google.gson.Gson;
 
 /**
- * Represents a GSON based JSON serializer.
+ * Represents a GSON based JSON factory.
  */
-public final class GsonSerializer extends AbstractJsonSerializer {
+public final class GsonFactory implements JsonFactory {
 
     /**
      * The GSON instance.
@@ -38,14 +38,31 @@ public final class GsonSerializer extends AbstractJsonSerializer {
     private final Gson _gson;
 
     /**
-     * Initializes a new instance of the {@link GsonSerializer} class.
+     * Initializes a new instance of the {@link GsonFactory} class.
      */
-    public GsonSerializer() {
-        _gson = new Gson();
+    public GsonFactory() {
+        this(new Gson());
+    }
+
+    /**
+     * Initializes a new instance of the {@link GsonFactory} class.
+     * 
+     * @param gson The GSON instance.
+     */
+    public GsonFactory(final Gson gson) {
+        if (gson == null) {
+            throw new IllegalArgumentException("Gson must not be null");
+        }
+
+        _gson = gson;
     }
 
     @Override
     public JsonReader createReader(final Reader input) {
+        if (input == null) {
+            throw new IllegalArgumentException("Input must not be null");
+        }
+
         final com.google.gson.stream.JsonReader reader;
 
         try {
@@ -59,6 +76,10 @@ public final class GsonSerializer extends AbstractJsonSerializer {
 
     @Override
     public JsonWriter createWriter(final Writer output) {
+        if (output == null) {
+            throw new IllegalArgumentException("Output must not be null");
+        }
+
         final com.google.gson.stream.JsonWriter writer;
 
         try {
