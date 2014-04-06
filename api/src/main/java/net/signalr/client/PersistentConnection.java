@@ -41,7 +41,7 @@ public final class PersistentConnection implements Connection {
      * 
      * @param url The connection URL.
      * @param transport The transport.
-     * @param factory The JSON factory.
+     * @param factory The factory.
      */
     public PersistentConnection(final String url, final Transport transport, final JsonFactory factory) {
         this(new PersistentConnectionContext(url, new DefaultTransportManager(transport), new TimerScheduler(), new DefaultJsonSerializer(factory)));

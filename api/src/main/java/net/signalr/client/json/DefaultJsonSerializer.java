@@ -27,14 +27,14 @@ import java.lang.reflect.Constructor;
 public final class DefaultJsonSerializer implements JsonSerializer {
 
     /**
-     * The JSON factory.
+     * The factory.
      */
     private final JsonFactory _factory;
 
     /**
      * Initializes a new instance of the {@link DefaultJsonSerializer}.
      * 
-     * @param factory The JSON factory.
+     * @param factory The factory.
      */
     public DefaultJsonSerializer(final JsonFactory factory) {
         if (factory == null) {
@@ -42,6 +42,11 @@ public final class DefaultJsonSerializer implements JsonSerializer {
         }
 
         _factory = factory;
+    }
+
+    @Override
+    public JsonFactory getFactory() {
+        return _factory;
     }
 
     @Override

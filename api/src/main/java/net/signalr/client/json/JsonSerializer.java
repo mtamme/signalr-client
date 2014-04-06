@@ -23,6 +23,13 @@ package net.signalr.client.json;
 public interface JsonSerializer {
 
     /**
+     * Returns the factory.
+     * 
+     * @return The factory.
+     */
+    JsonFactory getFactory();
+
+    /**
      * Converts the specified text into an element.
      * 
      * @param text The text.

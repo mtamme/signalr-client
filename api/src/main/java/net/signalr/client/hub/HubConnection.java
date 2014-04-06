@@ -53,7 +53,7 @@ public final class HubConnection {
      * 
      * @param url The URL.
      * @param transport The transport.
-     * @param factory The JSON factory.
+     * @param factory The factory.
      */
     public HubConnection(final String url, final Transport transport, final JsonFactory factory) {
         this(new PersistentConnection(url, transport, factory));
