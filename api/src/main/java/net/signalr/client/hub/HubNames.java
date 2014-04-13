@@ -55,6 +55,5 @@ final class HubNames implements JsonWriteable {
         }
 
         writer.writeEndArray();
-
     }
 }
