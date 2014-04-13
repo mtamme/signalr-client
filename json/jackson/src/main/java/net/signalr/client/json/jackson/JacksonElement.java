@@ -95,6 +95,7 @@ public class JacksonElement implements JsonElement {
         if (name == null) {
             throw new IllegalArgumentException("Name must not be null");
         }
+
         if (!_node.isObject()) {
             return JsonEmpty.INSTANCE;
         }

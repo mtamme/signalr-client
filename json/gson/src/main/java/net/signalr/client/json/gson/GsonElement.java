@@ -92,6 +92,7 @@ final class GsonElement implements JsonElement {
         if (name == null) {
             throw new IllegalArgumentException("Name must not be null");
         }
+
         if (!_element.isJsonObject()) {
             return JsonEmpty.INSTANCE;
         }
