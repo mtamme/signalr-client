@@ -42,7 +42,7 @@ final class GsonReader implements JsonReader {
     /**
      * Initializes a new instance of the {@link GsonReader}.
      * 
-     * @param hson The GSON instance.
+     * @param gson The GSON instance.
      * @param reader The underlying reader.
      */
     public GsonReader(final Gson gson, final com.google.gson.stream.JsonReader reader) {
