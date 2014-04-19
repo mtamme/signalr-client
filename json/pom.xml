@@ -11,6 +11,5 @@
 	<modules>
 		<module>gson</module>
 		<module>jackson</module>
-		<module>android</module>
 	</modules>
 </project>
