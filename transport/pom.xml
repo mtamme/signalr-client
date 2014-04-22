@@ -10,5 +10,6 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>asynchttpclient</module>
+		<module>jetty</module>
 	</modules>
 </project>

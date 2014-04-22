@@ -15,15 +15,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.transport.asynchttpclient;
+package net.signalr.client.transport.jetty;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
-import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
-import com.ning.http.client.FluentStringsMap;
-import com.ning.http.client.websocket.WebSocketUpgradeHandler;
+import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
+import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
@@ -57,6 +56,25 @@ public final class WebSocketTransport extends AbstractTransport {
      */
     private static final String NAME = "webSockets";
 
+    /**
+     * The web socket client.
+     */
+    private final WebSocketClient _client;
+
+    /**
+     * Initializes a new instance of the {@link WebSocketTransport} class
+     */
+    public WebSocketTransport() {
+        _client = new WebSocketClient(_sslContextFactory);
+
+        // FIXME
+        try {
+            _client.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public String getName() {
         return NAME;
@@ -78,31 +96,44 @@ public final class WebSocketTransport extends AbstractTransport {
         final String schema = uriBuilder.getSchema().equals(HTTPS_SCHEMA) ? WSS_SCHEMA : WS_SCHEMA;
 
         uriBuilder.setSchema(schema);
-        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
+        final ClientUpgradeRequest request = new ClientUpgradeRequest();
 
         // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
-        boundRequestBuilder.setQueryParameters(new FluentStringsMap(queryParameters));
-        boundRequestBuilder.addQueryParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
-        boundRequestBuilder.addQueryParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        for (final Map.Entry<String, Collection<String>> queryParameter : queryParameters.entrySet()) {
+            final String name = queryParameter.getKey();
+
+            for (final String value : queryParameter.getValue()) {
+                // FIXME Set query parameter not header.
+                request.setHeader(name, value);
+            }
+        }
+        // FIXME Set query parameter not header.
+        request.setHeader(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
+        // FIXME Set query parameter not header.
+        request.setHeader(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        // FIXME Set query parameter not header.
         final String transportName = getName();
 
-        boundRequestBuilder.addQueryParameter(TRANSPORT_PARAMETER, transportName);
+        request.setHeader(TRANSPORT_PARAMETER, transportName);
 
         // Set headers.
         final Map<String, Collection<String>> headers = context.getHeaders();
 
-        boundRequestBuilder.setHeaders(headers);
+        for (final Map.Entry<String, Collection<String>> header : headers.entrySet()) {
+            final String name = header.getKey();
 
-        // Execute request.
-        final WebSocketUpgradeHandler.Builder builder = new WebSocketUpgradeHandler.Builder();
-        final WebSocketTextListenerAdapter listener = new WebSocketTextListenerAdapter(handler);
+            for (final String value : header.getValue()) {
+                request.setHeader(name, value);
+            }
+        }
 
-        builder.addWebSocketListener(listener);
+        // Send request.
+        final WebSocketListenerAdapter listener = new WebSocketListenerAdapter(handler);
 
         try {
-            boundRequestBuilder.execute(builder.build());
+            _client.connect(listener, uriBuilder.toURI(), request);
         } catch (final IOException e) {
             return Promises.rejected(e);
         }
