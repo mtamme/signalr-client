@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
+import org.eclipse.jetty.util.MultiMap;
+import org.eclipse.jetty.util.UrlEncoded;
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
@@ -100,23 +102,23 @@ public final class WebSocketTransport extends AbstractTransport {
 
         // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
+        final MultiMap<String> queryParameterMap = new MultiMap<String>();
 
         for (final Map.Entry<String, Collection<String>> queryParameter : queryParameters.entrySet()) {
             final String name = queryParameter.getKey();
 
             for (final String value : queryParameter.getValue()) {
-                // FIXME Set query parameter not header.
-                request.setHeader(name, value);
+                queryParameterMap.add(name, value);
             }
         }
-        // FIXME Set query parameter not header.
-        request.setHeader(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
-        // FIXME Set query parameter not header.
-        request.setHeader(CONNECTION_DATA_PARAMETER, context.getConnectionData());
-        // FIXME Set query parameter not header.
+        queryParameterMap.add(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
+        queryParameterMap.add(CONNECTION_DATA_PARAMETER, context.getConnectionData());
         final String transportName = getName();
 
-        request.setHeader(TRANSPORT_PARAMETER, transportName);
+        queryParameterMap.add(TRANSPORT_PARAMETER, transportName);
+        final String query = UrlEncoded.encode(queryParameterMap, UrlEncoded.ENCODING, false);
+
+        uriBuilder.setQuery(query);
 
         // Set headers.
         final Map<String, Collection<String>> headers = context.getHeaders();
@@ -133,7 +135,7 @@ public final class WebSocketTransport extends AbstractTransport {
         final WebSocketListenerAdapter listener = new WebSocketListenerAdapter(handler);
 
         try {
-            _client.connect(listener, uriBuilder.toURI(), request);
+            _client.connect(listener, uriBuilder.toURI(), request, listener);
         } catch (final IOException e) {
             return Promises.rejected(e);
         }

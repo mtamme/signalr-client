@@ -23,12 +23,15 @@ import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.Promise;
 
 import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.UpgradeRequest;
+import org.eclipse.jetty.websocket.api.UpgradeResponse;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
+import org.eclipse.jetty.websocket.client.io.UpgradeListener;
 
 /**
  * Represents a web socket listener adapter.
  */
-final class WebSocketListenerAdapter implements WebSocketListener {
+final class WebSocketListenerAdapter implements UpgradeListener, WebSocketListener {
 
     /**
      * The channel handler.
@@ -62,6 +65,14 @@ final class WebSocketListenerAdapter implements WebSocketListener {
      */
     public Promise<Channel> getChannel() {
         return _channel;
+    }
+
+    @Override
+    public void onHandshakeRequest(final UpgradeRequest request) {
+    }
+
+    @Override
+    public void onHandshakeResponse(final UpgradeResponse response) {
     }
 
     @Override
