@@ -64,10 +64,11 @@ public abstract class AbstractTransport implements Transport {
         _sslContextFactory = new SslContextFactory();
         _client = new HttpClient(_sslContextFactory);
         _client.setUserAgentField(new HttpField(HttpHeader.USER_AGENT, USER_AGENT));
+
+        // FIXME
         try {
             _client.start();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
