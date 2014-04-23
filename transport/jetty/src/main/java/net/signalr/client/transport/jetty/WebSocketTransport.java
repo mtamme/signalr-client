@@ -17,12 +17,9 @@
 
 package net.signalr.client.transport.jetty;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
-import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
@@ -102,23 +99,21 @@ public final class WebSocketTransport extends AbstractTransport {
 
         // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
-        final MultiMap<String> queryParameterMap = new MultiMap<String>();
+        final StringBuilder query = new StringBuilder();
 
         for (final Map.Entry<String, Collection<String>> queryParameter : queryParameters.entrySet()) {
             final String name = queryParameter.getKey();
 
             for (final String value : queryParameter.getValue()) {
-                queryParameterMap.add(name, value);
+                query.append(name).append('=').append(value).append('&');
             }
         }
-        queryParameterMap.add(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
-        queryParameterMap.add(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        query.append(CONNECTION_TOKEN_PARAMETER).append('=').append(context.getConnectionToken()).append('&');
+        query.append(CONNECTION_DATA_PARAMETER).append('=').append(context.getConnectionData()).append('&');
         final String transportName = getName();
 
-        queryParameterMap.add(TRANSPORT_PARAMETER, transportName);
-        final String query = UrlEncoded.encode(queryParameterMap, UrlEncoded.ENCODING, false);
-
-        uriBuilder.setQuery(query);
+        query.append(TRANSPORT_PARAMETER).append('=').append(transportName);
+        uriBuilder.setQuery(query.toString());
 
         // Set headers.
         final Map<String, Collection<String>> headers = context.getHeaders();
@@ -130,13 +125,14 @@ public final class WebSocketTransport extends AbstractTransport {
                 request.setHeader(name, value);
             }
         }
+        request.setHeader("User-Agent", USER_AGENT);
 
         // Send request.
         final WebSocketListenerAdapter listener = new WebSocketListenerAdapter(handler);
 
         try {
             _client.connect(listener, uriBuilder.toURI(), request, listener);
-        } catch (final IOException e) {
+        } catch (final Exception e) {
             return Promises.rejected(e);
         }
 

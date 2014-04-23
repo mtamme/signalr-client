@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
+import org.eclipse.jetty.client.util.BytesContentProvider;
 import org.eclipse.jetty.http.HttpField;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpMethod;
@@ -45,7 +46,7 @@ public abstract class AbstractTransport implements Transport {
     /**
      * The user agent.
      */
-    private static final String USER_AGENT = "SignalR-Client/0.1 (Java)";
+    protected static final String USER_AGENT = "SignalR-Client/0.1 (Java)";
 
     /**
      * The SSL context factory.
@@ -217,6 +218,9 @@ public abstract class AbstractTransport implements Transport {
                 request.header(name, value);
             }
         }
+
+        // Set content.
+        request.content(new BytesContentProvider());
 
         // Send request.
         final ResponseListener listener = new ResponseListener();
