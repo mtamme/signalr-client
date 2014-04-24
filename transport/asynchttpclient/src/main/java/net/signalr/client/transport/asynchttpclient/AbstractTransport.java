@@ -86,7 +86,7 @@ public abstract class AbstractTransport implements Transport {
 
         boundRequestBuilder.setHeaders(headers);
 
-        // Execute request.
+        // Send request.
         final AsyncResponseHandler handler = new AsyncResponseHandler();
 
         try {
@@ -126,7 +126,7 @@ public abstract class AbstractTransport implements Transport {
 
         boundRequestBuilder.setHeaders(headers);
 
-        // Execute request.
+        // Send request.
         final AsyncResponseHandler handler = new AsyncResponseHandler();
 
         try {
@@ -172,7 +172,7 @@ public abstract class AbstractTransport implements Transport {
         boundRequestBuilder.addHeader("Content-Length", "0");
         boundRequestBuilder.addHeader("Content-Type", "text/plain");
 
-        // Execute request.
+        // Send request.
         final AsyncResponseHandler handler = new AsyncResponseHandler();
 
         try {

@@ -95,7 +95,7 @@ public final class WebSocketTransport extends AbstractTransport {
 
         boundRequestBuilder.setHeaders(headers);
 
-        // Execute request.
+        // Send request.
         final WebSocketUpgradeHandler.Builder builder = new WebSocketUpgradeHandler.Builder();
         final WebSocketTextListenerAdapter listener = new WebSocketTextListenerAdapter(handler);
 
