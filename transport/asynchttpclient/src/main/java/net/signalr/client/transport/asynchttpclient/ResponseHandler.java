@@ -26,9 +26,9 @@ import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.Response;
 
 /**
- * Represents an asynchronous response handler.
+ * Represents an response handler.
  */
-final class AsyncResponseHandler extends AsyncCompletionHandler<Response> {
+final class ResponseHandler extends AsyncCompletionHandler<Response> {
 
     /**
      * The response.
@@ -36,9 +36,9 @@ final class AsyncResponseHandler extends AsyncCompletionHandler<Response> {
     private final Deferred<Response> _response;
 
     /**
-     * Initializes a new instance of the {@link AsyncResponseHandler} class.
+     * Initializes a new instance of the {@link ResponseHandler} class.
      */
-    public AsyncResponseHandler() {
+    public ResponseHandler() {
         _response = new Deferred<Response>();
     }
 
