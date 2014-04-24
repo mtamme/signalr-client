@@ -142,6 +142,9 @@ public final class URIBuilder {
         if (uri == null) {
             throw new IllegalArgumentException("URI must not be null");
         }
+        if (path == null) {
+            throw new IllegalArgumentException("Path must not be null");
+        }
 
         init(uri.resolve(path));
     }
@@ -186,11 +189,11 @@ public final class URIBuilder {
     }
 
     /**
-     * Builds the raw URI.
+     * Returns the raw URI.
      * 
      * @return The raw URI.
      */
-    private String buildRawUri() {
+    private String getRawUri() {
         final StringBuilder uri = new StringBuilder();
 
         if (_scheme != null) {
@@ -226,12 +229,12 @@ public final class URIBuilder {
     }
 
     /**
-     * Builds the raw query including the specified parameters.
+     * Returns the raw query including the specified parameters.
      * 
-     * @param newParameters The parameters.
+     * @param parameters The parameters.
      * @return The raw query.
      */
-    private String buildRawQuery(final Map<String, Collection<String>> newParameters) {
+    private String getRawQuery(final Map<String, Collection<String>> parameters) {
         final StringBuilder rawQuery = new StringBuilder();
 
         if (_rawQuery != null) {
@@ -240,13 +243,12 @@ public final class URIBuilder {
         if (rawQuery.length() > 0) {
             rawQuery.append('&');
         }
-
-        for (final String name : newParameters.keySet()) {
-            final Collection<String> values = newParameters.get(name);
+        for (final String name : parameters.keySet()) {
+            final Collection<String> values = parameters.get(name);
             final String rawName = encode(name);
 
             for (final String value : values) {
-                appendRawParameter(rawName, value, rawQuery);
+                addParameter(rawName, value, rawQuery);
             }
         }
 
@@ -254,13 +256,13 @@ public final class URIBuilder {
     }
 
     /**
-     * Builds the raw query including the specified parameter name and parameter value.
+     * Returns the raw query including the specified parameter name and parameter value.
      * 
      * @param name The parameter name.
      * @param value The parameter value.
      * @return The raw query.
      */
-    private String buildRawQuery(final String name, final String value) {
+    private String getRawQuery(final String name, final String value) {
         final StringBuilder rawQuery = new StringBuilder();
 
         if (_rawQuery != null) {
@@ -268,19 +270,19 @@ public final class URIBuilder {
         }
         final String rawName = encode(name);
 
-        appendRawParameter(rawName, value, rawQuery);
+        addParameter(rawName, value, rawQuery);
 
         return rawQuery.toString();
     }
 
     /**
-     * Appends the specified raw parameter name and parameter value.
+     * Adds the specified raw parameter name and parameter value.
      * 
      * @param rawName The raw parameter name.
      * @param value The parameter value.
      * @param rawQuery The raw query.
      */
-    private void appendRawParameter(final String rawName, final String value, final StringBuilder rawQuery) {
+    private void addParameter(final String rawName, final String value, final StringBuilder rawQuery) {
         if (rawQuery.length() > 0) {
             rawQuery.append('&');
         }
@@ -459,7 +461,7 @@ public final class URIBuilder {
 
         _uri = null;
         _rawSchemeSpecificPart = null;
-        _rawQuery = buildRawQuery(parameters);
+        _rawQuery = getRawQuery(parameters);
         _query = decode(_rawQuery);
 
         return this;
@@ -479,7 +481,7 @@ public final class URIBuilder {
 
         _uri = null;
         _rawSchemeSpecificPart = null;
-        _rawQuery = buildRawQuery(name, value);
+        _rawQuery = getRawQuery(name, value);
         _query = decode(_rawQuery);
 
         return this;
@@ -519,9 +521,9 @@ public final class URIBuilder {
         }
 
         try {
-            final String uri = buildRawUri();
+            final String rawUri = getRawUri();
 
-            _uri = new URI(uri);
+            _uri = new URI(rawUri);
         } catch (final URISyntaxException e) {
             throw new URIException(e);
         }
