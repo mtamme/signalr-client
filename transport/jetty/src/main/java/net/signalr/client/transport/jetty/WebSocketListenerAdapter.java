@@ -23,15 +23,12 @@ import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.Promise;
 
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.UpgradeRequest;
-import org.eclipse.jetty.websocket.api.UpgradeResponse;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
-import org.eclipse.jetty.websocket.client.io.UpgradeListener;
 
 /**
  * Represents a web socket listener adapter.
  */
-final class WebSocketListenerAdapter implements UpgradeListener, WebSocketListener {
+final class WebSocketListenerAdapter implements WebSocketListener {
 
     /**
      * The channel handler.
@@ -68,14 +65,6 @@ final class WebSocketListenerAdapter implements UpgradeListener, WebSocketListen
     }
 
     @Override
-    public void onHandshakeRequest(final UpgradeRequest request) {
-    }
-
-    @Override
-    public void onHandshakeResponse(final UpgradeResponse response) {
-    }
-
-    @Override
     public void onWebSocketBinary(final byte[] payload, final int offset, final int len) {
     }
 
@@ -88,13 +77,16 @@ final class WebSocketListenerAdapter implements UpgradeListener, WebSocketListen
     public void onWebSocketConnect(final Session session) {
         final WebSocketChannel channel = new WebSocketChannel(_handler, session);
 
-        _channel.resolve(channel);
-        _handler.handleChannelOpened();
+        if (_channel.resolve(channel)) {
+            _handler.handleChannelOpened();
+        }
     }
 
     @Override
     public void onWebSocketError(final Throwable cause) {
-        _handler.handleError(cause);
+        if (!_channel.reject(cause)) {
+            _handler.handleError(cause);
+        }
     }
 
     @Override

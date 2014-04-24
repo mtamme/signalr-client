@@ -131,7 +131,7 @@ public final class WebSocketTransport extends AbstractTransport {
         final WebSocketListenerAdapter listener = new WebSocketListenerAdapter(handler);
 
         try {
-            _client.connect(listener, uriBuilder.toURI(), request, listener);
+            _client.connect(listener, uriBuilder.toURI(), request);
         } catch (final Exception e) {
             return Promises.rejected(e);
         }
