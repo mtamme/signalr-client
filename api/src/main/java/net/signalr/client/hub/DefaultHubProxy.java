@@ -90,6 +90,6 @@ final class DefaultHubProxy implements HubProxy {
     }
 
     @Override
-    public void subscribe(final String eventName, final HubEventListener listener) {
+    public <T> void subscribe(final String eventName, final HubEventListener<T> listener) {
     }
 }
