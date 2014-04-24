@@ -17,8 +17,13 @@
 
 package net.signalr.client.util;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Represents an URI builder.
@@ -26,19 +31,34 @@ import java.net.URISyntaxException;
 public final class URIBuilder {
 
     /**
+     * The default character encoding.
+     */
+    private static final String DEFAULT_CHARACTER_ENCODING = "UTF-8";
+
+    /**
      * The URI.
      */
     private URI _uri;
 
     /**
-     * The schema.
+     * The scheme.
      */
-    private String _schema;
+    private String _scheme;
 
     /**
-     * The user information.
+     * The raw scheme specific part.
      */
-    private String _userInfo;
+    private String _rawSchemeSpecificPart;
+
+    /**
+     * The raw authority.
+     */
+    private String _rawAuthority;
+
+    /**
+     * The raw user information.
+     */
+    private String _rawUserInfo;
 
     /**
      * The host.
@@ -51,14 +71,29 @@ public final class URIBuilder {
     private int _port;
 
     /**
+     * The raw path.
+     */
+    private String _rawPath;
+
+    /**
      * The path.
      */
     private String _path;
 
     /**
+     * The raw query.
+     */
+    private String _rawQuery;
+
+    /**
      * The query.
      */
     private String _query;
+
+    /**
+     * The raw fragment.
+     */
+    private String _rawFragment;
 
     /**
      * The fragment.
@@ -136,33 +171,181 @@ public final class URIBuilder {
      */
     private void init(final URI uri) {
         _uri = uri;
-        _schema = uri.getScheme();
-        _userInfo = uri.getUserInfo();
+        _scheme = uri.getScheme();
+        _rawSchemeSpecificPart = uri.getRawSchemeSpecificPart();
+        _rawAuthority = uri.getRawAuthority();
         _host = uri.getHost();
         _port = uri.getPort();
+        _rawUserInfo = uri.getRawUserInfo();
+        _rawPath = uri.getRawPath();
         _path = uri.getPath();
+        _rawQuery = uri.getRawQuery();
         _query = uri.getQuery();
+        _rawFragment = uri.getRawFragment();
         _fragment = uri.getFragment();
     }
 
     /**
-     * Returns the schema.
+     * Builds the raw URI.
      * 
-     * @return The schema.
+     * @return The raw URI.
      */
-    public String getSchema() {
-        return _schema;
+    private String buildRawUri() {
+        final StringBuilder uri = new StringBuilder();
+
+        if (_scheme != null) {
+            uri.append(_scheme).append(':');
+        }
+        if (_rawSchemeSpecificPart != null) {
+            uri.append(_rawSchemeSpecificPart);
+        } else {
+            if (_rawAuthority != null) {
+                uri.append("//").append(_rawAuthority);
+            } else if (_host != null) {
+                uri.append("//");
+                if (_rawUserInfo != null) {
+                    uri.append(_rawUserInfo).append("@");
+                }
+                uri.append(_host);
+                if (_port >= 0) {
+                    uri.append(":").append(_port);
+                }
+            }
+            if (_rawPath != null) {
+                uri.append(_rawPath);
+            }
+            if (_rawQuery != null) {
+                uri.append("?").append(_rawQuery);
+            }
+        }
+        if (_rawFragment != null) {
+            uri.append("#").append(_rawFragment);
+        }
+
+        return uri.toString();
     }
 
     /**
-     * Sets the schema.
+     * Builds the raw query including the specified parameters.
      * 
-     * @param schema The schema.
+     * @param newParameters The parameters.
+     * @return The raw query.
+     */
+    private String buildRawQuery(final Map<String, Collection<String>> newParameters) {
+        final StringBuilder rawQuery = new StringBuilder();
+
+        if (_rawQuery != null) {
+            rawQuery.append(_rawQuery);
+        }
+        if (rawQuery.length() > 0) {
+            rawQuery.append('&');
+        }
+
+        for (final String name : newParameters.keySet()) {
+            final Collection<String> values = newParameters.get(name);
+            final String rawName = encode(name);
+
+            for (final String value : values) {
+                appendRawParameter(rawName, value, rawQuery);
+            }
+        }
+
+        return rawQuery.toString();
+    }
+
+    /**
+     * Builds the raw query including the specified parameter name and parameter value.
+     * 
+     * @param name The parameter name.
+     * @param value The parameter value.
+     * @return The raw query.
+     */
+    private String buildRawQuery(final String name, final String value) {
+        final StringBuilder rawQuery = new StringBuilder();
+
+        if (_rawQuery != null) {
+            rawQuery.append(_rawQuery);
+        }
+        final String rawName = encode(name);
+
+        appendRawParameter(rawName, value, rawQuery);
+
+        return rawQuery.toString();
+    }
+
+    /**
+     * Appends the specified raw parameter name and parameter value.
+     * 
+     * @param rawName The raw parameter name.
+     * @param value The parameter value.
+     * @param rawQuery The raw query.
+     */
+    private void appendRawParameter(final String rawName, final String value, final StringBuilder rawQuery) {
+        if (rawQuery.length() > 0) {
+            rawQuery.append('&');
+        }
+        rawQuery.append(rawName);
+        if (value != null) {
+            final String rawValue = encode(value);
+
+            rawQuery.append('=').append(rawValue);
+        }
+    }
+
+    /**
+     * Decodes the specified value.
+     * 
+     * @param value The value.
+     * @return The decoded value.
+     */
+    private static String decode(final String value) {
+        if (value == null) {
+            return null;
+        }
+
+        try {
+            return URLDecoder.decode(value, DEFAULT_CHARACTER_ENCODING);
+        } catch (final UnsupportedEncodingException e) {
+            throw new URIException(e);
+        }
+    }
+
+    /**
+     * Encodes the specified value.
+     * 
+     * @param value The value.
+     * @return The encoded value.
+     */
+    private static String encode(final String value) {
+        if (value == null) {
+            return null;
+        }
+
+        try {
+            return URLEncoder.encode(value, DEFAULT_CHARACTER_ENCODING);
+        } catch (final UnsupportedEncodingException e) {
+            throw new URIException(e);
+        }
+    }
+
+    /**
+     * Returns the scheme.
+     * 
+     * @return The scheme.
+     */
+    public String getScheme() {
+        return _scheme;
+    }
+
+    /**
+     * Sets the scheme.
+     * 
+     * @param scheme The scheme.
      * @return The {@link URIBuilder}.
      */
-    public URIBuilder setSchema(final String schema) {
-        _schema = schema;
+    public URIBuilder setScheme(final String scheme) {
         _uri = null;
+        _scheme = scheme;
 
         return this;
     }
@@ -183,8 +366,10 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setHost(final String host) {
-        _host = host;
         _uri = null;
+        _rawSchemeSpecificPart = null;
+        _rawAuthority = null;
+        _host = host;
 
         return this;
     }
@@ -205,8 +390,10 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setPort(final int port) {
-        _port = port;
         _uri = null;
+        _rawSchemeSpecificPart = null;
+        _rawAuthority = null;
+        _port = (port < 0) ? -1 : port;
 
         return this;
     }
@@ -227,8 +414,10 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setPath(final String path) {
-        _path = path;
         _uri = null;
+        _rawSchemeSpecificPart = null;
+        _rawPath = encode(path);
+        _path = path;
 
         return this;
     }
@@ -249,8 +438,47 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setQuery(final String query) {
-        _query = query;
         _uri = null;
+        _rawSchemeSpecificPart = null;
+        _rawQuery = encode(query);
+        _query = query;
+
+        return this;
+    }
+
+    /**
+     * Adds the specified parameters.
+     * 
+     * @param parameters The parameters.
+     * @return The {@link URIBuilder}.
+     */
+    public URIBuilder addParameters(final Map<String, Collection<String>> parameters) {
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameters must not be null");
+        }
+
+        _rawSchemeSpecificPart = null;
+        _rawQuery = buildRawQuery(parameters);
+        _query = decode(_rawQuery);
+
+        return this;
+    }
+
+    /**
+     * Adds the specified parameter.
+     * 
+     * @param name The parameter name.
+     * @param value The parameter value.
+     * @return The {@link URIBuilder}.
+     */
+    public URIBuilder addParameter(final String name, final String value) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name must not be null");
+        }
+
+        _rawSchemeSpecificPart = null;
+        _rawQuery = buildRawQuery(name, value);
+        _query = decode(_rawQuery);
 
         return this;
     }
@@ -271,8 +499,9 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setFragment(final String fragment) {
-        _fragment = fragment;
         _uri = null;
+        _rawFragment = encode(fragment);
+        _fragment = fragment;
 
         return this;
     }
@@ -288,7 +517,9 @@ public final class URIBuilder {
         }
 
         try {
-            _uri = new URI(_schema, _userInfo, _host, _port, _path, _query, _fragment);
+            final String uri = buildRawUri();
+
+            _uri = new URI(uri);
         } catch (final URISyntaxException e) {
             throw new URIException(e);
         }

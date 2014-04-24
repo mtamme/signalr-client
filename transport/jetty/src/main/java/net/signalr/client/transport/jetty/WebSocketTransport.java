@@ -36,19 +36,19 @@ import net.signalr.client.util.concurrent.Promises;
 public final class WebSocketTransport extends AbstractTransport {
 
     /**
-     * The HTTPS URI schema.
+     * The HTTPS URI scheme.
      */
-    private static final String HTTPS_SCHEMA = "https";
+    private static final String HTTPS_SCHEME = "https";
 
     /**
-     * The WS URI schema.
+     * The WS URI scheme.
      */
-    private static final String WS_SCHEMA = "ws";
+    private static final String WS_SCHEME = "ws";
 
     /**
-     * The WSS URI schema.
+     * The WSS URI scheme.
      */
-    private static final String WSS_SCHEMA = "wss";
+    private static final String WSS_SCHEME = "wss";
 
     /**
      * The transport name.
@@ -91,31 +91,23 @@ public final class WebSocketTransport extends AbstractTransport {
             throw new IllegalStateException("WebSockets are not supported by the server");
         }
 
+        // Build request URI.
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), reconnect ? RECONNECT_PATH : CONNECT_PATH);
-        final String schema = uriBuilder.getSchema().equals(HTTPS_SCHEMA) ? WSS_SCHEMA : WS_SCHEMA;
+        final String scheme = uriBuilder.getScheme().equals(HTTPS_SCHEME) ? WSS_SCHEME : WS_SCHEME;
 
-        uriBuilder.setSchema(schema);
-        final ClientUpgradeRequest request = new ClientUpgradeRequest();
-
-        // Set query parameters.
-        final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
-        final StringBuilder query = new StringBuilder();
-
-        for (final Map.Entry<String, Collection<String>> queryParameter : queryParameters.entrySet()) {
-            final String name = queryParameter.getKey();
-
-            for (final String value : queryParameter.getValue()) {
-                query.append(name).append('=').append(value).append('&');
-            }
-        }
-        query.append(CONNECTION_TOKEN_PARAMETER).append('=').append(context.getConnectionToken()).append('&');
-        query.append(CONNECTION_DATA_PARAMETER).append('=').append(context.getConnectionData()).append('&');
+        uriBuilder.setScheme(scheme);
         final String transportName = getName();
 
-        query.append(TRANSPORT_PARAMETER).append('=').append(transportName);
-        uriBuilder.setQuery(query.toString());
+        uriBuilder.addParameter(TRANSPORT_PARAMETER, transportName);
+        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
+        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
 
-        // Set headers.
+        final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
+
+        uriBuilder.addParameters(queryParameters);
+
+        // Setup request.
+        final ClientUpgradeRequest request = new ClientUpgradeRequest();
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         for (final Map.Entry<String, Collection<String>> header : headers.entrySet()) {

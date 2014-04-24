@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
-import com.ning.http.client.FluentStringsMap;
 import com.ning.http.client.websocket.WebSocketUpgradeHandler;
 
 import net.signalr.client.transport.Channel;
@@ -38,19 +37,19 @@ import net.signalr.client.util.concurrent.Promises;
 public final class WebSocketTransport extends AbstractTransport {
 
     /**
-     * The HTTPS URI schema.
+     * The HTTPS URI scheme.
      */
-    private static final String HTTPS_SCHEMA = "https";
+    private static final String HTTPS_SCHEME = "https";
 
     /**
-     * The WS URI schema.
+     * The WS URI scheme.
      */
-    private static final String WS_SCHEMA = "ws";
+    private static final String WS_SCHEME = "ws";
 
     /**
-     * The WSS URI schema.
+     * The WSS URI scheme.
      */
-    private static final String WSS_SCHEMA = "wss";
+    private static final String WSS_SCHEME = "wss";
 
     /**
      * The transport name.
@@ -74,23 +73,22 @@ public final class WebSocketTransport extends AbstractTransport {
             throw new IllegalStateException("WebSockets are not supported by the server");
         }
 
+        // Build request URI.
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), reconnect ? RECONNECT_PATH : CONNECT_PATH);
-        final String schema = uriBuilder.getSchema().equals(HTTPS_SCHEMA) ? WSS_SCHEMA : WS_SCHEMA;
+        final String scheme = uriBuilder.getScheme().equals(HTTPS_SCHEME) ? WSS_SCHEME : WS_SCHEME;
 
-        uriBuilder.setSchema(schema);
-        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
-
-        // Set query parameters.
-        final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
-
-        boundRequestBuilder.setQueryParameters(new FluentStringsMap(queryParameters));
-        boundRequestBuilder.addQueryParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
-        boundRequestBuilder.addQueryParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        uriBuilder.setScheme(scheme);
         final String transportName = getName();
 
-        boundRequestBuilder.addQueryParameter(TRANSPORT_PARAMETER, transportName);
+        uriBuilder.addParameter(TRANSPORT_PARAMETER, transportName);
+        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
+        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
-        // Set headers.
+        uriBuilder.addParameters(queryParameters);
+
+        // Setup request.
+        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         boundRequestBuilder.setHeaders(headers);
