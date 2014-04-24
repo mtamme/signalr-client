@@ -17,6 +17,7 @@
 
 package net.signalr.client.transport.jetty;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 
@@ -80,25 +81,19 @@ public abstract class AbstractTransport implements Transport {
             throw new IllegalArgumentException("Context must not be null");
         }
 
+        // Build request URI.
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), NEGOTIATE_PATH);
-        final Request request = _client.newRequest(uriBuilder.toURI());
-
-        request.method(HttpMethod.GET);
-
-        // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
-        for (final Map.Entry<String, Collection<String>> queryParameter : queryParameters.entrySet()) {
-            final String name = queryParameter.getKey();
+        uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        uriBuilder.addParameter(PROTOCOL_VERSION_PARAMETER, context.getProtocolVersion());
+        final URI uri = uriBuilder.build();
 
-            for (final String value : queryParameter.getValue()) {
-                request.param(name, value);
-            }
-        }
-        request.param(PROTOCOL_VERSION_PARAMETER, context.getProtocolVersion());
-        request.param(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        // Setup request.
+        final Request request = _client.newRequest(uri);
 
-        // Set headers.
+        request.method(HttpMethod.GET);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         for (final Map.Entry<String, Collection<String>> header : headers.entrySet()) {
@@ -134,24 +129,18 @@ public abstract class AbstractTransport implements Transport {
             throw new IllegalArgumentException("Context must not be null");
         }
 
+        // Build request URI.
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), PING_PATH);
-        final Request request = _client.newRequest(uriBuilder.toURI());
-
-        request.method(HttpMethod.GET);
-
-        // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
-        for (final Map.Entry<String, Collection<String>> queryParameter : queryParameters.entrySet()) {
-            final String name = queryParameter.getKey();
+        uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        final URI uri = uriBuilder.build();
 
-            for (final String value : queryParameter.getValue()) {
-                request.param(name, value);
-            }
-        }
-        request.param(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        // Setup request.
+        final Request request = _client.newRequest(uri);
 
-        // Set headers.
+        request.method(HttpMethod.GET);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         for (final Map.Entry<String, Collection<String>> header : headers.entrySet()) {
@@ -187,28 +176,22 @@ public abstract class AbstractTransport implements Transport {
             throw new IllegalArgumentException("Context must not be null");
         }
 
+        // Build request URI.
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), ABORT_PATH);
-        final Request request = _client.newRequest(uriBuilder.toURI());
-
-        request.method(HttpMethod.POST);
-
-        // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
-        for (final Map.Entry<String, Collection<String>> queryParameter : queryParameters.entrySet()) {
-            final String name = queryParameter.getKey();
-
-            for (final String value : queryParameter.getValue()) {
-                request.param(name, value);
-            }
-        }
-        request.param(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
-        request.param(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
         final String transportName = getName();
 
-        request.param(TRANSPORT_PARAMETER, transportName);
+        uriBuilder.addParameter(TRANSPORT_PARAMETER, transportName);
+        final URI uri = uriBuilder.build();
 
-        // Set headers.
+        // Setup request.
+        final Request request = _client.newRequest(uri);
+
+        request.method(HttpMethod.POST);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         for (final Map.Entry<String, Collection<String>> header : headers.entrySet()) {

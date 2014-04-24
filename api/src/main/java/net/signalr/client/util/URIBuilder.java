@@ -457,6 +457,7 @@ public final class URIBuilder {
             throw new IllegalArgumentException("Parameters must not be null");
         }
 
+        _uri = null;
         _rawSchemeSpecificPart = null;
         _rawQuery = buildRawQuery(parameters);
         _query = decode(_rawQuery);
@@ -476,6 +477,7 @@ public final class URIBuilder {
             throw new IllegalArgumentException("Name must not be null");
         }
 
+        _uri = null;
         _rawSchemeSpecificPart = null;
         _rawQuery = buildRawQuery(name, value);
         _query = decode(_rawQuery);
@@ -507,11 +509,11 @@ public final class URIBuilder {
     }
 
     /**
-     * Converts to an {@link URI}.
+     * Builds the {@link URI}.
      * 
      * @return The URI.
      */
-    public URI toURI() {
+    public URI build() {
         if (_uri != null) {
             return _uri;
         }
@@ -525,12 +527,5 @@ public final class URIBuilder {
         }
 
         return _uri;
-    }
-
-    @Override
-    public String toString() {
-        final URI uri = toURI();
-
-        return uri.toString();
     }
 }

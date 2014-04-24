@@ -18,6 +18,7 @@
 package net.signalr.client.transport.asynchttpclient;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 
@@ -78,17 +79,18 @@ public final class WebSocketTransport extends AbstractTransport {
         final String scheme = uriBuilder.getScheme().equals(HTTPS_SCHEME) ? WSS_SCHEME : WS_SCHEME;
 
         uriBuilder.setScheme(scheme);
-        final String transportName = getName();
-
-        uriBuilder.addParameter(TRANSPORT_PARAMETER, transportName);
-        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
-        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
         uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
+        final String transportName = getName();
+
+        uriBuilder.addParameter(TRANSPORT_PARAMETER, transportName);
+        final URI uri = uriBuilder.build();
 
         // Setup request.
-        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
+        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uri.toString());
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         boundRequestBuilder.setHeaders(headers);

@@ -8,20 +8,20 @@
 	</parent>
 	<artifactId>signalr-client-transport-jetty</artifactId>
 	<properties>
-		<org.eclipse.jetty.version>9.2.0.M0</org.eclipse.jetty.version>
+		<org.eclipse.jetty.version>9.1.4.v20140401</org.eclipse.jetty.version>
 	</properties>
 	<dependencies>
 		<dependency>
-            <groupId>net.signalr.client</groupId>
-            <artifactId>signalr-client-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>net.signalr.client</groupId>
-            <artifactId>signalr-client-json-gson</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
+			<groupId>net.signalr.client</groupId>
+			<artifactId>signalr-client-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.signalr.client</groupId>
+			<artifactId>signalr-client-json-gson</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-client</artifactId>
@@ -33,18 +33,18 @@
 			<version>${org.eclipse.jetty.version}</version>
 		</dependency>
 		<dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${org.slf4j.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${org.slf4j.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
 	</dependencies>
 </project>

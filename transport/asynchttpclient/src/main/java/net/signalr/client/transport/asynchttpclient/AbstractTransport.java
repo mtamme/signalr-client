@@ -17,11 +17,11 @@
 
 package net.signalr.client.transport.asynchttpclient;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 
 import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.FluentStringsMap;
 import com.ning.http.client.Response;
 import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
 import com.ning.http.client.AsyncHttpClientConfig.Builder;
@@ -76,17 +76,17 @@ public abstract class AbstractTransport implements Transport {
             throw new IllegalArgumentException("Context must not be null");
         }
 
+        // Build request URI.
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), NEGOTIATE_PATH);
-        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
-
-        // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
-        boundRequestBuilder.setQueryParameters(new FluentStringsMap(queryParameters));
-        boundRequestBuilder.addQueryParameter(PROTOCOL_VERSION_PARAMETER, context.getProtocolVersion());
-        boundRequestBuilder.addQueryParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        uriBuilder.addParameter(PROTOCOL_VERSION_PARAMETER, context.getProtocolVersion());
+        final URI uri = uriBuilder.build();
 
-        // Set headers.
+        // Setup request.
+        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uri.toString());
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         boundRequestBuilder.setHeaders(headers);
@@ -117,16 +117,16 @@ public abstract class AbstractTransport implements Transport {
             throw new IllegalArgumentException("Context must not be null");
         }
 
+        // Build request URI.
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), PING_PATH);
-        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
-
-        // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
-        boundRequestBuilder.setQueryParameters(new FluentStringsMap(queryParameters));
-        boundRequestBuilder.addQueryParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        final URI uri = uriBuilder.build();
 
-        // Set headers.
+        // Setup request.
+        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uri.toString());
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         boundRequestBuilder.setHeaders(headers);
@@ -157,20 +157,20 @@ public abstract class AbstractTransport implements Transport {
             throw new IllegalArgumentException("Context must not be null");
         }
 
+        // Build request URI.
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), ABORT_PATH);
-        final BoundRequestBuilder boundRequestBuilder = _client.preparePost(uriBuilder.toString());
-
-        // Set query parameters.
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
-        boundRequestBuilder.setQueryParameters(new FluentStringsMap(queryParameters));
-        boundRequestBuilder.addQueryParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
-        boundRequestBuilder.addQueryParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
         final String transportName = getName();
 
-        boundRequestBuilder.addQueryParameter(TRANSPORT_PARAMETER, transportName);
+        uriBuilder.addParameter(TRANSPORT_PARAMETER, transportName);
+        final URI uri = uriBuilder.build();
 
-        // Set headers.
+        // Setup request.
+        final BoundRequestBuilder boundRequestBuilder = _client.preparePost(uri.toString());
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         boundRequestBuilder.setHeaders(headers);

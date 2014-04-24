@@ -17,6 +17,7 @@
 
 package net.signalr.client.transport.jetty;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 
@@ -96,15 +97,15 @@ public final class WebSocketTransport extends AbstractTransport {
         final String scheme = uriBuilder.getScheme().equals(HTTPS_SCHEME) ? WSS_SCHEME : WS_SCHEME;
 
         uriBuilder.setScheme(scheme);
-        final String transportName = getName();
-
-        uriBuilder.addParameter(TRANSPORT_PARAMETER, transportName);
-        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
-        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
-
         final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
 
         uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
+        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
+        final String transportName = getName();
+
+        uriBuilder.addParameter(TRANSPORT_PARAMETER, transportName);
+        final URI uri = uriBuilder.build();
 
         // Setup request.
         final ClientUpgradeRequest request = new ClientUpgradeRequest();
@@ -123,7 +124,7 @@ public final class WebSocketTransport extends AbstractTransport {
         final WebSocketListenerAdapter listener = new WebSocketListenerAdapter(handler);
 
         try {
-            _client.connect(listener, uriBuilder.toURI(), request);
+            _client.connect(listener, uri, request);
         } catch (final Exception e) {
             return Promises.rejected(e);
         }
