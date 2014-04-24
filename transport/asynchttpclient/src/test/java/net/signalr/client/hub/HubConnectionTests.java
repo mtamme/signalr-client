@@ -54,7 +54,7 @@ public final class HubConnectionTests {
         final HubConnection connection = new HubConnection(URL, new WebSocketTransport(), new GsonFactory());
 
         connection.addHeader(ACCESS_ID_NAME, ACCESS_ID_VALUE);
-        connection.addQueryParameter("culture", "en");
+        connection.addParameter("culture", "en");
         final HubProxy hubProxy = connection.getProxy(HUB_NAME);
         final Promise<Void> start = connection.start(new ConnectionHandler() {
             @Override

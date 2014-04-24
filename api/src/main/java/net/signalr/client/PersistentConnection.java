@@ -93,7 +93,7 @@ public final class PersistentConnection implements Connection {
     }
 
     @Override
-    public final void addQueryParameter(final String name, final String value) {
+    public final void addParameter(final String name, final String value) {
         _context.getState().addParameter(_context, name, value);
     }
 

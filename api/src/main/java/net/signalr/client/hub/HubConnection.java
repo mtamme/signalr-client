@@ -115,13 +115,13 @@ public final class HubConnection {
     }
 
     /**
-     * Adds a query parameter.
+     * Adds a parameter.
      * 
-     * @param name The query parameter name.
-     * @param value The query parameter value.
+     * @param name The parameter name.
+     * @param value The parameter value.
      */
-    public final void addQueryParameter(final String name, final String value) {
-        _connection.addQueryParameter(name, value);
+    public final void addParameter(final String name, final String value) {
+        _connection.addParameter(name, value);
     }
 
     /**
