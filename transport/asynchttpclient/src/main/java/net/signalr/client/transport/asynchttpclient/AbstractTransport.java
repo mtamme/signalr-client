@@ -47,11 +47,6 @@ public abstract class AbstractTransport implements Transport {
     private static final String USER_AGENT = "SignalR-Client/0.1 (Java)";
 
     /**
-     * The empty body.
-     */
-    private static final byte[] EMPTY_BODY = new byte[0];
-
-    /**
      * The asynchronous HTTP client.
      */
     protected final AsyncHttpClient _client;
@@ -174,9 +169,8 @@ public abstract class AbstractTransport implements Transport {
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         boundRequestBuilder.setHeaders(headers);
-
-        // Set body.
-        boundRequestBuilder.setBody(EMPTY_BODY);
+        boundRequestBuilder.addHeader("Content-Length", "0");
+        boundRequestBuilder.addHeader("Content-Type", "text/plain");
 
         // Execute request.
         final AsyncResponseHandler handler = new AsyncResponseHandler();

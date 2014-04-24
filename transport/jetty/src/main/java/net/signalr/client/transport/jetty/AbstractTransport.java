@@ -23,7 +23,6 @@ import java.util.Map;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.client.util.BytesContentProvider;
 import org.eclipse.jetty.http.HttpField;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpMethod;
@@ -65,6 +64,7 @@ public abstract class AbstractTransport implements Transport {
     public AbstractTransport() {
         _sslContextFactory = new SslContextFactory();
         _client = new HttpClient(_sslContextFactory);
+        _client.setFollowRedirects(false);
         _client.setUserAgentField(new HttpField(HttpHeader.USER_AGENT, USER_AGENT));
 
         // FIXME
@@ -91,9 +91,7 @@ public abstract class AbstractTransport implements Transport {
         final URI uri = uriBuilder.build();
 
         // Setup request.
-        final Request request = _client.newRequest(uri);
-
-        request.method(HttpMethod.GET);
+        final Request request = _client.newRequest(uri).method(HttpMethod.GET);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         for (final Map.Entry<String, Collection<String>> header : headers.entrySet()) {
@@ -138,9 +136,7 @@ public abstract class AbstractTransport implements Transport {
         final URI uri = uriBuilder.build();
 
         // Setup request.
-        final Request request = _client.newRequest(uri);
-
-        request.method(HttpMethod.GET);
+        final Request request = _client.newRequest(uri).method(HttpMethod.GET);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         for (final Map.Entry<String, Collection<String>> header : headers.entrySet()) {
@@ -189,9 +185,7 @@ public abstract class AbstractTransport implements Transport {
         final URI uri = uriBuilder.build();
 
         // Setup request.
-        final Request request = _client.newRequest(uri);
-
-        request.method(HttpMethod.POST);
+        final Request request = _client.newRequest(uri).method(HttpMethod.POST);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         for (final Map.Entry<String, Collection<String>> header : headers.entrySet()) {
@@ -201,9 +195,8 @@ public abstract class AbstractTransport implements Transport {
                 request.header(name, value);
             }
         }
-
-        // Set content.
-        request.content(new BytesContentProvider());
+        request.header(HttpHeader.CONTENT_LENGTH, "0");
+        request.header(HttpHeader.CONTENT_TYPE, "text/plain");
 
         // Send request.
         final ResponseListener listener = new ResponseListener();

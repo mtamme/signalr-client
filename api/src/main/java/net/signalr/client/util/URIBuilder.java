@@ -519,10 +519,9 @@ public final class URIBuilder {
         if (_uri != null) {
             return _uri;
         }
+        final String rawUri = getRawUri();
 
         try {
-            final String rawUri = getRawUri();
-
             _uri = new URI(rawUri);
         } catch (final URISyntaxException e) {
             throw new URIException(e);

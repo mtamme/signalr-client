@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>signalr-client-transport-asynchttpclient</artifactId>
 	<properties>
-		<com.ning.version>1.8.7</com.ning.version>
+		<com.ning.version>1.7.24</com.ning.version>
 	</properties>
 	<dependencies>
 		<dependency>
