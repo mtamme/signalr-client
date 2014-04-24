@@ -30,6 +30,20 @@ public interface TransportManager extends ChannelHandler {
     Transport getTransport();
 
     /**
+     * Adds the specified transport listener.
+     * 
+     * @param listener The transport listener.
+     */
+    void addListener(TransportListener listener);
+
+    /**
+     * Removes the specified transport listener.
+     * 
+     * @param listener The transport listener.
+     */
+    void removeListener(TransportListener listener);
+
+    /**
      * Invoked when the connection has been lost.
      */
     void handleConnectionLost();

@@ -58,7 +58,7 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     private final Map<String, Collection<String>> _headers;
 
-    private final Map<String, Collection<String>> _queryParameters;
+    private final Map<String, Collection<String>> _parameters;
 
     private boolean _tryWebSockets;
 
@@ -102,7 +102,7 @@ final class PersistentConnectionContext implements ConnectionContext {
 
         _state = new AtomicReference<ConnectionState>(initialState);
         _headers = new HashMap<String, Collection<String>>();
-        _queryParameters = new HashMap<String, Collection<String>>();
+        _parameters = new HashMap<String, Collection<String>>();
 
         _tryWebSockets = false;
         _connectionData = null;
@@ -157,8 +157,8 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
-    public Map<String, Collection<String>> getQueryParameters() {
-        return Collections.unmodifiableMap(_queryParameters);
+    public Map<String, Collection<String>> getParameters() {
+        return Collections.unmodifiableMap(_parameters);
     }
 
     @Override
@@ -226,7 +226,7 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
-    public void addQueryParameter(final String name, final String value) {
+    public void addParameter(final String name, final String value) {
         if (name == null) {
             throw new IllegalArgumentException("Name must not be null");
         }
@@ -234,11 +234,11 @@ final class PersistentConnectionContext implements ConnectionContext {
             throw new IllegalArgumentException("Value must not be null");
         }
 
-        Collection<String> values = _queryParameters.get(name);
+        Collection<String> values = _parameters.get(name);
 
         if (values == null) {
             values = new ArrayList<String>();
-            _queryParameters.put(name, values);
+            _parameters.put(name, values);
         }
 
         values.add(value);

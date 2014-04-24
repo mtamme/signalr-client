@@ -19,15 +19,16 @@ package net.signalr.client.transport;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import net.signalr.client.util.TimeProvider;
+import net.signalr.client.util.concurrent.Schedulable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.signalr.client.util.TimeProvider;
 
 /**
  * Represents the transport monitor.
  */
-final class TransportMonitor implements Runnable {
+final class TransportMonitor implements Schedulable, TransportListener {
 
     /**
      * The private logger.
@@ -124,10 +125,48 @@ final class TransportMonitor implements Runnable {
     /**
      * Updates the heart beat time.
      */
-    public void updateHeartbeatTime() {
+    private void updateHeartbeatTime() {
+        logger.info("Received transport heart beat...");
+
         final long currentTime = _timeProvider.currentTimeMillis();
 
         _lastHeartbeatTime.set(currentTime);
+    }
+
+    @Override
+    public void onChannelOpened() {
+        updateHeartbeatTime();
+    }
+
+    @Override
+    public void onChannelClosed() {
+    }
+
+    @Override
+    public void onConnectionSlow() {
+    }
+
+    @Override
+    public void onError(final Throwable cause) {
+    }
+
+    @Override
+    public void onSending(final String message) {
+    }
+
+    @Override
+    public void onReceived(final String message) {
+        updateHeartbeatTime();
+    }
+
+    @Override
+    public void onScheduled() {
+        _manager.addListener(this);
+    }
+
+    @Override
+    public void onCancelled() {
+        _manager.removeListener(this);
     }
 
     @Override
@@ -138,11 +177,11 @@ final class TransportMonitor implements Runnable {
             return;
         }
         if (status == TransportStatus.LOST) {
-            logger.error("Keep alive timed out, connection has been lost.");
+            logger.error("Heart beat timed out, connection has been lost.");
 
             _manager.handleConnectionLost();
         } else if (status == TransportStatus.SLOW) {
-            logger.warn("Keep alive has been missed, connection may be dead/slow.");
+            logger.warn("Heart beat has been missed, connection may be dead/slow.");
 
             _manager.handleConnectionSlow();
         }

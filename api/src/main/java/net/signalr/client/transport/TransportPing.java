@@ -20,6 +20,7 @@ package net.signalr.client.transport;
 import java.io.IOException;
 
 import net.signalr.client.util.concurrent.Callback;
+import net.signalr.client.util.concurrent.Schedulable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Represents the transport ping.
  */
-final class TransportPing implements Runnable {
+final class TransportPing implements Schedulable {
 
     /**
      * The private logger.
@@ -65,6 +66,14 @@ final class TransportPing implements Runnable {
 
         _manager = manager;
         _context = context;
+    }
+
+    @Override
+    public void onScheduled() {
+    }
+
+    @Override
+    public void onCancelled() {
     }
 
     @Override

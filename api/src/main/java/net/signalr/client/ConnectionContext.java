@@ -97,12 +97,12 @@ interface ConnectionContext extends TransportContext {
     void addHeader(String name, String value);
 
     /**
-     * Adds a query parameter.
+     * Adds a parameter.
      * 
-     * @param name The query parameter name.
-     * @param value The query parameter value.
+     * @param name The parameter name.
+     * @param value The parameter value.
      */
-    void addQueryParameter(String name, String value);
+    void addParameter(String name, String value);
 
     /**
      * Returns the current connection state.

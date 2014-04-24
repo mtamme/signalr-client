@@ -28,7 +28,7 @@ interface ConnectionState {
 
     void addHeader(ConnectionContext context, String name, String value);
 
-    void addQueryParameter(ConnectionContext context, String name, String value);
+    void addParameter(ConnectionContext context, String name, String value);
 
     void setConnectionData(ConnectionContext context, String connectionData);
 

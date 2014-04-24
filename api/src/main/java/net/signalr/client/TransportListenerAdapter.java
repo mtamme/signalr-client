@@ -19,12 +19,12 @@ package net.signalr.client;
 
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.json.JsonElement;
-import net.signalr.client.transport.ChannelHandler;
+import net.signalr.client.transport.TransportListener;
 
 /**
- * Represents a channel handler adapter.
+ * Represents a transport listener adapter.
  */
-final class ChannelHandlerAdapter implements ChannelHandler {
+final class TransportListenerAdapter implements TransportListener {
 
     /**
      * The connection context.
@@ -37,12 +37,12 @@ final class ChannelHandlerAdapter implements ChannelHandler {
     private final ConnectionHandler _handler;
 
     /**
-     * Initializes a new instance of the {@link ChannelHandlerAdapter} class.
+     * Initializes a new instance of the {@link TransportListenerAdapter} class.
      * 
      * @param context The connection context.
      * @param handler The connection handler.
      */
-    public ChannelHandlerAdapter(final ConnectionContext context, final ConnectionHandler handler) {
+    public TransportListenerAdapter(final ConnectionContext context, final ConnectionHandler handler) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
@@ -55,27 +55,30 @@ final class ChannelHandlerAdapter implements ChannelHandler {
     }
 
     @Override
-    public void handleChannelOpened() {
-        // _handler.onConnected();
+    public void onChannelOpened() {
     }
 
     @Override
-    public void handleChannelClosed() {
-        // _handler.onDisconnected();
+    public void onChannelClosed() {
     }
 
     @Override
-    public void handleError(final Throwable cause) {
+    public void onConnectionSlow() {
+        _handler.onConnectionSlow();
+    }
+
+    @Override
+    public void onError(final Throwable cause) {
         _handler.onError(cause);
     }
 
     @Override
-    public void handleMessageSending(final String message) {
+    public void onSending(final String message) {
         _handler.onSending(message);
     }
 
     @Override
-    public void handleMessageReceived(final String message) {
+    public void onReceived(final String message) {
         final JsonMapper mapper = _context.getMapper();
         final JsonElement element = mapper.toElement(message);
         final String callbackId = element.get("I").getString(null);

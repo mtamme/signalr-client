@@ -50,11 +50,6 @@ public interface Transport {
     public static final String RECONNECT_PATH = "reconnect";
 
     /**
-     * The protocol version query parameter name.
-     */
-    public static final String PROTOCOL_VERSION_PARAMETER = "clientProtocol";
-
-    /**
      * The connection data query parameter name.
      */
     public static final String CONNECTION_DATA_PARAMETER = "connectionData";
@@ -63,6 +58,11 @@ public interface Transport {
      * The connection token query parameter name.
      */
     public static final String CONNECTION_TOKEN_PARAMETER = "connectionToken";
+
+    /**
+     * The protocol version query parameter name.
+     */
+    public static final String PROTOCOL_VERSION_PARAMETER = "clientProtocol";
 
     /**
      * The transport query parameter name.

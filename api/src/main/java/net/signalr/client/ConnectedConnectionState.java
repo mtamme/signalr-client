@@ -66,7 +66,7 @@ final class ConnectedConnectionState implements ConnectionState {
     }
 
     @Override
-    public void addQueryParameter(final ConnectionContext context, final String name, final String value) {
+    public void addParameter(final ConnectionContext context, final String name, final String value) {
         throw new IllegalStateException("Connection is connected");
     }
 

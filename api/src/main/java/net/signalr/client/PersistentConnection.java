@@ -23,8 +23,8 @@ import net.signalr.client.json.JsonMapper;
 import net.signalr.client.transport.DefaultTransportManager;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportManager;
+import net.signalr.client.util.concurrent.ScheduledExecutorServiceScheduler;
 import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.TimerScheduler;
 
 /**
  * Represents a persistent connection.
@@ -44,7 +44,7 @@ public final class PersistentConnection implements Connection {
      * @param factory The factory.
      */
     public PersistentConnection(final String url, final Transport transport, final JsonFactory factory) {
-        this(new PersistentConnectionContext(url, new DefaultTransportManager(transport), new TimerScheduler(), new DefaultJsonMapper(factory)));
+        this(new PersistentConnectionContext(url, new DefaultTransportManager(transport), new ScheduledExecutorServiceScheduler(), new DefaultJsonMapper(factory)));
     }
 
     /**
@@ -94,7 +94,7 @@ public final class PersistentConnection implements Connection {
 
     @Override
     public final void addQueryParameter(final String name, final String value) {
-        _context.getState().addQueryParameter(_context, name, value);
+        _context.getState().addParameter(_context, name, value);
     }
 
     @Override

@@ -83,9 +83,9 @@ public abstract class AbstractTransport implements Transport {
 
         // Build request URI.
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), NEGOTIATE_PATH);
-        final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
+        final Map<String, Collection<String>> parameters = context.getParameters();
 
-        uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameters(parameters);
         uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
         uriBuilder.addParameter(PROTOCOL_VERSION_PARAMETER, context.getProtocolVersion());
         final URI uri = uriBuilder.build();
@@ -129,9 +129,9 @@ public abstract class AbstractTransport implements Transport {
 
         // Build request URI.
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), PING_PATH);
-        final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
+        final Map<String, Collection<String>> parameters = context.getParameters();
 
-        uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameters(parameters);
         uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
         final URI uri = uriBuilder.build();
 
@@ -174,9 +174,9 @@ public abstract class AbstractTransport implements Transport {
 
         // Build request URI.
         final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), ABORT_PATH);
-        final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
+        final Map<String, Collection<String>> parameters = context.getParameters();
 
-        uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameters(parameters);
         uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
         uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
         final String transportName = getName();

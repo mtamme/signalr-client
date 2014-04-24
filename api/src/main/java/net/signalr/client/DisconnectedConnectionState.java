@@ -51,8 +51,8 @@ final class DisconnectedConnectionState implements ConnectionState {
     }
 
     @Override
-    public void addQueryParameter(final ConnectionContext context, final String name, final String value) {
-        context.addQueryParameter(name, value);
+    public void addParameter(final ConnectionContext context, final String name, final String value) {
+        context.addParameter(name, value);
     }
 
     @Override
@@ -74,6 +74,9 @@ final class DisconnectedConnectionState implements ConnectionState {
         logger.info("Negotiating transport...");
 
         final TransportManager manager = context.getTransportManager();
+
+        // FIXME Don't forget to remove listener.
+        manager.addListener(new TransportListenerAdapter(context, handler));
         final Transport transport = manager.getTransport();
 
         transport.negotiate(context).thenCompose(new Function<NegotiationResponse, Promise<Channel>>() {
@@ -82,7 +85,7 @@ final class DisconnectedConnectionState implements ConnectionState {
                 final String protocolVersion = response.getProtocolVersion();
 
                 if (!protocolVersion.equals(context.getProtocolVersion())) {
-                    throw new IllegalStateException("Invalid protocol version: '" + protocolVersion + "'");
+                    throw new IllegalStateException("Server returned unsupported protocol version: '" + protocolVersion + "'");
                 }
 
                 context.setTryWebSockets(response.getTryWebSockets());
@@ -93,7 +96,7 @@ final class DisconnectedConnectionState implements ConnectionState {
 
                 logger.info("Connecting transport...");
 
-                return transport.connect(context, new ChannelHandlerAdapter(context, handler), false);
+                return transport.connect(context, manager, false);
             }
         }).thenCall(new Callback<Channel>() {
             @Override

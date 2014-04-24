@@ -79,9 +79,9 @@ public final class WebSocketTransport extends AbstractTransport {
         final String scheme = uriBuilder.getScheme().equals(HTTPS_SCHEME) ? WSS_SCHEME : WS_SCHEME;
 
         uriBuilder.setScheme(scheme);
-        final Map<String, Collection<String>> queryParameters = context.getQueryParameters();
+        final Map<String, Collection<String>> parameters = context.getParameters();
 
-        uriBuilder.addParameters(queryParameters);
+        uriBuilder.addParameters(parameters);
         uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
         uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
         final String transportName = getName();

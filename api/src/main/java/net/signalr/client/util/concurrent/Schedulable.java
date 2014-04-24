@@ -17,20 +17,18 @@
 
 package net.signalr.client.util.concurrent;
 
-import java.util.concurrent.TimeUnit;
-
 /**
- * Defines a scheduler.
+ * Defines a schedulable.
  */
-public interface Scheduler {
+public interface Schedulable extends Runnable {
 
     /**
-     * Adds a new job to the scheduler.
-     * 
-     * @param schedulable The schedulable.
-     * @param period The period.
-     * @param timeUnit The time unit.
-     * @return The scheduled job.
+     * Invoked when the schedulable has been scheduled.
      */
-    Job scheduleJob(Schedulable schedulable, long period, TimeUnit timeUnit);
+    void onScheduled();
+
+    /**
+     * Invoked when the schedulable has been cancelled.
+     */
+    void onCancelled();
 }

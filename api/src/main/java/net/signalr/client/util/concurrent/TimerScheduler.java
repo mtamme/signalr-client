@@ -17,8 +17,6 @@
 
 package net.signalr.client.util.concurrent;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +30,11 @@ import org.slf4j.LoggerFactory;
 public final class TimerScheduler implements Scheduler {
 
     /**
+     * The default timer name.
+     */
+    private static final String DEFAULT_TIMER_NAME = "Scheduler-Timer";
+
+    /**
      * The private logger.
      */
     private static final Logger logger = LoggerFactory.getLogger(TimerScheduler.class);
@@ -42,115 +45,78 @@ public final class TimerScheduler implements Scheduler {
     private final Timer _timer;
 
     /**
-     * The scheduled jobs.
-     */
-    private final Map<String, Job> _jobs;
-
-    /**
      * Initializes a new instance of the {@link TimerScheduler} class.
      */
     public TimerScheduler() {
-        _timer = new Timer("Scheduler-Timer");
-        _jobs = new HashMap<String, Job>();
+        this(new Timer(DEFAULT_TIMER_NAME));
     }
 
     /**
-     * Adds a new job to the scheduler.
+     * Initializes a new instance of the {@link TimerScheduler} class.
      * 
-     * @param name The job name.
-     * @param runnable The runnable.
-     * @return A new job.
+     * @param timer The timer.
      */
-    private Job addJob(final String name, final Runnable runnable) {
-        final Job job = new Job(runnable);
-
-        synchronized (_jobs) {
-            if (_jobs.containsKey(name)) {
-                throw new IllegalArgumentException("Job with the same name already exists");
-            }
-            _jobs.put(name, job);
+    public TimerScheduler(final Timer timer) {
+        if (timer == null) {
+            throw new IllegalArgumentException("Timer must not be null");
         }
 
-        return job;
-    }
-
-    /**
-     * Removes a job from the scheduler.
-     * 
-     * @param name The job name.
-     * @return The job.
-     */
-    private Job removeJob(final String name) {
-        final Job job;
-
-        synchronized (_jobs) {
-            job = _jobs.remove(name);
-        }
-
-        if (job == null) {
-            throw new IllegalArgumentException("Job does not exist");
-        }
-
-        return job;
+        _timer = timer;
     }
 
     @Override
-    public void scheduleJob(final String name, final Runnable runnable, final long initialDelay, final long period, final TimeUnit timeUnit) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name must not be null");
-        }
-        if (runnable == null) {
-            throw new IllegalArgumentException("Runnable must not be null");
+    public Job scheduleJob(final Schedulable schedulable, final long period, final TimeUnit timeUnit) {
+        if (schedulable == null) {
+            throw new IllegalArgumentException("Schedulable must not be null");
         }
         if (timeUnit == null) {
             throw new IllegalArgumentException("Time unit must not be null");
         }
 
-        logger.info("Scheduling '{}' job...", name);
+        logger.info("Scheduling '{}'...", schedulable);
 
-        final Job job = addJob(name, runnable);
+        final TimerTaskJob job = new TimerTaskJob(schedulable);
 
-        _timer.scheduleAtFixedRate(job, timeUnit.toMillis(initialDelay), timeUnit.toMillis(period));
-    }
+        _timer.scheduleAtFixedRate(job, timeUnit.toMillis(period), timeUnit.toMillis(period));
+        schedulable.onScheduled();
 
-    @Override
-    public void unscheduleJob(final String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name must not be null");
-        }
-
-        logger.info("Unscheduling '{}' job...", name);
-
-        final Job job = removeJob(name);
-
-        job.cancel();
+        return job;
     }
 
     /**
-     * Represents a scheduled job.
+     * Represents a job.
      */
-    private static final class Job extends TimerTask {
+    private static final class TimerTaskJob extends TimerTask implements Job {
 
         /**
-         * The runnable.
+         * The schedulable.
          */
-        private final Runnable _runnable;
+        private final Schedulable _schedulable;
 
         /**
-         * Initializes a new instance of the {@link Job} class.
+         * Initializes a new instance of the {@link TimerTaskJob} class.
          * 
-         * @param runnable The runnable.
+         * @param schedulable The schedulable.
          */
-        public Job(final Runnable runnable) {
-            _runnable = runnable;
+        public TimerTaskJob(final Schedulable schedulable) {
+            _schedulable = schedulable;
         }
 
         @Override
         public void run() {
             try {
-                _runnable.run();
+                _schedulable.run();
             } catch (final Throwable t) {
                 logger.warn("Job execution failed", t);
+            }
+        }
+
+        @Override
+        public boolean cancel() {
+            try {
+                return super.cancel();
+            } finally {
+                _schedulable.onCancelled();
             }
         }
     }

@@ -46,5 +46,5 @@ public interface TransportContext {
 
     Map<String, Collection<String>> getHeaders();
 
-    Map<String, Collection<String>> getQueryParameters();
+    Map<String, Collection<String>> getParameters();
 }
