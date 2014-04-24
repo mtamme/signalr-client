@@ -83,6 +83,11 @@ public final class TimerScheduler implements Scheduler {
         return job;
     }
 
+    @Override
+    public void shutdown() {
+        _timer.cancel();
+    }
+
     /**
      * Represents a job.
      */

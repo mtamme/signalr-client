@@ -84,6 +84,11 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
         return new ScheduledExecutorServiceJob(future, schedulable);
     }
 
+    @Override
+    public void shutdown() {
+        _executorService.shutdown();
+    }
+
     /**
      * Represents a runnable.
      */

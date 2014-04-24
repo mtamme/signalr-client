@@ -33,4 +33,9 @@ public interface Scheduler {
      * @return The scheduled job.
      */
     Job scheduleJob(Schedulable schedulable, long period, TimeUnit timeUnit);
+
+    /**
+     * Initiates an orderly shutdown.
+     */
+    void shutdown();
 }
