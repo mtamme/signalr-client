@@ -22,15 +22,59 @@ package net.signalr.client.transport;
  */
 public interface TransportOptions {
 
-    public String getConnectionToken();
+    /**
+     * Returns the URL.
+     * 
+     * @return The URL.
+     */
+    String getUrl();
 
-    public String getConnectionId();
+    /**
+     * Returns the connection token.
+     * 
+     * @return The connection token.
+     */
+    String getConnectionToken();
 
-    public boolean getTryWebSockets();
+    /**
+     * Returns the connection ID.
+     * 
+     * @return The connection ID.
+     */
+    String getConnectionId();
 
-    public double getDisconnectTimeout();
+    /**
+     * Returns the protocol version.
+     * 
+     * @return The protocol version.
+     */
+    String getProtocolVersion();
 
-    public double getKeepAliveTimeout();
+    /**
+     * Returns a value indicating whether web sockets should be tried.
+     * 
+     * @return A value indicating whether web sockets should be tried.
+     */
+    boolean getTryWebSockets();
 
-    public double getConnectTimeout();
+    /**
+     * Returns the disconnect timeout in milliseconds.
+     * 
+     * @return The disconnect timeout in milliseconds.
+     */
+    long getDisconnectTimeout();
+
+    /**
+     * Returns the keep-alive timeout in milliseconds.
+     * 
+     * @return The keep-alive timeout in milliseconds.
+     */
+    long getKeepAliveTimeout();
+
+    /**
+     * Returns the connect timeout in milliseconds.
+     * 
+     * @return The connect timeout in milliseconds.
+     */
+    long getConnectTimeout();
 }

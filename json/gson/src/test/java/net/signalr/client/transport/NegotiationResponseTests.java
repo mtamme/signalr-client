@@ -55,7 +55,7 @@ public final class NegotiationResponseTests {
         assertThat(response.getDisconnectTimeout(), is(120000L));
         assertThat(response.getTryWebSockets(), is(true));
         assertThat(response.getProtocolVersion(), is("1.3"));
-        assertThat(response.getTransportConnectTimeout(), is(5.0));
+        assertThat(response.getConnectTimeout(), is(5000L));
     }
 
     @Test
@@ -75,6 +75,6 @@ public final class NegotiationResponseTests {
         assertThat(response.getDisconnectTimeout(), is(120000L));
         assertThat(response.getTryWebSockets(), is(true));
         assertThat(response.getProtocolVersion(), is("1.3"));
-        assertThat(response.getTransportConnectTimeout(), is(5.0));
+        assertThat(response.getConnectTimeout(), is(5000L));
     }
 }

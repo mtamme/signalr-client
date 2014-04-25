@@ -23,16 +23,31 @@ import net.signalr.client.json.JsonReader;
 /**
  * Represents a negotiation response.
  */
-public final class NegotiationResponse implements JsonReadable {
+public final class NegotiationResponse implements JsonReadable, TransportOptions {
 
+    /**
+     * The URL.
+     */
     private String _url;
 
+    /**
+     * The connection token.
+     */
     private String _connectionToken;
 
+    /**
+     * The connection ID.
+     */
     private String _connectionId;
 
+    /**
+     * The protocol version.
+     */
     private String _protocolVersion;
 
+    /**
+     * A value indicating whether web sockets should be tried.
+     */
     private boolean _tryWebSockets;
 
     /**
@@ -48,38 +63,46 @@ public final class NegotiationResponse implements JsonReadable {
     /**
      * The transport connect timeout in seconds.
      */
-    private Double _transportConnectTimeout;
+    private Double _connectTimeout;
 
+    @Override
     public String getUrl() {
         return _url;
     }
 
+    @Override
     public String getConnectionToken() {
         return _connectionToken;
     }
 
+    @Override
     public String getConnectionId() {
         return _connectionId;
     }
 
+    @Override
     public String getProtocolVersion() {
         return _protocolVersion;
     }
 
+    @Override
     public boolean getTryWebSockets() {
         return _tryWebSockets;
     }
 
+    @Override
     public long getDisconnectTimeout() {
-        return (long) (_disconnectTimeout * 1000L);
+        return (_disconnectTimeout != null) ? (long) (_disconnectTimeout * 1000L) : -1L;
     }
 
+    @Override
     public long getKeepAliveTimeout() {
         return (_keepAliveTimeout != null) ? (long) (_keepAliveTimeout * 1000L) : -1L;
     }
 
-    public double getTransportConnectTimeout() {
-        return _transportConnectTimeout;
+    @Override
+    public long getConnectTimeout() {
+        return (_connectTimeout != null) ? (long) (_connectTimeout * 1000L) : -1L;
     }
 
     @Override
@@ -104,11 +127,10 @@ public final class NegotiationResponse implements JsonReadable {
             } else if (name.equalsIgnoreCase("DisconnectTimeout")) {
                 _disconnectTimeout = reader.readDouble();
             } else if (name.equalsIgnoreCase("TransportConnectTimeout")) {
-                _transportConnectTimeout = reader.readDouble();
+                _connectTimeout = reader.readDouble();
             }
         }
 
         reader.readEndObject();
-
     }
 }
