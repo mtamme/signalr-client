@@ -32,9 +32,9 @@ import net.signalr.client.util.concurrent.Scheduler;
 public final class DefaultTransportManager implements TransportManager {
 
     /**
-     * The transport ping interval in seconds.
+     * The transport ping period in seconds.
      */
-    private static final long PING_INTERVAL = 5;
+    private static final long PING_PERIOD = 5;
 
     /**
      * The transport.
@@ -101,6 +101,9 @@ public final class DefaultTransportManager implements TransportManager {
 
     @Override
     public void handleConnectionLost() {
+        for (final TransportListener listener : _listeners) {
+            listener.onConnectionLost();
+        }
     }
 
     @Override
@@ -118,13 +121,13 @@ public final class DefaultTransportManager implements TransportManager {
 
         if (keepAliveTimeout > 0) {
             final TransportMonitor monitor = new TransportMonitor(this, _timeProvider, keepAliveTimeout, TimeUnit.MILLISECONDS);
-            final long monitorInterval = monitor.getInterval();
-            final Job job = scheduler.scheduleJob(monitor, monitorInterval, TimeUnit.MILLISECONDS);
+            final long monitorPeriod = monitor.getPeriod();
+            final Job job = scheduler.scheduleJob(monitor, monitorPeriod, TimeUnit.MILLISECONDS);
 
             _jobs.add(job);
         }
         final TransportPing ping = new TransportPing(this, context);
-        final Job job = scheduler.scheduleJob(ping, PING_INTERVAL, TimeUnit.MINUTES);
+        final Job job = scheduler.scheduleJob(ping, PING_PERIOD, TimeUnit.MINUTES);
 
         _jobs.add(job);
     }

@@ -38,6 +38,11 @@ public interface TransportListener {
     void onConnectionSlow();
 
     /**
+     * Invoked when the connection is lost.
+     */
+    void onConnectionLost();
+
+    /**
      * Invoked when an error occurred.
      * 
      * @param cause The cause.

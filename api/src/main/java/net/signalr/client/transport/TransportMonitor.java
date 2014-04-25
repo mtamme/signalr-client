@@ -119,11 +119,11 @@ final class TransportMonitor implements Schedulable, TransportListener {
     }
 
     /**
-     * Returns the monitor interval.
+     * Returns the monitor period.
      * 
-     * @return The monitor interval.
+     * @return The monitor period.
      */
-    public long getInterval() {
+    public long getPeriod() {
         return _lostTimeout - _slowTimeout;
     }
 
@@ -149,6 +149,10 @@ final class TransportMonitor implements Schedulable, TransportListener {
 
     @Override
     public void onConnectionSlow() {
+    }
+
+    @Override
+    public void onConnectionLost() {
     }
 
     @Override
