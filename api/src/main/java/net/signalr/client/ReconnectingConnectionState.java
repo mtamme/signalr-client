@@ -20,21 +20,21 @@ package net.signalr.client;
 import net.signalr.client.util.concurrent.Promise;
 
 /**
- * Represents the connecting connection state.
+ * Represents the reconnecting connection state.
  */
-final class ConnectingConnectionState implements ConnectionState {
+final class ReconnectingConnectionState implements ConnectionState {
 
     /**
-     * The start result.
+     * The reconnect result.
      */
     private final Promise<Void> _promise;
 
     /**
-     * Initializes a new instance of the {@link ConnectingConnectionState} class.
+     * Initializes a new instance of the {@link ReconnectingConnectionState} class.
      * 
-     * @param promise The start result.
+     * @param promise The reconnect result.
      */
-    public ConnectingConnectionState(final Promise<Void> promise) {
+    public ReconnectingConnectionState(final Promise<Void> promise) {
         if (promise == null) {
             throw new IllegalArgumentException("Promise must not be null");
         }
@@ -49,41 +49,41 @@ final class ConnectingConnectionState implements ConnectionState {
 
     @Override
     public void addHeader(final ConnectionContext context, final String name, final String value) {
-        throw new IllegalStateException("Connection is connecting");
+        throw new IllegalStateException("Connection is reconnecting");
     }
 
     @Override
     public void addParameter(final ConnectionContext context, final String name, final String value) {
-        throw new IllegalStateException("Connection is connecting");
+        throw new IllegalStateException("Connection is reconnecting");
     }
 
     @Override
     public void setConnectionData(final ConnectionContext context, final String connectionData) {
-        throw new IllegalStateException("Connection is connecting");
+        throw new IllegalStateException("Connection is reconnecting");
     }
 
     @Override
     public Promise<Void> start(final ConnectionContext context, final ConnectionHandler handler) {
-        return _promise;
+        throw new IllegalStateException("Connection is reconnecting");
     }
 
     @Override
     public Promise<Void> stop(final ConnectionContext context) {
-        throw new IllegalStateException("Connection is connecting");
+        throw new IllegalStateException("Connection is reconnecting");
     }
 
     @Override
     public Promise<Void> reconnect(final ConnectionContext context) {
-        throw new IllegalStateException("Connection is connecting");
+        return _promise;
     }
 
     @Override
     public Promise<Void> send(final ConnectionContext context, final String message) {
-        throw new IllegalStateException("Connection is connecting");
+        throw new IllegalStateException("Connection is reconnecting");
     }
 
     @Override
     public String toString() {
-        return "CONNECTING";
+        return "RECONNECTING";
     }
 }

@@ -69,11 +69,7 @@ final class TransportListenerAdapter implements TransportListener {
 
     @Override
     public void onConnectionLost() {
-        final ConnectionState state = _context.getState();
-
-        if (!state.isConnected()) {
-            return;
-        }
+        _context.getState().reconnect(_context);
     }
 
     @Override

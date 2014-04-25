@@ -75,6 +75,14 @@ interface ConnectionState {
     Promise<Void> stop(ConnectionContext context);
 
     /**
+     * Reconnects the connection
+     * 
+     * @param context The connection context.
+     * @return The reconnect result.
+     */
+    Promise<Void> reconnect(ConnectionContext context);
+
+    /**
      * Sends a message.
      * 
      * @param context The connection context.

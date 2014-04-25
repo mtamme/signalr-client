@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.TransportManager;
+import net.signalr.client.util.concurrent.Callback;
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.Function;
 import net.signalr.client.util.concurrent.OnCompleted;
@@ -126,6 +127,47 @@ final class ConnectedConnectionState implements ConnectionState {
 
                 context.changeState(disconnecting, disconnected);
                 _handler.onDisconnected();
+            }
+        }).thenPropagate(deferred);
+
+        return deferred;
+    }
+
+    @Override
+    public Promise<Void> reconnect(final ConnectionContext context) {
+        final Deferred<Void> deferred = new Deferred<Void>();
+        final ReconnectingConnectionState reconnecting = new ReconnectingConnectionState(deferred);
+
+        if (!context.tryChangeState(this, reconnecting)) {
+            return context.getState().reconnect(context);
+        }
+
+        _handler.onReconnecting();
+        final TransportManager manager = context.getTransportManager();
+
+        _channel.close().thenCompose(new Function<Void, Promise<Channel>>() {
+            @Override
+            public Promise<Channel> apply(final Void value) throws Exception {
+                final Transport transport = manager.getTransport();
+
+                return transport.connect(context, manager, true);
+            }
+        }).thenCall(new Callback<Channel>() {
+            @Override
+            public void onResolved(final Channel channel) {
+                final ConnectedConnectionState connected = new ConnectedConnectionState(_handler, channel);
+
+                context.changeState(reconnecting, connected);
+                _handler.onReconnected();
+            }
+
+            @Override
+            public void onRejected(final Throwable cause) {
+                final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
+
+                context.changeState(reconnecting, disconnected);
+                _handler.onDisconnected();
+                manager.stop(context);
             }
         }).thenPropagate(deferred);
 
