@@ -83,7 +83,9 @@ public abstract class AbstractTransport implements Transport {
         }
 
         // Build request URI.
-        final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), NEGOTIATE_PATH);
+        final URIBuilder uriBuilder = new URIBuilder(context.getUrl());
+
+        uriBuilder.resolve(NEGOTIATE_PATH);
         final Map<String, Collection<String>> parameters = context.getParameters();
 
         uriBuilder.addParameters(parameters);
@@ -129,7 +131,9 @@ public abstract class AbstractTransport implements Transport {
         }
 
         // Build request URI.
-        final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), PING_PATH);
+        final URIBuilder uriBuilder = new URIBuilder(context.getUrl());
+
+        uriBuilder.resolve(PING_PATH);
         final Map<String, Collection<String>> parameters = context.getParameters();
 
         uriBuilder.addParameters(parameters);
@@ -174,7 +178,9 @@ public abstract class AbstractTransport implements Transport {
         }
 
         // Build request URI.
-        final URIBuilder uriBuilder = new URIBuilder(context.getUrl(), ABORT_PATH);
+        final URIBuilder uriBuilder = new URIBuilder(context.getUrl());
+
+        uriBuilder.resolve(ABORT_PATH);
         final Map<String, Collection<String>> parameters = context.getParameters();
 
         uriBuilder.addParameters(parameters);

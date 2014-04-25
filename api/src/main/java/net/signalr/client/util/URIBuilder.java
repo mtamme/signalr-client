@@ -123,33 +123,6 @@ public final class URIBuilder {
     }
 
     /**
-     * Initializes a new instance of the {@link URIBuilder} class.
-     * 
-     * @param uri The URI.
-     * @param path The path.
-     */
-    public URIBuilder(final String uri, final String path) {
-        this(toURI(uri), path);
-    }
-
-    /**
-     * Initializes a new instance of the {@link URIBuilder} class.
-     * 
-     * @param uri The URI.
-     * @param path The path.
-     */
-    public URIBuilder(final URI uri, final String path) {
-        if (uri == null) {
-            throw new IllegalArgumentException("URI must not be null");
-        }
-        if (path == null) {
-            throw new IllegalArgumentException("Path must not be null");
-        }
-
-        init(uri.resolve(path));
-    }
-
-    /**
      * Returns an {@link URI} for the specified URI.
      * 
      * @param uri The URI.
@@ -506,6 +479,18 @@ public final class URIBuilder {
         _uri = null;
         _rawFragment = encode(fragment);
         _fragment = fragment;
+
+        return this;
+    }
+
+    /**
+     * Resolves the specified URI.
+     * 
+     * @param uri The URI.
+     * @return The {@link URIBuilder}.
+     */
+    public URIBuilder resolve(final String uri) {
+        init(build().resolve(uri));
 
         return this;
     }
