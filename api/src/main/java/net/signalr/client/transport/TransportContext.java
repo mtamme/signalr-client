@@ -28,23 +28,59 @@ import net.signalr.client.util.concurrent.Scheduler;
  */
 public interface TransportContext {
 
+    /**
+     * Returns the protocol version.
+     * 
+     * @return The protocol version.
+     */
     String getProtocolVersion();
 
+    /**
+     * Returns the URL.
+     * 
+     * @return The URL.
+     */
     String getUrl();
 
+    /**
+     * Returns the scheduler.
+     * 
+     * @return The scheduler.
+     */
     Scheduler getScheduler();
 
+    /**
+     * Returns the mapper.
+     * 
+     * @return The mapper.
+     */
     JsonMapper getMapper();
 
-    boolean getTryWebSockets();
-
+    /**
+     * Returns the connection data.
+     * 
+     * @return The connection data.
+     */
     String getConnectionData();
 
-    String getConnectionToken();
+    /**
+     * Returns the transport options.
+     * 
+     * @return The transport options.
+     */
+    TransportOptions getTransportOptions();
 
-    long getKeepAliveTimeout();
-
+    /**
+     * Returns the headers.
+     * 
+     * @return The headers.
+     */
     Map<String, Collection<String>> getHeaders();
 
+    /**
+     * Returns the parameters.
+     * 
+     * @return The parameters.
+     */
     Map<String, Collection<String>> getParameters();
 }

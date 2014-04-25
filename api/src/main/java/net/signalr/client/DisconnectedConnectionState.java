@@ -88,11 +88,7 @@ final class DisconnectedConnectionState implements ConnectionState {
                     throw new IllegalStateException("Server returned unsupported protocol version: '" + protocolVersion + "'");
                 }
 
-                context.setTryWebSockets(response.getTryWebSockets());
-                context.setConnectionId(response.getConnectionId());
-                context.setConnectionToken(response.getConnectionToken());
-                context.setDisconnectTimeout(response.getDisconnectTimeout());
-                context.setKeepAliveTimeout(response.getKeepAliveTimeout());
+                context.setTransportOptions(response);
 
                 logger.info("Connecting transport...");
 

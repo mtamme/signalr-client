@@ -28,6 +28,7 @@ import com.ning.http.client.websocket.WebSocketUpgradeHandler;
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
 import net.signalr.client.transport.TransportContext;
+import net.signalr.client.transport.TransportOptions;
 import net.signalr.client.util.URIBuilder;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
@@ -70,7 +71,10 @@ public final class WebSocketTransport extends AbstractTransport {
         if (handler == null) {
             throw new IllegalArgumentException("Handler must not be null");
         }
-        if (!context.getTryWebSockets()) {
+
+        final TransportOptions options = context.getTransportOptions();
+
+        if (!options.getTryWebSockets()) {
             throw new IllegalStateException("WebSockets are not supported by the server");
         }
 
@@ -83,7 +87,7 @@ public final class WebSocketTransport extends AbstractTransport {
 
         uriBuilder.addParameters(parameters);
         uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
-        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
+        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, options.getConnectionToken());
         final String transportName = getName();
 
         uriBuilder.addParameter(TRANSPORT_PARAMETER, transportName);

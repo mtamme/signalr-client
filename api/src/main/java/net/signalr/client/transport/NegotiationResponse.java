@@ -26,9 +26,9 @@ import net.signalr.client.json.JsonReader;
 public final class NegotiationResponse implements JsonReadable, TransportOptions {
 
     /**
-     * The URL.
+     * The relative URL.
      */
-    private String _url;
+    private String _relativeUrl;
 
     /**
      * The connection token.
@@ -66,8 +66,8 @@ public final class NegotiationResponse implements JsonReadable, TransportOptions
     private Double _connectTimeout;
 
     @Override
-    public String getUrl() {
-        return _url;
+    public String getRelativeUrl() {
+        return _relativeUrl;
     }
 
     @Override
@@ -113,7 +113,7 @@ public final class NegotiationResponse implements JsonReadable, TransportOptions
             final String name = reader.getName();
 
             if (name.equalsIgnoreCase("Url")) {
-                _url = reader.readString();
+                _relativeUrl = reader.readString();
             } else if (name.equalsIgnoreCase("ConnectionToken")) {
                 _connectionToken = reader.readString();
             } else if (name.equalsIgnoreCase("ConnectionId")) {

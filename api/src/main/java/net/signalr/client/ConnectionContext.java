@@ -19,6 +19,7 @@ package net.signalr.client;
 
 import net.signalr.client.transport.TransportContext;
 import net.signalr.client.transport.TransportManager;
+import net.signalr.client.transport.TransportOptions;
 
 /**
  * Defines a connection context.
@@ -33,27 +34,6 @@ interface ConnectionContext extends TransportContext {
     TransportManager getTransportManager();
 
     /**
-     * Returns the connection ID.
-     * 
-     * @return The connection ID.
-     */
-    String getConnectionId();
-
-    /**
-     * Sets the connection ID.
-     * 
-     * @param connectionId The connection ID.
-     */
-    void setConnectionId(String connectionId);
-
-    /**
-     * Sets a value indicating whether web sockets should be tried.
-     * 
-     * @param tryWebSockets A value indicating whether web sockets should be tried.
-     */
-    void setTryWebSockets(boolean tryWebSockets);
-
-    /**
      * Sets the connection data.
      * 
      * @param connectionData The connection data.
@@ -61,32 +41,11 @@ interface ConnectionContext extends TransportContext {
     void setConnectionData(String connectionData);
 
     /**
-     * Sets the connection token.
+     * Sets the transport options.
      * 
-     * @param connectionToken The connection token.
+     * @param options The transport options.
      */
-    void setConnectionToken(String connectionToken);
-
-    /**
-     * Returns the disconnect timeout.
-     * 
-     * @return The disconnect timeout.
-     */
-    double getDisconnectTimeout();
-
-    /**
-     * Sets the disconnect timeout.
-     * 
-     * @param disconnectTimeout The disconnect timeout.
-     */
-    void setDisconnectTimeout(long disconnectTimeout);
-
-    /**
-     * Sets the keep-alive timeout.
-     * 
-     * @param keepAliveTimeout The keep-alive timeout.
-     */
-    void setKeepAliveTimeout(long keepAliveTimeout);
+    void setTransportOptions(TransportOptions options);
 
     /**
      * Adds a header.

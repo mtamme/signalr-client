@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.transport.TransportManager;
+import net.signalr.client.transport.TransportOptions;
 import net.signalr.client.util.concurrent.Scheduler;
 
 /**
@@ -60,20 +61,12 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     private final Map<String, Collection<String>> _parameters;
 
-    private boolean _tryWebSockets;
-
     private String _connectionData;
 
-    private String _connectionId;
-
-    private String _connectionToken;
-
-    private long _disconnectTimeout;
-
-    private long _keepAliveTimeout;
+    private TransportOptions _options;
 
     /**
-     * Initializes a new instancer of the {@link PersistentConnectionContext} class.
+     * Initializes a new instance of the {@link PersistentConnectionContext} class.
      * 
      * @param url The connection URL.
      * @param manager The transport manager.
@@ -104,11 +97,8 @@ final class PersistentConnectionContext implements ConnectionContext {
         _headers = new HashMap<String, Collection<String>>();
         _parameters = new HashMap<String, Collection<String>>();
 
-        _tryWebSockets = false;
         _connectionData = null;
-        _connectionId = null;
-        _disconnectTimeout = -1;
-        _keepAliveTimeout = -1;
+        _options = null;
     }
 
     @Override
@@ -132,23 +122,13 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
-    public boolean getTryWebSockets() {
-        return _tryWebSockets;
-    }
-
-    @Override
     public String getConnectionData() {
         return _connectionData;
     }
 
     @Override
-    public String getConnectionToken() {
-        return _connectionToken;
-    }
-
-    @Override
-    public long getKeepAliveTimeout() {
-        return _keepAliveTimeout;
+    public TransportOptions getTransportOptions() {
+        return _options;
     }
 
     @Override
@@ -167,43 +147,13 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
-    public String getConnectionId() {
-        return _connectionId;
-    }
-
-    @Override
-    public void setConnectionId(final String connectionId) {
-        _connectionId = connectionId;
-    }
-
-    @Override
-    public void setTryWebSockets(boolean tryWebSockets) {
-        _tryWebSockets = tryWebSockets;
-    }
-
-    @Override
     public void setConnectionData(final String connectionData) {
         _connectionData = connectionData;
     }
 
     @Override
-    public void setConnectionToken(final String connectionToken) {
-        _connectionToken = connectionToken;
-    }
-
-    @Override
-    public double getDisconnectTimeout() {
-        return _disconnectTimeout;
-    }
-
-    @Override
-    public void setDisconnectTimeout(final long disconnectTimeout) {
-        _disconnectTimeout = disconnectTimeout;
-    }
-
-    @Override
-    public void setKeepAliveTimeout(final long keepAliveTimeout) {
-        _keepAliveTimeout = keepAliveTimeout;
+    public void setTransportOptions(final TransportOptions options) {
+        _options = options;
     }
 
     @Override

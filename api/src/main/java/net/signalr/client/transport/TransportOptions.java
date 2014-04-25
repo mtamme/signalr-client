@@ -23,11 +23,11 @@ package net.signalr.client.transport;
 public interface TransportOptions {
 
     /**
-     * Returns the URL.
+     * Returns the relative URL.
      * 
-     * @return The URL.
+     * @return The relative URL.
      */
-    String getUrl();
+    String getRelativeUrl();
 
     /**
      * Returns the connection token.

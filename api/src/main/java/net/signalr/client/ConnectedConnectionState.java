@@ -110,11 +110,7 @@ final class ConnectedConnectionState implements ConnectionState {
             public void onCompleted(final Void value, final Throwable cause) {
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
-                context.setTryWebSockets(false);
-                context.setConnectionId(null);
-                context.setConnectionToken(null);
-                context.setDisconnectTimeout(-1);
-                context.setKeepAliveTimeout(-1);
+                context.setTransportOptions(null);
 
                 context.changeState(disconnecting, disconnected);
                 _handler.onDisconnected();

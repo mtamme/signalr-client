@@ -104,7 +104,8 @@ public final class DefaultTransportManager implements TransportManager {
     @Override
     public void start(final TransportContext context) {
         final Scheduler scheduler = context.getScheduler();
-        final long keepAliveTimeout = context.getKeepAliveTimeout();
+        final TransportOptions options = context.getTransportOptions();
+        final long keepAliveTimeout = options.getKeepAliveTimeout();
 
         if (keepAliveTimeout > 0) {
             final TransportMonitor monitor = new TransportMonitor(this, SystemTimeProvider.INSTANCE, keepAliveTimeout);

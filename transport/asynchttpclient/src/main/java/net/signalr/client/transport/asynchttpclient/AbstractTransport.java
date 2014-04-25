@@ -31,6 +31,7 @@ import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.PingResponse;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportContext;
+import net.signalr.client.transport.TransportOptions;
 import net.signalr.client.util.URIBuilder;
 import net.signalr.client.util.concurrent.Function;
 import net.signalr.client.util.concurrent.Promise;
@@ -158,7 +159,9 @@ public abstract class AbstractTransport implements Transport {
 
         uriBuilder.addParameters(parameters);
         uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
-        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, context.getConnectionToken());
+        final TransportOptions options = context.getTransportOptions();
+
+        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, options.getConnectionToken());
         final String transportName = getName();
 
         uriBuilder.addParameter(TRANSPORT_PARAMETER, transportName);

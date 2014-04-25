@@ -48,7 +48,7 @@ public final class NegotiationResponseTests {
 
         // Assert
         assertNotNull(response);
-        assertThat(response.getUrl(), is("/signalr"));
+        assertThat(response.getRelativeUrl(), is("/signalr"));
         assertThat(response.getConnectionToken(), is("Z1IuK7USZw4BwrDFbF8S+Hec4Mitkwe0+3N/FEZoQD8yVObSvtFdUfUJhKprVhjfXYlu1OLv2em/zMGN5ZK0Vr5H6ZqTvXaH+7Y8ee7yGjATfvZB"));
         assertThat(response.getConnectionId(), is("0fa8593e-448e-4c98-9b21-2d95dce3adcc"));
         assertThat(response.getKeepAliveTimeout(), is(80000L));
@@ -68,7 +68,7 @@ public final class NegotiationResponseTests {
 
         // Assert
         assertNotNull(response);
-        assertThat(response.getUrl(), is("/signalr"));
+        assertThat(response.getRelativeUrl(), is("/signalr"));
         assertThat(response.getConnectionToken(), is("Z1IuK7USZw4BwrDFbF8S+Hec4Mitkwe0+3N/FEZoQD8yVObSvtFdUfUJhKprVhjfXYlu1OLv2em/zMGN5ZK0Vr5H6ZqTvXaH+7Y8ee7yGjATfvZB"));
         assertThat(response.getConnectionId(), is("0fa8593e-448e-4c98-9b21-2d95dce3adcc"));
         assertThat(response.getKeepAliveTimeout(), is(-1L));
