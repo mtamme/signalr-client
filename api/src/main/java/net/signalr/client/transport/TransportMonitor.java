@@ -17,6 +17,7 @@
 
 package net.signalr.client.transport;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import net.signalr.client.util.TimeProvider;
@@ -46,17 +47,17 @@ final class TransportMonitor implements Schedulable, TransportListener {
     private final TimeProvider _timeProvider;
 
     /**
-     * The lost timeout.
+     * The lost timeout in milliseconds.
      */
     private final long _lostTimeout;
 
     /**
-     * The slow timeout.
+     * The slow timeout in milliseconds.
      */
     private final long _slowTimeout;
 
     /**
-     * The last heart beat time.
+     * The last heart beat time in milliseconds.
      */
     private final AtomicLong _lastHeartbeatTime;
 
@@ -71,8 +72,9 @@ final class TransportMonitor implements Schedulable, TransportListener {
      * @param timeProvider The time provider.
      * @param manager The transport manager.
      * @param timeout The timeout.
+     * @param timeUnit The time unit.
      */
-    public TransportMonitor(final TransportManager manager, final TimeProvider timeProvider, final long timeout) {
+    public TransportMonitor(final TransportManager manager, final TimeProvider timeProvider, final long timeout, final TimeUnit timeUnit) {
         if (manager == null) {
             throw new IllegalArgumentException("Manager must not be null");
         }
@@ -82,11 +84,14 @@ final class TransportMonitor implements Schedulable, TransportListener {
         if (timeout <= 0) {
             throw new IllegalArgumentException("Timeout must be greater than 0");
         }
+        if (timeUnit == null) {
+            throw new IllegalArgumentException("Time unit must not be null");
+        }
 
         _manager = manager;
         _timeProvider = timeProvider;
-        _lostTimeout = timeout;
-        _slowTimeout = (timeout * 2) / 3;
+        _lostTimeout = timeUnit.toMillis(timeout);
+        _slowTimeout = (_lostTimeout * 2) / 3;
         final long currentTime = _timeProvider.currentTimeMillis();
 
         _lastHeartbeatTime = new AtomicLong(currentTime);

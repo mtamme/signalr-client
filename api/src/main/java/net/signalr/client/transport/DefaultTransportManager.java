@@ -108,7 +108,7 @@ public final class DefaultTransportManager implements TransportManager {
         final long keepAliveTimeout = options.getKeepAliveTimeout();
 
         if (keepAliveTimeout > 0) {
-            final TransportMonitor monitor = new TransportMonitor(this, SystemTimeProvider.INSTANCE, keepAliveTimeout);
+            final TransportMonitor monitor = new TransportMonitor(this, SystemTimeProvider.INSTANCE, keepAliveTimeout, TimeUnit.MILLISECONDS);
             final long monitorInterval = monitor.getInterval();
             final Job job = scheduler.scheduleJob(monitor, monitorInterval, TimeUnit.MILLISECONDS);
 

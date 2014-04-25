@@ -92,17 +92,17 @@ public final class NegotiationResponse implements JsonReadable, TransportOptions
 
     @Override
     public long getDisconnectTimeout() {
-        return (_disconnectTimeout != null) ? (long) (_disconnectTimeout * 1000L) : -1L;
+        return (_disconnectTimeout != null) ? _disconnectTimeout.longValue() : -1L;
     }
 
     @Override
     public long getKeepAliveTimeout() {
-        return (_keepAliveTimeout != null) ? (long) (_keepAliveTimeout * 1000L) : -1L;
+        return (_keepAliveTimeout != null) ? _keepAliveTimeout.longValue() : -1L;
     }
 
     @Override
     public long getConnectTimeout() {
-        return (_connectTimeout != null) ? (long) (_connectTimeout * 1000L) : -1L;
+        return (_connectTimeout != null) ? _connectTimeout.longValue() : -1L;
     }
 
     @Override
