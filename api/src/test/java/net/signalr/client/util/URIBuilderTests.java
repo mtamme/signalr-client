@@ -15,42 +15,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.transport;
+package net.signalr.client.util;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import net.signalr.client.json.DefaultJsonMapper;
-import net.signalr.client.json.JsonFactory;
-import net.signalr.client.json.JsonMapper;
-import net.signalr.client.json.jackson.JacksonFactory;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public final class PingResponseTests {
-
-    private JsonMapper _mapper;
-
-    @Before
-    public void setUp() {
-        final JsonFactory factory = new JacksonFactory();
-
-        _mapper = new DefaultJsonMapper(factory);
-    }
+public final class URIBuilderTests {
 
     @Test
-    public void deserializeTest() {
+    public void constructorTest() {
         // Arrange
-        final String data = "{\"Response\":\"pong\"}";
+        final URIBuilder uriBuilder = new URIBuilder("http://signalr.net");
 
         // Act
-        final PingResponse response = _mapper.toObject(data, PingResponse.class);
-
         // Assert
-        assertNotNull(response);
-        assertThat(response.getValue(), is("pong"));
+        assertEquals("http", uriBuilder.getScheme());
+        assertEquals("signalr.net", uriBuilder.getHost());
+        assertEquals(-1, uriBuilder.getPort());
+        assertEquals("", uriBuilder.getPath());
+        assertEquals(null, uriBuilder.getQuery());
+        assertEquals(null, uriBuilder.getFragment());
     }
 }
