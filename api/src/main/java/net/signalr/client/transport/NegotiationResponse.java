@@ -51,19 +51,28 @@ public final class NegotiationResponse implements JsonReadable, TransportOptions
     private boolean _tryWebSockets;
 
     /**
-     * The keep-alive timeout in seconds.
+     * The keep-alive timeout in milliseconds.
      */
-    private Double _keepAliveTimeout;
+    private long _keepAliveTimeout;
 
     /**
-     * The disconnect timeout in seconds.
+     * The disconnect timeout in milliseconds.
      */
-    private Double _disconnectTimeout;
+    private long _disconnectTimeout;
 
     /**
-     * The transport connect timeout in seconds.
+     * The transport connect timeout in milliseconds.
      */
-    private Double _connectTimeout;
+    private long _connectTimeout;
+
+    /**
+     * Initializes a new instance of the {@link NegotiationResponse} class.
+     */
+    public NegotiationResponse() {
+        _keepAliveTimeout = -1;
+        _disconnectTimeout = -1;
+        _connectTimeout = -1;
+    }
 
     @Override
     public String getRelativeUrl() {
@@ -92,17 +101,17 @@ public final class NegotiationResponse implements JsonReadable, TransportOptions
 
     @Override
     public long getDisconnectTimeout() {
-        return (_disconnectTimeout != null) ? _disconnectTimeout.longValue() : -1L;
+        return _disconnectTimeout;
     }
 
     @Override
     public long getKeepAliveTimeout() {
-        return (_keepAliveTimeout != null) ? _keepAliveTimeout.longValue() : -1L;
+        return _keepAliveTimeout;
     }
 
     @Override
     public long getConnectTimeout() {
-        return (_connectTimeout != null) ? _connectTimeout.longValue() : -1L;
+        return _connectTimeout;
     }
 
     @Override
@@ -123,11 +132,11 @@ public final class NegotiationResponse implements JsonReadable, TransportOptions
             } else if (name.equalsIgnoreCase("TryWebSockets")) {
                 _tryWebSockets = reader.readBoolean();
             } else if (name.equalsIgnoreCase("KeepAliveTimeout")) {
-                _keepAliveTimeout = reader.readDouble();
+                _keepAliveTimeout = (long) (reader.readDouble() * 1000L);
             } else if (name.equalsIgnoreCase("DisconnectTimeout")) {
-                _disconnectTimeout = reader.readDouble();
+                _disconnectTimeout = (long) (reader.readDouble() * 1000L);
             } else if (name.equalsIgnoreCase("TransportConnectTimeout")) {
-                _connectTimeout = reader.readDouble();
+                _connectTimeout = (long) (reader.readDouble() * 1000L);
             }
         }
 
