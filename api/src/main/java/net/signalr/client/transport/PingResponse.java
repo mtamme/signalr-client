@@ -25,8 +25,16 @@ import net.signalr.client.json.JsonReader;
  */
 public final class PingResponse implements JsonReadable {
 
+    /**
+     * The response value.
+     */
     private String _value;
 
+    /**
+     * Returns the response value.
+     * 
+     * @return The response value.
+     */
     public String getValue() {
         return _value;
     }

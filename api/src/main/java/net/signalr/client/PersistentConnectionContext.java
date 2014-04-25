@@ -47,22 +47,49 @@ final class PersistentConnectionContext implements ConnectionContext {
      */
     private static final Logger logger = LoggerFactory.getLogger(PersistentConnectionContext.class);
 
+    /**
+     * The connection URL.
+     */
     private final String _url;
 
+    /**
+     * The transport manager.
+     */
     private final TransportManager _manager;
 
+    /**
+     * The scheduler.
+     */
     private final Scheduler _scheduler;
 
+    /**
+     * The mapper.
+     */
     private final JsonMapper _mapper;
 
+    /**
+     * The current state.
+     */
     private final AtomicReference<ConnectionState> _state;
 
+    /**
+     * The headers.
+     */
     private final Map<String, Collection<String>> _headers;
 
+    /**
+     * The parameters.
+     */
     private final Map<String, Collection<String>> _parameters;
 
+    /**
+     * The connection data.
+     */
     private String _connectionData;
 
+    /**
+     * The transport options.
+     */
     private TransportOptions _options;
 
     /**

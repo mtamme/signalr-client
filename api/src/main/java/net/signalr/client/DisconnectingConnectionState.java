@@ -24,8 +24,16 @@ import net.signalr.client.util.concurrent.Promise;
  */
 final class DisconnectingConnectionState implements ConnectionState {
 
+    /**
+     * The stop result.
+     */
     private final Promise<Void> _promise;
 
+    /**
+     * Initializes a new instance of the {@link DisconnectingConnectionState} class.
+     * 
+     * @param promise The stop result.
+     */
     public DisconnectingConnectionState(final Promise<Void> promise) {
         if (promise == null) {
             throw new IllegalArgumentException("Promise must not be null");

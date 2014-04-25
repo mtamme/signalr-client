@@ -39,10 +39,22 @@ final class ConnectedConnectionState implements ConnectionState {
      */
     private static final Logger logger = LoggerFactory.getLogger(ConnectedConnectionState.class);
 
+    /**
+     * The connection handler.
+     */
     private final ConnectionHandler _handler;
 
+    /**
+     * The channel.
+     */
     private final Channel _channel;
 
+    /**
+     * Initializes a new instance of the {@link ConnectedConnectionState} class.
+     * 
+     * @param handler The connection handler.
+     * @param channel The channel.
+     */
     public ConnectedConnectionState(final ConnectionHandler handler, final Channel channel) {
         if (handler == null) {
             throw new IllegalArgumentException("Handler must not be null");

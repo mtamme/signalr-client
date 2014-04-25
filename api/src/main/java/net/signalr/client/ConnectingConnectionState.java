@@ -24,8 +24,16 @@ import net.signalr.client.util.concurrent.Promise;
  */
 final class ConnectingConnectionState implements ConnectionState {
 
+    /**
+     * The start result.
+     */
     private final Promise<Void> _promise;
 
+    /**
+     * Initializes a new instance of the {@link ConnectingConnectionState} class.
+     * 
+     * @param promise The start result.
+     */
     public ConnectingConnectionState(final Promise<Void> promise) {
         if (promise == null) {
             throw new IllegalArgumentException("Promise must not be null");

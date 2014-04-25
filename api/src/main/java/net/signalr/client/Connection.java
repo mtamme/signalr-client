@@ -62,7 +62,7 @@ public interface Connection {
     boolean isConnected();
 
     /**
-     * Adds a header.
+     * Adds the specified header name and value.
      * 
      * @param name The header name.
      * @param value The header value.
@@ -70,7 +70,7 @@ public interface Connection {
     void addHeader(String name, String value);
 
     /**
-     * Adds a parameter.
+     * Adds the specified parameter name and value.
      * 
      * @param name The parameter name.
      * @param value The parameter value.
