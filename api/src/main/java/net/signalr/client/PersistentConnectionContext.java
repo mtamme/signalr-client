@@ -122,16 +122,6 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
-    public String getConnectionData() {
-        return _connectionData;
-    }
-
-    @Override
-    public TransportOptions getTransportOptions() {
-        return _options;
-    }
-
-    @Override
     public Map<String, Collection<String>> getHeaders() {
         return Collections.unmodifiableMap(_headers);
     }
@@ -142,18 +132,18 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
+    public String getConnectionData() {
+        return _connectionData;
+    }
+
+    @Override
+    public TransportOptions getTransportOptions() {
+        return _options;
+    }
+
+    @Override
     public TransportManager getTransportManager() {
         return _manager;
-    }
-
-    @Override
-    public void setConnectionData(final String connectionData) {
-        _connectionData = connectionData;
-    }
-
-    @Override
-    public void setTransportOptions(final TransportOptions options) {
-        _options = options;
     }
 
     @Override
@@ -192,6 +182,16 @@ final class PersistentConnectionContext implements ConnectionContext {
         }
 
         values.add(value);
+    }
+
+    @Override
+    public void setConnectionData(final String connectionData) {
+        _connectionData = connectionData;
+    }
+
+    @Override
+    public void setTransportOptions(final TransportOptions options) {
+        _options = options;
     }
 
     @Override

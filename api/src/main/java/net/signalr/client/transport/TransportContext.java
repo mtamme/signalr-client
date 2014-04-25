@@ -57,20 +57,6 @@ public interface TransportContext {
     JsonMapper getMapper();
 
     /**
-     * Returns the connection data.
-     * 
-     * @return The connection data.
-     */
-    String getConnectionData();
-
-    /**
-     * Returns the transport options.
-     * 
-     * @return The transport options.
-     */
-    TransportOptions getTransportOptions();
-
-    /**
      * Returns the headers.
      * 
      * @return The headers.
@@ -83,4 +69,18 @@ public interface TransportContext {
      * @return The parameters.
      */
     Map<String, Collection<String>> getParameters();
+
+    /**
+     * Returns the connection data.
+     * 
+     * @return The connection data.
+     */
+    String getConnectionData();
+
+    /**
+     * Returns the transport options.
+     * 
+     * @return The transport options.
+     */
+    TransportOptions getTransportOptions();
 }

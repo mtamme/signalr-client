@@ -34,20 +34,6 @@ interface ConnectionContext extends TransportContext {
     TransportManager getTransportManager();
 
     /**
-     * Sets the connection data.
-     * 
-     * @param connectionData The connection data.
-     */
-    void setConnectionData(String connectionData);
-
-    /**
-     * Sets the transport options.
-     * 
-     * @param options The transport options.
-     */
-    void setTransportOptions(TransportOptions options);
-
-    /**
      * Adds a header.
      * 
      * @param name The header name.
@@ -62,6 +48,20 @@ interface ConnectionContext extends TransportContext {
      * @param value The parameter value.
      */
     void addParameter(String name, String value);
+
+    /**
+     * Sets the connection data.
+     * 
+     * @param connectionData The connection data.
+     */
+    void setConnectionData(String connectionData);
+
+    /**
+     * Sets the transport options.
+     * 
+     * @param options The transport options.
+     */
+    void setTransportOptions(TransportOptions options);
 
     /**
      * Returns the current connection state.
