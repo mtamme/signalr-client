@@ -27,7 +27,10 @@ import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
+@RunWith(JUnit4.class)
 public final class HubConnectionTests {
 
     private static final String URL = "https://localhost/signalr/";

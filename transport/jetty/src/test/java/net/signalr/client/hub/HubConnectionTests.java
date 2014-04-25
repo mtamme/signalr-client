@@ -20,14 +20,17 @@ package net.signalr.client.hub;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import org.junit.Test;
-
 import net.signalr.client.ConnectionHandler;
 import net.signalr.client.json.gson.GsonFactory;
 import net.signalr.client.transport.jetty.WebSocketTransport;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+
+@RunWith(JUnit4.class)
 public final class HubConnectionTests {
 
     private static final String URL = "https://localhost/signalr/";
