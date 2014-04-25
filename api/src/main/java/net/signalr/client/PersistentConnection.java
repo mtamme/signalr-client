@@ -23,6 +23,8 @@ import net.signalr.client.json.JsonMapper;
 import net.signalr.client.transport.DefaultTransportManager;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportManager;
+import net.signalr.client.util.SystemTimeProvider;
+import net.signalr.client.util.TimeProvider;
 import net.signalr.client.util.concurrent.ScheduledExecutorServiceScheduler;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Scheduler;
@@ -45,7 +47,19 @@ public final class PersistentConnection implements Connection {
      * @param factory The factory.
      */
     public PersistentConnection(final String url, final Transport transport, final JsonFactory factory) {
-        this(url, new DefaultTransportManager(transport), new ScheduledExecutorServiceScheduler(), new DefaultJsonMapper(factory));
+        this(url, transport, SystemTimeProvider.INSTANCE, factory);
+    }
+
+    /**
+     * Initializes a new instance of the {@link PersistentConnection} class.
+     * 
+     * @param url The connection URL.
+     * @param transport The transport.
+     * @param timeProvider The time provider.
+     * @param factory The factory.
+     */
+    public PersistentConnection(final String url, final Transport transport, final TimeProvider timeProvider, final JsonFactory factory) {
+        this(url, new DefaultTransportManager(transport, timeProvider), new ScheduledExecutorServiceScheduler(), new DefaultJsonMapper(factory));
     }
 
     /**

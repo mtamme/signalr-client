@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
 
-import net.signalr.client.util.SystemTimeProvider;
+import net.signalr.client.util.TimeProvider;
 import net.signalr.client.util.concurrent.Job;
 import net.signalr.client.util.concurrent.Scheduler;
 
@@ -42,6 +42,11 @@ public final class DefaultTransportManager implements TransportManager {
     private final Transport _transport;
 
     /**
+     * The time provider.
+     */
+    private final TimeProvider _timeProvider;
+
+    /**
      * The transport listeners.
      */
     private final CopyOnWriteArraySet<TransportListener> _listeners;
@@ -56,12 +61,16 @@ public final class DefaultTransportManager implements TransportManager {
      * 
      * @param transport The transport.
      */
-    public DefaultTransportManager(final Transport transport) {
+    public DefaultTransportManager(final Transport transport, final TimeProvider timeProvider) {
         if (transport == null) {
             throw new IllegalArgumentException("Transport must not be null");
         }
+        if (timeProvider == null) {
+            throw new IllegalArgumentException("Time provider must not be null");
+        }
 
         _transport = transport;
+        _timeProvider = timeProvider;
 
         _listeners = new CopyOnWriteArraySet<TransportListener>();
         _jobs = new ArrayList<Job>();
@@ -108,7 +117,7 @@ public final class DefaultTransportManager implements TransportManager {
         final long keepAliveTimeout = options.getKeepAliveTimeout();
 
         if (keepAliveTimeout > 0) {
-            final TransportMonitor monitor = new TransportMonitor(this, SystemTimeProvider.INSTANCE, keepAliveTimeout, TimeUnit.MILLISECONDS);
+            final TransportMonitor monitor = new TransportMonitor(this, _timeProvider, keepAliveTimeout, TimeUnit.MILLISECONDS);
             final long monitorInterval = monitor.getInterval();
             final Job job = scheduler.scheduleJob(monitor, monitorInterval, TimeUnit.MILLISECONDS);
 
