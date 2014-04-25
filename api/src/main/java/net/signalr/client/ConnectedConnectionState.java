@@ -107,7 +107,7 @@ final class ConnectedConnectionState implements ConnectionState {
 
         manager.stop(context);
 
-        logger.info("Closing transport channel...");
+        logger.info("Closing channel...");
 
         _channel.close().thenCompose(new Function<Void, Promise<Void>>() {
             @Override
@@ -145,9 +145,13 @@ final class ConnectedConnectionState implements ConnectionState {
         _handler.onReconnecting();
         final TransportManager manager = context.getTransportManager();
 
+        logger.info("Closing channel...");
+
         _channel.close().thenCompose(new Function<Void, Promise<Channel>>() {
             @Override
             public Promise<Channel> apply(final Void value) throws Exception {
+                logger.info("Reconnecting transport...");
+
                 final Transport transport = manager.getTransport();
 
                 return transport.connect(context, manager, true);
