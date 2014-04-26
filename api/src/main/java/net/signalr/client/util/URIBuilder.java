@@ -329,7 +329,7 @@ public final class URIBuilder {
      * Sets the scheme.
      * 
      * @param scheme The scheme.
-     * @return The {@link URIBuilder}.
+     * @return The URI builder.
      */
     public URIBuilder setScheme(final String scheme) {
         _scheme = scheme;
@@ -350,7 +350,7 @@ public final class URIBuilder {
      * Sets the host.
      * 
      * @param host The host.
-     * @return The {@link URIBuilder}.
+     * @return The URI builder.
      */
     public URIBuilder setHost(final String host) {
         _rawSchemeSpecificPart = null;
@@ -373,7 +373,7 @@ public final class URIBuilder {
      * Sets the port.
      * 
      * @param port The port.
-     * @return The {@link URIBuilder}.
+     * @return The URI builder.
      */
     public URIBuilder setPort(final int port) {
         _rawSchemeSpecificPart = null;
@@ -396,7 +396,7 @@ public final class URIBuilder {
      * Sets the path.
      * 
      * @param path The path.
-     * @return The {@link URIBuilder}.
+     * @return The URI builder.
      */
     public URIBuilder setPath(final String path) {
         _rawSchemeSpecificPart = null;
@@ -423,7 +423,7 @@ public final class URIBuilder {
      * Sets the query.
      * 
      * @param query The query.
-     * @return The {@link URIBuilder}.
+     * @return The URI builder.
      */
     public URIBuilder setQuery(final String query) {
         _rawSchemeSpecificPart = null;
@@ -437,7 +437,7 @@ public final class URIBuilder {
      * Adds the specified parameters.
      * 
      * @param parameters The parameters.
-     * @return The {@link URIBuilder}.
+     * @return The URI builder.
      */
     public URIBuilder addParameters(final Map<String, Collection<String>> parameters) {
         if (parameters == null) {
@@ -456,7 +456,7 @@ public final class URIBuilder {
      * 
      * @param name The parameter name.
      * @param value The parameter value.
-     * @return The {@link URIBuilder}.
+     * @return The URI builder.
      */
     public URIBuilder addParameter(final String name, final String value) {
         if (name == null) {
@@ -483,7 +483,7 @@ public final class URIBuilder {
      * Sets the fragment.
      * 
      * @param fragment The fragment.
-     * @return The {@link URIBuilder}.
+     * @return The URI builder.
      */
     public URIBuilder setFragment(final String fragment) {
         _rawFragment = null;
@@ -493,7 +493,7 @@ public final class URIBuilder {
     }
 
     /**
-     * Builds the {@link URI}.
+     * Builds a new {@link URI}.
      * 
      * @return The URI.
      */
