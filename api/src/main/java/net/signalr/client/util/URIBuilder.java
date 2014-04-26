@@ -19,7 +19,6 @@ package net.signalr.client.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Collection;
@@ -33,7 +32,7 @@ public final class URIBuilder {
     /**
      * The default character encoding.
      */
-    private static final String DEFAULT_CHARACTER_ENCODING = "UTF-8";
+    private static final String DEFAULT_ENCODING = "UTF-8";
 
     /**
      * The URI.
@@ -106,7 +105,7 @@ public final class URIBuilder {
      * @param uri The URI.
      */
     public URIBuilder(final String uri) {
-        this(toURI(uri));
+        this(URI.create(uri));
     }
 
     /**
@@ -120,24 +119,6 @@ public final class URIBuilder {
         }
 
         init(uri);
-    }
-
-    /**
-     * Returns an {@link URI} for the specified URI.
-     * 
-     * @param uri The URI.
-     * @return The URI.
-     */
-    private static URI toURI(final String uri) {
-        if (uri == null) {
-            throw new IllegalArgumentException("URI must not be null");
-        }
-
-        try {
-            return new URI(uri);
-        } catch (final URISyntaxException e) {
-            throw new URIException(e);
-        }
     }
 
     /**
@@ -279,9 +260,9 @@ public final class URIBuilder {
         }
 
         try {
-            return URLDecoder.decode(rawValue, DEFAULT_CHARACTER_ENCODING);
+            return URLDecoder.decode(rawValue, DEFAULT_ENCODING);
         } catch (final UnsupportedEncodingException e) {
-            throw new URIException(e);
+            return null;
         }
     }
 
@@ -297,9 +278,9 @@ public final class URIBuilder {
         }
 
         try {
-            return URLEncoder.encode(value, DEFAULT_CHARACTER_ENCODING);
+            return URLEncoder.encode(value, DEFAULT_ENCODING);
         } catch (final UnsupportedEncodingException e) {
-            throw new URIException(e);
+            return null;
         }
     }
 
@@ -507,15 +488,10 @@ public final class URIBuilder {
      * @return The URI.
      */
     public URI build() {
-        if (_uri != null) {
-            return _uri;
-        }
-        final String rawUri = getRawUri();
+        if (_uri == null) {
+            final String rawUri = getRawUri();
 
-        try {
-            _uri = new URI(rawUri);
-        } catch (final URISyntaxException e) {
-            throw new URIException(e);
+            _uri = URI.create(rawUri);
         }
 
         return _uri;
