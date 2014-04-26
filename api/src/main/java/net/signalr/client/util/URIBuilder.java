@@ -36,6 +36,32 @@ public final class URIBuilder {
     private static final String DEFAULT_ENCODING = "UTF-8";
 
     /**
+     * Creates a new URI builder.
+     * 
+     * @param baseUri The base URI.
+     * @param uri The URI.
+     * @return The new URI builder.
+     */
+    public static URIBuilder create(final String baseUri, final String uri) {
+        return create(toUri(baseUri), uri);
+    }
+
+    /**
+     * Creates a new URI builder.
+     * 
+     * @param baseUri The base URI.
+     * @param uri The URI.
+     * @return The new URI builder.
+     */
+    public static URIBuilder create(final URI baseUri, final String uri) {
+        if (baseUri == null) {
+            throw new IllegalArgumentException("Base URI must not be null");
+        }
+
+        return new URIBuilder(baseUri.resolve(toUri(uri)));
+    }
+
+    /**
      * The scheme.
      */
     private String _scheme;
@@ -94,6 +120,24 @@ public final class URIBuilder {
      * The fragment.
      */
     private String _fragment;
+
+    /**
+     * Initializes a new instance of the {@link URIBuilder} class.
+     */
+    public URIBuilder() {
+        _scheme = null;
+        _rawSchemeSpecificPart = null;
+        _rawAuthority = null;
+        _host = null;
+        _port = -1;
+        _rawUserInfo = null;
+        _rawPath = null;
+        _path = null;
+        _rawQuery = null;
+        _query = null;
+        _rawFragment = null;
+        _fragment = null;
+    }
 
     /**
      * Initializes a new instance of the {@link URIBuilder} class.
@@ -444,20 +488,6 @@ public final class URIBuilder {
     public URIBuilder setFragment(final String fragment) {
         _rawFragment = null;
         _fragment = fragment;
-
-        return this;
-    }
-
-    /**
-     * Resolves the specified URI.
-     * 
-     * @param uri The URI.
-     * @return The {@link URIBuilder}.
-     */
-    public URIBuilder resolve(final String uri) {
-        final URI newUri = build().resolve(toUri(uri));
-
-        init(newUri);
 
         return this;
     }
