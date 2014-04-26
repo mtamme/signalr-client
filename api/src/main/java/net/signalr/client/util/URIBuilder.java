@@ -270,16 +270,16 @@ public final class URIBuilder {
     /**
      * Decodes the specified value.
      * 
-     * @param value The value.
+     * @param rawValue The raw value.
      * @return The decoded value.
      */
-    private static String decode(final String value) {
-        if (value == null) {
+    private static String decode(final String rawValue) {
+        if (rawValue == null) {
             return null;
         }
 
         try {
-            return URLDecoder.decode(value, DEFAULT_CHARACTER_ENCODING);
+            return URLDecoder.decode(rawValue, DEFAULT_CHARACTER_ENCODING);
         } catch (final UnsupportedEncodingException e) {
             throw new URIException(e);
         }
@@ -403,6 +403,10 @@ public final class URIBuilder {
      * @return The query.
      */
     public String getQuery() {
+        if ((_query == null) && (_rawQuery != null)) {
+            _query = decode(_rawQuery);
+        }
+
         return _query;
     }
 
@@ -435,7 +439,7 @@ public final class URIBuilder {
         _uri = null;
         _rawSchemeSpecificPart = null;
         _rawQuery = getRawQuery(parameters);
-        _query = decode(_rawQuery);
+        _query = null;
 
         return this;
     }
@@ -455,7 +459,7 @@ public final class URIBuilder {
         _uri = null;
         _rawSchemeSpecificPart = null;
         _rawQuery = getRawQuery(name, value);
-        _query = decode(_rawQuery);
+        _query = null;
 
         return this;
     }
@@ -490,7 +494,9 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder resolve(final String uri) {
-        init(build().resolve(uri));
+        final URI newUri = build().resolve(uri);
+
+        init(newUri);
 
         return this;
     }
