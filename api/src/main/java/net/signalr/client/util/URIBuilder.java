@@ -118,7 +118,7 @@ public final class URIBuilder {
     }
 
     /**
-     * Converts the specified uri to an {@link URI}.
+     * Converts the specified URI to an {@link URI}.
      * 
      * @param uri The URI.
      * @return The URI.
@@ -341,7 +341,7 @@ public final class URIBuilder {
      */
     public URIBuilder setPath(final String path) {
         _rawSchemeSpecificPart = null;
-        _rawPath = encode(path);
+        _rawPath = null;
         _path = path;
 
         return this;
@@ -368,7 +368,7 @@ public final class URIBuilder {
      */
     public URIBuilder setQuery(final String query) {
         _rawSchemeSpecificPart = null;
-        _rawQuery = encode(query);
+        _rawQuery = null;
         _query = query;
 
         return this;
@@ -427,7 +427,7 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setFragment(final String fragment) {
-        _rawFragment = encode(fragment);
+        _rawFragment = null;
         _fragment = fragment;
 
         return this;
@@ -475,13 +475,19 @@ public final class URIBuilder {
             }
             if (_rawPath != null) {
                 uri.append(_rawPath);
+            } else if (_path != null) {
+                uri.append(encode(_path));
             }
             if (_rawQuery != null) {
                 uri.append("?").append(_rawQuery);
+            } else if (_query == null) {
+                uri.append("?").append(encode(_query));
             }
         }
         if (_rawFragment != null) {
             uri.append("#").append(_rawFragment);
+        } else if (_fragment != null) {
+            uri.append("#").append(encode(_fragment));
         }
 
         return toUri(uri.toString());
