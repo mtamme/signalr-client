@@ -35,11 +35,6 @@ public final class URIBuilder {
     private static final String DEFAULT_ENCODING = "UTF-8";
 
     /**
-     * The URI.
-     */
-    private URI _uri;
-
-    /**
      * The scheme.
      */
     private String _scheme;
@@ -127,7 +122,6 @@ public final class URIBuilder {
      * @param uri The URI.
      */
     private void init(final URI uri) {
-        _uri = uri;
         _scheme = uri.getScheme();
         _rawSchemeSpecificPart = uri.getRawSchemeSpecificPart();
         _rawAuthority = uri.getRawAuthority();
@@ -300,7 +294,6 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setScheme(final String scheme) {
-        _uri = null;
         _scheme = scheme;
 
         return this;
@@ -322,7 +315,6 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setHost(final String host) {
-        _uri = null;
         _rawSchemeSpecificPart = null;
         _rawAuthority = null;
         _host = host;
@@ -346,7 +338,6 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setPort(final int port) {
-        _uri = null;
         _rawSchemeSpecificPart = null;
         _rawAuthority = null;
         _port = (port < 0) ? -1 : port;
@@ -370,7 +361,6 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setPath(final String path) {
-        _uri = null;
         _rawSchemeSpecificPart = null;
         _rawPath = encode(path);
         _path = path;
@@ -398,7 +388,6 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setQuery(final String query) {
-        _uri = null;
         _rawSchemeSpecificPart = null;
         _rawQuery = encode(query);
         _query = query;
@@ -417,7 +406,6 @@ public final class URIBuilder {
             throw new IllegalArgumentException("Parameters must not be null");
         }
 
-        _uri = null;
         _rawSchemeSpecificPart = null;
         _rawQuery = getRawQuery(parameters);
         _query = null;
@@ -437,7 +425,6 @@ public final class URIBuilder {
             throw new IllegalArgumentException("Name must not be null");
         }
 
-        _uri = null;
         _rawSchemeSpecificPart = null;
         _rawQuery = getRawQuery(name, value);
         _query = null;
@@ -461,7 +448,6 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder setFragment(final String fragment) {
-        _uri = null;
         _rawFragment = encode(fragment);
         _fragment = fragment;
 
@@ -488,12 +474,8 @@ public final class URIBuilder {
      * @return The URI.
      */
     public URI build() {
-        if (_uri == null) {
-            final String rawUri = getRawUri();
+        final String rawUri = getRawUri();
 
-            _uri = URI.create(rawUri);
-        }
-
-        return _uri;
+        return URI.create(rawUri);
     }
 }
