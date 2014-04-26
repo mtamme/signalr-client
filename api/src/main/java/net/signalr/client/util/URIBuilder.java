@@ -19,6 +19,7 @@ package net.signalr.client.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Collection;
@@ -100,7 +101,7 @@ public final class URIBuilder {
      * @param uri The URI.
      */
     public URIBuilder(final String uri) {
-        this(URI.create(uri));
+        this(toUri(uri));
     }
 
     /**
@@ -114,6 +115,24 @@ public final class URIBuilder {
         }
 
         init(uri);
+    }
+
+    /**
+     * Converts the specified uri to an {@link URI}.
+     * 
+     * @param uri The URI.
+     * @return The URI.
+     */
+    private static URI toUri(final String uri) {
+        if (uri == null) {
+            throw new IllegalArgumentException("URI must not be null");
+        }
+
+        try {
+            return new URI(uri);
+        } catch (final URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     /**
@@ -134,46 +153,6 @@ public final class URIBuilder {
         _query = uri.getQuery();
         _rawFragment = uri.getRawFragment();
         _fragment = uri.getFragment();
-    }
-
-    /**
-     * Returns the raw URI.
-     * 
-     * @return The raw URI.
-     */
-    private String getRawUri() {
-        final StringBuilder uri = new StringBuilder();
-
-        if (_scheme != null) {
-            uri.append(_scheme).append(':');
-        }
-        if (_rawSchemeSpecificPart != null) {
-            uri.append(_rawSchemeSpecificPart);
-        } else {
-            if (_rawAuthority != null) {
-                uri.append("//").append(_rawAuthority);
-            } else if (_host != null) {
-                uri.append("//");
-                if (_rawUserInfo != null) {
-                    uri.append(_rawUserInfo).append("@");
-                }
-                uri.append(_host);
-                if (_port >= 0) {
-                    uri.append(":").append(_port);
-                }
-            }
-            if (_rawPath != null) {
-                uri.append(_rawPath);
-            }
-            if (_rawQuery != null) {
-                uri.append("?").append(_rawQuery);
-            }
-        }
-        if (_rawFragment != null) {
-            uri.append("#").append(_rawFragment);
-        }
-
-        return uri.toString();
     }
 
     /**
@@ -461,7 +440,7 @@ public final class URIBuilder {
      * @return The {@link URIBuilder}.
      */
     public URIBuilder resolve(final String uri) {
-        final URI newUri = build().resolve(uri);
+        final URI newUri = build().resolve(toUri(uri));
 
         init(newUri);
 
@@ -474,8 +453,37 @@ public final class URIBuilder {
      * @return The URI.
      */
     public URI build() {
-        final String rawUri = getRawUri();
+        final StringBuilder uri = new StringBuilder();
 
-        return URI.create(rawUri);
+        if (_scheme != null) {
+            uri.append(_scheme).append(':');
+        }
+        if (_rawSchemeSpecificPart != null) {
+            uri.append(_rawSchemeSpecificPart);
+        } else {
+            if (_rawAuthority != null) {
+                uri.append("//").append(_rawAuthority);
+            } else if (_host != null) {
+                uri.append("//");
+                if (_rawUserInfo != null) {
+                    uri.append(_rawUserInfo).append("@");
+                }
+                uri.append(_host);
+                if (_port >= 0) {
+                    uri.append(":").append(_port);
+                }
+            }
+            if (_rawPath != null) {
+                uri.append(_rawPath);
+            }
+            if (_rawQuery != null) {
+                uri.append("?").append(_rawQuery);
+            }
+        }
+        if (_rawFragment != null) {
+            uri.append("#").append(_rawFragment);
+        }
+
+        return toUri(uri.toString());
     }
 }
