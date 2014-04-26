@@ -48,6 +48,16 @@ public abstract class AbstractTransport implements Transport {
     private static final String USER_AGENT = "SignalR-Client/0.1 (Java)";
 
     /**
+     * The content length header name.
+     */
+    private static final String CONTENT_LENGTH_HEADER = "Content-Length";
+
+    /**
+     * The content type header name.
+     */
+    private static final String CONTENT_TYPE_HEADER = "Content-Type";
+
+    /**
      * The asynchronous HTTP client.
      */
     protected final AsyncHttpClient _client;
@@ -172,8 +182,8 @@ public abstract class AbstractTransport implements Transport {
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         boundRequestBuilder.setHeaders(headers);
-        boundRequestBuilder.addHeader("Content-Length", "0");
-        boundRequestBuilder.addHeader("Content-Type", "text/plain");
+        boundRequestBuilder.addHeader(CONTENT_LENGTH_HEADER, "0");
+        boundRequestBuilder.addHeader(CONTENT_TYPE_HEADER, "text/plain");
 
         // Send request.
         final ResponseHandler handler = new ResponseHandler();
