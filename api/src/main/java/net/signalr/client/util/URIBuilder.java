@@ -209,7 +209,7 @@ public final class URIBuilder {
      * @param value The parameter value.
      * @param rawQuery The raw query.
      */
-    private void addParameter(final String rawName, final String value, final StringBuilder rawQuery) {
+    private static void addParameter(final String rawName, final String value, final StringBuilder rawQuery) {
         if (rawQuery.length() > 0) {
             rawQuery.append('&');
         }
@@ -218,6 +218,39 @@ public final class URIBuilder {
             final String rawValue = encode(value);
 
             rawQuery.append('=').append(rawValue);
+        }
+    }
+
+    /**
+     * Encodes the specified value.
+     * 
+     * @param rawValue The raw value.
+     * @param value The value.
+     * @return The encoded value.
+     */
+    private static String encode(final String rawValue, final String value) {
+        if (rawValue != null) {
+            return rawValue;
+        }
+
+        return encode(value);
+    }
+
+    /**
+     * Encodes the specified value.
+     * 
+     * @param value The value.
+     * @return The encoded value.
+     */
+    private static String encode(final String value) {
+        if (value == null) {
+            return null;
+        }
+
+        try {
+            return URLEncoder.encode(value, DEFAULT_ENCODING);
+        } catch (final UnsupportedEncodingException e) {
+            return null;
         }
     }
 
@@ -234,24 +267,6 @@ public final class URIBuilder {
 
         try {
             return URLDecoder.decode(rawValue, DEFAULT_ENCODING);
-        } catch (final UnsupportedEncodingException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Encodes the specified value.
-     * 
-     * @param value The value.
-     * @return The encoded value.
-     */
-    private static String encode(final String value) {
-        if (value == null) {
-            return null;
-        }
-
-        try {
-            return URLEncoder.encode(value, DEFAULT_ENCODING);
         } catch (final UnsupportedEncodingException e) {
             return null;
         }
@@ -473,21 +488,21 @@ public final class URIBuilder {
                     uri.append(":").append(_port);
                 }
             }
-            if (_rawPath != null) {
-                uri.append(_rawPath);
-            } else if (_path != null) {
-                uri.append(encode(_path));
+            final String rawPath = encode(_rawPath, _path);
+
+            if (rawPath != null) {
+                uri.append(rawPath);
             }
-            if (_rawQuery != null) {
-                uri.append("?").append(_rawQuery);
-            } else if (_query == null) {
-                uri.append("?").append(encode(_query));
+            final String rawQuery = encode(_rawQuery, _query);
+
+            if (rawQuery != null) {
+                uri.append("?").append(rawQuery);
             }
         }
-        if (_rawFragment != null) {
-            uri.append("#").append(_rawFragment);
-        } else if (_fragment != null) {
-            uri.append("#").append(encode(_fragment));
+        final String rawFragment = encode(_rawFragment, _fragment);
+
+        if (rawFragment != null) {
+            uri.append("#").append(rawFragment);
         }
 
         return toUri(uri.toString());
