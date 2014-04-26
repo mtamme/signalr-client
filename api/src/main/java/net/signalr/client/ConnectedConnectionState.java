@@ -167,6 +167,7 @@ final class ConnectedConnectionState implements ConnectionState {
 
             @Override
             public void onRejected(final Throwable cause) {
+                _handler.onError(cause);
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
                 context.changeState(reconnecting, disconnected);
