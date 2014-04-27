@@ -17,7 +17,7 @@
 
 package net.signalr.client.util;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +37,44 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
     /**
      * A value indicating whether the lifecycle has already been started.
      */
-    private final AtomicBoolean _started;
+    private final AtomicReference<State> _state;
 
     /**
      * Initializes a new instance of the {@link AbstractLifecycle} class
      */
     protected AbstractLifecycle() {
-        _started = new AtomicBoolean();
+        _state = new AtomicReference<State>(State.STOPPED);
+    }
+
+    /**
+     * Changes the lifecycle state to the specified new lifecycle state.
+     * 
+     * @param oldState The old lifecycle state.
+     * @param newState The new lifecycle state.
+     */
+    private void changeState(final State oldState, final State newState) {
+        if (!tryChangeState(oldState, newState)) {
+            throw new IllegalStateException("Failed to change connection state");
+        }
+    }
+
+    /**
+     * Tries to change the lifecycle state to the specified new lifecycle state.
+     * 
+     * @param oldState The old lifecycle state.
+     * @param newState The new lifecycle state.
+     * @return A value indicating whether the lifecycle state changed.
+     */
+    private boolean tryChangeState(final State oldState, final State newState) {
+        if (!_state.compareAndSet(oldState, newState)) {
+            logger.warn("Failed to change lifecycle state for '{}' from '{}' to '{}'", this, oldState, newState);
+
+            return false;
+        }
+
+        logger.info("Changed lifecycle state for '{}' from '{}' to '{}'", this, oldState, newState);
+
+        return true;
     }
 
     /**
@@ -61,29 +92,68 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
     protected abstract void doStop(T context);
 
     @Override
-    public final boolean isStarted() {
-        return _started.get();
+    public final boolean isRunning() {
+        final State state = _state.get();
+
+        return ((state == State.STARTED) || (state == State.STARTING));
     }
 
     @Override
     public final void start(final T context) {
-        if (!_started.compareAndSet(false, true)) {
-            throw new IllegalStateException("Lifecycle already started");
+        if (!tryChangeState(State.STOPPED, State.STARTING)) {
+            return;
         }
 
-        logger.info("Starting '{}'...", this);
+        try {
+            doStart(context);
+        } catch (final Throwable t) {
+            changeState(State.STARTING, State.STOPPED);
 
-        doStart(context);
+            logger.info("Failed to start lifecycle '{}'", this, t);
+            return;
+        }
+
+        changeState(State.STARTING, State.STARTED);
     }
 
     @Override
     public final void stop(final T context) {
-        if (!_started.compareAndSet(true, false)) {
-            throw new IllegalStateException("Lifecycle already stopped");
+        if (!tryChangeState(State.STARTED, State.STOPPING)) {
+            return;
         }
 
-        logger.info("Stopping '{}'...", this);
+        try {
+            doStop(context);
+        } catch (final Throwable t) {
+            logger.info("Failed to stop lifecycle '{}'", this, t);
+        }
 
-        doStop(context);
+        changeState(State.STOPPING, State.STOPPED);
+    }
+
+    /**
+     * Defines all lifecycle states.
+     */
+    private enum State {
+
+        /**
+         * Lifecycle has been started.
+         */
+        STARTED,
+
+        /**
+         * Lifecycle is going to be started.
+         */
+        STARTING,
+
+        /**
+         * Lifecycle is going to be stopped.
+         */
+        STOPPING,
+
+        /**
+         * Lifecycle has been stopped.
+         */
+        STOPPED
     }
 }

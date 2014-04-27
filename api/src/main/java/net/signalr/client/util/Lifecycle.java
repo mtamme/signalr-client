@@ -25,11 +25,11 @@ package net.signalr.client.util;
 public interface Lifecycle<T> {
 
     /**
-     * Returns a value indicating whether the lifecycle has been started.
+     * Returns a value indicating whether the lifecycle is running.
      * 
-     * @return A value indicating whether the lifecycle has been started.
+     * @return A value indicating whether the lifecycle is running.
      */
-    boolean isStarted();
+    boolean isRunning();
 
     /**
      * Starts the lifecycle.
