@@ -29,6 +29,8 @@ import net.signalr.client.util.concurrent.Promises;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RunWith(JUnit4.class)
 public final class HubConnectionTests {
@@ -45,12 +47,7 @@ public final class HubConnectionTests {
 
     private static final String LEAVE_METHOD_NAME = "leave";
 
-    private static void log(final String format, final Object... args) {
-        final String line = String.format(format, args);
-
-        System.out.printf("[%s] %s\n", Thread.currentThread().getName(), line);
-        System.out.flush();
-    }
+    private static final Logger logger = LoggerFactory.getLogger(HubConnectionTests.class);
 
     @Test
     public void test() throws InterruptedException, ExecutionException, IOException {
@@ -62,52 +59,52 @@ public final class HubConnectionTests {
         final Promise<Void> start = connection.start(new ConnectionHandler() {
             @Override
             public void onReconnecting() {
-                log("onReconnecting");
+                logger.info("onReconnecting");
             }
 
             @Override
             public void onReconnected() {
-                log("onReconnected");
+                logger.info("onReconnected");
             }
 
             @Override
             public void onSending(final String message) {
-                log("onSending: %s", message);
+                logger.info("onSending: {}", message);
             }
 
             @Override
             public void onReceived(final String message) {
-                log("onReceived: %s", message);
+                logger.info("onReceived: {}", message);
             }
 
             @Override
             public void onError(final Throwable cause) {
-                log("onError: %s", cause);
+                logger.info("onError: {}", cause);
             }
 
             @Override
             public void onConnectionSlow() {
-                log("onConnectionSlow");
+                logger.info("onConnectionSlow");
             }
 
             @Override
             public void onConnecting() {
-                log("onConnecting");
+                logger.info("onConnecting");
             }
 
             @Override
             public void onConnected() {
-                log("onConnected");
+                logger.info("onConnected");
             }
 
             @Override
             public void onDisconnecting() {
-                log("onDisconnecting");
+                logger.info("onDisconnecting");
             }
 
             @Override
             public void onDisconnected() {
-                log("onDisconnected");
+                logger.info("onDisconnected");
             }
         });
 
