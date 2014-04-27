@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
 
+import net.signalr.client.util.AbstractLifecycle;
 import net.signalr.client.util.TimeProvider;
 import net.signalr.client.util.concurrent.Job;
 import net.signalr.client.util.concurrent.Scheduler;
@@ -29,7 +30,7 @@ import net.signalr.client.util.concurrent.Scheduler;
 /**
  * Represents the default transport manager.
  */
-public final class DefaultTransportManager implements TransportManager {
+public final class DefaultTransportManager extends AbstractLifecycle<TransportContext> implements TransportManager {
 
     /**
      * The transport ping period in seconds.
@@ -114,33 +115,6 @@ public final class DefaultTransportManager implements TransportManager {
     }
 
     @Override
-    public void start(final TransportContext context) {
-        final Scheduler scheduler = context.getScheduler();
-        final TransportOptions options = context.getTransportOptions();
-        final long keepAliveTimeout = options.getKeepAliveTimeout();
-
-        if (keepAliveTimeout > 0) {
-            final TransportMonitor monitor = new TransportMonitor(this, _timeProvider, keepAliveTimeout, TimeUnit.MILLISECONDS);
-            final long monitorPeriod = monitor.getPeriod();
-            final Job job = scheduler.scheduleJob(monitor, monitorPeriod, TimeUnit.MILLISECONDS);
-
-            _jobs.add(job);
-        }
-        final TransportPing ping = new TransportPing(this, context);
-        final Job job = scheduler.scheduleJob(ping, PING_PERIOD, TimeUnit.MINUTES);
-
-        _jobs.add(job);
-    }
-
-    @Override
-    public void stop(final TransportContext context) {
-        for (final Job job : _jobs) {
-            job.cancel();
-        }
-        _jobs.clear();
-    }
-
-    @Override
     public void handleChannelOpened() {
         for (final TransportListener listener : _listeners) {
             listener.onChannelOpened();
@@ -173,5 +147,32 @@ public final class DefaultTransportManager implements TransportManager {
         for (final TransportListener listener : _listeners) {
             listener.onReceived(message);
         }
+    }
+
+    @Override
+    protected void doStart(final TransportContext context) {
+        final Scheduler scheduler = context.getScheduler();
+        final TransportOptions options = context.getTransportOptions();
+        final long keepAliveTimeout = options.getKeepAliveTimeout();
+
+        if (keepAliveTimeout > 0) {
+            final TransportMonitor monitor = new TransportMonitor(this, _timeProvider, keepAliveTimeout, TimeUnit.MILLISECONDS);
+            final long monitorPeriod = monitor.getPeriod();
+            final Job job = scheduler.scheduleJob(monitor, monitorPeriod, TimeUnit.MILLISECONDS);
+
+            _jobs.add(job);
+        }
+        final TransportPing ping = new TransportPing(this, context);
+        final Job job = scheduler.scheduleJob(ping, PING_PERIOD, TimeUnit.MINUTES);
+
+        _jobs.add(job);
+    }
+
+    @Override
+    protected void doStop(final TransportContext context) {
+        for (final Job job : _jobs) {
+            job.cancel();
+        }
+        _jobs.clear();
     }
 }

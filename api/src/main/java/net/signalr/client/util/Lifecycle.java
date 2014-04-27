@@ -15,43 +15,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.transport;
-
-import net.signalr.client.util.Lifecycle;
+package net.signalr.client.util;
 
 /**
- * Defines a transport manager.
+ * Defines a lifecycle.
  */
-public interface TransportManager extends Lifecycle<TransportContext>, ChannelHandler {
+public interface Lifecycle<T> {
 
     /**
-     * Returns the transport.
+     * Returns a value indicating whether the lifecycle has een started.
      * 
-     * @return The transport.
+     * @return A value indicating whether the lifecycle has een started.
      */
-    Transport getTransport();
+    boolean isStarted();
 
     /**
-     * Adds the specified transport listener.
+     * Starts the lifecycle.
      * 
-     * @param listener The transport listener.
+     * @param context The lifecycle context.
      */
-    void addListener(TransportListener listener);
+    void start(T context);
 
     /**
-     * Removes the specified transport listener.
+     * Stops the lifecycle.
      * 
-     * @param listener The transport listener.
+     * @param context The lifecycle context.
      */
-    void removeListener(TransportListener listener);
-
-    /**
-     * Invoked when the connection has been lost.
-     */
-    void handleConnectionLost();
-
-    /**
-     * Invoked when the connection is slow.
-     */
-    void handleConnectionSlow();
+    void stop(T context);
 }
