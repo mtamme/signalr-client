@@ -45,7 +45,7 @@ public abstract class AbstractTransport implements Transport {
     /**
      * The user agent.
      */
-    private static final String USER_AGENT = "SignalR-Client/0.1 (Java)";
+    private static final String USER_AGENT = "SignalR-Client/0.1 (Java; AsyncHttpClient)";
 
     /**
      * The content length header name.

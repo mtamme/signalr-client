@@ -47,7 +47,7 @@ public abstract class AbstractTransport implements Transport {
     /**
      * The user agent.
      */
-    protected static final String USER_AGENT = "SignalR-Client/0.1 (Java)";
+    protected static final String USER_AGENT = "SignalR-Client/0.1 (Java; Jetty)";
 
     /**
      * The SSL context factory.
