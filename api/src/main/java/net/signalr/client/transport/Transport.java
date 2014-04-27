@@ -25,29 +25,29 @@ import net.signalr.client.util.concurrent.Promise;
 public interface Transport {
 
     /**
-     * The negotiate URI path.
+     * The negotiate URI.
      */
-    public static final String NEGOTIATE_PATH = "negotiate";
+    public static final String NEGOTIATE_URI = "negotiate";
 
     /**
-     * The ping URI path.
+     * The ping URI.
      */
-    public static final String PING_PATH = "ping";
+    public static final String PING_URI = "ping";
 
     /**
-     * The abort URI path.
+     * The abort URI.
      */
-    public static final String ABORT_PATH = "abort";
+    public static final String ABORT_URI = "abort";
 
     /**
-     * The connect URI path.
+     * The connect URI.
      */
-    public static final String CONNECT_PATH = "connect";
+    public static final String CONNECT_URI = "connect";
 
     /**
-     * The reconnect URI path.
+     * The reconnect URI.
      */
-    public static final String RECONNECT_PATH = "reconnect";
+    public static final String RECONNECT_URI = "reconnect";
 
     /**
      * The connection data parameter name.
