@@ -20,7 +20,6 @@ package net.signalr.client.util;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Map;
@@ -97,29 +96,14 @@ public final class URIBuilder {
     private String _rawPath;
 
     /**
-     * The path.
-     */
-    private String _path;
-
-    /**
      * The raw query.
      */
     private String _rawQuery;
 
     /**
-     * The query.
-     */
-    private String _query;
-
-    /**
      * The raw fragment.
      */
     private String _rawFragment;
-
-    /**
-     * The fragment.
-     */
-    private String _fragment;
 
     /**
      * Initializes a new instance of the {@link URIBuilder} class.
@@ -132,11 +116,8 @@ public final class URIBuilder {
         _port = -1;
         _rawUserInfo = null;
         _rawPath = null;
-        _path = null;
         _rawQuery = null;
-        _query = null;
         _rawFragment = null;
-        _fragment = null;
     }
 
     /**
@@ -192,48 +173,18 @@ public final class URIBuilder {
         _port = uri.getPort();
         _rawUserInfo = uri.getRawUserInfo();
         _rawPath = uri.getRawPath();
-        _path = uri.getPath();
         _rawQuery = uri.getRawQuery();
-        _query = uri.getQuery();
         _rawFragment = uri.getRawFragment();
-        _fragment = uri.getFragment();
     }
 
     /**
-     * Returns the raw query including the specified parameters.
-     * 
-     * @param parameters The parameters.
-     * @return The raw query.
-     */
-    private String getRawQuery(final Map<String, Collection<String>> parameters) {
-        final StringBuilder rawQuery = new StringBuilder();
-
-        if (_rawQuery != null) {
-            rawQuery.append(_rawQuery);
-        }
-        if (rawQuery.length() > 0) {
-            rawQuery.append('&');
-        }
-        for (final String name : parameters.keySet()) {
-            final Collection<String> values = parameters.get(name);
-            final String rawName = encode(name);
-
-            for (final String value : values) {
-                addParameter(rawName, value, rawQuery);
-            }
-        }
-
-        return rawQuery.toString();
-    }
-
-    /**
-     * Returns the raw query including the specified parameter name and parameter value.
+     * Appends the specified parameter name and parameter value.
      * 
      * @param name The parameter name.
      * @param value The parameter value.
      * @return The raw query.
      */
-    private String getRawQuery(final String name, final String value) {
+    private String appendParameter(final String name, final String value) {
         final StringBuilder rawQuery = new StringBuilder();
 
         if (_rawQuery != null) {
@@ -241,19 +192,43 @@ public final class URIBuilder {
         }
         final String rawName = encode(name);
 
-        addParameter(rawName, value, rawQuery);
+        appendParameter(rawName, value, rawQuery);
 
         return rawQuery.toString();
     }
 
     /**
-     * Adds the specified raw parameter name and parameter value.
+     * Appends the specified parameters.
+     * 
+     * @param parameters The parameters.
+     * @return The raw query.
+     */
+    private String appendParameters(final Map<String, Collection<String>> parameters) {
+        final StringBuilder rawQuery = new StringBuilder();
+
+        if (_rawQuery != null) {
+            rawQuery.append(_rawQuery);
+        }
+        for (final String name : parameters.keySet()) {
+            final Collection<String> values = parameters.get(name);
+            final String rawName = encode(name);
+
+            for (final String value : values) {
+                appendParameter(rawName, value, rawQuery);
+            }
+        }
+
+        return rawQuery.toString();
+    }
+
+    /**
+     * Appends the specified raw parameter name and parameter value.
      * 
      * @param rawName The raw parameter name.
      * @param value The parameter value.
      * @param rawQuery The raw query.
      */
-    private static void addParameter(final String rawName, final String value, final StringBuilder rawQuery) {
+    private static void appendParameter(final String rawName, final String value, final StringBuilder rawQuery) {
         if (rawQuery.length() > 0) {
             rawQuery.append('&');
         }
@@ -263,21 +238,6 @@ public final class URIBuilder {
 
             rawQuery.append('=').append(rawValue);
         }
-    }
-
-    /**
-     * Encodes the specified value.
-     * 
-     * @param rawValue The raw value.
-     * @param value The value.
-     * @return The encoded value.
-     */
-    private static String encode(final String rawValue, final String value) {
-        if (rawValue != null) {
-            return rawValue;
-        }
-
-        return encode(value);
     }
 
     /**
@@ -293,24 +253,6 @@ public final class URIBuilder {
 
         try {
             return URLEncoder.encode(value, DEFAULT_ENCODING);
-        } catch (final UnsupportedEncodingException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Decodes the specified value.
-     * 
-     * @param rawValue The raw value.
-     * @return The decoded value.
-     */
-    private static String decode(final String rawValue) {
-        if (rawValue == null) {
-            return null;
-        }
-
-        try {
-            return URLDecoder.decode(rawValue, DEFAULT_ENCODING);
         } catch (final UnsupportedEncodingException e) {
             return null;
         }
@@ -333,6 +275,58 @@ public final class URIBuilder {
      */
     public URIBuilder setScheme(final String scheme) {
         _scheme = scheme;
+
+        return this;
+    }
+
+    /**
+     * Returns the raw scheme specific part.
+     * 
+     * @return The raw scheme specific part.
+     */
+    public String getRawSchemeSpecificPart() {
+        return _rawSchemeSpecificPart;
+    }
+
+    /**
+     * Sets the raw scheme specific part.
+     * 
+     * @param rawSchemeSpecificPart The raw scheme specific part.
+     * @return The URI builder.
+     */
+    public URIBuilder setRawSchemeSpecificPart(final String rawSchemeSpecificPart) {
+        _rawSchemeSpecificPart = rawSchemeSpecificPart;
+        _rawAuthority = null;
+        _rawUserInfo = null;
+        _host = null;
+        _port = -1;
+        _rawPath = null;
+        _rawQuery = null;
+
+        return this;
+    }
+
+    /**
+     * Returns the raw authority.
+     * 
+     * @return The raw authority.
+     */
+    public String getRawAuthority() {
+        return _rawAuthority;
+    }
+
+    /**
+     * Sets the raw authority.
+     * 
+     * @param rawAuthority The raw authority.
+     * @return The URI builder.
+     */
+    public URIBuilder setRawAuthority(final String rawAuthority) {
+        _rawSchemeSpecificPart = null;
+        _rawAuthority = rawAuthority;
+        _rawUserInfo = null;
+        _host = null;
+        _port = -1;
 
         return this;
     }
@@ -384,69 +378,68 @@ public final class URIBuilder {
     }
 
     /**
-     * Returns the path.
+     * Returns the raw user info.
      * 
-     * @return The path.
+     * @return The raw user info.
      */
-    public String getPath() {
-        return _path;
+    public String getRawUserInfo() {
+        return _rawUserInfo;
     }
 
     /**
-     * Sets the path.
+     * Sets the raw user info.
      * 
-     * @param path The path.
+     * @param path The raw user info.
      * @return The URI builder.
      */
-    public URIBuilder setPath(final String path) {
+    public URIBuilder setRawUserInfo(final String rawUserInfo) {
         _rawSchemeSpecificPart = null;
-        _rawPath = null;
-        _path = path;
+        _rawAuthority = null;
+        _rawUserInfo = rawUserInfo;
 
         return this;
     }
 
     /**
-     * Returns the query.
+     * Returns the raw path.
      * 
-     * @return The query.
+     * @return The raw path.
      */
-    public String getQuery() {
-        if ((_query == null) && (_rawQuery != null)) {
-            _query = decode(_rawQuery);
-        }
-
-        return _query;
+    public String getRawPath() {
+        return _rawPath;
     }
 
     /**
-     * Sets the query.
+     * Sets the raw path.
      * 
-     * @param query The query.
+     * @param path The raw path.
      * @return The URI builder.
      */
-    public URIBuilder setQuery(final String query) {
+    public URIBuilder setRawPath(final String rawPath) {
         _rawSchemeSpecificPart = null;
-        _rawQuery = null;
-        _query = query;
+        _rawPath = rawPath;
 
         return this;
     }
 
     /**
-     * Adds the specified parameters.
+     * Returns the raw query.
      * 
-     * @param parameters The parameters.
+     * @return The raw query.
+     */
+    public String getRawQuery() {
+        return _rawQuery;
+    }
+
+    /**
+     * Sets the raw query.
+     * 
+     * @param query The raw query.
      * @return The URI builder.
      */
-    public URIBuilder addParameters(final Map<String, Collection<String>> parameters) {
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameters must not be null");
-        }
-
+    public URIBuilder setRawQuery(final String rawQuery) {
         _rawSchemeSpecificPart = null;
-        _rawQuery = getRawQuery(parameters);
-        _query = null;
+        _rawQuery = rawQuery;
 
         return this;
     }
@@ -464,30 +457,45 @@ public final class URIBuilder {
         }
 
         _rawSchemeSpecificPart = null;
-        _rawQuery = getRawQuery(name, value);
-        _query = null;
+        _rawQuery = appendParameter(name, value);
 
         return this;
     }
 
     /**
-     * Returns the fragment.
+     * Adds the specified parameters.
      * 
-     * @return The fragment.
+     * @param parameters The parameters.
+     * @return The URI builder.
      */
-    public String getFragment() {
-        return _fragment;
+    public URIBuilder addParameters(final Map<String, Collection<String>> parameters) {
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameters must not be null");
+        }
+
+        _rawSchemeSpecificPart = null;
+        _rawQuery = appendParameters(parameters);
+
+        return this;
     }
 
     /**
-     * Sets the fragment.
+     * Returns the raw fragment.
      * 
-     * @param fragment The fragment.
+     * @return The raw fragment.
+     */
+    public String getRawFragment() {
+        return _rawFragment;
+    }
+
+    /**
+     * Sets the raw fragment.
+     * 
+     * @param fragment The raw fragment.
      * @return The URI builder.
      */
-    public URIBuilder setFragment(final String fragment) {
-        _rawFragment = null;
-        _fragment = fragment;
+    public URIBuilder setRawFragment(final String rawFragment) {
+        _rawFragment = rawFragment;
 
         return this;
     }
@@ -518,21 +526,15 @@ public final class URIBuilder {
                     uri.append(":").append(_port);
                 }
             }
-            final String rawPath = encode(_rawPath, _path);
-
-            if (rawPath != null) {
-                uri.append(rawPath);
+            if (_rawPath != null) {
+                uri.append(_rawPath);
             }
-            final String rawQuery = encode(_rawQuery, _query);
-
-            if (rawQuery != null) {
-                uri.append("?").append(rawQuery);
+            if (_rawQuery != null) {
+                uri.append("?").append(_rawQuery);
             }
         }
-        final String rawFragment = encode(_rawFragment, _fragment);
-
-        if (rawFragment != null) {
-            uri.append("#").append(rawFragment);
+        if (_rawFragment != null) {
+            uri.append("#").append(_rawFragment);
         }
 
         return toUri(uri.toString());
