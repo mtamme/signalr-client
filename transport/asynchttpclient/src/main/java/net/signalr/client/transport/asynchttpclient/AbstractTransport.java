@@ -172,9 +172,7 @@ public abstract class AbstractTransport implements Transport {
         final TransportOptions options = context.getTransportOptions();
 
         uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, options.getConnectionToken());
-        final String transportName = getName();
-
-        uriBuilder.addParameter(TRANSPORT_PARAMETER, transportName);
+        uriBuilder.addParameter(TRANSPORT_PARAMETER, getName());
         final URI uri = uriBuilder.build();
 
         // Setup request.
