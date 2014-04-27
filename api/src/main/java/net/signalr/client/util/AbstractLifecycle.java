@@ -59,7 +59,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
     protected abstract void doStop(T context);
 
     @Override
-    public boolean isStarted() {
+    public final boolean isStarted() {
         return _started.get();
     }
 
