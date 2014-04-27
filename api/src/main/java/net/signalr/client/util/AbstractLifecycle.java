@@ -24,6 +24,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Represents an abstract lifecycle.
+ * 
+ * @param <T> The lifecycle context type.
  */
 public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
 

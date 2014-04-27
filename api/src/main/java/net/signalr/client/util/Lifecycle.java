@@ -19,6 +19,8 @@ package net.signalr.client.util;
 
 /**
  * Defines a lifecycle.
+ * 
+ * @param <T> The lifecycle context type.
  */
 public interface Lifecycle<T> {
 
