@@ -33,6 +33,42 @@ import org.junit.runners.JUnit4;
 public final class URIBuilderTests {
 
     @Test
+    public void resolveTest() {
+        // Arrange
+        // Act
+        final URIBuilder uriBuilder = URIBuilder.resolve("scheme://user@host:8000/path?a=1#fragment", "new-path?b=2#new-fragment");
+
+        // Assert
+        assertEquals("scheme", uriBuilder.getScheme());
+        assertEquals("//user@host:8000/new-path?b=2", uriBuilder.getRawSchemeSpecificPart());
+        assertEquals("user@host:8000", uriBuilder.getRawAuthority());
+        assertEquals("user", uriBuilder.getRawUserInfo());
+        assertEquals("host", uriBuilder.getHost());
+        assertEquals(8000, uriBuilder.getPort());
+        assertEquals("/new-path", uriBuilder.getRawPath());
+        assertEquals("b=2", uriBuilder.getRawQuery());
+        assertEquals("new-fragment", uriBuilder.getRawFragment());
+    }
+
+    @Test
+    public void resolveWithPathSegmentTest() {
+        // Arrange
+        // Act
+        final URIBuilder uriBuilder = URIBuilder.resolve("scheme://user@host:8000/segment/?a=1#fragment", "new-segment?b=2#new-fragment");
+
+        // Assert
+        assertEquals("scheme", uriBuilder.getScheme());
+        assertEquals("//user@host:8000/segment/new-segment?b=2", uriBuilder.getRawSchemeSpecificPart());
+        assertEquals("user@host:8000", uriBuilder.getRawAuthority());
+        assertEquals("user", uriBuilder.getRawUserInfo());
+        assertEquals("host", uriBuilder.getHost());
+        assertEquals(8000, uriBuilder.getPort());
+        assertEquals("/segment/new-segment", uriBuilder.getRawPath());
+        assertEquals("b=2", uriBuilder.getRawQuery());
+        assertEquals("new-fragment", uriBuilder.getRawFragment());
+    }
+
+    @Test
     public void constructorWithUriTest() {
         // Arrange
         // Act

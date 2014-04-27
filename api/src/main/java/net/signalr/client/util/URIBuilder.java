@@ -35,24 +35,24 @@ public final class URIBuilder {
     private static final String DEFAULT_ENCODING = "UTF-8";
 
     /**
-     * Creates a new URI builder.
+     * Resolves the specified URI against the base URI and returns a new URI builder.
      * 
      * @param baseUri The base URI.
      * @param uri The URI.
      * @return The new URI builder.
      */
-    public static URIBuilder create(final String baseUri, final String uri) {
-        return create(toUri(baseUri), uri);
+    public static URIBuilder resolve(final String baseUri, final String uri) {
+        return resolve(toUri(baseUri), uri);
     }
 
     /**
-     * Creates a new URI builder.
+     * Resolves the specified URI against the base URI and returns a new URI builder.
      * 
      * @param baseUri The base URI.
      * @param uri The URI.
      * @return The new URI builder.
      */
-    public static URIBuilder create(final URI baseUri, final String uri) {
+    public static URIBuilder resolve(final URI baseUri, final String uri) {
         if (baseUri == null) {
             throw new IllegalArgumentException("Base URI must not be null");
         }

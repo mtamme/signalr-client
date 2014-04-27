@@ -79,7 +79,7 @@ public final class WebSocketTransport extends AbstractTransport {
         }
 
         // Build request URI.
-        final URIBuilder uriBuilder = URIBuilder.create(context.getUrl(), reconnect ? RECONNECT_PATH : CONNECT_PATH);
+        final URIBuilder uriBuilder = URIBuilder.resolve(context.getUrl(), reconnect ? RECONNECT_PATH : CONNECT_PATH);
         final String scheme = uriBuilder.getScheme().equals(HTTPS_SCHEME) ? WSS_SCHEME : WS_SCHEME;
 
         uriBuilder.setScheme(scheme);
