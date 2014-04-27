@@ -35,7 +35,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
     private static final Logger logger = LoggerFactory.getLogger(AbstractLifecycle.class);
 
     /**
-     * A value indicating whether the lifecycle has already been started.
+     * The lifecycle state.
      */
     private final AtomicReference<State> _state;
 
@@ -54,7 +54,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
      */
     private void changeState(final State oldState, final State newState) {
         if (!tryChangeState(oldState, newState)) {
-            throw new IllegalStateException("Failed to change connection state");
+            throw new IllegalStateException("Failed to change lifecycle state");
         }
     }
 
