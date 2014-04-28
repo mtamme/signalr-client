@@ -182,6 +182,9 @@ final class TransportMonitor implements Schedulable, TransportListener {
     public void run() {
         final Status status = getStatus();
 
+        if (status == Status.VITAL) {
+            logger.info("Heartbeat is recent, connection seems to be vital");
+        }
         if (status == _status) {
             return;
         }
@@ -193,8 +196,6 @@ final class TransportMonitor implements Schedulable, TransportListener {
             logger.warn("Heartbeat has been missed, connection may be dead/slow");
 
             _manager.handleConnectionSlow();
-        } else {
-            logger.info("Heartbeat is recent, connection seems to be vital");
         }
         _status = status;
     }
