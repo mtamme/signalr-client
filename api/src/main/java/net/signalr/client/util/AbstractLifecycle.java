@@ -54,7 +54,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
      */
     private void changeState(final State oldState, final State newState) {
         if (!tryChangeState(oldState, newState)) {
-            throw new IllegalStateException("Failed to change lifecycle state");
+            throw new IllegalStateException("Failed to change state");
         }
     }
 
@@ -67,12 +67,10 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
      */
     private boolean tryChangeState(final State oldState, final State newState) {
         if (!_state.compareAndSet(oldState, newState)) {
-            logger.warn("Failed to change lifecycle state for '{}' from '{}' to '{}'", this, oldState, newState);
-
             return false;
         }
 
-        logger.info("Changed lifecycle state for '{}' from '{}' to '{}'", this, oldState, newState);
+        logger.info("{} '{}'", newState, this);
 
         return true;
     }
@@ -109,7 +107,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
         } catch (final Throwable t) {
             changeState(State.STARTING, State.STOPPED);
 
-            logger.info("Failed to start lifecycle '{}'", this, t);
+            logger.info("Failed to start '{}'", this, t);
             return;
         }
 
@@ -125,7 +123,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
         try {
             doStop(context);
         } catch (final Throwable t) {
-            logger.info("Failed to stop lifecycle '{}'", this, t);
+            logger.info("Failed to stop '{}'", this, t);
         }
 
         changeState(State.STOPPING, State.STOPPED);

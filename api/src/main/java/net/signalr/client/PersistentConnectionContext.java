@@ -236,12 +236,10 @@ final class PersistentConnectionContext implements ConnectionContext {
     @Override
     public boolean tryChangeState(final ConnectionState oldState, final ConnectionState newState) {
         if (!_state.compareAndSet(oldState, newState)) {
-            logger.warn("Failed to change connection state from '{}' to '{}'", oldState, newState);
-
             return false;
         }
 
-        logger.info("Changed connection state from '{}' to '{}'", oldState, newState);
+        logger.info("Changed connection state to '{}'", newState);
 
         return true;
     }
