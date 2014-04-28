@@ -151,9 +151,9 @@ public final class DefaultTransportManager extends AbstractLifecycle<TransportCo
 
     @Override
     protected void doStart(final TransportContext context) {
-        final Scheduler scheduler = context.getScheduler();
         final TransportOptions options = context.getTransportOptions();
         final long keepAliveTimeout = options.getKeepAliveTimeout();
+        final Scheduler scheduler = context.getScheduler();
 
         if (keepAliveTimeout > 0) {
             final TransportMonitor monitor = new TransportMonitor(this, _timeProvider, keepAliveTimeout, TimeUnit.MILLISECONDS);

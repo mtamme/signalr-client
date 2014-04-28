@@ -17,12 +17,13 @@
 
 package net.signalr.client.transport;
 
+import net.signalr.client.util.Lifecycle;
 import net.signalr.client.util.concurrent.Promise;
 
 /**
  * Defines a transport.
  */
-public interface Transport {
+public interface Transport extends Lifecycle<TransportContext> {
 
     /**
      * The negotiate URI.

@@ -32,6 +32,7 @@ import net.signalr.client.transport.PingResponse;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportContext;
 import net.signalr.client.transport.TransportOptions;
+import net.signalr.client.util.AbstractLifecycle;
 import net.signalr.client.util.URIBuilder;
 import net.signalr.client.util.concurrent.Function;
 import net.signalr.client.util.concurrent.Promise;
@@ -40,7 +41,7 @@ import net.signalr.client.util.concurrent.Promises;
 /**
  * Represents an abstract transport.
  */
-public abstract class AbstractTransport implements Transport {
+public abstract class AbstractTransport extends AbstractLifecycle<TransportContext> implements Transport {
 
     /**
      * The user agent.
@@ -198,5 +199,13 @@ public abstract class AbstractTransport implements Transport {
                 return null;
             }
         });
+    }
+
+    @Override
+    protected void doStart(final TransportContext context) {
+    }
+
+    @Override
+    protected void doStop(final TransportContext context) {
     }
 }
