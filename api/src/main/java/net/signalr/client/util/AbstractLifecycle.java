@@ -132,7 +132,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
     /**
      * Defines all lifecycle states.
      */
-    private enum State {
+    private static enum State {
 
         /**
          * Lifecycle has been started.

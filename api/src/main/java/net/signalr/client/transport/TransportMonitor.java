@@ -57,14 +57,14 @@ final class TransportMonitor implements Schedulable, TransportListener {
     private final long _slowTimeout;
 
     /**
-     * The last heart beat time in milliseconds.
+     * The last heartbeat time in milliseconds.
      */
     private final AtomicLong _lastHeartbeatTime;
 
     /**
      * The transport status.
      */
-    private TransportStatus _status;
+    private Status _status;
 
     /**
      * Initializes a new instance of the {@link TransportMonitor} class.
@@ -95,7 +95,7 @@ final class TransportMonitor implements Schedulable, TransportListener {
         final long currentTime = _timeProvider.currentTimeMillis();
 
         _lastHeartbeatTime = new AtomicLong(currentTime);
-        _status = TransportStatus.VITAL;
+        _status = Status.VITAL;
     }
 
     /**
@@ -103,19 +103,19 @@ final class TransportMonitor implements Schedulable, TransportListener {
      * 
      * @return The transport status.
      */
-    private TransportStatus getStatus() {
+    private Status getStatus() {
         final long lastHeartbeatTime = _lastHeartbeatTime.get();
         final long currentTime = _timeProvider.currentTimeMillis();
         final long elapsedTime = currentTime - lastHeartbeatTime;
 
         if (elapsedTime >= _lostTimeout) {
-            return TransportStatus.LOST;
+            return Status.LOST;
         }
         if (elapsedTime >= _slowTimeout) {
-            return TransportStatus.SLOW;
+            return Status.SLOW;
         }
 
-        return TransportStatus.VITAL;
+        return Status.VITAL;
     }
 
     /**
@@ -128,10 +128,10 @@ final class TransportMonitor implements Schedulable, TransportListener {
     }
 
     /**
-     * Updates the heart beat time.
+     * Updates the heartbeat time.
      */
     private void updateHeartbeatTime() {
-        logger.info("Received transport heart beat");
+        logger.info("Received transport heartbeat");
 
         final long currentTime = _timeProvider.currentTimeMillis();
 
@@ -180,20 +180,42 @@ final class TransportMonitor implements Schedulable, TransportListener {
 
     @Override
     public void run() {
-        final TransportStatus status = getStatus();
+        final Status status = getStatus();
 
         if (status == _status) {
             return;
         }
-        if (status == TransportStatus.LOST) {
-            logger.error("Heart beat timed out, connection has been lost.");
+        if (status == Status.LOST) {
+            logger.error("Heartbeat timed out, connection has been lost");
 
             _manager.handleConnectionLost();
-        } else if (status == TransportStatus.SLOW) {
-            logger.warn("Heart beat has been missed, connection may be dead/slow.");
+        } else if (status == Status.SLOW) {
+            logger.warn("Heartbeat has been missed, connection may be dead/slow");
 
             _manager.handleConnectionSlow();
+        } else {
+            logger.info("Heartbeat is recent, connection seems to be vital");
         }
         _status = status;
+    }
+
+    /**
+     * Defines all transport statuses.
+     */
+    private static enum Status {
+        /**
+         * Transport is vital.
+         */
+        VITAL,
+
+        /**
+         * Transport may be dead/slow.
+         */
+        SLOW,
+
+        /**
+         * Transport has been lost.
+         */
+        LOST
     }
 }

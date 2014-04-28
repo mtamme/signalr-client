@@ -73,7 +73,7 @@ public final class TimerScheduler implements Scheduler {
             throw new IllegalArgumentException("Time unit must not be null");
         }
 
-        logger.info("Scheduling '{}'", schedulable);
+        logger.info("Scheduling '{}' @{}s", schedulable, timeUnit.toMillis(period) / 1000.0);
 
         final TimerTaskJob job = new TimerTaskJob(schedulable);
 
