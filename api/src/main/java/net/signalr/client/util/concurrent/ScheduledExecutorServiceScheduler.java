@@ -74,7 +74,7 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
             throw new IllegalArgumentException("Time unit must not be null");
         }
 
-        logger.info("Scheduling '{}'...", schedulable);
+        logger.info("Scheduling '{}'", schedulable);
 
         final Runnable runnable = new ScheduledExecutorServiceRunnable(schedulable);
         final ScheduledFuture<?> future = _executorService.scheduleAtFixedRate(runnable, period, period, timeUnit);

@@ -81,9 +81,4 @@ final class DisconnectingConnectionState implements ConnectionState {
     public Promise<Void> send(final ConnectionContext context, final String message) {
         throw new IllegalStateException("Connection is disconnecting");
     }
-
-    @Override
-    public String toString() {
-        return "DISCONNECTING";
-    }
 }

@@ -128,9 +128,4 @@ final class DisconnectedConnectionState implements ConnectionState {
     public Promise<Void> send(final ConnectionContext context, final String message) {
         throw new IllegalStateException("Connection is disconnected");
     }
-
-    @Override
-    public String toString() {
-        return "DISCONNECTED";
-    }
 }

@@ -131,7 +131,7 @@ final class TransportMonitor implements Schedulable, TransportListener {
      * Updates the heart beat time.
      */
     private void updateHeartbeatTime() {
-        logger.info("Received transport heart beat...");
+        logger.info("Received transport heart beat");
 
         final long currentTime = _timeProvider.currentTimeMillis();
 

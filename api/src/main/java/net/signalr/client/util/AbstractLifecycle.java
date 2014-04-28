@@ -137,21 +137,41 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
         /**
          * Lifecycle has been started.
          */
-        STARTED,
+        STARTED {
+            @Override
+            public String toString() {
+                return "Started";
+            }
+        },
 
         /**
          * Lifecycle is going to be started.
          */
-        STARTING,
+        STARTING {
+            @Override
+            public String toString() {
+                return "Starting";
+            }
+        },
 
         /**
          * Lifecycle is going to be stopped.
          */
-        STOPPING,
+        STOPPING {
+            @Override
+            public String toString() {
+                return "Stopping";
+            }
+        },
 
         /**
          * Lifecycle has been stopped.
          */
-        STOPPED
+        STOPPED {
+            @Override
+            public String toString() {
+                return "Stopped";
+            }
+        }
     }
 }

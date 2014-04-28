@@ -81,9 +81,4 @@ final class ReconnectingConnectionState implements ConnectionState {
     public Promise<Void> send(final ConnectionContext context, final String message) {
         throw new IllegalStateException("Connection is reconnecting");
     }
-
-    @Override
-    public String toString() {
-        return "RECONNECTING";
-    }
 }

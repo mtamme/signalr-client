@@ -183,9 +183,4 @@ final class ConnectedConnectionState implements ConnectionState {
     public Promise<Void> send(final ConnectionContext context, final String message) {
         return _channel.send(message);
     }
-
-    @Override
-    public String toString() {
-        return "CONNECTED";
-    }
 }
