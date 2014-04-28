@@ -70,7 +70,7 @@ public final class DeferredTests {
     public void resolveWithAddCallbackTest() {
         // Arrange
         @SuppressWarnings("unchecked")
-        final Callback<Integer> callback = (Callback<Integer>) createStrictMock(Callback.class);
+        final Callback<Integer> callback = createStrictMock(Callback.class);
 
         callback.onResolved(1);
         replay(callback);
@@ -118,7 +118,7 @@ public final class DeferredTests {
     public void rejectWithAddCallbackTest() {
         // Arrange
         @SuppressWarnings("unchecked")
-        final Callback<Integer> callback = (Callback<Integer>) createStrictMock(Callback.class);
+        final Callback<Integer> callback = createStrictMock(Callback.class);
         final Throwable cause = new Throwable();
 
         callback.onRejected(cause);
@@ -140,7 +140,7 @@ public final class DeferredTests {
     public void addCallbackWithPendingTest() {
         // Arrange
         @SuppressWarnings("unchecked")
-        final Callback<Integer> callback = (Callback<Integer>) createStrictMock(Callback.class);
+        final Callback<Integer> callback = createStrictMock(Callback.class);
 
         replay(callback);
         final Deferred<Integer> deferred = new Deferred<Integer>();
@@ -156,7 +156,7 @@ public final class DeferredTests {
     public void addCallbackWithResolvedTest() {
         // Arrange
         @SuppressWarnings("unchecked")
-        final Callback<Integer> callback = (Callback<Integer>) createStrictMock(Callback.class);
+        final Callback<Integer> callback = createStrictMock(Callback.class);
 
         callback.onResolved(1);
         replay(callback);
@@ -175,7 +175,7 @@ public final class DeferredTests {
     public void addCallbackWithRejectedTest() {
         // Arrange
         @SuppressWarnings("unchecked")
-        final Callback<Integer> callback = (Callback<Integer>) createStrictMock(Callback.class);
+        final Callback<Integer> callback = createStrictMock(Callback.class);
         final Throwable cause = new Throwable();
 
         callback.onRejected(cause);

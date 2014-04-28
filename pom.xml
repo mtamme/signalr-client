@@ -12,7 +12,7 @@
 		<!-- Configure dependency versions -->
 		<org.slf4j.version>1.7.7</org.slf4j.version>
 		<junit.version>4.11</junit.version>
-		<easymock.version>2.0</easymock.version>
+		<org.easymock.version>3.2</org.easymock.version>
 	</properties>
 	<modules>
 		<module>api</module>
@@ -36,9 +36,9 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>easymock</groupId>
+				<groupId>org.easymock</groupId>
 				<artifactId>easymock</artifactId>
-				<version>${easymock.version}</version>
+				<version>${org.easymock.version}</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
