@@ -5,6 +5,9 @@
 	<artifactId>signalr-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<name>signalr-client</name>
+	<url>https://github.com/mtamme/signalr-client</url>
+	<description>A SignalR client for Java.</description>
 	<properties>
 		<!-- Override the default Java compiler source and target level -->
 		<maven.compiler.target>1.7</maven.compiler.target>
@@ -19,9 +22,6 @@
 		<module>json</module>
 		<module>transport</module>
 	</modules>
-	<name>signalr-client</name>
-	<url>https://github.com/mtamme/signalr-client</url>
-	<description>A SignalR client for Java.</description>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
