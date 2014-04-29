@@ -45,7 +45,7 @@ public final class AbstractLifecycleTests {
     }
 
     @Test
-    public void startWithExceptionTest() {
+    public void startWithRuntimeExceptionTest() {
         // Arrange
         @SuppressWarnings("unchecked")
         final AbstractLifecycle<Integer> lifecycle = createMockBuilder(AbstractLifecycle.class).withConstructor().createStrictMock();
@@ -118,7 +118,7 @@ public final class AbstractLifecycleTests {
     }
 
     @Test
-    public void stopWithExceptionTest() {
+    public void stopWithRuntimeExceptionTest() {
         // Arrange
         @SuppressWarnings("unchecked")
         final AbstractLifecycle<Integer> lifecycle = createMockBuilder(AbstractLifecycle.class).withConstructor().createStrictMock();
