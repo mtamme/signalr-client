@@ -36,7 +36,7 @@ public final class HubResponseTests {
     private JsonMapper _mapper;
 
     @Before
-    public void setUp() {
+    public void before() {
         final JsonFactory factory = new JacksonFactory();
 
         _mapper = new DefaultJsonMapper(factory);

@@ -34,7 +34,7 @@ public final class GsonElementTests {
     private JsonMapper _mapper;
 
     @Before
-    public void setUp() {
+    public void before() {
         final JsonFactory factory = new GsonFactory();
 
         _mapper = new DefaultJsonMapper(factory);

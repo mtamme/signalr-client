@@ -34,7 +34,7 @@ public final class JacksonElementTests {
     private JsonMapper _mapper;
 
     @Before
-    public void setUp() {
+    public void before() {
         final JsonFactory factory = new JacksonFactory();
 
         _mapper = new DefaultJsonMapper(factory);

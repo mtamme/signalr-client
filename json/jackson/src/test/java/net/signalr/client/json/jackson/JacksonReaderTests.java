@@ -41,7 +41,7 @@ public final class JacksonReaderTests {
     private JsonFactory _factory;
 
     @Before
-    public void setUp() {
+    public void before() {
         _factory = new JacksonFactory();
     }
 
