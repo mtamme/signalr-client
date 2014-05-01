@@ -118,6 +118,8 @@ public final class TimerScheduler implements Scheduler {
 
         @Override
         public boolean cancel() {
+            logger.info("Canceling '{}'", _schedulable);
+
             try {
                 return super.cancel();
             } finally {

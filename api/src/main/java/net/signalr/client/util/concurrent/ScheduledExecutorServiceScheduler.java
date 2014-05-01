@@ -146,6 +146,8 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
 
         @Override
         public boolean cancel() {
+            logger.info("Canceling '{}'", _schedulable);
+
             try {
                 return _future.cancel(false);
             } finally {
