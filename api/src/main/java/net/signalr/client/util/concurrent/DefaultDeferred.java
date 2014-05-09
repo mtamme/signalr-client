@@ -79,20 +79,20 @@ final class DefaultDeferred<T> implements Deferred<T> {
     @Override
     public void setSuccess(final T value) {
         if (!trySuccess(value)) {
-            throw new IllegalStateException("Deferred is already completed");
+            throw new IllegalStateException("Deferred is already complete");
         }
     }
 
     @Override
     public void setFailure(final Throwable cause) {
         if (!tryFailure(cause)) {
-            throw new IllegalStateException("Deferred is already completed");
+            throw new IllegalStateException("Deferred is already complete");
         }
     }
 
     @Override
     public final boolean trySuccess(final T value) {
-        return _state.get().setSuccess(value);
+        return _state.get().trySuccess(value);
     }
 
     @Override
@@ -101,7 +101,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
             throw new IllegalArgumentException("Cause must not be null");
         }
 
-        return _state.get().setFailure(cause);
+        return _state.get().tryFailure(cause);
     }
 
     @Override
@@ -165,20 +165,20 @@ final class DefaultDeferred<T> implements Deferred<T> {
         boolean isComplete();
 
         /**
-         * Completes the deferred with the specified value.
+         * Tries to complete the deferred with the specified value.
          * 
          * @param value The value.
          * @return A value indicating whether the deferred has been completed.
          */
-        boolean setSuccess(T value);
+        boolean trySuccess(T value);
 
         /**
-         * Completes the deferred with the specified cause.
+         * Tries to complete the deferred with the specified cause.
          * 
          * @param cause The cause.
          * @return A value indicating whether the deferred has been completed.
          */
-        boolean setFailure(Throwable throwable);
+        boolean tryFailure(Throwable throwable);
 
         /**
          * Adds the specified completable.
@@ -208,12 +208,12 @@ final class DefaultDeferred<T> implements Deferred<T> {
         }
 
         /**
-         * Changes the state to the specified state.
+         * Tries to change the state to the specified state.
          * 
          * @param state The state.
          * @return A value indicating whether the state has been changed.
          */
-        private boolean changeState(final State<T> state) {
+        private boolean tryChangeState(final State<T> state) {
             if (!_state.compareAndSet(this, state)) {
                 return false;
             }
@@ -261,17 +261,17 @@ final class DefaultDeferred<T> implements Deferred<T> {
         }
 
         @Override
-        public boolean setSuccess(final T value) {
+        public boolean trySuccess(final T value) {
             final State<T> state = new SuccessState<T>(value);
 
-            return changeState(state);
+            return tryChangeState(state);
         }
 
         @Override
-        public boolean setFailure(final Throwable cause) {
+        public boolean tryFailure(final Throwable cause) {
             final State<T> state = new FailureState<T>(cause);
 
-            return changeState(state);
+            return tryChangeState(state);
         }
 
         @Override
@@ -295,12 +295,12 @@ final class DefaultDeferred<T> implements Deferred<T> {
         }
 
         @Override
-        public final boolean setSuccess(final T value) {
+        public final boolean trySuccess(final T value) {
             return false;
         }
 
         @Override
-        public final boolean setFailure(final Throwable cause) {
+        public final boolean tryFailure(final Throwable cause) {
             return false;
         }
     }
