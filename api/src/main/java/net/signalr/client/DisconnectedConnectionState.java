@@ -102,15 +102,11 @@ final class DisconnectedConnectionState implements ConnectionState {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(handler, channel);
 
                 context.changeState(connecting, connected);
+                handler.onConnected();
 
                 return null;
             }
         }).then(new OnComplete<Void>() {
-            @Override
-            protected void onSuccess(final Void value) throws Exception {
-                handler.onConnected();
-            }
-
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 context.changeState(connecting, DisconnectedConnectionState.this);

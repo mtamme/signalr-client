@@ -110,7 +110,13 @@ final class ConnectedConnectionState implements ConnectionState {
 
         logger.info("Closing channel...");
 
-        _channel.close().then(new Compose<Void, Void>() {
+        _channel.close().then(new Catch<Void>() {
+            @Override
+            protected Void doCatch(final Throwable cause) throws Exception {
+                _handler.onError(cause);
+                return null;
+            }
+        }).then(new Compose<Void, Void>() {
             @Override
             protected Promise<Void> doCompose(final Void value) throws Exception {
                 logger.info("Aborting transport...");
@@ -122,6 +128,9 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new OnComplete<Void>() {
             @Override
             protected void onComplete(final Void value, final Throwable cause) throws Exception {
+                if (cause != null) {
+                    _handler.onError(cause);
+                }
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
                 context.setTransportOptions(null);
@@ -151,6 +160,7 @@ final class ConnectedConnectionState implements ConnectionState {
         _channel.close().then(new Catch<Void>() {
             @Override
             protected Void doCatch(final Throwable cause) throws Exception {
+                _handler.onError(cause);
                 return null;
             }
         }).then(new Compose<Void, Channel>() {
