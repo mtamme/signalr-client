@@ -29,7 +29,7 @@ import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.OnFailure;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
-import net.signalr.client.util.concurrent.RunAsync;
+import net.signalr.client.util.concurrent.Compose;
 
 /**
  * Represents the default hub dispatcher.
@@ -118,9 +118,9 @@ final class DefaultHubDispatcher implements HubDispatcher {
             protected void onFailure(final Throwable cause) throws Exception {
                 _responses.remove(callbackId);
             }
-        }).then(new RunAsync<Void, HubResponse>() {
+        }).then(new Compose<Void, HubResponse>() {
             @Override
-            protected Promise<HubResponse> doRun(final Void value) throws Exception {
+            protected Promise<HubResponse> doCompose(final Void value) throws Exception {
                 return deferred;
             }
         });

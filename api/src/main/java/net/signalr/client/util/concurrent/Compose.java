@@ -18,25 +18,25 @@
 package net.signalr.client.util.concurrent;
 
 /**
- * Represents an asynchronous run continuation.
+ * Represents a compose continuation.
  * 
  * @param <T> The value type.
  * @param <U> The result type.
  */
-public abstract class RunAsync<T, U> implements Continuation<T, U> {
+public abstract class Compose<T, U> implements Continuation<T, U> {
 
     /**
-     * Handles the asynchronous run continuation.
+     * Handles the compose continuation.
      * 
      * @param value The value.
      * @return The result.
      * @throws Exception
      */
-    protected abstract Promise<U> doRun(T value) throws Exception;
+    protected abstract Promise<U> doCompose(T value) throws Exception;
 
     @Override
     public final void setSuccess(final T value, final Deferred<U> result) throws Exception {
-        final Promise<U> promise = doRun(value);
+        final Promise<U> promise = doCompose(value);
 
         promise.then(result);
     }

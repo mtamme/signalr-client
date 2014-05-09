@@ -31,7 +31,7 @@ import net.signalr.client.util.AbstractLifecycle;
 import net.signalr.client.util.URIBuilder;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
-import net.signalr.client.util.concurrent.Run;
+import net.signalr.client.util.concurrent.Apply;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
@@ -113,9 +113,9 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
             return Promises.newFailure(t);
         }
 
-        return listener.getResponse().then(new Run<String, NegotiationResponse>() {
+        return listener.getResponse().then(new Apply<String, NegotiationResponse>() {
             @Override
-            protected NegotiationResponse doRun(final String response) throws Exception {
+            protected NegotiationResponse doApply(final String response) throws Exception {
                 final JsonMapper mapper = context.getMapper();
 
                 return mapper.toObject(response, NegotiationResponse.class);
@@ -158,9 +158,9 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
             return Promises.newFailure(t);
         }
 
-        return listener.getResponse().then(new Run<String, PingResponse>() {
+        return listener.getResponse().then(new Apply<String, PingResponse>() {
             @Override
-            protected PingResponse doRun(final String response) throws Exception {
+            protected PingResponse doApply(final String response) throws Exception {
                 final JsonMapper mapper = context.getMapper();
 
                 return mapper.toObject(response, PingResponse.class);
@@ -209,9 +209,9 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
             return Promises.newFailure(t);
         }
 
-        return listener.getResponse().then(new Run<String, Void>() {
+        return listener.getResponse().then(new Apply<String, Void>() {
             @Override
-            protected Void doRun(final String response) throws Exception {
+            protected Void doApply(final String response) throws Exception {
                 return null;
             }
         });

@@ -19,7 +19,7 @@ package net.signalr.client.hub;
 
 import net.signalr.client.json.JsonElement;
 import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Run;
+import net.signalr.client.util.concurrent.Apply;
 
 /**
  * Represents the default hub proxy.
@@ -72,9 +72,9 @@ final class DefaultHubProxy implements HubProxy {
         request.setMethodName(methodName);
         request.setArguments(arguments);
 
-        return _dispatcher.invoke(request).then(new Run<HubResponse, R>() {
+        return _dispatcher.invoke(request).then(new Apply<HubResponse, R>() {
             @Override
-            protected R doRun(final HubResponse response) throws Exception {
+            protected R doApply(final HubResponse response) throws Exception {
                 final String errorMessage = response.getErrorMessage();
 
                 if (errorMessage != null) {

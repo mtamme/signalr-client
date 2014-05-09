@@ -25,8 +25,8 @@ import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.OnComplete;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
-import net.signalr.client.util.concurrent.Run;
-import net.signalr.client.util.concurrent.RunAsync;
+import net.signalr.client.util.concurrent.Apply;
+import net.signalr.client.util.concurrent.Compose;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,9 +80,9 @@ final class DisconnectedConnectionState implements ConnectionState {
         manager.addListener(new TransportListenerAdapter(context, handler));
         final Transport transport = manager.getTransport();
 
-        transport.negotiate(context).then(new RunAsync<NegotiationResponse, Channel>() {
+        transport.negotiate(context).then(new Compose<NegotiationResponse, Channel>() {
             @Override
-            protected Promise<Channel> doRun(final NegotiationResponse response) throws Exception {
+            protected Promise<Channel> doCompose(final NegotiationResponse response) throws Exception {
                 final String protocolVersion = response.getProtocolVersion();
 
                 if (!protocolVersion.equals(context.getProtocolVersion())) {
@@ -95,9 +95,9 @@ final class DisconnectedConnectionState implements ConnectionState {
 
                 return transport.connect(context, manager, false);
             }
-        }).then(new Run<Channel, Void>() {
+        }).then(new Apply<Channel, Void>() {
             @Override
-            protected Void doRun(final Channel channel) throws Exception {
+            protected Void doApply(final Channel channel) throws Exception {
                 manager.start(context);
                 final ConnectedConnectionState connected = new ConnectedConnectionState(handler, channel);
 

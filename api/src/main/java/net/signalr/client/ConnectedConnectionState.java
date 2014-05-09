@@ -29,8 +29,8 @@ import net.signalr.client.util.concurrent.OnComplete;
 import net.signalr.client.util.concurrent.OnFailure;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
-import net.signalr.client.util.concurrent.Run;
-import net.signalr.client.util.concurrent.RunAsync;
+import net.signalr.client.util.concurrent.Apply;
+import net.signalr.client.util.concurrent.Compose;
 
 /**
  * Represents the connected connection state.
@@ -111,9 +111,9 @@ final class ConnectedConnectionState implements ConnectionState {
 
         logger.info("Closing channel...");
 
-        _channel.close().then(new RunAsync<Void, Void>() {
+        _channel.close().then(new Compose<Void, Void>() {
             @Override
-            protected Promise<Void> doRun(final Void value) throws Exception {
+            protected Promise<Void> doCompose(final Void value) throws Exception {
                 logger.info("Aborting transport...");
 
                 final Transport transport = manager.getTransport();
@@ -154,18 +154,18 @@ final class ConnectedConnectionState implements ConnectionState {
             protected Void doCatch(final Throwable cause) throws Exception {
                 return null;
             }
-        }).then(new RunAsync<Void, Channel>() {
+        }).then(new Compose<Void, Channel>() {
             @Override
-            protected Promise<Channel> doRun(final Void value) throws Exception {
+            protected Promise<Channel> doCompose(final Void value) throws Exception {
                 logger.info("Reconnecting transport...");
 
                 final Transport transport = manager.getTransport();
 
                 return transport.connect(context, manager, true);
             }
-        }).then(new Run<Channel, Void>() {
+        }).then(new Apply<Channel, Void>() {
             @Override
-            protected Void doRun(final Channel channel) throws Exception {
+            protected Void doApply(final Channel channel) throws Exception {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(_handler, channel);
 
                 context.changeState(reconnecting, connected);

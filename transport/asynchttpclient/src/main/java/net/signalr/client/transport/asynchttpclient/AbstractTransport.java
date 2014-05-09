@@ -36,7 +36,7 @@ import net.signalr.client.util.AbstractLifecycle;
 import net.signalr.client.util.URIBuilder;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
-import net.signalr.client.util.concurrent.Run;
+import net.signalr.client.util.concurrent.Apply;
 
 /**
  * Represents an abstract transport.
@@ -107,9 +107,9 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
             return Promises.newFailure(t);
         }
 
-        return handler.getResponse().then(new Run<Response, NegotiationResponse>() {
+        return handler.getResponse().then(new Apply<Response, NegotiationResponse>() {
             @Override
-            protected NegotiationResponse doRun(final Response response) throws Exception {
+            protected NegotiationResponse doApply(final Response response) throws Exception {
                 final JsonMapper mapper = context.getMapper();
                 final String body = response.getResponseBody();
 
@@ -147,9 +147,9 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
             return Promises.newFailure(t);
         }
 
-        return handler.getResponse().then(new Run<Response, PingResponse>() {
+        return handler.getResponse().then(new Apply<Response, PingResponse>() {
             @Override
-            protected PingResponse doRun(final Response response) throws Exception {
+            protected PingResponse doApply(final Response response) throws Exception {
                 final JsonMapper mapper = context.getMapper();
                 final String body = response.getResponseBody();
 
@@ -193,9 +193,9 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
             return Promises.newFailure(t);
         }
 
-        return handler.getResponse().then(new Run<Response, Void>() {
+        return handler.getResponse().then(new Apply<Response, Void>() {
             @Override
-            protected Void doRun(final Response response) throws Exception {
+            protected Void doApply(final Response response) throws Exception {
                 return null;
             }
         });
