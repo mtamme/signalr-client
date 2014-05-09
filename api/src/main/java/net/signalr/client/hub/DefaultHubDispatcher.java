@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import net.signalr.client.Connection;
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.OnFailure;
+import net.signalr.client.util.concurrent.OnComplete;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
 import net.signalr.client.util.concurrent.Compose;
@@ -113,7 +113,7 @@ final class DefaultHubDispatcher implements HubDispatcher {
 
         _responses.put(callbackId, deferred);
 
-        return _connection.send(message).then(new OnFailure<Void>() {
+        return _connection.send(message).then(new OnComplete<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 _responses.remove(callbackId);

@@ -26,7 +26,6 @@ import net.signalr.client.transport.TransportManager;
 import net.signalr.client.util.concurrent.Catch;
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.OnComplete;
-import net.signalr.client.util.concurrent.OnFailure;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
 import net.signalr.client.util.concurrent.Apply;
@@ -173,7 +172,7 @@ final class ConnectedConnectionState implements ConnectionState {
 
                 return null;
             }
-        }).then(new OnFailure<Void>() {
+        }).then(new OnComplete<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 _handler.onError(cause);
