@@ -17,18 +17,19 @@
 
 package net.signalr.client;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.Transport;
-import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.TransportManager;
-import net.signalr.client.util.concurrent.Callback;
 import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.Function;
+import net.signalr.client.util.concurrent.OnComplete;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
+import net.signalr.client.util.concurrent.Run;
+import net.signalr.client.util.concurrent.RunAsync;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents the disconnected connection state.
@@ -62,7 +63,7 @@ final class DisconnectedConnectionState implements ConnectionState {
 
     @Override
     public Promise<Void> start(final ConnectionContext context, final ConnectionHandler handler) {
-        final Deferred<Void> deferred = new Deferred<Void>();
+        final Deferred<Void> deferred = Promises.newDeferred();
         final ConnectingConnectionState connecting = new ConnectingConnectionState(deferred);
 
         if (!context.tryChangeState(this, connecting)) {
@@ -79,9 +80,9 @@ final class DisconnectedConnectionState implements ConnectionState {
         manager.addListener(new TransportListenerAdapter(context, handler));
         final Transport transport = manager.getTransport();
 
-        transport.negotiate(context).thenCompose(new Function<NegotiationResponse, Promise<Channel>>() {
+        transport.negotiate(context).then(new RunAsync<NegotiationResponse, Channel>() {
             @Override
-            public Promise<Channel> apply(final NegotiationResponse response) throws Exception {
+            protected Promise<Channel> doRun(final NegotiationResponse response) throws Exception {
                 final String protocolVersion = response.getProtocolVersion();
 
                 if (!protocolVersion.equals(context.getProtocolVersion())) {
@@ -94,29 +95,35 @@ final class DisconnectedConnectionState implements ConnectionState {
 
                 return transport.connect(context, manager, false);
             }
-        }).thenCall(new Callback<Channel>() {
+        }).then(new Run<Channel, Void>() {
             @Override
-            public void onResolved(final Channel channel) {
+            protected Void doRun(final Channel channel) throws Exception {
+                manager.start(context);
                 final ConnectedConnectionState connected = new ConnectedConnectionState(handler, channel);
 
                 context.changeState(connecting, connected);
+
+                return null;
+            }
+        }).then(new OnComplete<Void>() {
+            @Override
+            protected void onSuccess(final Void value) throws Exception {
                 handler.onConnected();
-                manager.start(context);
             }
 
             @Override
-            public void onRejected(final Throwable cause) {
+            protected void onFailure(final Throwable cause) throws Exception {
                 context.changeState(connecting, DisconnectedConnectionState.this);
                 handler.onDisconnected();
             }
-        }).thenPropagate(deferred);
+        }).then(deferred);
 
         return deferred;
     }
 
     @Override
     public Promise<Void> stop(final ConnectionContext context) {
-        return Promises.resolved();
+        return Promises.newSuccess();
     }
 
     @Override

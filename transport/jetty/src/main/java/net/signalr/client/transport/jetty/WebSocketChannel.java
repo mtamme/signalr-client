@@ -62,17 +62,17 @@ final class WebSocketChannel implements Channel {
     @Override
     public Promise<Void> send(final String message) {
         _handler.handleMessageSending(message);
-        final Deferred<Void> deferred = new Deferred<Void>();
+        final Deferred<Void> deferred = Promises.newDeferred();
 
         _session.getRemote().sendString(message, new WriteCallback() {
             @Override
             public void writeSuccess() {
-                deferred.resolve(null);
+                deferred.setSuccess(null);
             }
 
             @Override
             public void writeFailed(final Throwable cause) {
-                deferred.reject(cause);
+                deferred.setFailure(cause);
             }
         });
 
@@ -84,9 +84,9 @@ final class WebSocketChannel implements Channel {
         try {
             _session.close();
         } catch (final Throwable t) {
-            return Promises.rejected(t);
+            return Promises.newFailure(t);
         }
 
-        return Promises.resolved();
+        return Promises.newSuccess();
     }
 }

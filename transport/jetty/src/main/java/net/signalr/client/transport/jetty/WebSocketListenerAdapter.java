@@ -21,6 +21,7 @@ import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
@@ -52,7 +53,7 @@ final class WebSocketListenerAdapter implements WebSocketListener {
 
         _handler = handler;
 
-        _channel = new Deferred<Channel>();
+        _channel = Promises.newDeferred();
     }
 
     /**
@@ -77,14 +78,14 @@ final class WebSocketListenerAdapter implements WebSocketListener {
     public void onWebSocketConnect(final Session session) {
         final WebSocketChannel channel = new WebSocketChannel(_handler, session);
 
-        if (_channel.resolve(channel)) {
+        if (_channel.trySuccess(channel)) {
             _handler.handleChannelOpened();
         }
     }
 
     @Override
     public void onWebSocketError(final Throwable cause) {
-        if (!_channel.reject(cause)) {
+        if (!_channel.tryFailure(cause)) {
             _handler.handleError(cause);
         }
     }

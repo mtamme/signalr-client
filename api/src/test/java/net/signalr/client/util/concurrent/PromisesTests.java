@@ -26,10 +26,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import net.signalr.client.util.concurrent.Callback;
-import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Promises;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -38,66 +34,66 @@ import org.junit.runners.JUnit4;
 public final class PromisesTests {
 
     @Test
-    public void resolvedTest() {
+    public void newSuccessTest() {
         // Arrange
         // Act
-        final Promise<Integer> promise = Promises.resolved(1);
+        final Promise<Integer> promise = Promises.newSuccess(1);
 
         // Assert
         assertNotNull(promise);
-        assertTrue(promise.isCompleted());
+        assertTrue(promise.isComplete());
     }
 
     @Test
-    public void rejectedTest() {
+    public void newFailureTest() {
         // Arrange
         // Act
-        final Promise<Integer> promise = Promises.rejected(new Throwable());
+        final Promise<Integer> promise = Promises.newFailure(new Throwable());
 
         // Assert
         assertNotNull(promise);
-        assertTrue(promise.isCompleted());
+        assertTrue(promise.isComplete());
     }
 
     @Test
-    public void addCallbackWithResolvedTest() {
+    public void thenWithNewSuccessTest() {
         // Arrange
         @SuppressWarnings("unchecked")
-        final Callback<Integer> callback = createStrictMock(Callback.class);
+        final Completable<Integer> completable = createStrictMock(Completable.class);
 
-        callback.onResolved(1);
-        replay(callback);
-        final Promise<Integer> promise = Promises.resolved(1);
+        completable.setSuccess(1);
+        replay(completable);
+        final Promise<Integer> promise = Promises.newSuccess(1);
 
         // Act
-        promise.addCallback(callback);
+        promise.then(completable);
 
         // Assert
-        verify(callback);
+        verify(completable);
     }
 
     @Test
-    public void addCallbackWithRejectedTest() {
+    public void thenWithNewFailureTest() {
         // Arrange
         @SuppressWarnings("unchecked")
-        final Callback<Integer> callback = createStrictMock(Callback.class);
+        final Completable<Integer> completable = createStrictMock(Completable.class);
         final Throwable cause = new Throwable();
 
-        callback.onRejected(cause);
-        replay(callback);
-        final Promise<Integer> promise = Promises.rejected(cause);
+        completable.setFailure(cause);
+        replay(completable);
+        final Promise<Integer> promise = Promises.newFailure(cause);
 
         // Act
-        promise.addCallback(callback);
+        promise.then(completable);
 
         // Assert
-        verify(callback);
+        verify(completable);
     }
 
     @Test
-    public void getWithResolvedAndToFutureTest() throws InterruptedException, ExecutionException {
+    public void getWithNewSuccessAndToFutureTest() throws InterruptedException, ExecutionException {
         // Arrange
-        final Promise<Integer> promise = Promises.resolved(1);
+        final Promise<Integer> promise = Promises.newSuccess(1);
         final Future<Integer> future = Promises.toFuture(promise);
 
         // Act
@@ -108,9 +104,9 @@ public final class PromisesTests {
     }
 
     @Test(expected = ExecutionException.class)
-    public void getWithRejectedAndToFutureTest() throws InterruptedException, ExecutionException {
+    public void getWithNewFailureAndToFutureTest() throws InterruptedException, ExecutionException {
         // Arrange
-        final Promise<Integer> promise = Promises.rejected(new Throwable());
+        final Promise<Integer> promise = Promises.newFailure(new Throwable());
         final Future<Integer> future = Promises.toFuture(promise);
 
         // Act
@@ -121,9 +117,9 @@ public final class PromisesTests {
     }
 
     @Test
-    public void getWithResolvedAndToFutureAndTimeoutTest() throws InterruptedException, ExecutionException, TimeoutException {
+    public void getWithNewSuccessAndToFutureAndTimeoutTest() throws InterruptedException, ExecutionException, TimeoutException {
         // Arrange
-        final Promise<Integer> promise = Promises.resolved(1);
+        final Promise<Integer> promise = Promises.newSuccess(1);
         final Future<Integer> future = Promises.toFuture(promise);
 
         // Act
@@ -134,9 +130,9 @@ public final class PromisesTests {
     }
 
     @Test(expected = ExecutionException.class)
-    public void getWithRejectedAndToFutureAndTimeoutTest() throws InterruptedException, ExecutionException, TimeoutException {
+    public void getWithNewFailureAndToFutureAndTimeoutTest() throws InterruptedException, ExecutionException, TimeoutException {
         // Arrange
-        final Promise<Integer> promise = Promises.rejected(new Throwable());
+        final Promise<Integer> promise = Promises.newFailure(new Throwable());
         final Future<Integer> future = Promises.toFuture(promise);
 
         // Act

@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
 
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.Response;
@@ -39,7 +40,7 @@ final class ResponseHandler extends AsyncCompletionHandler<Response> {
      * Initializes a new instance of the {@link ResponseHandler} class.
      */
     public ResponseHandler() {
-        _response = new Deferred<Response>();
+        _response = Promises.newDeferred();
     }
 
     /**
@@ -53,7 +54,7 @@ final class ResponseHandler extends AsyncCompletionHandler<Response> {
 
     @Override
     public void onThrowable(final Throwable cause) {
-        _response.reject(cause);
+        _response.setFailure(cause);
     }
 
     @Override
@@ -63,9 +64,9 @@ final class ResponseHandler extends AsyncCompletionHandler<Response> {
         if (statusCode != 200) {
             final Throwable cause = new IOException("The request failed with HTTP status " + statusCode + ": " + response.getStatusText());
 
-            _response.reject(cause);
+            _response.setFailure(cause);
         } else {
-            _response.resolve(response);
+            _response.setSuccess(response);
         }
 
         return response;

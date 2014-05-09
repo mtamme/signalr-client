@@ -18,11 +18,28 @@
 package net.signalr.client.util.concurrent;
 
 /**
- * Represents a resolve {@link Promise} callback.
+ * Defines a continuation.
+ * 
+ * @param <T> The value type.
+ * @param <U> The result type.
  */
-public abstract class OnResolved<V> implements Callback<V> {
+public interface Continuation<T, U> {
 
-    @Override
-    public final void onRejected(final Throwable cause) {
-    }
+    /**
+     * Completes the continuation with the specified value.
+     * 
+     * @param value The value.
+     * @param result The result.
+     * @throws Exception
+     */
+    void setSuccess(T value, Deferred<U> result) throws Exception;
+
+    /**
+     * Completes the continuation with the specified cause.
+     * 
+     * @param cause The cause.
+     * @param result The result.
+     * @throws Exception
+     */
+    void setFailure(Throwable cause, Deferred<U> result) throws Exception;
 }

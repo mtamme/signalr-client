@@ -64,10 +64,10 @@ final class WebSocketChannel implements Channel {
         try {
             _webSocket.sendTextMessage(message);
         } catch (final Throwable t) {
-            return Promises.rejected(t);
+            return Promises.newFailure(t);
         }
 
-        return Promises.resolved();
+        return Promises.newSuccess();
     }
 
     @Override
@@ -75,9 +75,9 @@ final class WebSocketChannel implements Channel {
         try {
             _webSocket.close();
         } catch (final Throwable t) {
-            return Promises.rejected(t);
+            return Promises.newFailure(t);
         }
 
-        return Promises.resolved();
+        return Promises.newSuccess();
     }
 }

@@ -18,31 +18,30 @@
 package net.signalr.client.util.concurrent;
 
 /**
- * Defines a promised value.
+ * Represents a catch continuation.
  * 
  * @param <T> The value type.
  */
-public interface Promise<T> {
+public abstract class Catch<T> implements Continuation<T, T> {
 
     /**
-     * Returns a value indicating whether the promise is complete.
+     * Handles the catch continuation.
      * 
-     * @return A value indicating whether the promise is complete.
-     */
-    boolean isComplete();
-
-    /**
-     * Adds the specified completable.
-     * 
-     * @param completable The completable.
-     */
-    void then(Completable<T> completable);
-
-    /**
-     * Adds the specified continuation.
-     * 
-     * @param callback The continuation.
+     * @param cause The cause.
      * @return The result.
+     * @throws Exception
      */
-    <R> Promise<R> then(Continuation<T, R> callback);
+    protected abstract T doCatch(Throwable cause) throws Exception;
+
+    @Override
+    public final void setSuccess(final T value, final Deferred<T> result) throws Exception {
+        result.setSuccess(value);
+    }
+
+    @Override
+    public final void setFailure(final Throwable cause, final Deferred<T> result) throws Exception {
+        final T value = doCatch(cause);
+
+        result.setSuccess(value);
+    }
 }

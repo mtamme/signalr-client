@@ -34,9 +34,9 @@ import net.signalr.client.transport.TransportContext;
 import net.signalr.client.transport.TransportOptions;
 import net.signalr.client.util.AbstractLifecycle;
 import net.signalr.client.util.URIBuilder;
-import net.signalr.client.util.concurrent.Function;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
+import net.signalr.client.util.concurrent.Run;
 
 /**
  * Represents an abstract transport.
@@ -104,12 +104,12 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         try {
             boundRequestBuilder.execute(handler);
         } catch (final Throwable t) {
-            return Promises.rejected(t);
+            return Promises.newFailure(t);
         }
 
-        return handler.getResponse().thenApply(new Function<Response, NegotiationResponse>() {
+        return handler.getResponse().then(new Run<Response, NegotiationResponse>() {
             @Override
-            public NegotiationResponse apply(final Response response) throws Exception {
+            protected NegotiationResponse doRun(final Response response) throws Exception {
                 final JsonMapper mapper = context.getMapper();
                 final String body = response.getResponseBody();
 
@@ -144,12 +144,12 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         try {
             boundRequestBuilder.execute(handler);
         } catch (final Throwable t) {
-            return Promises.rejected(t);
+            return Promises.newFailure(t);
         }
 
-        return handler.getResponse().thenApply(new Function<Response, PingResponse>() {
+        return handler.getResponse().then(new Run<Response, PingResponse>() {
             @Override
-            public PingResponse apply(final Response response) throws Exception {
+            protected PingResponse doRun(final Response response) throws Exception {
                 final JsonMapper mapper = context.getMapper();
                 final String body = response.getResponseBody();
 
@@ -190,12 +190,12 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         try {
             boundRequestBuilder.execute(handler);
         } catch (final Throwable t) {
-            return Promises.rejected(t);
+            return Promises.newFailure(t);
         }
 
-        return handler.getResponse().thenApply(new Function<Response, Void>() {
+        return handler.getResponse().then(new Run<Response, Void>() {
             @Override
-            public Void apply(final Response response) throws Exception {
+            protected Void doRun(final Response response) throws Exception {
                 return null;
             }
         });

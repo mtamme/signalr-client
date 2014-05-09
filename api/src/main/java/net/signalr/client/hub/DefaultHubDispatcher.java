@@ -26,9 +26,10 @@ import org.slf4j.LoggerFactory;
 import net.signalr.client.Connection;
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.Function;
-import net.signalr.client.util.concurrent.OnRejected;
+import net.signalr.client.util.concurrent.OnFailure;
 import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
+import net.signalr.client.util.concurrent.RunAsync;
 
 /**
  * Represents the default hub dispatcher.
@@ -94,7 +95,7 @@ final class DefaultHubDispatcher implements HubDispatcher {
             return;
         }
 
-        deferred.resolve(response);
+        deferred.setSuccess(response);
     }
 
     @Override
@@ -108,18 +109,18 @@ final class DefaultHubDispatcher implements HubDispatcher {
         request.setCallbackId(callbackId);
         final JsonMapper mapper = _connection.getMapper();
         final String message = mapper.toJson(request);
-        final Deferred<HubResponse> deferred = new Deferred<HubResponse>();
+        final Deferred<HubResponse> deferred = Promises.newDeferred();
 
         _responses.put(callbackId, deferred);
 
-        return _connection.send(message).thenCall(new OnRejected<Void>() {
+        return _connection.send(message).then(new OnFailure<Void>() {
             @Override
-            public void onRejected(final Throwable cause) {
+            protected void onFailure(final Throwable cause) throws Exception {
                 _responses.remove(callbackId);
             }
-        }).thenCompose(new Function<Void, Promise<HubResponse>>() {
+        }).then(new RunAsync<Void, HubResponse>() {
             @Override
-            public Promise<HubResponse> apply(final Void value) throws Exception {
+            protected Promise<HubResponse> doRun(final Void value) throws Exception {
                 return deferred;
             }
         });

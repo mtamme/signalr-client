@@ -21,13 +21,6 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 
-import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.http.HttpField;
-import org.eclipse.jetty.http.HttpHeader;
-import org.eclipse.jetty.http.HttpMethod;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
-
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.PingResponse;
@@ -36,9 +29,16 @@ import net.signalr.client.transport.TransportContext;
 import net.signalr.client.transport.TransportOptions;
 import net.signalr.client.util.AbstractLifecycle;
 import net.signalr.client.util.URIBuilder;
-import net.signalr.client.util.concurrent.Function;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
+import net.signalr.client.util.concurrent.Run;
+
+import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.api.Request;
+import org.eclipse.jetty.http.HttpField;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.http.HttpMethod;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 /**
  * Represents an abstract transport.
@@ -110,12 +110,12 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         try {
             request.send(listener);
         } catch (final Throwable t) {
-            return Promises.rejected(t);
+            return Promises.newFailure(t);
         }
 
-        return listener.getResponse().thenApply(new Function<String, NegotiationResponse>() {
+        return listener.getResponse().then(new Run<String, NegotiationResponse>() {
             @Override
-            public NegotiationResponse apply(final String response) throws Exception {
+            protected NegotiationResponse doRun(final String response) throws Exception {
                 final JsonMapper mapper = context.getMapper();
 
                 return mapper.toObject(response, NegotiationResponse.class);
@@ -155,12 +155,12 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         try {
             request.send(listener);
         } catch (final Throwable t) {
-            return Promises.rejected(t);
+            return Promises.newFailure(t);
         }
 
-        return listener.getResponse().thenApply(new Function<String, PingResponse>() {
+        return listener.getResponse().then(new Run<String, PingResponse>() {
             @Override
-            public PingResponse apply(final String response) throws Exception {
+            protected PingResponse doRun(final String response) throws Exception {
                 final JsonMapper mapper = context.getMapper();
 
                 return mapper.toObject(response, PingResponse.class);
@@ -206,12 +206,12 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         try {
             request.send(listener);
         } catch (final Throwable t) {
-            return Promises.rejected(t);
+            return Promises.newFailure(t);
         }
 
-        return listener.getResponse().thenApply(new Function<String, Void>() {
+        return listener.getResponse().then(new Run<String, Void>() {
             @Override
-            public Void apply(final String response) throws Exception {
+            protected Void doRun(final String response) throws Exception {
                 return null;
             }
         });

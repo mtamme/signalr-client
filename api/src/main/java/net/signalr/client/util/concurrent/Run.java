@@ -18,11 +18,31 @@
 package net.signalr.client.util.concurrent;
 
 /**
- * Represents a reject {@link Promise} callback.
+ * Represents a run continuation.
+ * 
+ * @param <T> The value type.
+ * @param <U> The result type.
  */
-public abstract class OnRejected<V> implements Callback<V> {
+public abstract class Run<T, U> implements Continuation<T, U> {
+
+    /**
+     * Handles the run continuation.
+     * 
+     * @param value The value.
+     * @return The result.
+     * @throws Exception
+     */
+    protected abstract U doRun(T value) throws Exception;
 
     @Override
-    public final void onResolved(final V value) {
+    public final void setSuccess(final T value, final Deferred<U> result) throws Exception {
+        final U newValue = doRun(value);
+
+        result.setSuccess(newValue);
+    }
+
+    @Override
+    public final void setFailure(final Throwable cause, final Deferred<U> result) throws Exception {
+        result.setFailure(cause);
     }
 }

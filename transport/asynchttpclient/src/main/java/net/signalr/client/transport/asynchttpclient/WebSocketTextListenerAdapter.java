@@ -21,6 +21,7 @@ import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
 
 import com.ning.http.client.websocket.WebSocket;
 import com.ning.http.client.websocket.WebSocketTextListener;
@@ -51,7 +52,7 @@ final class WebSocketTextListenerAdapter implements WebSocketTextListener {
         }
 
         _handler = handler;
-        _channel = new Deferred<Channel>();
+        _channel = Promises.newDeferred();
     }
 
     /**
@@ -67,7 +68,7 @@ final class WebSocketTextListenerAdapter implements WebSocketTextListener {
     public void onOpen(final WebSocket webSocket) {
         final Channel channel = new WebSocketChannel(_handler, webSocket);
 
-        if (_channel.resolve(channel)) {
+        if (_channel.trySuccess(channel)) {
             _handler.handleChannelOpened();
         }
     }
@@ -88,7 +89,7 @@ final class WebSocketTextListenerAdapter implements WebSocketTextListener {
 
     @Override
     public void onError(final Throwable cause) {
-        if (!_channel.reject(cause)) {
+        if (!_channel.tryFailure(cause)) {
             _handler.handleError(cause);
         }
     }

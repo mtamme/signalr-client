@@ -21,6 +21,8 @@ import java.io.IOException;
 
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
+
 import org.eclipse.jetty.client.api.Response;
 import org.eclipse.jetty.client.api.Result;
 import org.eclipse.jetty.client.util.BufferingResponseListener;
@@ -39,7 +41,7 @@ final class ResponseListener extends BufferingResponseListener {
      * Initializes a new instance of the {@link ResponseListener} class.
      */
     public ResponseListener() {
-        _response = new Deferred<String>();
+        _response = Promises.newDeferred();
     }
 
     /**
@@ -62,11 +64,11 @@ final class ResponseListener extends BufferingResponseListener {
         if (statusCode != 200) {
             final Throwable cause = new IOException("The request failed with HTTP status " + statusCode + ": " + response.getReason());
 
-            _response.reject(cause);
+            _response.setFailure(cause);
         } else {
             final String content = getContentAsString();
 
-            _response.resolve(content);
+            _response.setSuccess(content);
         }
     }
 
@@ -75,7 +77,7 @@ final class ResponseListener extends BufferingResponseListener {
         final Throwable failure = result.getFailure();
 
         if (failure != null) {
-            _response.reject(failure);
+            _response.setFailure(failure);
         } else {
             final Response response = result.getResponse();
 

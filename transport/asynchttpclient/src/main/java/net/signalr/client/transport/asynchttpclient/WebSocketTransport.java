@@ -106,7 +106,7 @@ public final class WebSocketTransport extends AbstractTransport {
         try {
             boundRequestBuilder.execute(builder.build());
         } catch (final IOException e) {
-            return Promises.rejected(e);
+            return Promises.newFailure(e);
         }
 
         return listener.getChannel();

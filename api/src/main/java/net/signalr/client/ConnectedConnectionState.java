@@ -23,12 +23,14 @@ import org.slf4j.LoggerFactory;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.TransportManager;
-import net.signalr.client.util.concurrent.Callback;
+import net.signalr.client.util.concurrent.Catch;
 import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.Function;
-import net.signalr.client.util.concurrent.OnCompleted;
+import net.signalr.client.util.concurrent.OnComplete;
+import net.signalr.client.util.concurrent.OnFailure;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
+import net.signalr.client.util.concurrent.Run;
+import net.signalr.client.util.concurrent.RunAsync;
 
 /**
  * Represents the connected connection state.
@@ -90,12 +92,12 @@ final class ConnectedConnectionState implements ConnectionState {
 
     @Override
     public Promise<Void> start(final ConnectionContext context, final ConnectionHandler handler) {
-        return Promises.resolved();
+        return Promises.newSuccess();
     }
 
     @Override
     public Promise<Void> stop(final ConnectionContext context) {
-        final Deferred<Void> deferred = new Deferred<Void>();
+        final Deferred<Void> deferred = Promises.newDeferred();
         final DisconnectingConnectionState disconnecting = new DisconnectingConnectionState(deferred);
 
         if (!context.tryChangeState(this, disconnecting)) {
@@ -109,18 +111,18 @@ final class ConnectedConnectionState implements ConnectionState {
 
         logger.info("Closing channel...");
 
-        _channel.close().thenCompose(new Function<Void, Promise<Void>>() {
+        _channel.close().then(new RunAsync<Void, Void>() {
             @Override
-            public Promise<Void> apply(final Void value) throws Exception {
+            protected Promise<Void> doRun(final Void value) throws Exception {
                 logger.info("Aborting transport...");
 
                 final Transport transport = manager.getTransport();
 
                 return transport.abort(context);
             }
-        }).thenCall(new OnCompleted<Void>() {
+        }).then(new OnComplete<Void>() {
             @Override
-            public void onCompleted(final Void value, final Throwable cause) {
+            protected void onComplete(final Void value, final Throwable cause) throws Exception {
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
                 context.setTransportOptions(null);
@@ -128,14 +130,14 @@ final class ConnectedConnectionState implements ConnectionState {
                 context.changeState(disconnecting, disconnected);
                 _handler.onDisconnected();
             }
-        }).thenPropagate(deferred);
+        }).then(deferred);
 
         return deferred;
     }
 
     @Override
     public Promise<Void> reconnect(final ConnectionContext context) {
-        final Deferred<Void> deferred = new Deferred<Void>();
+        final Deferred<Void> deferred = Promises.newDeferred();
         final ReconnectingConnectionState reconnecting = new ReconnectingConnectionState(deferred);
 
         if (!context.tryChangeState(this, reconnecting)) {
@@ -147,26 +149,33 @@ final class ConnectedConnectionState implements ConnectionState {
 
         logger.info("Closing channel...");
 
-        _channel.close().thenCompose(new Function<Void, Promise<Channel>>() {
+        _channel.close().then(new Catch<Void>() {
             @Override
-            public Promise<Channel> apply(final Void value) throws Exception {
+            protected Void doCatch(final Throwable cause) throws Exception {
+                return null;
+            }
+        }).then(new RunAsync<Void, Channel>() {
+            @Override
+            protected Promise<Channel> doRun(final Void value) throws Exception {
                 logger.info("Reconnecting transport...");
 
                 final Transport transport = manager.getTransport();
 
                 return transport.connect(context, manager, true);
             }
-        }).thenCall(new Callback<Channel>() {
+        }).then(new Run<Channel, Void>() {
             @Override
-            public void onResolved(final Channel channel) {
+            protected Void doRun(final Channel channel) throws Exception {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(_handler, channel);
 
                 context.changeState(reconnecting, connected);
                 _handler.onReconnected();
-            }
 
+                return null;
+            }
+        }).then(new OnFailure<Void>() {
             @Override
-            public void onRejected(final Throwable cause) {
+            protected void onFailure(final Throwable cause) throws Exception {
                 _handler.onError(cause);
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
@@ -174,7 +183,7 @@ final class ConnectedConnectionState implements ConnectionState {
                 _handler.onDisconnected();
                 manager.stop(context);
             }
-        }).thenPropagate(deferred);
+        }).then(deferred);
 
         return deferred;
     }

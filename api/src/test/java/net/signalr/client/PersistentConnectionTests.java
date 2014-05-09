@@ -46,7 +46,7 @@ public final class PersistentConnectionTests {
         final PersistentConnection connection = new PersistentConnection(_connectionContext);
 
         expect(_connectionContext.getState()).andReturn(_connectionState);
-        expect(_connectionState.start(_connectionContext, _connectionHandler)).andReturn(Promises.resolved());
+        expect(_connectionState.start(_connectionContext, _connectionHandler)).andReturn(Promises.newSuccess());
         replay(_connectionContext, _connectionState, _connectionHandler);
 
         // Act
@@ -54,7 +54,7 @@ public final class PersistentConnectionTests {
 
         // Assert
         verify(_connectionContext, _connectionState, _connectionHandler);
-        assertTrue(start.isCompleted());
+        assertTrue(start.isComplete());
     }
 
     @Test
@@ -63,7 +63,7 @@ public final class PersistentConnectionTests {
         final PersistentConnection connection = new PersistentConnection(_connectionContext);
 
         expect(_connectionContext.getState()).andReturn(_connectionState);
-        expect(_connectionState.stop(_connectionContext)).andReturn(Promises.resolved());
+        expect(_connectionState.stop(_connectionContext)).andReturn(Promises.newSuccess());
         replay(_connectionContext, _connectionState);
 
         // Act
@@ -71,7 +71,7 @@ public final class PersistentConnectionTests {
 
         // Assert
         verify(_connectionContext, _connectionState);
-        assertTrue(stop.isCompleted());
+        assertTrue(stop.isComplete());
     }
 
     @Test
@@ -80,7 +80,7 @@ public final class PersistentConnectionTests {
         final PersistentConnection connection = new PersistentConnection(_connectionContext);
 
         expect(_connectionContext.getState()).andReturn(_connectionState);
-        expect(_connectionState.send(_connectionContext, "Message")).andReturn(Promises.resolved());
+        expect(_connectionState.send(_connectionContext, "Message")).andReturn(Promises.newSuccess());
         replay(_connectionContext, _connectionState);
 
         // Act
@@ -88,6 +88,6 @@ public final class PersistentConnectionTests {
 
         // Assert
         verify(_connectionContext, _connectionState);
-        assertTrue(send.isCompleted());
+        assertTrue(send.isComplete());
     }
 }

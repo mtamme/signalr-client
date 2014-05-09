@@ -128,7 +128,7 @@ public final class WebSocketTransport extends AbstractTransport {
         try {
             _client.connect(listener, uri, request);
         } catch (final Exception e) {
-            return Promises.rejected(e);
+            return Promises.newFailure(e);
         }
 
         return listener.getChannel();

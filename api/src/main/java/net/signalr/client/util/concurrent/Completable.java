@@ -18,23 +18,25 @@
 package net.signalr.client.util.concurrent;
 
 /**
- * Defines a {@link Promise} callback.
+ * Defines a completable.
  * 
- * @param <V> The value type
+ * @param <T> The value type.
  */
-public interface Callback<V> {
+public interface Completable<T> {
 
     /**
-     * Invoked when the {@link Promise} was resolved.
+     * Completes the completable with the specified value.
      * 
      * @param value The value.
+     * @throws IllegalStateException
      */
-    void onResolved(V value);
+    void setSuccess(T value);
 
     /**
-     * Invoked when the {@link Promise} was rejected.
+     * Completes the completable with the specified cause.
      * 
      * @param cause The cause.
+     * @throws IllegalStateException
      */
-    void onRejected(Throwable cause);
+    void setFailure(Throwable cause);
 }

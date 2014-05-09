@@ -23,18 +23,18 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Represents a {@link Callback} which can be awaited.
+ * Represents a completable which can be awaited.
  * 
- * @param <V> The value type.
+ * @param <T> The value type.
  */
-final class Awaiter<V> implements Callback<V> {
+final class Awaiter<T> implements Completable<T> {
 
     /**
-     * Defines a result.
+     * Defines a value.
      * 
      * @param <V> The value type.
      */
-    private interface Result<V> {
+    private static interface Value<V> {
         /**
          * Returns the value.
          * 
@@ -45,31 +45,31 @@ final class Awaiter<V> implements Callback<V> {
     }
 
     /**
-     * The completion count down.
+     * The count down latch.
      */
-    private final CountDownLatch _completion;
+    private final CountDownLatch _latch;
 
     /**
-     * The result.
+     * The value.
      */
-    private Result<V> _result;
+    private Value<T> _value;
 
     /**
      * Initializes a new instance of the {@link Awaiter} class.
      */
     public Awaiter() {
-        _completion = new CountDownLatch(1);
+        _latch = new CountDownLatch(1);
 
-        _result = null;
+        _value = null;
     }
 
     /**
-     * Returns a value indicating whether a {@link Promise} completed.
+     * Returns a value indicating whether the awaiter is complete.
      * 
-     * @return A value indicating whether a {@link Promise} completed.
+     * @return A value indicating whether the awaiter is complete.
      */
-    public boolean isCompleted() {
-        final long count = _completion.getCount();
+    public boolean isComplete() {
+        final long count = _latch.getCount();
 
         return (count == 0);
     }
@@ -81,10 +81,10 @@ final class Awaiter<V> implements Callback<V> {
      * @throws InterruptedException
      * @throws ExecutionException
      */
-    public V get() throws InterruptedException, ExecutionException {
-        _completion.await();
+    public T get() throws InterruptedException, ExecutionException {
+        _latch.await();
 
-        return _result.get();
+        return _value.get();
     }
 
     /**
@@ -97,35 +97,33 @@ final class Awaiter<V> implements Callback<V> {
      * @throws ExecutionException
      * @throws TimeoutException
      */
-    public V get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-        if (!_completion.await(timeout, unit)) {
+    public T get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+        if (!_latch.await(timeout, unit)) {
             throw new TimeoutException("A timeout occured while waiting for completion");
         }
 
-        return _result.get();
+        return _value.get();
     }
 
     @Override
-    public void onResolved(final V value) {
-        _result = new Result<V>() {
+    public void setSuccess(final T value) {
+        _value = new Value<T>() {
             @Override
-            public V get() throws ExecutionException {
+            public T get() throws ExecutionException {
                 return value;
             }
         };
-
-        _completion.countDown();
+        _latch.countDown();
     }
 
     @Override
-    public void onRejected(final Throwable cause) {
-        _result = new Result<V>() {
+    public void setFailure(final Throwable cause) {
+        _value = new Value<T>() {
             @Override
-            public V get() throws ExecutionException {
+            public T get() throws ExecutionException {
                 throw new ExecutionException(cause);
             }
         };
-
-        _completion.countDown();
+        _latch.countDown();
     }
 }

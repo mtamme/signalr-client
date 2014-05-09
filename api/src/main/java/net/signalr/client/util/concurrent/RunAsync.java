@@ -18,19 +18,31 @@
 package net.signalr.client.util.concurrent;
 
 /**
- * Defines a function.
+ * Represents an asynchronous run continuation.
  * 
- * @param <V> The value type.
- * @param <R> The result type.
+ * @param <T> The value type.
+ * @param <U> The result type.
  */
-public interface Function<V, R> {
+public abstract class RunAsync<T, U> implements Continuation<T, U> {
 
     /**
-     * Applies the {@link Function} to the specified value.
+     * Handles the asynchronous run continuation.
      * 
      * @param value The value.
      * @return The result.
      * @throws Exception
      */
-    R apply(V value) throws Exception;
+    protected abstract Promise<U> doRun(T value) throws Exception;
+
+    @Override
+    public final void setSuccess(final T value, final Deferred<U> result) throws Exception {
+        final Promise<U> promise = doRun(value);
+
+        promise.then(result);
+    }
+
+    @Override
+    public final void setFailure(final Throwable cause, final Deferred<U> result) throws Exception {
+        result.setFailure(cause);
+    }
 }

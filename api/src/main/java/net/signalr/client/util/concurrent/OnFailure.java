@@ -18,31 +18,28 @@
 package net.signalr.client.util.concurrent;
 
 /**
- * Defines a promised value.
+ * Represents a failure continuation.
  * 
  * @param <T> The value type.
  */
-public interface Promise<T> {
+public abstract class OnFailure<T> implements Continuation<T, T> {
 
     /**
-     * Returns a value indicating whether the promise is complete.
+     * Handles the failure continuation.
      * 
-     * @return A value indicating whether the promise is complete.
+     * @param cause The cause.
+     * @throws Exception
      */
-    boolean isComplete();
+    protected abstract void onFailure(Throwable cause) throws Exception;
 
-    /**
-     * Adds the specified completable.
-     * 
-     * @param completable The completable.
-     */
-    void then(Completable<T> completable);
+    @Override
+    public final void setSuccess(final T value, final Deferred<T> result) throws Exception {
+        result.setSuccess(value);
+    }
 
-    /**
-     * Adds the specified continuation.
-     * 
-     * @param callback The continuation.
-     * @return The result.
-     */
-    <R> Promise<R> then(Continuation<T, R> callback);
+    @Override
+    public final void setFailure(final Throwable cause, final Deferred<T> result) throws Exception {
+        onFailure(cause);
+        result.setFailure(cause);
+    }
 }

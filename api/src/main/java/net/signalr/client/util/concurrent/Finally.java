@@ -18,25 +18,34 @@
 package net.signalr.client.util.concurrent;
 
 /**
- * Represents a complete {@link Promise} callback.
+ * Represents a finally continuation.
+ * 
+ * @param <T> The value type.
+ * @param <U> The result type.
  */
-public abstract class OnCompleted<V> implements Callback<V> {
+public abstract class Finally<T, U> implements Continuation<T, U> {
 
     /**
-     * Invoked when the {@link Promise} was completed.
+     * Handles the finally continuation.
      * 
      * @param value The value.
      * @param cause The cause.
+     * @return The result.
+     * @throws Exception
      */
-    public abstract void onCompleted(V value, Throwable cause);
+    protected abstract U doFinally(T value, Throwable cause) throws Exception;
 
     @Override
-    public final void onResolved(final V value) {
-        onCompleted(value, null);
+    public final void setSuccess(final T value, final Deferred<U> result) throws Exception {
+        final U newValue = doFinally(value, null);
+
+        result.setSuccess(newValue);
     }
 
     @Override
-    public final void onRejected(final Throwable cause) {
-        onCompleted(null, cause);
+    public final void setFailure(final Throwable cause, final Deferred<U> result) throws Exception {
+        final U newValue = doFinally(null, cause);
+
+        result.setSuccess(newValue);
     }
 }
