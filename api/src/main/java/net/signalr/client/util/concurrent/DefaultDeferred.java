@@ -132,7 +132,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
                 try {
                     continuation.setSuccess(value, deferred);
                 } catch (final Throwable t) {
-                    deferred.tryFailure(t);
+                    deferred.setFailure(t);
                 }
             }
 
@@ -142,7 +142,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
                     continuation.setFailure(cause, deferred);
                 } catch (final Throwable t) {
                     t.addSuppressed(cause);
-                    deferred.tryFailure(t);
+                    deferred.setFailure(t);
                 }
             }
         });
