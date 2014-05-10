@@ -27,17 +27,12 @@ import org.slf4j.LoggerFactory;
  * 
  * @param <T> The value type.
  */
-final class ExecutorCompletion<T> implements Completion<T> {
+abstract class ExecutorCompletion<T> implements Completion<T> {
 
     /**
      * The private logger.
      */
     private static final Logger logger = LoggerFactory.getLogger(ExecutorCompletion.class);
-
-    /**
-     * The completion.
-     */
-    private final Completion<? super T> _completion;
 
     /**
      * The executor.
@@ -47,30 +42,39 @@ final class ExecutorCompletion<T> implements Completion<T> {
     /**
      * Initializes a new instance of the {@link ExecutorCompletion} class.
      * 
-     * @param completion The completion.
      * @param executor The executor.
      */
-    public ExecutorCompletion(final Completion<? super T> completion, final Executor executor) {
-        if (completion == null) {
-            throw new IllegalArgumentException("Completion must not be null");
-        }
+    protected ExecutorCompletion(final Executor executor) {
         if (executor == null) {
             throw new IllegalArgumentException("Executor must not e null");
         }
 
-        _completion = completion;
         _executor = executor;
     }
 
+    /**
+     * Handles the success completion.
+     * 
+     * @param value The value.
+     */
+    protected abstract void doSuccess(T value);
+
+    /**
+     * Handles the failure completion.
+     * 
+     * @param cause The cause.
+     */
+    protected abstract void doFailure(Throwable cause);
+
     @Override
-    public void setSuccess(final T value) {
+    public final void setSuccess(final T value) {
         _executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    _completion.setSuccess(value);
+                    doSuccess(value);
                 } catch (final Throwable t) {
-                    logger.warn("Failed to complete completion", t);
+                    logger.warn("Failed to execute completion", t);
                 }
 
             }
@@ -78,14 +82,14 @@ final class ExecutorCompletion<T> implements Completion<T> {
     }
 
     @Override
-    public void setFailure(final Throwable cause) {
+    public final void setFailure(final Throwable cause) {
         _executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    _completion.setFailure(cause);
+                    doFailure(cause);
                 } catch (final Throwable t) {
-                    logger.warn("Failed to complete completion", t);
+                    logger.warn("Failed to execute completion", t);
                 }
             }
         });
