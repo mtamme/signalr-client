@@ -18,6 +18,7 @@
 package net.signalr.client.util.concurrent;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -119,6 +120,15 @@ final class DefaultDeferred<T> implements Deferred<T> {
     }
 
     @Override
+    public void then(final Completion<T> completion, final Executor executor) {
+        if (completion == null) {
+            throw new IllegalArgumentException("Completion must not be null");
+        }
+
+        _state.get().then(new ExecutorCompletion<T>(executor, completion));
+    }
+
+    @Override
     public final <R> Promise<R> then(final Continuation<T, R> continuation) {
         if (continuation == null) {
             throw new IllegalArgumentException("Continuation must not be null");
@@ -146,6 +156,38 @@ final class DefaultDeferred<T> implements Deferred<T> {
                 }
             }
         });
+
+        return deferred;
+    }
+
+    @Override
+    public <R> Promise<R> then(final Continuation<T, R> continuation, final Executor executor) {
+        if (continuation == null) {
+            throw new IllegalArgumentException("Continuation must not be null");
+        }
+
+        final Deferred<R> deferred = new DefaultDeferred<R>();
+
+        _state.get().then(new ExecutorCompletion<T>(executor, new Completion<T>() {
+            @Override
+            public void setSuccess(final T value) {
+                try {
+                    continuation.setSuccess(value, deferred);
+                } catch (final Throwable t) {
+                    deferred.setFailure(t);
+                }
+            }
+
+            @Override
+            public void setFailure(final Throwable cause) {
+                try {
+                    continuation.setFailure(cause, deferred);
+                } catch (final Throwable t) {
+                    t.addSuppressed(cause);
+                    deferred.setFailure(t);
+                }
+            }
+        }));
 
         return deferred;
     }
