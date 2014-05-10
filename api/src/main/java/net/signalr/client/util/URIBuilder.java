@@ -254,6 +254,7 @@ public final class URIBuilder {
         try {
             return URLEncoder.encode(value, DEFAULT_ENCODING);
         } catch (final UnsupportedEncodingException e) {
+            // Unlikely since the default encoding should be always supported.
             return null;
         }
     }
