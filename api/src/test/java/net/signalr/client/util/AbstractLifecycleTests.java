@@ -55,10 +55,17 @@ public final class AbstractLifecycleTests {
         replay(lifecycle);
 
         // Act
-        lifecycle.start(1);
+        LifecycleException exception = null;
+
+        try {
+            lifecycle.start(1);
+        } catch (final LifecycleException e) {
+            exception = e;
+        }
 
         // Assert
         verify(lifecycle);
+        assertNotNull(exception);
         assertFalse(lifecycle.isRunning());
     }
 
@@ -130,10 +137,17 @@ public final class AbstractLifecycleTests {
         lifecycle.start(1);
 
         // Act
-        lifecycle.stop(2);
+        LifecycleException exception = null;
+
+        try {
+            lifecycle.stop(2);
+        } catch (final LifecycleException e) {
+            exception = e;
+        }
 
         // Assert
         verify(lifecycle);
+        assertNotNull(exception);
         assertFalse(lifecycle.isRunning());
     }
 
