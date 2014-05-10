@@ -63,6 +63,26 @@ public final class Promises {
     }
 
     /**
+     * Returns a new promise based on the execution of the specified runnable.
+     * 
+     * @param runnable The runnable.
+     * @return The promise.
+     */
+    public static Promise<Void> newPromise(final Runnable runnable) {
+        if (runnable == null) {
+            throw new IllegalArgumentException("Runnable must not be null");
+        }
+
+        try {
+            runnable.run();
+        } catch (final Throwable t) {
+            return newFailure(t);
+        }
+
+        return newSuccess();
+    }
+
+    /**
      * Returns a new deferred.
      * 
      * @return The deferred.
