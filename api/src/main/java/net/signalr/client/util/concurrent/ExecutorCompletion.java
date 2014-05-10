@@ -50,7 +50,7 @@ final class ExecutorCompletion<T> implements Completion<T> {
      * @param executor The executor.
      * @param completion The completion.
      */
-    public ExecutorCompletion(Executor executor, Completion<? super T> completion) {
+    public ExecutorCompletion(final Executor executor, final Completion<? super T> completion) {
         if (executor == null) {
             throw new IllegalArgumentException("Executor must not e null");
         }
@@ -70,7 +70,7 @@ final class ExecutorCompletion<T> implements Completion<T> {
                 try {
                     _completion.setSuccess(value);
                 } catch (final Throwable t) {
-                    logger.warn("Failed to complete", t);
+                    logger.warn("Failed to complete completion", t);
                 }
 
             }
@@ -85,7 +85,7 @@ final class ExecutorCompletion<T> implements Completion<T> {
                 try {
                     _completion.setFailure(cause);
                 } catch (final Throwable t) {
-                    logger.warn("Failed to complete", t);
+                    logger.warn("Failed to complete completion", t);
                 }
             }
         });
