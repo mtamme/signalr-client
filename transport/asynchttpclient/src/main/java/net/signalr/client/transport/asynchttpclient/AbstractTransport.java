@@ -61,12 +61,21 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     /**
      * The asynchronous HTTP client.
      */
-    protected final AsyncHttpClient _client;
+    private AsyncHttpClient _httpClient;
 
     /**
      * Initializes a new instance of the {@link AbstractTransport} class.
      */
     public AbstractTransport() {
+        _httpClient = null;
+    }
+
+    /**
+     * Creates a new HTTP client.
+     * 
+     * @return The new HTTP client.
+     */
+    protected AsyncHttpClient newHttpClient() {
         final Builder builder = new Builder();
 
         builder.setAllowPoolingConnection(true);
@@ -74,11 +83,47 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         builder.setCompressionEnabled(true);
         builder.setUserAgent(USER_AGENT);
 
-        _client = new AsyncHttpClient(builder.build());
+        return new AsyncHttpClient(builder.build());
+    }
+
+    /**
+     * Prepares a GET request.
+     * 
+     * @param uri The request URI.
+     * @return The request builder.
+     */
+    protected final BoundRequestBuilder prepareGet(final URI uri) {
+        if (uri == null) {
+            throw new IllegalArgumentException("URI must not be null");
+        }
+
+        if (_httpClient == null) {
+            throw new IllegalStateException("Transport has not been started");
+        }
+
+        return _httpClient.prepareGet(uri.toString());
+    }
+
+    /**
+     * Prepares a POST request.
+     * 
+     * @param uri The request URI.
+     * @return The request builder.
+     */
+    protected final BoundRequestBuilder preparePost(final URI uri) {
+        if (uri == null) {
+            throw new IllegalArgumentException("URI must not be null");
+        }
+
+        if (_httpClient == null) {
+            throw new IllegalStateException("Transport has not been started");
+        }
+
+        return _httpClient.preparePost(uri.toString());
     }
 
     @Override
-    public Promise<NegotiationResponse> negotiate(final TransportContext context) {
+    public final Promise<NegotiationResponse> negotiate(final TransportContext context) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
@@ -93,7 +138,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         final URI uri = uriBuilder.build();
 
         // Setup request.
-        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uri.toString());
+        final BoundRequestBuilder boundRequestBuilder = prepareGet(uri);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         boundRequestBuilder.setHeaders(headers);
@@ -119,7 +164,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     }
 
     @Override
-    public Promise<PingResponse> ping(final TransportContext context) {
+    public final Promise<PingResponse> ping(final TransportContext context) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
@@ -133,7 +178,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         final URI uri = uriBuilder.build();
 
         // Setup request.
-        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uri.toString());
+        final BoundRequestBuilder boundRequestBuilder = prepareGet(uri);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         boundRequestBuilder.setHeaders(headers);
@@ -159,7 +204,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     }
 
     @Override
-    public Promise<Void> abort(final TransportContext context) {
+    public final Promise<Void> abort(final TransportContext context) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
@@ -177,7 +222,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         final URI uri = uriBuilder.build();
 
         // Setup request.
-        final BoundRequestBuilder boundRequestBuilder = _client.preparePost(uri.toString());
+        final BoundRequestBuilder boundRequestBuilder = preparePost(uri);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         boundRequestBuilder.setHeaders(headers);
@@ -202,10 +247,12 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     }
 
     @Override
-    protected void doStart(final TransportContext context) {
+    protected final void doStart(final TransportContext context) {
+        _httpClient = newHttpClient();
     }
 
     @Override
-    protected void doStop(final TransportContext context) {
+    protected final void doStop(final TransportContext context) {
+        _httpClient.close();
     }
 }

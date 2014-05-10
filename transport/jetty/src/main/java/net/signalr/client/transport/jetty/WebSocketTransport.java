@@ -21,19 +21,22 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 
+import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
 import net.signalr.client.transport.TransportContext;
+import net.signalr.client.transport.TransportException;
 import net.signalr.client.transport.TransportOptions;
 import net.signalr.client.util.URIBuilder;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
 
 /**
- * Represents the web socket transport.
+ * Represents the WebSocket transport.
  */
 public final class WebSocketTransport extends AbstractTransport {
 
@@ -58,22 +61,40 @@ public final class WebSocketTransport extends AbstractTransport {
     private static final String NAME = "webSockets";
 
     /**
-     * The web socket client.
+     * The WebSocket client.
      */
-    private final WebSocketClient _client;
+    private final WebSocketClient _webSocketClient;
 
     /**
-     * Initializes a new instance of the {@link WebSocketTransport} class
+     * Initializes a new instance of the {@link WebSocketTransport} class.
      */
     public WebSocketTransport() {
-        _client = new WebSocketClient(_sslContextFactory);
+        this(new SslContextFactory());
+    }
 
-        // FIXME
-        try {
-            _client.start();
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * Initializes a new instance of the {@link WebSocketTransport} class.
+     * 
+     * @param sslContextFactory The SSL context factory.
+     */
+    public WebSocketTransport(final SslContextFactory sslContextFactory) {
+        this(new HttpClient(sslContextFactory), new WebSocketClient(sslContextFactory));
+    }
+
+    /**
+     * Initializes a new instance of the {@link WebSocketTransport} class.
+     * 
+     * @param httpClient The HTTP client.
+     * @param webSocketClient The WebSocket client.
+     */
+    public WebSocketTransport(final HttpClient httpClient, final WebSocketClient webSocketClient) {
+        super(httpClient);
+
+        if (webSocketClient == null) {
+            throw new IllegalArgumentException("WebSocket client must not be null");
         }
+
+        _webSocketClient = webSocketClient;
     }
 
     @Override
@@ -126,11 +147,33 @@ public final class WebSocketTransport extends AbstractTransport {
         final WebSocketListenerAdapter listener = new WebSocketListenerAdapter(handler);
 
         try {
-            _client.connect(listener, uri, request);
+            _webSocketClient.connect(listener, uri, request);
         } catch (final Exception e) {
             return Promises.newFailure(e);
         }
 
         return listener.getChannel();
+    }
+
+    @Override
+    protected void doStart(final TransportContext context) {
+        try {
+            _webSocketClient.start();
+        } catch (final Exception e) {
+            throw new TransportException("Failed to start transport", e);
+        } finally {
+            super.doStart(context);
+        }
+    }
+
+    @Override
+    protected void doStop(final TransportContext context) {
+        try {
+            _webSocketClient.stop();
+        } catch (final Exception e) {
+            throw new TransportException("Failed to stop transport", e);
+        } finally {
+            super.doStop(context);
+        }
     }
 }

@@ -26,6 +26,7 @@ import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.PingResponse;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportContext;
+import net.signalr.client.transport.TransportException;
 import net.signalr.client.transport.TransportOptions;
 import net.signalr.client.util.AbstractLifecycle;
 import net.signalr.client.util.URIBuilder;
@@ -38,7 +39,6 @@ import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpField;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpMethod;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 /**
  * Represents an abstract transport.
@@ -51,34 +51,41 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     protected static final String USER_AGENT = "SignalR-Client/0.1 (Java; Jetty)";
 
     /**
-     * The SSL context factory.
-     */
-    protected final SslContextFactory _sslContextFactory;
-
-    /**
      * The HTTP client.
      */
-    protected final HttpClient _client;
+    private final HttpClient _httpClient;
 
     /**
      * Initializes a new instance of the {@link AbstractTransport} class.
+     * 
+     * @param httpClient The HTTP client.
      */
-    public AbstractTransport() {
-        _sslContextFactory = new SslContextFactory();
-        _client = new HttpClient(_sslContextFactory);
-        _client.setFollowRedirects(false);
-        _client.setUserAgentField(new HttpField(HttpHeader.USER_AGENT, USER_AGENT));
-
-        // FIXME
-        try {
-            _client.start();
-        } catch (Exception e) {
-            e.printStackTrace();
+    protected AbstractTransport(final HttpClient httpClient) {
+        if (httpClient == null) {
+            throw new IllegalArgumentException("HTTP client must not be null");
         }
+
+        _httpClient = httpClient;
+        _httpClient.setFollowRedirects(false);
+        _httpClient.setUserAgentField(new HttpField(HttpHeader.USER_AGENT, USER_AGENT));
+    }
+
+    /**
+     * Returns a new request.
+     * 
+     * @param uri The request URI.
+     * @return The request.
+     */
+    protected final Request newRequest(final URI uri) {
+        if (uri == null) {
+            throw new IllegalArgumentException("URI must not be null");
+        }
+
+        return _httpClient.newRequest(uri);
     }
 
     @Override
-    public Promise<NegotiationResponse> negotiate(final TransportContext context) {
+    public final Promise<NegotiationResponse> negotiate(final TransportContext context) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
@@ -93,7 +100,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         final URI uri = uriBuilder.build();
 
         // Setup request.
-        final Request request = _client.newRequest(uri).method(HttpMethod.GET);
+        final Request request = newRequest(uri).method(HttpMethod.GET);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         for (final Map.Entry<String, Collection<String>> header : headers.entrySet()) {
@@ -124,7 +131,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     }
 
     @Override
-    public Promise<PingResponse> ping(final TransportContext context) {
+    public final Promise<PingResponse> ping(final TransportContext context) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
@@ -138,7 +145,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         final URI uri = uriBuilder.build();
 
         // Setup request.
-        final Request request = _client.newRequest(uri).method(HttpMethod.GET);
+        final Request request = newRequest(uri).method(HttpMethod.GET);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         for (final Map.Entry<String, Collection<String>> header : headers.entrySet()) {
@@ -169,7 +176,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     }
 
     @Override
-    public Promise<Void> abort(final TransportContext context) {
+    public final Promise<Void> abort(final TransportContext context) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
@@ -187,7 +194,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         final URI uri = uriBuilder.build();
 
         // Setup request.
-        final Request request = _client.newRequest(uri).method(HttpMethod.POST);
+        final Request request = newRequest(uri).method(HttpMethod.POST);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         for (final Map.Entry<String, Collection<String>> header : headers.entrySet()) {
@@ -219,9 +226,19 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
 
     @Override
     protected void doStart(final TransportContext context) {
+        try {
+            _httpClient.start();
+        } catch (final Exception e) {
+            throw new TransportException("Failed to start transport", e);
+        }
     }
 
     @Override
     protected void doStop(final TransportContext context) {
+        try {
+            _httpClient.stop();
+        } catch (final Exception e) {
+            throw new TransportException("Failed to stop transport", e);
+        }
     }
 }

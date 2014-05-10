@@ -17,6 +17,8 @@
 
 package net.signalr.client;
 
+import java.util.concurrent.Executors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +28,7 @@ import net.signalr.client.transport.TransportManager;
 import net.signalr.client.util.concurrent.Catch;
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.OnComplete;
+import net.signalr.client.util.concurrent.OnFailure;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
 import net.signalr.client.util.concurrent.Apply;
@@ -102,15 +105,23 @@ final class ConnectedConnectionState implements ConnectionState {
         if (!context.tryChangeState(this, disconnecting)) {
             return context.getState().stop(context);
         }
-
-        _handler.onDisconnecting();
         final TransportManager manager = context.getTransportManager();
+        final Transport transport = manager.getTransport();
 
-        manager.stop(context);
+        Promises.newPromise(new Runnable() {
+            @Override
+            public void run() {
+                _handler.onDisconnecting();
+                manager.stop(context);
+            }
+        }).then(new Compose<Void, Void>() {
+            @Override
+            protected Promise<Void> doCompose(final Void value) throws Exception {
+                logger.info("Closing channel...");
 
-        logger.info("Closing channel...");
-
-        _channel.close().then(new Catch<Void>() {
+                return _channel.close();
+            }
+        }).then(new Catch<Void>() {
             @Override
             protected Void doCatch(final Throwable cause) throws Exception {
                 _handler.onError(cause);
@@ -120,8 +131,6 @@ final class ConnectedConnectionState implements ConnectionState {
             @Override
             protected Promise<Void> doCompose(final Void value) throws Exception {
                 logger.info("Aborting transport...");
-
-                final Transport transport = manager.getTransport();
 
                 return transport.abort(context);
             }
@@ -138,7 +147,13 @@ final class ConnectedConnectionState implements ConnectionState {
                 context.changeState(disconnecting, disconnected);
                 _handler.onDisconnected();
             }
-        }).then(deferred);
+        }).then(new OnComplete<Void>() {
+            @Override
+            protected void onComplete(final Void value, final Throwable cause) throws Exception {
+                transport.stop(context);
+            }
+        }, Executors.newCachedThreadPool()).then(deferred);
+        // FIXME Don't create new executor.
 
         return deferred;
     }
@@ -151,13 +166,22 @@ final class ConnectedConnectionState implements ConnectionState {
         if (!context.tryChangeState(this, reconnecting)) {
             return context.getState().reconnect(context);
         }
-
-        _handler.onReconnecting();
         final TransportManager manager = context.getTransportManager();
+        final Transport transport = manager.getTransport();
 
-        logger.info("Closing channel...");
+        Promises.newPromise(new Runnable() {
+            @Override
+            public void run() {
+                _handler.onReconnecting();
+            }
+        }).then(new Compose<Void, Void>() {
+            @Override
+            protected Promise<Void> doCompose(final Void value) throws Exception {
+                logger.info("Closing channel...");
 
-        _channel.close().then(new Catch<Void>() {
+                return _channel.close();
+            }
+        }).then(new Catch<Void>() {
             @Override
             protected Void doCatch(final Throwable cause) throws Exception {
                 _handler.onError(cause);
@@ -167,8 +191,6 @@ final class ConnectedConnectionState implements ConnectionState {
             @Override
             protected Promise<Channel> doCompose(final Void value) throws Exception {
                 logger.info("Reconnecting transport...");
-
-                final Transport transport = manager.getTransport();
 
                 return transport.connect(context, manager, true);
             }
@@ -182,7 +204,7 @@ final class ConnectedConnectionState implements ConnectionState {
 
                 return null;
             }
-        }).then(new OnComplete<Void>() {
+        }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 _handler.onError(cause);
@@ -190,9 +212,19 @@ final class ConnectedConnectionState implements ConnectionState {
 
                 context.changeState(reconnecting, disconnected);
                 _handler.onDisconnected();
+            }
+        }).then(new OnFailure<Void>() {
+            @Override
+            protected void onFailure(final Throwable cause) throws Exception {
                 manager.stop(context);
             }
-        }).then(deferred);
+        }).then(new OnFailure<Void>() {
+            @Override
+            protected void onFailure(final Throwable cause) throws Exception {
+                transport.stop(context);
+            }
+        }, Executors.newCachedThreadPool()).then(deferred);
+        // FIXME Don't create new executor.
 
         return deferred;
     }

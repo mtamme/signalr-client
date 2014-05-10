@@ -22,7 +22,7 @@ import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportManager;
 import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.OnComplete;
+import net.signalr.client.util.concurrent.OnFailure;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
 import net.signalr.client.util.concurrent.Apply;
@@ -69,18 +69,26 @@ final class DisconnectedConnectionState implements ConnectionState {
         if (!context.tryChangeState(this, connecting)) {
             return context.getState().start(context, handler);
         }
-
-        handler.onConnecting();
-
-        logger.info("Negotiating transport...");
-
         final TransportManager manager = context.getTransportManager();
+        final Transport transport = manager.getTransport();
 
         // FIXME Don't forget to remove listener.
         manager.addListener(new TransportListenerAdapter(context, handler));
-        final Transport transport = manager.getTransport();
 
-        transport.negotiate(context).then(new Compose<NegotiationResponse, Channel>() {
+        Promises.newPromise(new Runnable() {
+            @Override
+            public void run() {
+                handler.onConnecting();
+                transport.start(context);
+            }
+        }).then(new Compose<Void, NegotiationResponse>() {
+            @Override
+            protected Promise<NegotiationResponse> doCompose(final Void value) throws Exception {
+                logger.info("Negotiating transport...");
+
+                return transport.negotiate(context);
+            }
+        }).then(new Compose<NegotiationResponse, Channel>() {
             @Override
             protected Promise<Channel> doCompose(final NegotiationResponse response) throws Exception {
                 final String protocolVersion = response.getProtocolVersion();
@@ -98,19 +106,29 @@ final class DisconnectedConnectionState implements ConnectionState {
         }).then(new Apply<Channel, Void>() {
             @Override
             protected Void doApply(final Channel channel) throws Exception {
-                manager.start(context);
                 final ConnectedConnectionState connected = new ConnectedConnectionState(handler, channel);
 
                 context.changeState(connecting, connected);
                 handler.onConnected();
+                manager.start(context);
 
                 return null;
             }
-        }).then(new OnComplete<Void>() {
+        }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 context.changeState(connecting, DisconnectedConnectionState.this);
                 handler.onDisconnected();
+            }
+        }).then(new OnFailure<Void>() {
+            @Override
+            protected void onFailure(final Throwable cause) throws Exception {
+                transport.stop(context);
+            }
+        }).then(new OnFailure<Void>() {
+            @Override
+            protected void onFailure(final Throwable cause) throws Exception {
+                manager.stop(context);
             }
         }).then(deferred);
 

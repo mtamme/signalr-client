@@ -34,7 +34,7 @@ import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
 
 /**
- * Represents the web socket transport.
+ * Represents the WebSocket transport.
  */
 public final class WebSocketTransport extends AbstractTransport {
 
@@ -92,7 +92,7 @@ public final class WebSocketTransport extends AbstractTransport {
         final URI uri = uriBuilder.build();
 
         // Setup request.
-        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uri.toString());
+        final BoundRequestBuilder boundRequestBuilder = prepareGet(uri);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
         boundRequestBuilder.setHeaders(headers);
