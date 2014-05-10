@@ -59,7 +59,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
 
     /**
-     * The asynchronous HTTP client.
+     * The HTTP client.
      */
     private AsyncHttpClient _httpClient;
 
