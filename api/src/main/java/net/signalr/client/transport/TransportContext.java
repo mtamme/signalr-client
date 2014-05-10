@@ -19,6 +19,7 @@ package net.signalr.client.transport;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.util.concurrent.Scheduler;
@@ -41,6 +42,13 @@ public interface TransportContext {
      * @return The URL.
      */
     String getUrl();
+
+    /**
+     * Returns the executor.
+     * 
+     * @return The executor.
+     */
+    Executor getExecutor();
 
     /**
      * Returns the scheduler.

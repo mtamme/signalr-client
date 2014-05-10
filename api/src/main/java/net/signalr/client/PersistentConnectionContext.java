@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
@@ -56,6 +57,11 @@ final class PersistentConnectionContext implements ConnectionContext {
      * The transport manager.
      */
     private final TransportManager _manager;
+
+    /**
+     * The executor.
+     */
+    private final Executor _executor;
 
     /**
      * The scheduler.
@@ -97,15 +103,19 @@ final class PersistentConnectionContext implements ConnectionContext {
      * 
      * @param url The connection URL.
      * @param manager The transport manager.
+     * @param executor The executor.
      * @param scheduler The scheduler.
      * @param mapper The mapper.
      */
-    protected PersistentConnectionContext(final String url, final TransportManager manager, final Scheduler scheduler, final JsonMapper mapper) {
+    protected PersistentConnectionContext(final String url, final TransportManager manager, final Executor executor, final Scheduler scheduler, final JsonMapper mapper) {
         if (url == null) {
             throw new IllegalArgumentException("URL must not be null");
         }
         if (manager == null) {
             throw new IllegalArgumentException("Manager must not be null");
+        }
+        if (executor == null) {
+            throw new IllegalArgumentException("Executor must not be null");
         }
         if (scheduler == null) {
             throw new IllegalArgumentException("Scheduler must not be null");
@@ -116,6 +126,7 @@ final class PersistentConnectionContext implements ConnectionContext {
 
         _url = url;
         _manager = manager;
+        _executor = executor;
         _scheduler = scheduler;
         _mapper = mapper;
         final ConnectionState initialState = new DisconnectedConnectionState();
@@ -136,6 +147,11 @@ final class PersistentConnectionContext implements ConnectionContext {
     @Override
     public String getUrl() {
         return _url;
+    }
+
+    @Override
+    public Executor getExecutor() {
+        return _executor;
     }
 
     @Override

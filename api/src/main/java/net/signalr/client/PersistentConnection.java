@@ -17,6 +17,9 @@
 
 package net.signalr.client;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 import net.signalr.client.json.DefaultJsonMapper;
 import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonMapper;
@@ -59,7 +62,7 @@ public final class PersistentConnection implements Connection {
      * @param factory The factory.
      */
     public PersistentConnection(final String url, final Transport transport, final TimeProvider timeProvider, final JsonFactory factory) {
-        this(url, new DefaultTransportManager(transport, timeProvider), new ScheduledExecutorServiceScheduler(), new DefaultJsonMapper(factory));
+        this(url, new DefaultTransportManager(transport, timeProvider), Executors.newCachedThreadPool(), new ScheduledExecutorServiceScheduler(), new DefaultJsonMapper(factory));
     }
 
     /**
@@ -67,11 +70,12 @@ public final class PersistentConnection implements Connection {
      * 
      * @param url The connection URL.
      * @param manager The transport manager.
+     * @param executor The executor.
      * @param scheduler The scheduler.
      * @param mapper The mapper.
      */
-    public PersistentConnection(final String url, final TransportManager manager, final Scheduler scheduler, final JsonMapper mapper) {
-        this(new PersistentConnectionContext(url, manager, scheduler, mapper));
+    public PersistentConnection(final String url, final TransportManager manager, final Executor executor, final Scheduler scheduler, final JsonMapper mapper) {
+        this(new PersistentConnectionContext(url, manager, executor, scheduler, mapper));
     }
 
     /**

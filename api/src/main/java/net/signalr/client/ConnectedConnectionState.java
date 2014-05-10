@@ -17,8 +17,6 @@
 
 package net.signalr.client;
 
-import java.util.concurrent.Executors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -152,8 +150,7 @@ final class ConnectedConnectionState implements ConnectionState {
             protected void onComplete(final Void value, final Throwable cause) throws Exception {
                 transport.stop(context);
             }
-        }, Executors.newCachedThreadPool()).then(deferred);
-        // FIXME Don't create new executor.
+        }, context.getExecutor()).then(deferred);
 
         return deferred;
     }
@@ -223,8 +220,7 @@ final class ConnectedConnectionState implements ConnectionState {
             protected void onFailure(final Throwable cause) throws Exception {
                 transport.stop(context);
             }
-        }, Executors.newCachedThreadPool()).then(deferred);
-        // FIXME Don't create new executor.
+        }, context.getExecutor()).then(deferred);
 
         return deferred;
     }
