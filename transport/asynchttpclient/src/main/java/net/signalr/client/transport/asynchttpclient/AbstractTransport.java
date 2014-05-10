@@ -66,7 +66,7 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     /**
      * Initializes a new instance of the {@link AbstractTransport} class.
      */
-    public AbstractTransport() {
+    protected AbstractTransport() {
         _httpClient = null;
     }
 
