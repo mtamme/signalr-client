@@ -107,8 +107,9 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
         } catch (final Throwable t) {
             changeState(State.STARTING, State.STOPPED);
 
-            logger.info("Failed to start '{}'", this, t);
-            return;
+            logger.warn("Failed to start '{}'", this, t);
+
+            throw new LifecycleException("Failed to start lifecycle", t);
         }
 
         changeState(State.STARTING, State.STARTED);
@@ -123,7 +124,11 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
         try {
             doStop(context);
         } catch (final Throwable t) {
-            logger.info("Failed to stop '{}'", this, t);
+            changeState(State.STOPPING, State.STOPPED);
+
+            logger.warn("Failed to stop '{}'", this, t);
+
+            throw new LifecycleException("Failed to stop lifecycle", t);
         }
 
         changeState(State.STOPPING, State.STOPPED);
