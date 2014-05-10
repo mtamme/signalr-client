@@ -111,7 +111,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
     }
 
     @Override
-    public void then(final Completion<T> completion) {
+    public void then(final Completion<? super T> completion) {
         if (completion == null) {
             throw new IllegalArgumentException("Completion must not be null");
         }
@@ -120,7 +120,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
     }
 
     @Override
-    public void then(final Completion<T> completion, final Executor executor) {
+    public void then(final Completion<? super T> completion, final Executor executor) {
         if (completion == null) {
             throw new IllegalArgumentException("Completion must not be null");
         }
@@ -129,7 +129,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
     }
 
     @Override
-    public final <R> Promise<R> then(final Continuation<T, R> continuation) {
+    public final <R> Promise<R> then(final Continuation<? super T, ? extends R> continuation) {
         if (continuation == null) {
             throw new IllegalArgumentException("Continuation must not be null");
         }
@@ -161,7 +161,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
     }
 
     @Override
-    public <R> Promise<R> then(final Continuation<T, R> continuation, final Executor executor) {
+    public <R> Promise<R> then(final Continuation<? super T, ? extends R> continuation, final Executor executor) {
         if (continuation == null) {
             throw new IllegalArgumentException("Continuation must not be null");
         }
@@ -227,7 +227,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
          * 
          * @param completion The completion.
          */
-        void then(Completion<T> completion);
+        void then(Completion<? super T> completion);
     }
 
     /**
@@ -317,7 +317,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
         }
 
         @Override
-        public void then(final Completion<T> completion) {
+        public void then(final Completion<? super T> completion) {
             final Stage<T> stage = new Stage<T>(completion);
 
             addStage(stage);
@@ -369,7 +369,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
         }
 
         @Override
-        public void then(final Completion<T> completion) {
+        public void then(final Completion<? super T> completion) {
             completion.setSuccess(_value);
         }
     }
@@ -396,7 +396,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
         }
 
         @Override
-        public void then(final Completion<T> completion) {
+        public void then(final Completion<? super T> completion) {
             completion.setFailure(_cause);
         }
     }
@@ -411,7 +411,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
         /**
          * The completion.
          */
-        private final Completion<T> _completion;
+        private final Completion<? super T> _completion;
 
         /**
          * A value indicating whether the stage completed.
@@ -423,7 +423,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
          * 
          * @param completion The completion.
          */
-        public Stage(final Completion<T> completion) {
+        public Stage(final Completion<? super T> completion) {
             _completion = completion;
 
             _completed = new AtomicBoolean(false);

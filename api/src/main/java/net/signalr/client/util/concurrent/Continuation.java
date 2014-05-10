@@ -32,7 +32,7 @@ public interface Continuation<T, U> {
      * @param result The result.
      * @throws Exception
      */
-    void setSuccess(T value, Deferred<U> result) throws Exception;
+    void setSuccess(T value, Deferred<? super U> result) throws Exception;
 
     /**
      * Completes the continuation with the specified cause.
@@ -41,5 +41,5 @@ public interface Continuation<T, U> {
      * @param result The result.
      * @throws Exception
      */
-    void setFailure(Throwable cause, Deferred<U> result) throws Exception;
+    void setFailure(Throwable cause, Deferred<? super U> result) throws Exception;
 }

@@ -38,7 +38,7 @@ public interface Promise<T> {
      * 
      * @param completion The completion.
      */
-    void then(Completion<T> completion);
+    void then(Completion<? super T> completion);
 
     /**
      * Adds the specified completion.
@@ -46,7 +46,7 @@ public interface Promise<T> {
      * @param completion The completion.
      * @param executor The executor.
      */
-    void then(Completion<T> completion, Executor executor);
+    void then(Completion<? super T> completion, Executor executor);
 
     /**
      * Adds the specified continuation.
@@ -54,7 +54,7 @@ public interface Promise<T> {
      * @param continuation The continuation.
      * @return The result.
      */
-    <R> Promise<R> then(Continuation<T, R> continuation);
+    <R> Promise<R> then(Continuation<? super T, ? extends R> continuation);
 
     /**
      * Adds the specified continuation.
@@ -63,5 +63,5 @@ public interface Promise<T> {
      * @param executor The executor.
      * @return The result.
      */
-    <R> Promise<R> then(Continuation<T, R> continuation, Executor executor);
+    <R> Promise<R> then(Continuation<? super T, ? extends R> continuation, Executor executor);
 }

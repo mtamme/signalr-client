@@ -35,14 +35,14 @@ public abstract class Compose<T, U> implements Continuation<T, U> {
     protected abstract Promise<U> doCompose(T value) throws Exception;
 
     @Override
-    public final void setSuccess(final T value, final Deferred<U> result) throws Exception {
+    public final void setSuccess(final T value, final Deferred<? super U> result) throws Exception {
         final Promise<U> promise = doCompose(value);
 
         promise.then(result);
     }
 
     @Override
-    public final void setFailure(final Throwable cause, final Deferred<U> result) throws Exception {
+    public final void setFailure(final Throwable cause, final Deferred<? super U> result) throws Exception {
         result.setFailure(cause);
     }
 }

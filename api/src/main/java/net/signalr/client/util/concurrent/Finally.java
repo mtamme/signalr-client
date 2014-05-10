@@ -36,14 +36,14 @@ public abstract class Finally<T, U> implements Continuation<T, U> {
     protected abstract U doFinally(T value, Throwable cause) throws Exception;
 
     @Override
-    public final void setSuccess(final T value, final Deferred<U> result) throws Exception {
+    public final void setSuccess(final T value, final Deferred<? super U> result) throws Exception {
         final U newValue = doFinally(value, null);
 
         result.setSuccess(newValue);
     }
 
     @Override
-    public final void setFailure(final Throwable cause, final Deferred<U> result) throws Exception {
+    public final void setFailure(final Throwable cause, final Deferred<? super U> result) throws Exception {
         final U newValue = doFinally(null, cause);
 
         result.setSuccess(newValue);

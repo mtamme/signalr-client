@@ -35,14 +35,14 @@ public abstract class Apply<T, U> implements Continuation<T, U> {
     protected abstract U doApply(T value) throws Exception;
 
     @Override
-    public final void setSuccess(final T value, final Deferred<U> result) throws Exception {
+    public final void setSuccess(final T value, final Deferred<? super U> result) throws Exception {
         final U newValue = doApply(value);
 
         result.setSuccess(newValue);
     }
 
     @Override
-    public final void setFailure(final Throwable cause, final Deferred<U> result) throws Exception {
+    public final void setFailure(final Throwable cause, final Deferred<? super U> result) throws Exception {
         result.setFailure(cause);
     }
 }

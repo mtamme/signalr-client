@@ -42,7 +42,7 @@ final class ExecutorCompletion<T> implements Completion<T> {
     /**
      * The completion.
      */
-    private final Completion<T> _completion;
+    private final Completion<? super T> _completion;
 
     /**
      * Initializes a new instance of the {@link ExecutorCompletion} class.
@@ -50,7 +50,7 @@ final class ExecutorCompletion<T> implements Completion<T> {
      * @param executor The executor.
      * @param completion The completion.
      */
-    public ExecutorCompletion(Executor executor, Completion<T> completion) {
+    public ExecutorCompletion(Executor executor, Completion<? super T> completion) {
         if (executor == null) {
             throw new IllegalArgumentException("Executor must not e null");
         }

@@ -54,13 +54,13 @@ public abstract class OnComplete<T> implements Continuation<T, T> {
     }
 
     @Override
-    public final void setSuccess(final T value, final Deferred<T> result) throws Exception {
+    public final void setSuccess(final T value, final Deferred<? super T> result) throws Exception {
         onSuccess(value);
         result.setSuccess(value);
     }
 
     @Override
-    public final void setFailure(final Throwable cause, final Deferred<T> result) throws Exception {
+    public final void setFailure(final Throwable cause, final Deferred<? super T> result) throws Exception {
         onFailure(cause);
         result.setFailure(cause);
     }
