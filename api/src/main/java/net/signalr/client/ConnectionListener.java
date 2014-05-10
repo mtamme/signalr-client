@@ -18,7 +18,7 @@
 package net.signalr.client;
 
 /**
- * Defines a connection handler.
+ * Defines a connection listener.
  */
 public interface ConnectionListener {
 

@@ -36,6 +36,11 @@ final class ConnectionListeners {
         _listeners = new CopyOnWriteArrayList<ConnectionListener>();
     }
 
+    /**
+     * Adds the specified connection listener.
+     * 
+     * @param listener The connection listener.
+     */
     public void addListener(final ConnectionListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("Listener must not be null");
@@ -44,6 +49,11 @@ final class ConnectionListeners {
         _listeners.add(listener);
     }
 
+    /**
+     * Removes the specified connection listener.
+     * 
+     * @param listener The connection listener.
+     */
     public void removeListener(final ConnectionListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("Listener must not be null");
