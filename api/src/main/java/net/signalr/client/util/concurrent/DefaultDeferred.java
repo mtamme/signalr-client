@@ -125,7 +125,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
             throw new IllegalArgumentException("Completion must not be null");
         }
 
-        _state.get().then(new ExecutorCompletion<T>(executor, completion));
+        _state.get().then(new ExecutorCompletion<T>(completion, executor));
     }
 
     @Override
@@ -168,7 +168,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
 
         final Deferred<R> deferred = new DefaultDeferred<R>();
 
-        _state.get().then(new ExecutorCompletion<T>(executor, new Completion<T>() {
+        _state.get().then(new ExecutorCompletion<T>(new Completion<T>() {
             @Override
             public void setSuccess(final T value) {
                 try {
@@ -187,7 +187,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
                     deferred.setFailure(t);
                 }
             }
-        }));
+        }, executor));
 
         return deferred;
     }

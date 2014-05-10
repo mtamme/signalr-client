@@ -35,31 +35,31 @@ final class ExecutorCompletion<T> implements Completion<T> {
     private static final Logger logger = LoggerFactory.getLogger(ExecutorCompletion.class);
 
     /**
-     * The executor.
-     */
-    private final Executor _executor;
-
-    /**
      * The completion.
      */
     private final Completion<? super T> _completion;
 
     /**
+     * The executor.
+     */
+    private final Executor _executor;
+
+    /**
      * Initializes a new instance of the {@link ExecutorCompletion} class.
      * 
-     * @param executor The executor.
      * @param completion The completion.
+     * @param executor The executor.
      */
-    public ExecutorCompletion(final Executor executor, final Completion<? super T> completion) {
-        if (executor == null) {
-            throw new IllegalArgumentException("Executor must not e null");
-        }
+    public ExecutorCompletion(final Completion<? super T> completion, final Executor executor) {
         if (completion == null) {
             throw new IllegalArgumentException("Completion must not be null");
         }
+        if (executor == null) {
+            throw new IllegalArgumentException("Executor must not e null");
+        }
 
-        _executor = executor;
         _completion = completion;
+        _executor = executor;
     }
 
     @Override
