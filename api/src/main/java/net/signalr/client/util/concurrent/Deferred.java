@@ -22,7 +22,7 @@ package net.signalr.client.util.concurrent;
  * 
  * @param <T> The value type.
  */
-public interface Deferred<T> extends Promise<T>, Completable<T> {
+public interface Deferred<T> extends Promise<T>, Completion<T> {
 
     /**
      * Tries to complete the deferred with the specified value.

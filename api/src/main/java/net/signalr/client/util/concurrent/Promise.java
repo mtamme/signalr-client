@@ -32,11 +32,11 @@ public interface Promise<T> {
     boolean isComplete();
 
     /**
-     * Adds the specified completable.
+     * Adds the specified completion.
      * 
-     * @param completable The completable.
+     * @param completion The completion.
      */
-    void then(Completable<T> completable);
+    void then(Completion<T> completion);
 
     /**
      * Adds the specified continuation.

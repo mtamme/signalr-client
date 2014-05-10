@@ -18,14 +18,14 @@
 package net.signalr.client.util.concurrent;
 
 /**
- * Defines a completable.
+ * Defines a completion.
  * 
  * @param <T> The value type.
  */
-public interface Completable<T> {
+public interface Completion<T> {
 
     /**
-     * Completes the completable with the specified value.
+     * Completes the completion with the specified value.
      * 
      * @param value The value.
      * @throws IllegalStateException
@@ -33,7 +33,7 @@ public interface Completable<T> {
     void setSuccess(T value);
 
     /**
-     * Completes the completable with the specified cause.
+     * Completes the completion with the specified cause.
      * 
      * @param cause The cause.
      * @throws IllegalStateException
