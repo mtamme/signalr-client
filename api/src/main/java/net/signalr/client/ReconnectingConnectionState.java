@@ -63,7 +63,7 @@ final class ReconnectingConnectionState implements ConnectionState {
     }
 
     @Override
-    public Promise<Void> start(final ConnectionContext context, final ConnectionHandler handler) {
+    public Promise<Void> start(final ConnectionContext context) {
         throw new IllegalStateException("Connection is reconnecting");
     }
 

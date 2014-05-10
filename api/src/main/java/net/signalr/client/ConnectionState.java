@@ -61,10 +61,9 @@ interface ConnectionState {
      * Starts the connection.
      * 
      * @param context The connection context.
-     * @param handler The connection handler.
      * @return The start result.
      */
-    Promise<Void> start(ConnectionContext context, ConnectionHandler handler);
+    Promise<Void> start(ConnectionContext context);
 
     /**
      * Stops the connection.

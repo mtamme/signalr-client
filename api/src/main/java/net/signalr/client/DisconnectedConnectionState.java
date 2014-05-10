@@ -62,23 +62,23 @@ final class DisconnectedConnectionState implements ConnectionState {
     }
 
     @Override
-    public Promise<Void> start(final ConnectionContext context, final ConnectionHandler handler) {
+    public Promise<Void> start(final ConnectionContext context) {
         final Deferred<Void> deferred = Promises.newDeferred();
         final ConnectingConnectionState connecting = new ConnectingConnectionState(deferred);
 
         if (!context.tryChangeState(this, connecting)) {
-            return context.getState().start(context, handler);
+            return context.getState().start(context);
         }
         final TransportManager manager = context.getTransportManager();
         final Transport transport = manager.getTransport();
 
         // FIXME Don't forget to remove listener.
-        manager.addListener(new TransportListenerAdapter(context, handler));
+        manager.addListener(new TransportListenerAdapter(context));
 
         Promises.newPromise(new Runnable() {
             @Override
             public void run() {
-                handler.onConnecting();
+                context.getListeners().notifyOnConnecting();
                 transport.start(context);
             }
         }).then(new Compose<Void, NegotiationResponse>() {
@@ -106,10 +106,10 @@ final class DisconnectedConnectionState implements ConnectionState {
         }).then(new Apply<Channel, Void>() {
             @Override
             protected Void doApply(final Channel channel) throws Exception {
-                final ConnectedConnectionState connected = new ConnectedConnectionState(handler, channel);
+                final ConnectedConnectionState connected = new ConnectedConnectionState(channel);
 
                 context.changeState(connecting, connected);
-                handler.onConnected();
+                context.getListeners().notifyOnConnected();
                 manager.start(context);
 
                 return null;
@@ -118,7 +118,7 @@ final class DisconnectedConnectionState implements ConnectionState {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 context.changeState(connecting, DisconnectedConnectionState.this);
-                handler.onDisconnected();
+                context.getListeners().notifyOnDisconnected();
             }
         }).then(new OnFailure<Void>() {
             @Override

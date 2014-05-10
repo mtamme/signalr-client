@@ -89,6 +89,11 @@ final class PersistentConnectionContext implements ConnectionContext {
     private final Map<String, Collection<String>> _parameters;
 
     /**
+     * The connection listeners.
+     */
+    private final ConnectionListeners _listeners;
+
+    /**
      * The connection data.
      */
     private String _connectionData;
@@ -129,11 +134,13 @@ final class PersistentConnectionContext implements ConnectionContext {
         _executor = executor;
         _scheduler = scheduler;
         _mapper = mapper;
+
         final ConnectionState initialState = new DisconnectedConnectionState();
 
         _state = new AtomicReference<ConnectionState>(initialState);
         _headers = new HashMap<String, Collection<String>>();
         _parameters = new HashMap<String, Collection<String>>();
+        _listeners = new ConnectionListeners();
 
         _connectionData = null;
         _options = null;
@@ -225,6 +232,11 @@ final class PersistentConnectionContext implements ConnectionContext {
         }
 
         values.add(value);
+    }
+
+    @Override
+    public ConnectionListeners getListeners() {
+        return _listeners;
     }
 
     @Override

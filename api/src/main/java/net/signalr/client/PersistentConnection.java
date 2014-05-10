@@ -129,13 +129,23 @@ public final class PersistentConnection implements Connection {
     }
 
     @Override
+    public void addListener(final ConnectionListener listener) {
+        _context.getListeners().addListener(listener);
+    }
+
+    @Override
+    public void removeListener(final ConnectionListener listener) {
+        _context.getListeners().removeListener(listener);
+    }
+
+    @Override
     public void setConnectionData(final String connectionData) {
         _context.getState().setConnectionData(_context, connectionData);
     }
 
     @Override
-    public final Promise<Void> start(final ConnectionHandler handler) {
-        return _context.getState().start(_context, handler);
+    public final Promise<Void> start() {
+        return _context.getState().start(_context);
     }
 
     @Override

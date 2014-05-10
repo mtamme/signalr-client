@@ -37,23 +37,20 @@ public final class PersistentConnectionTests {
     @Mock
     private ConnectionState _connectionState;
 
-    @Mock
-    private ConnectionHandler _connectionHandler;
-
     @Test
     public void startTest() {
         // Arrange
         final PersistentConnection connection = new PersistentConnection(_connectionContext);
 
         expect(_connectionContext.getState()).andReturn(_connectionState);
-        expect(_connectionState.start(_connectionContext, _connectionHandler)).andReturn(Promises.newSuccess());
-        replay(_connectionContext, _connectionState, _connectionHandler);
+        expect(_connectionState.start(_connectionContext)).andReturn(Promises.newSuccess());
+        replay(_connectionContext, _connectionState);
 
         // Act
-        final Promise<Void> start = connection.start(_connectionHandler);
+        final Promise<Void> start = connection.start();
 
         // Assert
-        verify(_connectionContext, _connectionState, _connectionHandler);
+        verify(_connectionContext, _connectionState);
         assertTrue(start.isComplete());
     }
 

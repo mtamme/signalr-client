@@ -20,7 +20,7 @@ package net.signalr.client;
 /**
  * Defines a connection handler.
  */
-public interface ConnectionHandler {
+public interface ConnectionListener {
 
     /**
      * Invoked when the connection is going to be connected.

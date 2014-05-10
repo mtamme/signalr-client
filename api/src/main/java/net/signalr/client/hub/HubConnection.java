@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.signalr.client.Connection;
-import net.signalr.client.ConnectionHandler;
+import net.signalr.client.ConnectionListener;
 import net.signalr.client.PersistentConnection;
 import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonMapper;
@@ -105,23 +105,41 @@ public final class HubConnection {
     }
 
     /**
-     * Adds a header.
+     * Adds the specified header name and value.
      * 
      * @param name The header name.
      * @param value The header value.
      */
-    public final void addHeader(final String name, final String value) {
+    public void addHeader(final String name, final String value) {
         _connection.addHeader(name, value);
     }
 
     /**
-     * Adds a parameter.
+     * Adds the specified parameter name and value.
      * 
      * @param name The parameter name.
      * @param value The parameter value.
      */
-    public final void addParameter(final String name, final String value) {
+    public void addParameter(final String name, final String value) {
         _connection.addParameter(name, value);
+    }
+
+    /**
+     * Adds the specified connection listener.
+     * 
+     * @param listener The connection listener.
+     */
+    public void addListener(final ConnectionListener listener) {
+        _connection.addListener(listener);
+    }
+
+    /**
+     * Adds the specified connection listener.
+     * 
+     * @param listener The connection listener.
+     */
+    public void removeListener(final ConnectionListener listener) {
+        _connection.removeListener(listener);
     }
 
     /**
@@ -152,11 +170,10 @@ public final class HubConnection {
     /**
      * Starts the connection.
      * 
-     * @param handler The connection handler.
      * @return The start result.
      */
-    public final Promise<Void> start(final ConnectionHandler handler) {
-        return _connection.start(handler);
+    public Promise<Void> start() {
+        return _connection.start();
     }
 
     /**
@@ -164,7 +181,7 @@ public final class HubConnection {
      * 
      * @return The stop result.
      */
-    public final Promise<Void> stop() {
+    public Promise<Void> stop() {
         return _connection.stop();
     }
 }

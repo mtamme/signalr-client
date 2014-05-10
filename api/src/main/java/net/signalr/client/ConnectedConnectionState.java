@@ -43,11 +43,6 @@ final class ConnectedConnectionState implements ConnectionState {
     private static final Logger logger = LoggerFactory.getLogger(ConnectedConnectionState.class);
 
     /**
-     * The connection handler.
-     */
-    private final ConnectionHandler _handler;
-
-    /**
      * The channel.
      */
     private final Channel _channel;
@@ -55,18 +50,13 @@ final class ConnectedConnectionState implements ConnectionState {
     /**
      * Initializes a new instance of the {@link ConnectedConnectionState} class.
      * 
-     * @param handler The connection handler.
      * @param channel The channel.
      */
-    public ConnectedConnectionState(final ConnectionHandler handler, final Channel channel) {
-        if (handler == null) {
-            throw new IllegalArgumentException("Handler must not be null");
-        }
+    public ConnectedConnectionState(final Channel channel) {
         if (channel == null) {
             throw new IllegalArgumentException("Channel must not be null");
         }
 
-        _handler = handler;
         _channel = channel;
     }
 
@@ -91,7 +81,7 @@ final class ConnectedConnectionState implements ConnectionState {
     }
 
     @Override
-    public Promise<Void> start(final ConnectionContext context, final ConnectionHandler handler) {
+    public Promise<Void> start(final ConnectionContext context) {
         return Promises.newSuccess();
     }
 
@@ -109,7 +99,7 @@ final class ConnectedConnectionState implements ConnectionState {
         Promises.newPromise(new Runnable() {
             @Override
             public void run() {
-                _handler.onDisconnecting();
+                context.getListeners().notifyOnDisconnecting();
                 manager.stop(context);
             }
         }).then(new Compose<Void, Void>() {
@@ -122,7 +112,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Catch<Void>() {
             @Override
             protected Void doCatch(final Throwable cause) throws Exception {
-                _handler.onError(cause);
+                context.getListeners().notifyOnError(cause);
                 return null;
             }
         }).then(new Compose<Void, Void>() {
@@ -136,14 +126,14 @@ final class ConnectedConnectionState implements ConnectionState {
             @Override
             protected void onComplete(final Void value, final Throwable cause) throws Exception {
                 if (cause != null) {
-                    _handler.onError(cause);
+                    context.getListeners().notifyOnError(cause);
                 }
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
                 context.setTransportOptions(null);
 
                 context.changeState(disconnecting, disconnected);
-                _handler.onDisconnected();
+                context.getListeners().notifyOnDisconnected();
             }
         }).then(new OnComplete<Void>() {
             @Override
@@ -169,7 +159,7 @@ final class ConnectedConnectionState implements ConnectionState {
         Promises.newPromise(new Runnable() {
             @Override
             public void run() {
-                _handler.onReconnecting();
+                context.getListeners().notifyOnReconnecting();
             }
         }).then(new Compose<Void, Void>() {
             @Override
@@ -181,7 +171,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Catch<Void>() {
             @Override
             protected Void doCatch(final Throwable cause) throws Exception {
-                _handler.onError(cause);
+                context.getListeners().notifyOnError(cause);
                 return null;
             }
         }).then(new Compose<Void, Channel>() {
@@ -194,21 +184,21 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Apply<Channel, Void>() {
             @Override
             protected Void doApply(final Channel channel) throws Exception {
-                final ConnectedConnectionState connected = new ConnectedConnectionState(_handler, channel);
+                final ConnectedConnectionState connected = new ConnectedConnectionState(channel);
 
                 context.changeState(reconnecting, connected);
-                _handler.onReconnected();
+                context.getListeners().notifyOnReconnected();
 
                 return null;
             }
         }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
-                _handler.onError(cause);
+                context.getListeners().notifyOnError(cause);
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
                 context.changeState(reconnecting, disconnected);
-                _handler.onDisconnected();
+                context.getListeners().notifyOnDisconnected();
             }
         }).then(new OnFailure<Void>() {
             @Override

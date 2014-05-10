@@ -20,7 +20,7 @@ package net.signalr.client.hub;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import net.signalr.client.ConnectionHandler;
+import net.signalr.client.ConnectionListener;
 import net.signalr.client.json.gson.GsonFactory;
 import net.signalr.client.transport.asynchttpclient.WebSocketTransport;
 import net.signalr.client.util.concurrent.Promise;
@@ -55,8 +55,7 @@ public final class HubConnectionTests {
 
         connection.addHeader(ACCESS_ID_NAME, ACCESS_ID_VALUE);
         connection.addParameter("culture", "en");
-        final HubProxy hubProxy = connection.getProxy(HUB_NAME);
-        final Promise<Void> start = connection.start(new ConnectionHandler() {
+        connection.addListener(new ConnectionListener() {
             @Override
             public void onReconnecting() {
                 logger.info("onReconnecting");
@@ -107,6 +106,8 @@ public final class HubConnectionTests {
                 logger.info("onDisconnected");
             }
         });
+        final HubProxy hubProxy = connection.getProxy(HUB_NAME);
+        final Promise<Void> start = connection.start();
 
         Promises.toFuture(start).get();
 

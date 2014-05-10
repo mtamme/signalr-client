@@ -78,6 +78,20 @@ public interface Connection {
     void addParameter(String name, String value);
 
     /**
+     * Adds the specified connection listener.
+     * 
+     * @param listener The connection listener.
+     */
+    void addListener(ConnectionListener listener);
+
+    /**
+     * Removes the specified connection listener.
+     * 
+     * @param listener The connection listener.
+     */
+    void removeListener(ConnectionListener listener);
+
+    /**
      * Sets the connection data.
      * 
      * @param connectionData The connection data.
@@ -87,10 +101,9 @@ public interface Connection {
     /**
      * Starts the connection.
      * 
-     * @param handler The connection handler.
      * @return The start result.
      */
-    Promise<Void> start(ConnectionHandler handler);
+    Promise<Void> start();
 
     /**
      * Stops the connection.

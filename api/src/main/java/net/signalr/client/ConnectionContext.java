@@ -50,6 +50,13 @@ interface ConnectionContext extends TransportContext {
     void addParameter(String name, String value);
 
     /**
+     * Returns the connection listeners.
+     * 
+     * @return The connection listeners.
+     */
+    ConnectionListeners getListeners();
+
+    /**
      * Sets the connection data.
      * 
      * @param connectionData The connection data.

@@ -32,26 +32,16 @@ final class TransportListenerAdapter implements TransportListener {
     private final ConnectionContext _context;
 
     /**
-     * The connection handler.
-     */
-    private final ConnectionHandler _handler;
-
-    /**
      * Initializes a new instance of the {@link TransportListenerAdapter} class.
      * 
      * @param context The connection context.
-     * @param handler The connection handler.
      */
-    public TransportListenerAdapter(final ConnectionContext context, final ConnectionHandler handler) {
+    public TransportListenerAdapter(final ConnectionContext context) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
-        if (handler == null) {
-            throw new IllegalArgumentException("Handler must not be null");
-        }
 
         _context = context;
-        _handler = handler;
     }
 
     @Override
@@ -64,7 +54,7 @@ final class TransportListenerAdapter implements TransportListener {
 
     @Override
     public void onConnectionSlow() {
-        _handler.onConnectionSlow();
+        _context.getListeners().notifyOnConnectionSlow();
     }
 
     @Override
@@ -74,12 +64,12 @@ final class TransportListenerAdapter implements TransportListener {
 
     @Override
     public void onError(final Throwable cause) {
-        _handler.onError(cause);
+        _context.getListeners().notifyOnError(cause);
     }
 
     @Override
     public void onSending(final String message) {
-        _handler.onSending(message);
+        _context.getListeners().notifyOnSending(message);
     }
 
     @Override
@@ -89,12 +79,12 @@ final class TransportListenerAdapter implements TransportListener {
         final String callbackId = element.get("I").getString(null);
 
         if (callbackId != null) {
-            _handler.onReceived(message);
+            _context.getListeners().notifyOnReceived(message);
         } else {
             final JsonElement messages = element.get("M");
 
             for (int i = 0; i < messages.size(); i++) {
-                _handler.onReceived(messages.get(i).toString());
+                _context.getListeners().notifyOnReceived(messages.get(i).toString());
             }
         }
     }

@@ -63,7 +63,7 @@ final class ConnectingConnectionState implements ConnectionState {
     }
 
     @Override
-    public Promise<Void> start(final ConnectionContext context, final ConnectionHandler handler) {
+    public Promise<Void> start(final ConnectionContext context) {
         return _promise;
     }
 
