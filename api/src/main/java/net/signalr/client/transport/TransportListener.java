@@ -17,10 +17,12 @@
 
 package net.signalr.client.transport;
 
+import java.util.EventListener;
+
 /**
  * Defines a transport listener.
  */
-public interface TransportListener {
+public interface TransportListener extends EventListener {
 
     /**
      * Invoked when the channel has been opened.

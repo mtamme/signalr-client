@@ -17,10 +17,12 @@
 
 package net.signalr.client;
 
+import java.util.EventListener;
+
 /**
  * Defines a connection listener.
  */
-public interface ConnectionListener {
+public interface ConnectionListener extends EventListener {
 
     /**
      * Invoked when the connection is going to be connected.
