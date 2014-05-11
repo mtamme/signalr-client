@@ -36,7 +36,7 @@ public interface HubProxy {
     <R> Promise<R> invoke(String methodName, Class<R> returnType, Object... arguments);
 
     /**
-     * Registers a client side hub method.
+     * Registers a client side hub callback.
      * 
      * @param methodName The method name.
      * @param callback The hub callback.
@@ -44,7 +44,7 @@ public interface HubProxy {
     void register(String methodName, HubCallback<JsonElement[]> callback);
 
     /**
-     * Registers a client side hub method.
+     * Registers a client side hub callback.
      * 
      * @param methodName The method name.
      * @param argumentType The argument type.
@@ -53,7 +53,7 @@ public interface HubProxy {
     <T> void register(String methodName, Class<T> argumentType, HubCallback<T> callback);
 
     /**
-     * Unregisters a client side hub method.
+     * Unregisters a client side hub callback.
      * 
      * @param methodName The method name.
      */
