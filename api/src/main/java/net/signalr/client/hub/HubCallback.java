@@ -23,9 +23,9 @@ package net.signalr.client.hub;
 public interface HubCallback<T> {
 
     /**
-     * Invoked when a hub message has been received.
+     * Handles a client side hub method invocation.
      * 
-     * @param message The hub message.
+     * @param argument The argument.
      */
-    void onReceived(T message);
+    void onInvoke(T argument);
 }

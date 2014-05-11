@@ -138,7 +138,7 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
             if (proxy == null) {
                 continue;
             }
-            proxy.onReceived(message);
+            proxy.onInvoke(message);
         }
     }
 

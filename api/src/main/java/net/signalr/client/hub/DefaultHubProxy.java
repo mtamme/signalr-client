@@ -72,12 +72,12 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
     }
 
     @Override
-    public void onReceived(final HubMessage message) {
+    public void onInvoke(final HubMessage message) {
         final String methodName = message.getMethodName();
         final HubCallback<HubMessage> callback = _callbacks.get(methodName);
 
         if (callback != null) {
-            callback.onReceived(message);
+            callback.onInvoke(message);
         }
     }
 
@@ -128,10 +128,10 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
 
         _callbacks.put(methodName, new HubCallback<HubMessage>() {
             @Override
-            public void onReceived(final HubMessage message) {
+            public void onInvoke(final HubMessage message) {
                 final JsonElement[] arguments = message.getArguments();
 
-                callback.onReceived(arguments);
+                callback.onInvoke(arguments);
             }
         });
     }
@@ -150,7 +150,7 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
 
         _callbacks.put(methodName, new HubCallback<HubMessage>() {
             @Override
-            public void onReceived(final HubMessage message) {
+            public void onInvoke(final HubMessage message) {
                 final JsonElement[] arguments = message.getArguments();
 
                 if (arguments.length != 1) {
@@ -159,7 +159,7 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
                 }
                 final T argument = arguments[0].toObject(argumentType, null);
 
-                callback.onReceived(argument);
+                callback.onInvoke(argument);
             }
         });
     }
