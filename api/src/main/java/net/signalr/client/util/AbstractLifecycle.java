@@ -70,7 +70,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
             return false;
         }
 
-        logger.info("{} '{}'", newState, this);
+        logger.info("{} '{}'", newState.getName(), this);
 
         return true;
     }
@@ -142,41 +142,44 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
         /**
          * Lifecycle has been started.
          */
-        STARTED {
-            @Override
-            public String toString() {
-                return "Started";
-            }
-        },
+        STARTED("Started"),
 
         /**
          * Lifecycle is going to be started.
          */
-        STARTING {
-            @Override
-            public String toString() {
-                return "Starting";
-            }
-        },
+        STARTING("Starting"),
 
         /**
          * Lifecycle is going to be stopped.
          */
-        STOPPING {
-            @Override
-            public String toString() {
-                return "Stopping";
-            }
-        },
+        STOPPING("Stopping"),
 
         /**
          * Lifecycle has been stopped.
          */
-        STOPPED {
-            @Override
-            public String toString() {
-                return "Stopped";
-            }
+        STOPPED("Stopped");
+
+        /**
+         * The state name.
+         */
+        private final String _name;
+
+        /**
+         * Initializes a new instance of the {@link State} enumeration.
+         * 
+         * @param name The state name.
+         */
+        State(final String name) {
+            _name = name;
+        }
+
+        /**
+         * Returns the state name.
+         * 
+         * @return The state name.
+         */
+        public String getName() {
+            return _name;
         }
     }
 }
