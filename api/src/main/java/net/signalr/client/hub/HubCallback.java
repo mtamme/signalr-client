@@ -18,8 +18,14 @@
 package net.signalr.client.hub;
 
 /**
- * Defines an event hub listener.
+ * Defines hub callback.
  */
-public interface HubEventListener<T> {
+public interface HubCallback<T> {
+
+    /**
+     * Invoked when a hub message has been received.
+     * 
+     * @param message The hub message.
+     */
     void onReceived(T message);
 }

@@ -17,6 +17,7 @@
 
 package net.signalr.client.hub;
 
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.util.concurrent.Promise;
 
 /**
@@ -25,7 +26,7 @@ import net.signalr.client.util.concurrent.Promise;
 public interface HubProxy {
 
     /**
-     * Invokes a method on the server side hub.
+     * Invokes a server side hub method.
      * 
      * @param methodName The method name.
      * @param returnType The return type.
@@ -35,10 +36,26 @@ public interface HubProxy {
     <R> Promise<R> invoke(String methodName, Class<R> returnType, Object... arguments);
 
     /**
-     * Subscribes to a hub event.
+     * Registers a client side hub method.
      * 
-     * @param eventName The event name.
-     * @param listener The hub event listener.
+     * @param methodName The method name.
+     * @param callback The hub callback.
      */
-    <T> void subscribe(String eventName, HubEventListener<T> listener);
+    void register(String methodName, HubCallback<JsonElement[]> callback);
+
+    /**
+     * Registers a client side hub method.
+     * 
+     * @param methodName The method name.
+     * @param argumentType The argument type.
+     * @param callback The hub callback.
+     */
+    <T> void register(String methodName, Class<T> argumentType, HubCallback<T> callback);
+
+    /**
+     * Unregisters a client side hub method.
+     * 
+     * @param methodName The method name.
+     */
+    void unregister(String methodName);
 }

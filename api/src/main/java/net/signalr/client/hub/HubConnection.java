@@ -17,14 +17,10 @@
 
 package net.signalr.client.hub;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.signalr.client.Connection;
 import net.signalr.client.ConnectionListener;
 import net.signalr.client.PersistentConnection;
 import net.signalr.client.json.JsonFactory;
-import net.signalr.client.json.JsonMapper;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.util.concurrent.Compose;
 import net.signalr.client.util.concurrent.OnComplete;
@@ -46,11 +42,6 @@ public final class HubConnection {
      * The underlying connection.
      */
     private final Connection _connection;
-
-    /**
-     * The hub proxies.
-     */
-    private final Map<String, HubProxy> _hubProxies;
 
     /**
      * Initializes a new instance of the {@link HubConnection} class.
@@ -88,24 +79,6 @@ public final class HubConnection {
 
         _dispatcher = dispatcher;
         _connection = connection;
-
-        _hubProxies = new HashMap<String, HubProxy>();
-    }
-
-    /**
-     * Updates the connection data.
-     * 
-     * @param newHubName The new hub name.
-     */
-    private void updateConnectionData(final String newHubName) {
-        final HubNames hubNames = new HubNames();
-
-        hubNames.addAll(_hubProxies.keySet());
-        hubNames.add(newHubName);
-        final JsonMapper mapper = _connection.getMapper();
-        final String connectionData = mapper.toJson(hubNames);
-
-        _connection.setConnectionData(connectionData);
     }
 
     /**
@@ -153,22 +126,7 @@ public final class HubConnection {
      * @return The hub proxy.
      */
     public HubProxy getProxy(final String hubName) {
-        if (hubName == null) {
-            throw new IllegalArgumentException("Hub name must not be null");
-        }
-
-        final String lowerCaseHubName = hubName.toLowerCase();
-        HubProxy hubProxy = _hubProxies.get(lowerCaseHubName);
-
-        if (hubProxy == null) {
-            // Update the connection data before adding the new hub proxy
-            // since it could fail when the underlying connection is not disconnected.
-            updateConnectionData(hubName);
-            hubProxy = new DefaultHubProxy(hubName, _dispatcher);
-            _hubProxies.put(lowerCaseHubName, hubProxy);
-        }
-
-        return hubProxy;
+        return _dispatcher.getProxy(hubName);
     }
 
     /**

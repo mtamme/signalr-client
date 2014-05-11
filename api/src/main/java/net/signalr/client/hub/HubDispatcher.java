@@ -26,11 +26,18 @@ import net.signalr.client.util.concurrent.Promise;
 interface HubDispatcher extends ConnectionListener {
 
     /**
+     * Returns a hub proxy for the specified hub name.
+     * 
+     * @param hubName The hub name.
+     * @return The hub proxy.
+     */
+    HubProxy getProxy(String hubName);
+
+    /**
      * Invokes a method on the server side hub asynchronously.
      * 
      * @param request The hub request.
      * @return The hub response.
      */
     Promise<HubResponse> invoke(HubRequest request);
-
 }

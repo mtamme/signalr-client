@@ -17,6 +17,7 @@
 
 package net.signalr.client.hub;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -54,6 +55,11 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
     private final AtomicLong _nextCallbackId;
 
     /**
+     * The proxies.
+     */
+    private final Map<String, DefaultHubProxy> _proxies;
+
+    /**
      * The deferred responses.
      */
     private final ConcurrentHashMap<String, Deferred<HubResponse>> _responses;
@@ -71,7 +77,24 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
         _connection = connection;
 
         _nextCallbackId = new AtomicLong(0);
+        _proxies = new ConcurrentHashMap<String, DefaultHubProxy>();
         _responses = new ConcurrentHashMap<String, Deferred<HubResponse>>();
+    }
+
+    /**
+     * Updates the connection data.
+     * 
+     * @param newHubName The new hub name.
+     */
+    private void updateConnectionData(final String newHubName) {
+        final HubNames hubNames = new HubNames();
+
+        hubNames.addAll(_proxies.keySet());
+        hubNames.add(newHubName);
+        final JsonMapper mapper = _connection.getMapper();
+        final String connectionData = mapper.toJson(hubNames);
+
+        _connection.setConnectionData(connectionData);
     }
 
     /**
@@ -102,13 +125,20 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
     }
 
     /**
-     * Handles a hub messages.
+     * Handles hub messages.
      * 
      * @param message The hub messages.
      */
     private void handleMessages(final HubMessage[] messages) {
         for (final HubMessage message : messages) {
-            logger.info("Received event message: {}", message.getArguments());
+            final String hubName = message.getHubName();
+            final String lowerCaseHubName = hubName.toLowerCase();
+            final DefaultHubProxy proxy = _proxies.get(lowerCaseHubName);
+
+            if (proxy == null) {
+                continue;
+            }
+            proxy.onReceived(message);
         }
     }
 
@@ -126,6 +156,26 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
 
             handleMessages(messages);
         }
+    }
+
+    @Override
+    public HubProxy getProxy(final String hubName) {
+        if (hubName == null) {
+            throw new IllegalArgumentException("Hub name must not be null");
+        }
+
+        final String lowerCaseHubName = hubName.toLowerCase();
+        DefaultHubProxy proxy = _proxies.get(lowerCaseHubName);
+
+        if (proxy == null) {
+            // Update the connection data before adding the new hub proxy
+            // since it could fail when the underlying connection is not disconnected.
+            updateConnectionData(hubName);
+            proxy = new DefaultHubProxy(hubName, this);
+            _proxies.put(lowerCaseHubName, proxy);
+        }
+
+        return proxy;
     }
 
     @Override

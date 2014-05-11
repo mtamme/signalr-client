@@ -17,6 +17,11 @@
 
 package net.signalr.client.hub;
 
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.signalr.client.json.JsonElement;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Apply;
@@ -24,7 +29,12 @@ import net.signalr.client.util.concurrent.Apply;
 /**
  * Represents the default hub proxy.
  */
-final class DefaultHubProxy implements HubProxy {
+final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
+
+    /**
+     * The private logger.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DefaultHubProxy.class);
 
     /**
      * The hub name.
@@ -35,6 +45,11 @@ final class DefaultHubProxy implements HubProxy {
      * The hub dispatcher.
      */
     private final HubDispatcher _dispatcher;
+
+    /**
+     * The hub callbacks.
+     */
+    private final ConcurrentHashMap<String, HubCallback<HubMessage>> _callbacks;
 
     /**
      * Initializes a new instance of the {@link DefaultHubProxy} class.
@@ -52,6 +67,18 @@ final class DefaultHubProxy implements HubProxy {
 
         _hubName = hubName;
         _dispatcher = dispatcher;
+
+        _callbacks = new ConcurrentHashMap<String, HubCallback<HubMessage>>();
+    }
+
+    @Override
+    public void onReceived(final HubMessage message) {
+        final String methodName = message.getMethodName();
+        final HubCallback<HubMessage> callback = _callbacks.get(methodName);
+
+        if (callback != null) {
+            callback.onReceived(message);
+        }
     }
 
     @Override
@@ -91,6 +118,58 @@ final class DefaultHubProxy implements HubProxy {
     }
 
     @Override
-    public <T> void subscribe(final String eventName, final HubEventListener<T> listener) {
+    public void register(final String methodName, final HubCallback<JsonElement[]> callback) {
+        if (methodName == null) {
+            throw new IllegalArgumentException("Method name must not be null");
+        }
+        if (callback == null) {
+            throw new IllegalArgumentException("Callback must not be null");
+        }
+
+        _callbacks.put(methodName, new HubCallback<HubMessage>() {
+            @Override
+            public void onReceived(final HubMessage message) {
+                final JsonElement[] arguments = message.getArguments();
+
+                callback.onReceived(arguments);
+            }
+        });
+    }
+
+    @Override
+    public <T> void register(final String methodName, final Class<T> argumentType, final HubCallback<T> callback) {
+        if (methodName == null) {
+            throw new IllegalArgumentException("Method name must not be null");
+        }
+        if (argumentType == null) {
+            throw new IllegalArgumentException("Argument type must not be null");
+        }
+        if (callback == null) {
+            throw new IllegalArgumentException("Callback must not be null");
+        }
+
+        _callbacks.put(methodName, new HubCallback<HubMessage>() {
+            @Override
+            public void onReceived(final HubMessage message) {
+                final JsonElement[] arguments = message.getArguments();
+
+                if (arguments.length != 1) {
+                    logger.warn("Received message with invalid number of arguments");
+                    return;
+                }
+                final T argument = arguments[0].toObject(argumentType, null);
+
+                callback.onReceived(argument);
+            }
+        });
+    }
+
+    @Override
+    public void unregister(final String methodName) {
+        if (methodName == null) {
+            throw new IllegalArgumentException("Method name must not be null");
+        }
+
+        _callbacks.remove(methodName);
     }
 }
