@@ -34,7 +34,7 @@ interface HubDispatcher extends ConnectionListener {
     HubProxy getProxy(String hubName);
 
     /**
-     * Invokes a method on the server side hub asynchronously.
+     * Invokes a server side hub method asynchronously.
      * 
      * @param request The hub request.
      * @return The hub response.
