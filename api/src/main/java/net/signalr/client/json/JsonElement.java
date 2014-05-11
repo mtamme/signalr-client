@@ -118,9 +118,10 @@ public interface JsonElement {
      * Returns the element as an object.
      * 
      * @param type The object type.
+     * @param defaultValue The default value.
      * @return The object.
      */
-    <T> T toObject(Class<T> type);
+    <T> T toObject(Class<T> type, T defaultValue);
 
     /**
      * Returns a string representation of the element.

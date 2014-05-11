@@ -94,8 +94,8 @@ public final class JsonEmpty implements JsonElement {
     }
 
     @Override
-    public <T> T toObject(final Class<T> type) {
-        throw new UnsupportedOperationException();
+    public <T> T toObject(final Class<T> type, final T defaultValue) {
+        return defaultValue;
     }
 
     @Override

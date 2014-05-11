@@ -20,126 +20,111 @@ package net.signalr.client.hub;
 import java.util.Map;
 
 import net.signalr.client.json.JsonElement;
-import net.signalr.client.json.JsonReadable;
-import net.signalr.client.json.JsonReader;
 
 /**
  * Represents a hub response.
  */
-final class HubResponse implements JsonReadable {
+final class HubResponse {
 
     /**
-     * The changes made the the round tripped state.
+     * The element.
      */
-    private Map<String, Object> _state;
+    private final JsonElement _element;
 
     /**
-     * The data of the invocation.
+     * Initializes a new instance of the {@link HubResponse} class.
+     * 
+     * @param element The element.
      */
-    private JsonElement _data;
-
-    /**
-     * The ID of the operation.
-     */
-    private String _callbackId;
-
-    /**
-     * Indicates whether the error is a <code>HubException</code>.
-     */
-    private Boolean _isHubException;
-
-    /**
-     * The exception that occurs as a result of invoking the hub method.
-     */
-    private String _errorMessage;
-
-    /**
-     * The stack trace of the exception that occurs as a result of invoking the hub method.
-     */
-    private String _stackTrace;
-
-    /**
-     * Extra error data contained in the <code>HubException</code>.
-     */
-    private String _errorData;
-
-    /**
-     * The message ID.
-     */
-    private String _messageId;
-
-    /**
-     * The hub messages.
-     */
-    private JsonElement _messages;
-
-    public Map<String, Object> getState() {
-        return _state;
-    }
-
-    public JsonElement getData() {
-        return _data;
-    }
-
-    public String getCallbackId() {
-        return _callbackId;
-    }
-
-    public boolean isHubException() {
-        return _isHubException;
-    }
-
-    public String getErrorMessage() {
-        return _errorMessage;
-    }
-
-    public String getStackTrace() {
-        return _stackTrace;
-    }
-
-    public String getErrorData() {
-        return _errorData;
-    }
-
-    public String getMessageId() {
-        return _messageId;
-    }
-
-    public JsonElement getMessages() {
-        return _messages;
-    }
-
-    @Override
-    public void readJson(final JsonReader reader) {
-        reader.readBeginObject();
-
-        while (reader.read()) {
-            final String name = reader.getName();
-
-            if (name.equalsIgnoreCase("S")) {
-                @SuppressWarnings("unchecked")
-                final Map<String, Object> state = reader.readObject(Map.class);
-
-                _state = state;
-            } else if (name.equalsIgnoreCase("R")) {
-                _data = reader.readElement();
-            } else if (name.equalsIgnoreCase("I")) {
-                _callbackId = reader.readString();
-            } else if (name.equalsIgnoreCase("H")) {
-                _isHubException = reader.readBoolean();
-            } else if (name.equalsIgnoreCase("E")) {
-                _errorMessage = reader.readString();
-            } else if (name.equalsIgnoreCase("T")) {
-                _stackTrace = reader.readString();
-            } else if (name.equalsIgnoreCase("D")) {
-                _errorData = reader.readString();
-            } else if (name.equalsIgnoreCase("C")) {
-                _messageId = reader.readString();
-            } else if (name.equalsIgnoreCase("M")) {
-                _messages = reader.readElement();
-            }
+    public HubResponse(final JsonElement element) {
+        if (element == null) {
+            throw new IllegalArgumentException("Element must not be null");
         }
 
-        reader.readEndObject();
+        _element = element;
+    }
+
+    /**
+     * Returns the round tripped state.
+     * 
+     * @return The round tripped state.
+     */
+    public Map<String, Object> getState() {
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> state = _element.get("S").toObject(Map.class, null);
+
+        return state;
+    }
+
+    /**
+     * Returns the data of the invocation.
+     * 
+     * @return The data of the invocation.
+     */
+    public JsonElement getData() {
+        return _element.get("R");
+    }
+
+    /**
+     * Returns the ID of the operation.
+     * 
+     * @return The ID of the operation.
+     */
+    public String getCallbackId() {
+        return _element.get("I").getString(null);
+    }
+
+    /**
+     * Returns a value indicating whether the error is a {@link HubException}.
+     * 
+     * @return A value indicating whether the error is a {@link HubException}.
+     */
+    public boolean isHubException() {
+        return _element.get("H").getBoolean(false);
+    }
+
+    /**
+     * Returns the exception that occurred as a result of a hub method invocation.
+     * 
+     * @return The exception that occurred as a result of a hub method invocation.
+     */
+    public String getErrorMessage() {
+        return _element.get("E").getString(null);
+    }
+
+    /**
+     * Returns the stack trace of the exception that occurred as a result of a hub method invocation.
+     * 
+     * @return The stack trace of the exception that occurred as a result of a hub method invocation.
+     */
+    public String getStackTrace() {
+        return _element.get("T").getString(null);
+    }
+
+    /**
+     * Returns the extra error data contained in the {@link HubException}.
+     * 
+     * @return The extra error data contained in the {@link HubException}.
+     */
+    public String getErrorData() {
+        return _element.get("D").getString(null);
+    }
+
+    /**
+     * Returns the message ID.
+     * 
+     * @return The message ID.
+     */
+    public String getMessageId() {
+        return _element.get("C").getString(null);
+    }
+
+    /**
+     * Returns the hub messages.
+     * 
+     * @return The hub messages.
+     */
+    public JsonElement getMessages() {
+        return _element.get("M");
     }
 }

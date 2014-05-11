@@ -85,7 +85,7 @@ final class DefaultHubProxy implements HubProxy {
                 }
                 final JsonElement data = response.getData();
 
-                return (data == null) ? null : data.toObject(returnType);
+                return data.toObject(returnType, null);
             }
         });
     }

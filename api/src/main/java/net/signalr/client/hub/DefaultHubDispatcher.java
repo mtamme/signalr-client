@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import net.signalr.client.Connection;
 import net.signalr.client.ConnectionAdapter;
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.OnComplete;
@@ -84,19 +85,32 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
         return String.valueOf(callbackId);
     }
 
+    private void handleMessage(final JsonElement message) {
+        logger.info("Received event message: {}", message);
+    }
+
     @Override
     public void onReceived(final String message) {
         final JsonMapper mapper = _connection.getMapper();
-        final HubResponse response = mapper.toObject(message, HubResponse.class);
+        final JsonElement element = mapper.toElement(message);
+        final HubResponse response = new HubResponse(element);
         final String callbackId = response.getCallbackId();
-        final Deferred<HubResponse> deferred = _responses.remove(callbackId);
 
-        if (deferred == null) {
-            logger.warn("Received response for unknown callback ID {}", callbackId);
-            return;
+        if (callbackId != null) {
+            final Deferred<HubResponse> deferred = _responses.remove(callbackId);
+
+            if (deferred == null) {
+                logger.warn("Received response for unknown callback ID {}", callbackId);
+                return;
+            }
+            deferred.setSuccess(response);
+        } else {
+            final JsonElement messages = response.getMessages();
+
+            for (int i = 0; i < messages.size(); i++) {
+                handleMessage(messages.get(i));
+            }
         }
-
-        deferred.setSuccess(response);
     }
 
     @Override

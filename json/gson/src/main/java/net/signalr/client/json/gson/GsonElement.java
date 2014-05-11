@@ -194,11 +194,17 @@ final class GsonElement implements JsonElement {
     }
 
     @Override
-    public <T> T toObject(final Class<T> type) {
+    public <T> T toObject(final Class<T> type, final T defaultValue) {
         if (type == null) {
             throw new IllegalArgumentException("Type must not be null");
         }
 
+        if (_element.isJsonNull()) {
+            return null;
+        }
+        if (!_element.isJsonArray() && !_element.isJsonObject()) {
+            return defaultValue;
+        }
         try {
             return _gson.fromJson(_element, type);
         } catch (final Exception e) {

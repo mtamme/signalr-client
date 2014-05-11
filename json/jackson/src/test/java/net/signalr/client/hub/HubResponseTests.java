@@ -21,6 +21,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import net.signalr.client.hub.HubResponse;
 import net.signalr.client.json.DefaultJsonMapper;
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.json.jackson.JacksonFactory;
@@ -46,9 +47,10 @@ public final class HubResponseTests {
     public void deserializeCallbackIdResponseTest() {
         // Arrange
         final String data = "{\"I\":\"1\"}";
+        final JsonElement element = _mapper.toElement(data);
 
         // Act
-        final HubResponse response = _mapper.toObject(data, HubResponse.class);
+        final HubResponse response = new HubResponse(element);
 
         // Assert
         assertNotNull(response);
@@ -59,12 +61,16 @@ public final class HubResponseTests {
     public void deserializeMessageResponseTest() {
         // Arrange
         final String data = "{\"C\":\"s-0,298F690\",\"M\":[{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":1}]},{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":2}]}]}";
+        final JsonElement element = _mapper.toElement(data);
 
         // Act
-        final HubResponse response = _mapper.toObject(data, HubResponse.class);
+        final HubResponse response = new HubResponse(element);
 
         // Assert
         assertNotNull(response);
         assertThat(response.getMessageId(), is("s-0,298F690"));
+        assertThat(response.getMessages().size(), is(2));
+        assertThat(response.getMessages().get(0).toString(), is("{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":1}]}"));
+        assertThat(response.getMessages().get(1).toString(), is("{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":2}]}"));
     }
 }

@@ -176,11 +176,17 @@ public class JacksonElement implements JsonElement {
     }
 
     @Override
-    public <T> T toObject(final Class<T> type) {
+    public <T> T toObject(final Class<T> type, final T defaultValue) {
         if (type == null) {
             throw new IllegalArgumentException("Type must not be null");
         }
 
+        if (_node.isNull()) {
+            return null;
+        }
+        if (!_node.isArray() && !_node.isObject()) {
+            return defaultValue;
+        }
         try {
             return _mapper.convertValue(_node, type);
         } catch (final Exception e) {

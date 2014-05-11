@@ -17,8 +17,6 @@
 
 package net.signalr.client;
 
-import net.signalr.client.json.JsonMapper;
-import net.signalr.client.json.JsonElement;
 import net.signalr.client.transport.TransportListener;
 
 /**
@@ -74,18 +72,6 @@ final class TransportListenerAdapter implements TransportListener {
 
     @Override
     public void onReceived(final String message) {
-        final JsonMapper mapper = _context.getMapper();
-        final JsonElement element = mapper.toElement(message);
-        final String callbackId = element.get("I").getString(null);
-
-        if (callbackId != null) {
-            _context.getListeners().notifyOnReceived(message);
-        } else {
-            final JsonElement messages = element.get("M");
-
-            for (int i = 0; i < messages.size(); i++) {
-                _context.getListeners().notifyOnReceived(messages.get(i).toString());
-            }
-        }
+        _context.getListeners().notifyOnReceived(message);
     }
 }
