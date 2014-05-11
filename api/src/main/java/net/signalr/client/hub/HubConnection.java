@@ -26,7 +26,11 @@ import net.signalr.client.PersistentConnection;
 import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.transport.Transport;
+import net.signalr.client.util.concurrent.Compose;
+import net.signalr.client.util.concurrent.OnComplete;
+import net.signalr.client.util.concurrent.OnFailure;
 import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.Promises;
 
 /**
  * Represents a hub connection.
@@ -173,7 +177,22 @@ public final class HubConnection {
      * @return The start result.
      */
     public Promise<Void> start() {
-        return _connection.start();
+        return Promises.newPromise(new Runnable() {
+            @Override
+            public void run() {
+                _connection.addListener(_dispatcher);
+            }
+        }).then(new Compose<Void, Void>() {
+            @Override
+            protected Promise<Void> doCompose(final Void value) throws Exception {
+                return _connection.start();
+            }
+        }).then(new OnFailure<Void>() {
+            @Override
+            protected void onFailure(final Throwable cause) throws Exception {
+                _connection.removeListener(_dispatcher);
+            }
+        });
     }
 
     /**
@@ -182,6 +201,11 @@ public final class HubConnection {
      * @return The stop result.
      */
     public Promise<Void> stop() {
-        return _connection.stop();
+        return _connection.stop().then(new OnComplete<Void>() {
+            @Override
+            protected void onComplete(final Void value, final Throwable cause) throws Exception {
+                _connection.removeListener(_dispatcher);
+            }
+        });
     }
 }

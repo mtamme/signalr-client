@@ -17,19 +17,13 @@
 
 package net.signalr.client.hub;
 
+import net.signalr.client.ConnectionListener;
 import net.signalr.client.util.concurrent.Promise;
 
 /**
  * Defines a hub dispatcher.
  */
-interface HubDispatcher {
-
-    /**
-     * Invoked when a message was received.
-     * 
-     * @param message The message.
-     */
-    void onReceived(String message);
+interface HubDispatcher extends ConnectionListener {
 
     /**
      * Invokes a method on the server side hub asynchronously.

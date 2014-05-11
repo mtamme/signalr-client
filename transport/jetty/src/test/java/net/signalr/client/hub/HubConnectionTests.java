@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 import net.signalr.client.ConnectionListener;
 import net.signalr.client.json.gson.GsonFactory;
 import net.signalr.client.transport.jetty.WebSocketTransport;
+import net.signalr.client.util.concurrent.Compose;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
 
@@ -107,17 +108,23 @@ public final class HubConnectionTests {
             }
         });
         final HubProxy hubProxy = connection.getProxy(HUB_NAME);
-        final Promise<Void> start = connection.start();
+        final Promise<Void> start = connection.start().then(new Compose<Void, Void>() {
+            @Override
+            protected Promise<Void> doCompose(final Void value) throws Exception {
+                return hubProxy.invoke(JOIN_METHOD_NAME, Void.class, new int[] { 1 }, true);
+            }
+        });
 
         Promises.toFuture(start).get();
 
-        hubProxy.invoke(JOIN_METHOD_NAME, Void.class, new int[] { 1 }, true);
-
         System.in.read();
 
-        hubProxy.invoke(LEAVE_METHOD_NAME, Void.class, new int[] { 1 });
-
-        final Promise<Void> stop = connection.stop();
+        final Promise<Void> stop = hubProxy.invoke(LEAVE_METHOD_NAME, Void.class, new int[] { 1 }).then(new Compose<Void, Void>() {
+            @Override
+            protected Promise<Void> doCompose(final Void value) throws Exception {
+                return connection.stop();
+            }
+        });
 
         Promises.toFuture(stop).get();
     }

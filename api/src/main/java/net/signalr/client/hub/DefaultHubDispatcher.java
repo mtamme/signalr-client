@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.signalr.client.Connection;
+import net.signalr.client.ConnectionAdapter;
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.OnComplete;
@@ -34,7 +35,7 @@ import net.signalr.client.util.concurrent.Compose;
 /**
  * Represents the default hub dispatcher.
  */
-final class DefaultHubDispatcher implements HubDispatcher {
+final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatcher {
 
     /**
      * The private logger.

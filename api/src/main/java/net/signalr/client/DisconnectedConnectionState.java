@@ -125,7 +125,7 @@ final class DisconnectedConnectionState implements ConnectionState {
             protected void onFailure(final Throwable cause) throws Exception {
                 transport.stop(context);
             }
-        }).then(new OnFailure<Void>() {
+        }, context.getExecutor()).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 manager.stop(context);
