@@ -124,7 +124,16 @@ final class HubResponse {
      * 
      * @return The hub messages.
      */
-    public JsonElement getMessages() {
-        return _element.get("M");
+    public HubMessage[] getMessages() {
+        final JsonElement array = _element.get("M");
+        final HubMessage[] messages = new HubMessage[array.size()];
+
+        for (int i = 0; i < messages.length; i++) {
+            final JsonElement element = array.get(i);
+
+            messages[i] = new HubMessage(element);
+        }
+
+        return messages;
     }
 }

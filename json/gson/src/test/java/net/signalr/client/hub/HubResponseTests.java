@@ -68,8 +68,14 @@ public final class HubResponseTests {
         // Assert
         assertNotNull(response);
         assertThat(response.getMessageId(), is("s-0,298F690"));
-        assertThat(response.getMessages().size(), is(2));
-        assertThat(response.getMessages().get(0).toString(), is("{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":1}]}"));
-        assertThat(response.getMessages().get(1).toString(), is("{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":2}]}"));
+        final HubMessage[] messages = response.getMessages();
+
+        assertThat(messages.length, is(2));
+        assertThat(messages[0].getHubName(), is("hub"));
+        assertThat(messages[0].getMethodName(), is("update"));
+        assertThat(messages[0].getArguments().toString(), is("[{\"Value\":1}]"));
+        assertThat(messages[1].getHubName(), is("hub"));
+        assertThat(messages[1].getMethodName(), is("update"));
+        assertThat(messages[1].getArguments().toString(), is("[{\"Value\":2}]"));
     }
 }

@@ -85,8 +85,31 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
         return String.valueOf(callbackId);
     }
 
-    private void handleMessage(final JsonElement message) {
-        logger.info("Received event message: {}", message);
+    /**
+     * Handles a hub response.
+     * 
+     * @param callbackId The callback ID.
+     * @param response The hub response.
+     */
+    private void handleResponse(final String callbackId, final HubResponse response) {
+        final Deferred<HubResponse> deferred = _responses.remove(callbackId);
+
+        if (deferred == null) {
+            logger.warn("Received response for unknown callback ID {}", callbackId);
+            return;
+        }
+        deferred.setSuccess(response);
+    }
+
+    /**
+     * Handles a hub messages.
+     * 
+     * @param message The hub messages.
+     */
+    private void handleMessages(final HubMessage[] messages) {
+        for (final HubMessage message : messages) {
+            logger.info("Received event message: {}", message.getArguments());
+        }
     }
 
     @Override
@@ -97,19 +120,11 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
         final String callbackId = response.getCallbackId();
 
         if (callbackId != null) {
-            final Deferred<HubResponse> deferred = _responses.remove(callbackId);
-
-            if (deferred == null) {
-                logger.warn("Received response for unknown callback ID {}", callbackId);
-                return;
-            }
-            deferred.setSuccess(response);
+            handleResponse(callbackId, response);
         } else {
-            final JsonElement messages = response.getMessages();
+            final HubMessage[] messages = response.getMessages();
 
-            for (int i = 0; i < messages.size(); i++) {
-                handleMessage(messages.get(i));
-            }
+            handleMessages(messages);
         }
     }
 

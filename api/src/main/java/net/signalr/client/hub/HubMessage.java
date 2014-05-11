@@ -18,57 +18,54 @@
 package net.signalr.client.hub;
 
 import net.signalr.client.json.JsonElement;
-import net.signalr.client.json.JsonReadable;
-import net.signalr.client.json.JsonReader;
 
 /**
  * Represents a hub message.
  */
-final class HubMessage implements JsonReadable {
+final class HubMessage {
 
     /**
-     * The hub name.
+     * The element.
      */
-    private String _hubName;
+    private JsonElement _element;
 
     /**
-     * The method name.
+     * Initializes a new instance of the {@link HubMessage} class.
+     * 
+     * @param element The element.
      */
-    private String _methodName;
-
-    /**
-     * The arguments.
-     */
-    private JsonElement _arguments;
-
-    public String getHubName() {
-        return _hubName;
-    }
-
-    public String getMethodName() {
-        return _methodName;
-    }
-
-    public JsonElement getArguments() {
-        return _arguments;
-    }
-
-    @Override
-    public void readJson(final JsonReader reader) {
-        reader.readBeginObject();
-
-        while (reader.read()) {
-            final String name = reader.getName();
-
-            if (name.equalsIgnoreCase("H")) {
-                _hubName = reader.readString();
-            } else if (name.equalsIgnoreCase("M")) {
-                _methodName = reader.readString();
-            } else if (name.equalsIgnoreCase("A")) {
-                _arguments = reader.readElement();
-            }
+    public HubMessage(final JsonElement element) {
+        if (element == null) {
+            throw new IllegalArgumentException("Element must not be null");
         }
 
-        reader.readEndObject();
+        _element = element;
+    }
+
+    /**
+     * Returns the hub name.
+     * 
+     * @return The hub name.
+     */
+    public String getHubName() {
+        return _element.get("H").getString(null);
+    }
+
+    /**
+     * Returns the method name.
+     * 
+     * @return The method name.
+     */
+    public String getMethodName() {
+        return _element.get("M").getString(null);
+    }
+
+    /**
+     * Returns the arguments.
+     * 
+     * @return The arguments.
+     */
+    public JsonElement getArguments() {
+        return _element.get("A");
     }
 }
