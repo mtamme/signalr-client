@@ -29,16 +29,32 @@ import net.signalr.client.json.JsonWriter;
  */
 final class HubNames implements JsonWriteable {
 
+    /**
+     * The hub names.
+     */
     private final Set<String> _names;
 
+    /**
+     * Initializes a new instance of the {@link HubNames} class.
+     */
     public HubNames() {
         _names = new HashSet<String>();
     }
 
+    /**
+     * Adds the specified hub name.
+     * 
+     * @param name The hub name.
+     */
     public void add(final String name) {
         _names.add(name);
     }
 
+    /**
+     * Adds the specified hub names.
+     * 
+     * @param names The hub names.
+     */
     public void addAll(final Collection<String> names) {
         _names.addAll(names);
     }

@@ -135,12 +135,12 @@ final class ConnectedConnectionState implements ConnectionState {
                 context.changeState(disconnecting, disconnected);
                 context.getListeners().notifyOnDisconnected();
             }
-        }).then(new OnComplete<Void>() {
+        }, context.getExecutor()).then(new OnComplete<Void>() {
             @Override
             protected void onComplete(final Void value, final Throwable cause) throws Exception {
                 transport.stop(context);
             }
-        }, context.getExecutor()).then(deferred);
+        }).then(deferred);
 
         return deferred;
     }
@@ -181,7 +181,7 @@ final class ConnectedConnectionState implements ConnectionState {
 
                 return transport.connect(context, manager, true);
             }
-        }).then(new Apply<Channel, Void>() {
+        }, context.getExecutor()).then(new Apply<Channel, Void>() {
             @Override
             protected Void doApply(final Channel channel) throws Exception {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(channel);
@@ -210,7 +210,7 @@ final class ConnectedConnectionState implements ConnectionState {
             protected void onFailure(final Throwable cause) throws Exception {
                 transport.stop(context);
             }
-        }, context.getExecutor()).then(deferred);
+        }).then(deferred);
 
         return deferred;
     }
