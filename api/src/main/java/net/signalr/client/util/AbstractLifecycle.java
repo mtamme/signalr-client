@@ -169,7 +169,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
          * 
          * @param name The state name.
          */
-        State(final String name) {
+        private State(final String name) {
             if (name == null) {
                 throw new IllegalArgumentException("Name must not be null");
             }
