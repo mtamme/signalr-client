@@ -121,11 +121,4 @@ public interface JsonElement {
      * @return The object.
      */
     <T> T toObject(Class<T> type, T defaultValue);
-
-    /**
-     * Returns a string representation of the element.
-     * 
-     * @return A string representation of the element.
-     */
-    String toString();
 }
