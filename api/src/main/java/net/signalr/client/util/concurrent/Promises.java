@@ -92,6 +92,26 @@ public final class Promises {
     }
 
     /**
+     * Awaits the specified promise.
+     * 
+     * @param promise The promise.
+     * @return The value.
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
+    public static <T> T await(final Promise<T> promise) throws InterruptedException, ExecutionException {
+        if (promise == null) {
+            throw new IllegalArgumentException("Promise must not be null");
+        }
+
+        final Awaiter<T> awaiter = new Awaiter<T>();
+
+        promise.then(awaiter);
+
+        return awaiter.get();
+    }
+
+    /**
      * Returns a future for the specified promise.
      * 
      * @param promise The promise.
