@@ -53,4 +53,4 @@ proxy.invoke("joinUpdateGroup", Void.class);
 
 # Copyright
 
-Copyright 2014 Martin Tamme. See LICENSE for details.
+Copyright © Martin Tamme. See LICENSE for details.
