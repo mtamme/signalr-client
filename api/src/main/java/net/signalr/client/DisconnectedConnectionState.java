@@ -22,6 +22,7 @@ import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportManager;
 import net.signalr.client.util.concurrent.Deferred;
+import net.signalr.client.util.concurrent.ExecuteOn;
 import net.signalr.client.util.concurrent.OnFailure;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
@@ -103,7 +104,7 @@ final class DisconnectedConnectionState implements ConnectionState {
 
                 return transport.connect(context, manager, false);
             }
-        }).then(new Apply<Channel, Void>() {
+        }).then(new ExecuteOn<Channel>(context.getExecutor())).then(new Apply<Channel, Void>() {
             @Override
             protected Void doApply(final Channel channel) throws Exception {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(channel);
@@ -114,7 +115,7 @@ final class DisconnectedConnectionState implements ConnectionState {
 
                 return null;
             }
-        }, context.getExecutor()).then(new OnFailure<Void>() {
+        }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 context.changeState(connecting, DisconnectedConnectionState.this);

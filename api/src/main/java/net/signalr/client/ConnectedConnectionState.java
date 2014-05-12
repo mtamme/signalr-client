@@ -25,6 +25,7 @@ import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.TransportManager;
 import net.signalr.client.util.concurrent.Catch;
 import net.signalr.client.util.concurrent.Deferred;
+import net.signalr.client.util.concurrent.ExecuteOn;
 import net.signalr.client.util.concurrent.OnComplete;
 import net.signalr.client.util.concurrent.OnFailure;
 import net.signalr.client.util.concurrent.Promise;
@@ -122,7 +123,7 @@ final class ConnectedConnectionState implements ConnectionState {
 
                 return transport.abort(context);
             }
-        }).then(new OnComplete<Void>() {
+        }).then(new ExecuteOn<Void>(context.getExecutor())).then(new OnComplete<Void>() {
             @Override
             protected void onComplete(final Void value, final Throwable cause) throws Exception {
                 if (cause != null) {
@@ -135,7 +136,7 @@ final class ConnectedConnectionState implements ConnectionState {
                 context.changeState(disconnecting, disconnected);
                 context.getListeners().notifyOnDisconnected();
             }
-        }, context.getExecutor()).then(new OnComplete<Void>() {
+        }).then(new OnComplete<Void>() {
             @Override
             protected void onComplete(final Void value, final Throwable cause) throws Exception {
                 transport.stop(context);
@@ -181,7 +182,7 @@ final class ConnectedConnectionState implements ConnectionState {
 
                 return transport.connect(context, manager, true);
             }
-        }, context.getExecutor()).then(new Apply<Channel, Void>() {
+        }).then(new ExecuteOn<Channel>(context.getExecutor())).then(new Apply<Channel, Void>() {
             @Override
             protected Void doApply(final Channel channel) throws Exception {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(channel);

@@ -17,8 +17,6 @@
 
 package net.signalr.client.util.concurrent;
 
-import java.util.concurrent.Executor;
-
 /**
  * Defines a promised value.
  * 
@@ -41,27 +39,10 @@ public interface Promise<T> {
     void then(Completion<? super T> completion);
 
     /**
-     * Adds the specified completion.
-     * 
-     * @param completion The completion.
-     * @param executor The executor.
-     */
-    void then(Completion<? super T> completion, Executor executor);
-
-    /**
      * Adds the specified continuation.
      * 
      * @param continuation The continuation.
      * @return The result.
      */
     <R> Promise<R> then(Continuation<? super T, ? extends R> continuation);
-
-    /**
-     * Adds the specified continuation.
-     * 
-     * @param continuation The continuation.
-     * @param executor The executor.
-     * @return The result.
-     */
-    <R> Promise<R> then(Continuation<? super T, ? extends R> continuation, Executor executor);
 }

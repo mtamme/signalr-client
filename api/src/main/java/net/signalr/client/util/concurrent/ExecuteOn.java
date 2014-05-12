@@ -23,16 +23,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Represents an executor completion.
+ * Represents an execute on continuation.
  * 
  * @param <T> The value type.
  */
-abstract class ExecutorCompletion<T> implements Completion<T> {
+public final class ExecuteOn<T> implements Continuation<T, T> {
 
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(ExecutorCompletion.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExecuteOn.class);
 
     /**
      * The executor.
@@ -40,54 +40,39 @@ abstract class ExecutorCompletion<T> implements Completion<T> {
     private final Executor _executor;
 
     /**
-     * Initializes a new instance of the {@link ExecutorCompletion} class.
+     * Initializes a new instance of the {@link ExecuteOn} class.
      * 
      * @param executor The executor.
      */
-    protected ExecutorCompletion(final Executor executor) {
+    public ExecuteOn(final Executor executor) {
         if (executor == null) {
-            throw new IllegalArgumentException("Executor must not e null");
+            throw new IllegalArgumentException("Executor must not be null");
         }
 
         _executor = executor;
     }
 
-    /**
-     * Handles the success completion.
-     * 
-     * @param value The value.
-     */
-    protected abstract void doSuccess(T value);
-
-    /**
-     * Handles the failure completion.
-     * 
-     * @param cause The cause.
-     */
-    protected abstract void doFailure(Throwable cause);
-
     @Override
-    public final void setSuccess(final T value) {
+    public void setSuccess(final T value, final Deferred<? super T> result) throws Exception {
         _executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    doSuccess(value);
+                    result.setSuccess(value);
                 } catch (final Throwable t) {
                     logger.warn("Failed to execute completion", t);
                 }
-
             }
         });
     }
 
     @Override
-    public final void setFailure(final Throwable cause) {
+    public void setFailure(final Throwable cause, final Deferred<? super T> result) throws Exception {
         _executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    doFailure(cause);
+                    result.setFailure(cause);
                 } catch (final Throwable t) {
                     logger.warn("Failed to execute completion", t);
                 }
