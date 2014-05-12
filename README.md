@@ -1,6 +1,6 @@
 # signalr-client
 
-An extensible SignalR client for Java.
+An extensible asynchronous SignalR client for Java.
 
 ## Persistent Connections API
 
