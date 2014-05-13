@@ -16,7 +16,7 @@
 
 package net.signalr.client;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Represents a connection listener collection.
@@ -26,13 +26,13 @@ final class ConnectionListeners {
     /**
      * The connection listeners.
      */
-    private final CopyOnWriteArrayList<ConnectionListener> _listeners;
+    private final CopyOnWriteArraySet<ConnectionListener> _listeners;
 
     /**
      * Initializes a new instance of the {@link ConnectionListeners} class.
      */
     public ConnectionListeners() {
-        _listeners = new CopyOnWriteArrayList<ConnectionListener>();
+        _listeners = new CopyOnWriteArraySet<ConnectionListener>();
     }
 
     /**
