@@ -117,7 +117,7 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
     }
 
     @Override
-    public void register(final String methodName, final HubCallback<JsonElement[]> callback) {
+    public void register(final String methodName, final HubCallback<JsonElement> callback) {
         if (methodName == null) {
             throw new IllegalArgumentException("Method name must not be null");
         }
@@ -128,7 +128,7 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
         _callbacks.put(methodName, new HubCallback<HubMessage>() {
             @Override
             public void onInvoke(final HubMessage message) {
-                final JsonElement[] arguments = message.getArguments();
+                final JsonElement arguments = message.getArguments();
 
                 callback.onInvoke(arguments);
             }
@@ -150,15 +150,17 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
         _callbacks.put(methodName, new HubCallback<HubMessage>() {
             @Override
             public void onInvoke(final HubMessage message) {
-                final JsonElement[] arguments = message.getArguments();
+                final JsonElement arguments = message.getArguments();
+                final int count = arguments.size();
 
-                if (arguments.length != 1) {
-                    logger.warn("Received message with invalid number of arguments");
+                if (count != 1) {
+                    logger.warn("Received message with wrong number of arguments: {}", count);
                     return;
                 }
-                final T argument = arguments[0].toObject(argumentType, null);
+                final JsonElement argument = arguments.get(0);
+                final T object = argument.toObject(argumentType, null);
 
-                callback.onInvoke(argument);
+                callback.onInvoke(object);
             }
         });
     }

@@ -64,14 +64,7 @@ final class HubMessage {
      * 
      * @return The arguments.
      */
-    public JsonElement[] getArguments() {
-        final JsonElement array = _element.get("A");
-        final JsonElement[] arguments = new JsonElement[array.size()];
-
-        for (int i = 0; i < arguments.length; i++) {
-            arguments[i] = array.get(i);
-        }
-
-        return arguments;
+    public JsonElement getArguments() {
+        return _element.get("A");
     }
 }

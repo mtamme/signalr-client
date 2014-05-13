@@ -40,7 +40,7 @@ public interface HubProxy {
      * @param methodName The method name.
      * @param callback The hub callback.
      */
-    void register(String methodName, HubCallback<JsonElement[]> callback);
+    void register(String methodName, HubCallback<JsonElement> callback);
 
     /**
      * Registers a client side hub callback.
