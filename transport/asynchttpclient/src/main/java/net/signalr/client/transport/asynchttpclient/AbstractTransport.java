@@ -58,14 +58,22 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
 
     /**
+     * The HTTP provider class.
+     */
+    private final String _httpProviderClass;
+
+    /**
      * The HTTP client.
      */
     private AsyncHttpClient _httpClient;
 
     /**
      * Initializes a new instance of the {@link AbstractTransport} class.
+     * 
+     * @param httpProviderClass The HTTP provider class.
      */
-    protected AbstractTransport() {
+    protected AbstractTransport(final String httpProviderClass) {
+        _httpProviderClass = httpProviderClass;
         _httpClient = null;
     }
 
@@ -81,6 +89,10 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
         builder.setAllowSslConnectionPool(true);
         builder.setCompressionEnabled(true);
         builder.setUserAgent(USER_AGENT);
+
+        if (_httpProviderClass != null) {
+            return new AsyncHttpClient(_httpProviderClass, builder.build());
+        }
 
         return new AsyncHttpClient(builder.build());
     }

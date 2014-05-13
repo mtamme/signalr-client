@@ -57,6 +57,22 @@ public final class WebSocketTransport extends AbstractTransport {
      */
     private static final String NAME = "webSockets";
 
+    /**
+     * Initializes a new instance of the {@link WebSocketTransport} class.
+     */
+    public WebSocketTransport() {
+        this(null);
+    }
+
+    /**
+     * Initializes a new instance of the {@link WebSocketTransport} class.
+     * 
+     * @param httpProviderClass The HTTP provider class.
+     */
+    public WebSocketTransport(final String httpProviderClass) {
+        super(httpProviderClass);
+    }
+
     @Override
     public String getName() {
         return NAME;
