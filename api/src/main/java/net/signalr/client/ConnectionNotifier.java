@@ -18,10 +18,12 @@ package net.signalr.client;
 
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import net.signalr.client.transport.TransportListener;
+
 /**
- * Represents a connection listener collection.
+ * Represents a connection notifier.
  */
-final class ConnectionListeners {
+final class ConnectionNotifier implements TransportListener {
 
     /**
      * The connection listeners.
@@ -29,9 +31,9 @@ final class ConnectionListeners {
     private final CopyOnWriteArraySet<ConnectionListener> _listeners;
 
     /**
-     * Initializes a new instance of the {@link ConnectionListeners} class.
+     * Initializes a new instance of the {@link ConnectionNotifier} class.
      */
-    public ConnectionListeners() {
+    public ConnectionNotifier() {
         _listeners = new CopyOnWriteArraySet<ConnectionListener>();
     }
 
@@ -97,25 +99,45 @@ final class ConnectionListeners {
         }
     }
 
-    public void notifyOnConnectionSlow() {
-        for (final ConnectionListener listener : _listeners) {
-            listener.onConnectionSlow();
-        }
-    }
-
     public void notifyOnError(final Throwable cause) {
         for (final ConnectionListener listener : _listeners) {
             listener.onError(cause);
         }
     }
 
-    public void notifyOnSending(final String message) {
+    @Override
+    public void onChannelOpened() {
+    }
+
+    @Override
+    public void onChannelClosed() {
+    }
+
+    @Override
+    public void onConnectionSlow() {
+        for (final ConnectionListener listener : _listeners) {
+            listener.onConnectionSlow();
+        }
+    }
+
+    @Override
+    public void onConnectionLost() {
+    }
+
+    @Override
+    public void onError(final Throwable cause) {
+        notifyOnError(cause);
+    }
+
+    @Override
+    public void onSending(final String message) {
         for (final ConnectionListener listener : _listeners) {
             listener.onSending(message);
         }
     }
 
-    public void notifyOnReceived(final String message) {
+    @Override
+    public void onReceived(final String message) {
         for (final ConnectionListener listener : _listeners) {
             listener.onReceived(message);
         }

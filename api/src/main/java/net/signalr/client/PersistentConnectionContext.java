@@ -88,9 +88,9 @@ final class PersistentConnectionContext implements ConnectionContext {
     private final Map<String, Collection<String>> _parameters;
 
     /**
-     * The connection listeners.
+     * The connection notifier.
      */
-    private final ConnectionListeners _listeners;
+    private final ConnectionNotifier _notifier;
 
     /**
      * The connection data.
@@ -139,7 +139,7 @@ final class PersistentConnectionContext implements ConnectionContext {
         _state = new AtomicReference<ConnectionState>(initialState);
         _headers = new HashMap<String, Collection<String>>();
         _parameters = new HashMap<String, Collection<String>>();
-        _listeners = new ConnectionListeners();
+        _notifier = new ConnectionNotifier();
 
         _connectionData = null;
         _options = null;
@@ -234,8 +234,8 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
-    public ConnectionListeners getListeners() {
-        return _listeners;
+    public ConnectionNotifier getConnectionNotifier() {
+        return _notifier;
     }
 
     @Override

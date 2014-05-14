@@ -99,8 +99,9 @@ final class ConnectedConnectionState implements ConnectionState {
         Promises.newPromise(new Runnable() {
             @Override
             public void run() {
-                context.getListeners().notifyOnDisconnecting();
+                context.getConnectionNotifier().notifyOnDisconnecting();
                 manager.stop(context);
+                manager.removeListener(context.getConnectionNotifier());
             }
         }).then(new Compose<Void, Void>() {
             @Override
@@ -112,7 +113,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Catch<Void>() {
             @Override
             protected Void doCatch(final Throwable cause) throws Exception {
-                context.getListeners().notifyOnError(cause);
+                context.getConnectionNotifier().notifyOnError(cause);
                 return null;
             }
         }).then(new Compose<Void, Void>() {
@@ -126,14 +127,14 @@ final class ConnectedConnectionState implements ConnectionState {
             @Override
             protected void onComplete(final Void value, final Throwable cause) throws Exception {
                 if (cause != null) {
-                    context.getListeners().notifyOnError(cause);
+                    context.getConnectionNotifier().notifyOnError(cause);
                 }
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
                 context.setTransportOptions(null);
 
                 context.changeState(disconnecting, disconnected);
-                context.getListeners().notifyOnDisconnected();
+                context.getConnectionNotifier().notifyOnDisconnected();
             }
         }).then(new OnComplete<Void>() {
             @Override
@@ -159,7 +160,7 @@ final class ConnectedConnectionState implements ConnectionState {
         Promises.newPromise(new Runnable() {
             @Override
             public void run() {
-                context.getListeners().notifyOnReconnecting();
+                context.getConnectionNotifier().notifyOnReconnecting();
             }
         }).then(new Compose<Void, Void>() {
             @Override
@@ -171,7 +172,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Catch<Void>() {
             @Override
             protected Void doCatch(final Throwable cause) throws Exception {
-                context.getListeners().notifyOnError(cause);
+                context.getConnectionNotifier().notifyOnError(cause);
                 return null;
             }
         }).then(new Compose<Void, Channel>() {
@@ -187,23 +188,24 @@ final class ConnectedConnectionState implements ConnectionState {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(channel);
 
                 context.changeState(reconnecting, connected);
-                context.getListeners().notifyOnReconnected();
+                context.getConnectionNotifier().notifyOnReconnected();
 
                 return null;
             }
         }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
-                context.getListeners().notifyOnError(cause);
+                context.getConnectionNotifier().notifyOnError(cause);
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
                 context.changeState(reconnecting, disconnected);
-                context.getListeners().notifyOnDisconnected();
+                context.getConnectionNotifier().notifyOnDisconnected();
             }
         }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 manager.stop(context);
+                manager.removeListener(context.getConnectionNotifier());
             }
         }).then(new OnFailure<Void>() {
             @Override

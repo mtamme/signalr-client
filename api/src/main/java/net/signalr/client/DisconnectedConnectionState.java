@@ -72,13 +72,11 @@ final class DisconnectedConnectionState implements ConnectionState {
         final TransportManager manager = context.getTransportManager();
         final Transport transport = manager.getTransport();
 
-        // FIXME Don't forget to remove listener.
-        manager.addListener(new TransportListenerAdapter(context));
-
         Promises.newPromise(new Runnable() {
             @Override
             public void run() {
-                context.getListeners().notifyOnConnecting();
+                context.getConnectionNotifier().notifyOnConnecting();
+                manager.addListener(context.getConnectionNotifier());
                 transport.start(context);
             }
         }).then(new Compose<Void, NegotiationResponse>() {
@@ -109,7 +107,7 @@ final class DisconnectedConnectionState implements ConnectionState {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(channel);
 
                 context.changeState(connecting, connected);
-                context.getListeners().notifyOnConnected();
+                context.getConnectionNotifier().notifyOnConnected();
                 manager.start(context);
 
                 return null;
@@ -118,7 +116,7 @@ final class DisconnectedConnectionState implements ConnectionState {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 context.changeState(connecting, DisconnectedConnectionState.this);
-                context.getListeners().notifyOnDisconnected();
+                context.getConnectionNotifier().notifyOnDisconnected();
             }
         }).then(new OnFailure<Void>() {
             @Override
@@ -129,6 +127,7 @@ final class DisconnectedConnectionState implements ConnectionState {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 manager.stop(context);
+                manager.removeListener(context.getConnectionNotifier());
             }
         }).then(deferred);
 

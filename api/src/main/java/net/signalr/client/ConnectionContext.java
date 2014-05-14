@@ -49,11 +49,11 @@ interface ConnectionContext extends TransportContext {
     void addParameter(String name, String value);
 
     /**
-     * Returns the connection listeners.
+     * Returns the connection notifier.
      * 
-     * @return The connection listeners.
+     * @return The connection notifier.
      */
-    ConnectionListeners getListeners();
+    ConnectionNotifier getConnectionNotifier();
 
     /**
      * Sets the connection data.
