@@ -33,7 +33,7 @@ interface ConnectionContext extends TransportContext {
     TransportManager getTransportManager();
 
     /**
-     * Adds a header.
+     * Adds the specified header name and value.
      * 
      * @param name The header name.
      * @param value The header value.
@@ -41,7 +41,7 @@ interface ConnectionContext extends TransportContext {
     void addHeader(String name, String value);
 
     /**
-     * Adds a parameter.
+     * Adds the specified parameter name and value.
      * 
      * @param name The parameter name.
      * @param value The parameter value.
