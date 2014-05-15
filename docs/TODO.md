@@ -1,6 +1,7 @@
 TODO
 ====
 
-* Cleanup listener handling.
-* Fully implement transport event handling.
+* Cleanup overall listener wiring.
+* Probably split ConnectionListener.
+* Set connect and request timeouts.
 * Increase unit test code coverage.
