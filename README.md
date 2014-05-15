@@ -10,7 +10,7 @@ final PersistentConnection connection = new PersistentConnection(
         new WebSocketTransport(),
         new JacksonFactory());
 
-connection.addListener(new ConnectionAdapter() {
+connection.addConnectionListener(new ConnectionAdapter() {
     @Override
     public void onReceived(final String message) {
         System.out.println(message);
@@ -35,7 +35,7 @@ final HubConnection connection = new HubConnection(
         "http://localhost/signalr",
         new WebSocketTransport(),
         new GsonFactory());
-final HubProxy proxy = connection.getProxy("hub");
+final HubProxy proxy = connection.getHubProxy("hub");
 
 proxy.register("update", Update.class, new HubCallback<Update>() {
     @Override
