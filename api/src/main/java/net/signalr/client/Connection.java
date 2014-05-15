@@ -81,14 +81,14 @@ public interface Connection {
      * 
      * @param listener The connection listener.
      */
-    void addListener(ConnectionListener listener);
+    void addConnectionListener(ConnectionListener listener);
 
     /**
      * Removes the specified connection listener.
      * 
      * @param listener The connection listener.
      */
-    void removeListener(ConnectionListener listener);
+    void removeConnectionListener(ConnectionListener listener);
 
     /**
      * Sets the connection data.

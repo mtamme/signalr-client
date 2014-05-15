@@ -90,8 +90,8 @@ final class ConnectedConnectionState implements ConnectionState {
         final Deferred<Void> deferred = Promises.newDeferred();
         final DisconnectingConnectionState disconnecting = new DisconnectingConnectionState(deferred);
 
-        if (!context.tryChangeState(this, disconnecting)) {
-            return context.getState().stop(context);
+        if (!context.tryChangeConnectionState(this, disconnecting)) {
+            return context.getConnectionState().stop(context);
         }
         final TransportManager manager = context.getTransportManager();
         final Transport transport = manager.getTransport();
@@ -101,7 +101,7 @@ final class ConnectedConnectionState implements ConnectionState {
             public void run() {
                 context.getConnectionNotifier().notifyOnDisconnecting();
                 manager.stop(context);
-                manager.removeListener(context.getConnectionNotifier());
+                manager.removeTransportListener(context.getConnectionNotifier());
             }
         }).then(new Compose<Void, Void>() {
             @Override
@@ -133,7 +133,7 @@ final class ConnectedConnectionState implements ConnectionState {
 
                 context.setTransportOptions(null);
 
-                context.changeState(disconnecting, disconnected);
+                context.changeConnectionState(disconnecting, disconnected);
                 context.getConnectionNotifier().notifyOnDisconnected();
             }
         }).then(new OnComplete<Void>() {
@@ -151,8 +151,8 @@ final class ConnectedConnectionState implements ConnectionState {
         final Deferred<Void> deferred = Promises.newDeferred();
         final ReconnectingConnectionState reconnecting = new ReconnectingConnectionState(deferred);
 
-        if (!context.tryChangeState(this, reconnecting)) {
-            return context.getState().reconnect(context);
+        if (!context.tryChangeConnectionState(this, reconnecting)) {
+            return context.getConnectionState().reconnect(context);
         }
         final TransportManager manager = context.getTransportManager();
         final Transport transport = manager.getTransport();
@@ -187,7 +187,7 @@ final class ConnectedConnectionState implements ConnectionState {
             protected Void doApply(final Channel channel) throws Exception {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(channel);
 
-                context.changeState(reconnecting, connected);
+                context.changeConnectionState(reconnecting, connected);
                 context.getConnectionNotifier().notifyOnReconnected();
 
                 return null;
@@ -198,14 +198,14 @@ final class ConnectedConnectionState implements ConnectionState {
                 context.getConnectionNotifier().notifyOnError(cause);
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
-                context.changeState(reconnecting, disconnected);
+                context.changeConnectionState(reconnecting, disconnected);
                 context.getConnectionNotifier().notifyOnDisconnected();
             }
         }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 manager.stop(context);
-                manager.removeListener(context.getConnectionNotifier());
+                manager.removeTransportListener(context.getConnectionNotifier());
             }
         }).then(new OnFailure<Void>() {
             @Override

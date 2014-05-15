@@ -16,130 +16,59 @@
 
 package net.signalr.client;
 
-import java.util.concurrent.CopyOnWriteArraySet;
-
 import net.signalr.client.transport.TransportListener;
 
 /**
- * Represents a connection notifier.
+ * Defines a connection notifier.
  */
-final class ConnectionNotifier implements TransportListener {
-
-    /**
-     * The connection listeners.
-     */
-    private final CopyOnWriteArraySet<ConnectionListener> _listeners;
-
-    /**
-     * Initializes a new instance of the {@link ConnectionNotifier} class.
-     */
-    public ConnectionNotifier() {
-        _listeners = new CopyOnWriteArraySet<ConnectionListener>();
-    }
+interface ConnectionNotifier extends TransportListener {
 
     /**
      * Adds the specified connection listener.
      * 
      * @param listener The connection listener.
      */
-    public void addListener(final ConnectionListener listener) {
-        if (listener == null) {
-            throw new IllegalArgumentException("Listener must not be null");
-        }
-
-        _listeners.add(listener);
-    }
+    void addConnectionListener(final ConnectionListener listener);
 
     /**
      * Removes the specified connection listener.
      * 
      * @param listener The connection listener.
      */
-    public void removeListener(final ConnectionListener listener) {
-        if (listener == null) {
-            throw new IllegalArgumentException("Listener must not be null");
-        }
+    void removeConnectionListener(final ConnectionListener listener);
 
-        _listeners.add(listener);
-    }
+    /**
+     * Notifies all connection listeners that the connection is connecting.
+     */
+    void notifyOnConnecting();
 
-    public void notifyOnConnecting() {
-        for (final ConnectionListener listener : _listeners) {
-            listener.onConnecting();
-        }
-    }
+    /**
+     * Notifies all connection listeners that the connection is connected.
+     */
+    void notifyOnConnected();
 
-    public void notifyOnConnected() {
-        for (final ConnectionListener listener : _listeners) {
-            listener.onConnected();
-        }
-    }
+    /**
+     * Notifies all connection listeners that the connection is reconnecting.
+     */
+    void notifyOnReconnecting();
 
-    public void notifyOnReconnecting() {
-        for (final ConnectionListener listener : _listeners) {
-            listener.onReconnecting();
-        }
-    }
+    /**
+     * Notifies all connection listeners that the connection is reconnected.
+     */
+    void notifyOnReconnected();
 
-    public void notifyOnReconnected() {
-        for (final ConnectionListener listener : _listeners) {
-            listener.onReconnected();
-        }
-    }
+    /**
+     * Notifies all connection listeners that the connection is disconnecting.
+     */
+    void notifyOnDisconnecting();
 
-    public void notifyOnDisconnecting() {
-        for (final ConnectionListener listener : _listeners) {
-            listener.onDisconnecting();
-        }
-    }
+    /**
+     * Notifies all connection listeners that the connection is disconnected.
+     */
+    void notifyOnDisconnected();
 
-    public void notifyOnDisconnected() {
-        for (final ConnectionListener listener : _listeners) {
-            listener.onDisconnected();
-        }
-    }
-
-    public void notifyOnError(final Throwable cause) {
-        for (final ConnectionListener listener : _listeners) {
-            listener.onError(cause);
-        }
-    }
-
-    @Override
-    public void onChannelOpened() {
-    }
-
-    @Override
-    public void onChannelClosed() {
-    }
-
-    @Override
-    public void onConnectionSlow() {
-        for (final ConnectionListener listener : _listeners) {
-            listener.onConnectionSlow();
-        }
-    }
-
-    @Override
-    public void onConnectionLost() {
-    }
-
-    @Override
-    public void onError(final Throwable cause) {
-        notifyOnError(cause);
-    }
-
-    @Override
-    public void onSending(final String message) {
-        for (final ConnectionListener listener : _listeners) {
-            listener.onSending(message);
-        }
-    }
-
-    @Override
-    public void onReceived(final String message) {
-        for (final ConnectionListener listener : _listeners) {
-            listener.onReceived(message);
-        }
-    }
+    /**
+     * Notifies all connection listeners that a connection error occurred.
+     */
+    void notifyOnError(Throwable cause);
 }

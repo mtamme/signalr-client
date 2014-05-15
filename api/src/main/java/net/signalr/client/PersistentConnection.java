@@ -114,46 +114,46 @@ public final class PersistentConnection implements Connection {
 
     @Override
     public boolean isConnected() {
-        return _context.getState().isConnected();
+        return _context.getConnectionState().isConnected();
     }
 
     @Override
     public final void addHeader(final String name, final String value) {
-        _context.getState().addHeader(_context, name, value);
+        _context.getConnectionState().addHeader(_context, name, value);
     }
 
     @Override
     public final void addParameter(final String name, final String value) {
-        _context.getState().addParameter(_context, name, value);
+        _context.getConnectionState().addParameter(_context, name, value);
     }
 
     @Override
-    public void addListener(final ConnectionListener listener) {
-        _context.getConnectionNotifier().addListener(listener);
+    public void addConnectionListener(final ConnectionListener listener) {
+        _context.getConnectionNotifier().addConnectionListener(listener);
     }
 
     @Override
-    public void removeListener(final ConnectionListener listener) {
-        _context.getConnectionNotifier().removeListener(listener);
+    public void removeConnectionListener(final ConnectionListener listener) {
+        _context.getConnectionNotifier().removeConnectionListener(listener);
     }
 
     @Override
     public void setConnectionData(final String connectionData) {
-        _context.getState().setConnectionData(_context, connectionData);
+        _context.getConnectionState().setConnectionData(_context, connectionData);
     }
 
     @Override
     public final Promise<Void> start() {
-        return _context.getState().start(_context);
+        return _context.getConnectionState().start(_context);
     }
 
     @Override
     public final Promise<Void> stop() {
-        return _context.getState().stop(_context);
+        return _context.getConnectionState().stop(_context);
     }
 
     @Override
     public final Promise<Void> send(final String message) {
-        return _context.getState().send(_context, message);
+        return _context.getConnectionState().send(_context, message);
     }
 }

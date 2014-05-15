@@ -105,8 +105,8 @@ public final class HubConnection {
      * 
      * @param listener The connection listener.
      */
-    public void addListener(final ConnectionListener listener) {
-        _connection.addListener(listener);
+    public void addConnectionListener(final ConnectionListener listener) {
+        _connection.addConnectionListener(listener);
     }
 
     /**
@@ -114,8 +114,8 @@ public final class HubConnection {
      * 
      * @param listener The connection listener.
      */
-    public void removeListener(final ConnectionListener listener) {
-        _connection.removeListener(listener);
+    public void removeConnectionListener(final ConnectionListener listener) {
+        _connection.removeConnectionListener(listener);
     }
 
     /**
@@ -124,7 +124,7 @@ public final class HubConnection {
      * @param hubName The hub name.
      * @return The hub proxy.
      */
-    public HubProxy getProxy(final String hubName) {
+    public HubProxy getHubProxy(final String hubName) {
         return _dispatcher.getProxy(hubName);
     }
 
@@ -137,7 +137,7 @@ public final class HubConnection {
         return Promises.newPromise(new Runnable() {
             @Override
             public void run() {
-                _connection.addListener(_dispatcher);
+                _connection.addConnectionListener(_dispatcher);
             }
         }).then(new Compose<Void, Void>() {
             @Override
@@ -147,7 +147,7 @@ public final class HubConnection {
         }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
-                _connection.removeListener(_dispatcher);
+                _connection.removeConnectionListener(_dispatcher);
             }
         });
     }
@@ -161,7 +161,7 @@ public final class HubConnection {
         return _connection.stop().then(new OnComplete<Void>() {
             @Override
             protected void onComplete(final Void value, final Throwable cause) throws Exception {
-                _connection.removeListener(_dispatcher);
+                _connection.removeConnectionListener(_dispatcher);
             }
         });
     }

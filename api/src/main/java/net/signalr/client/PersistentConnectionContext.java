@@ -139,7 +139,7 @@ final class PersistentConnectionContext implements ConnectionContext {
         _state = new AtomicReference<ConnectionState>(initialState);
         _headers = new HashMap<String, Collection<String>>();
         _parameters = new HashMap<String, Collection<String>>();
-        _notifier = new ConnectionNotifier();
+        _notifier = new DefaultConnectionNotifier();
 
         _connectionData = null;
         _options = null;
@@ -187,6 +187,10 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     @Override
     public TransportOptions getTransportOptions() {
+        if (_options == null) {
+            throw new IllegalStateException("Transport options have not been set");
+        }
+
         return _options;
     }
 
@@ -249,19 +253,19 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
-    public ConnectionState getState() {
+    public ConnectionState getConnectionState() {
         return _state.get();
     }
 
     @Override
-    public void changeState(final ConnectionState oldState, final ConnectionState newState) {
-        if (!tryChangeState(oldState, newState)) {
+    public void changeConnectionState(final ConnectionState oldState, final ConnectionState newState) {
+        if (!tryChangeConnectionState(oldState, newState)) {
             throw new IllegalStateException("Failed to change connection state");
         }
     }
 
     @Override
-    public boolean tryChangeState(final ConnectionState oldState, final ConnectionState newState) {
+    public boolean tryChangeConnectionState(final ConnectionState oldState, final ConnectionState newState) {
         if (!_state.compareAndSet(oldState, newState)) {
             return false;
         }

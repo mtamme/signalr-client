@@ -47,6 +47,8 @@ public final class HubConnectionTests {
 
     private static final String LEAVE_METHOD_NAME = "leave";
 
+    private static final int[] ARGUMENTS = new int[] { 1 };
+
     private static final Logger logger = LoggerFactory.getLogger(HubConnectionTests.class);
 
     @Test
@@ -55,7 +57,7 @@ public final class HubConnectionTests {
 
         connection.addHeader(ACCESS_ID_NAME, ACCESS_ID_VALUE);
         connection.addParameter("culture", "en");
-        connection.addListener(new ConnectionListener() {
+        connection.addConnectionListener(new ConnectionListener() {
             @Override
             public void onReconnecting() {
                 logger.info("onReconnecting");
@@ -106,11 +108,11 @@ public final class HubConnectionTests {
                 logger.info("onDisconnected");
             }
         });
-        final HubProxy hubProxy = connection.getProxy(HUB_NAME);
+        final HubProxy proxy = connection.getHubProxy(HUB_NAME);
         final Promise<Void> start = connection.start().then(new Compose<Void, Void>() {
             @Override
             protected Promise<Void> doCompose(final Void value) throws Exception {
-                return hubProxy.invoke(JOIN_METHOD_NAME, Void.class, new int[] { 1 }, true);
+                return proxy.invoke(JOIN_METHOD_NAME, Void.class, ARGUMENTS, true);
             }
         });
 
@@ -118,7 +120,7 @@ public final class HubConnectionTests {
 
         System.in.read();
 
-        final Promise<Void> stop = hubProxy.invoke(LEAVE_METHOD_NAME, Void.class, new int[] { 1 }).then(new Compose<Void, Void>() {
+        final Promise<Void> stop = proxy.invoke(LEAVE_METHOD_NAME, Void.class, ARGUMENTS).then(new Compose<Void, Void>() {
             @Override
             protected Promise<Void> doCompose(final Void value) throws Exception {
                 return connection.stop();

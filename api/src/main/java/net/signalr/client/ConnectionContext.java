@@ -74,7 +74,7 @@ interface ConnectionContext extends TransportContext {
      * 
      * @return The current connection state.
      */
-    ConnectionState getState();
+    ConnectionState getConnectionState();
 
     /**
      * Changes the connection state to the specified new connection state.
@@ -82,7 +82,7 @@ interface ConnectionContext extends TransportContext {
      * @param oldState The old connection state.
      * @param newState The new connection state.
      */
-    void changeState(ConnectionState oldState, ConnectionState newState);
+    void changeConnectionState(ConnectionState oldState, ConnectionState newState);
 
     /**
      * Tries to change the connection state to the specified new connection state.
@@ -91,5 +91,5 @@ interface ConnectionContext extends TransportContext {
      * @param newState The new connection state.
      * @return A value indicating whether the connection state changed.
      */
-    boolean tryChangeState(ConnectionState oldState, ConnectionState newState);
+    boolean tryChangeConnectionState(ConnectionState oldState, ConnectionState newState);
 }

@@ -35,14 +35,14 @@ public interface TransportManager extends Lifecycle<TransportContext>, ChannelHa
      * 
      * @param listener The transport listener.
      */
-    void addListener(TransportListener listener);
+    void addTransportListener(TransportListener listener);
 
     /**
      * Removes the specified transport listener.
      * 
      * @param listener The transport listener.
      */
-    void removeListener(TransportListener listener);
+    void removeTransportListener(TransportListener listener);
 
     /**
      * Invoked when the connection has been lost.

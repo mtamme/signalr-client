@@ -169,12 +169,12 @@ final class TransportMonitor implements Schedulable, TransportListener {
 
     @Override
     public void onScheduled() {
-        _manager.addListener(this);
+        _manager.addTransportListener(this);
     }
 
     @Override
     public void onCancelled() {
-        _manager.removeListener(this);
+        _manager.removeTransportListener(this);
     }
 
     @Override

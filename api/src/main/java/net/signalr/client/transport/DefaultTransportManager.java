@@ -82,7 +82,7 @@ public final class DefaultTransportManager extends AbstractLifecycle<TransportCo
     }
 
     @Override
-    public void addListener(final TransportListener listener) {
+    public void addTransportListener(final TransportListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("Listener must not be null");
         }
@@ -91,7 +91,7 @@ public final class DefaultTransportManager extends AbstractLifecycle<TransportCo
     }
 
     @Override
-    public void removeListener(final TransportListener listener) {
+    public void removeTransportListener(final TransportListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("Listener must not be null");
         }

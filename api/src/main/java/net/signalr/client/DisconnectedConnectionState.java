@@ -66,8 +66,8 @@ final class DisconnectedConnectionState implements ConnectionState {
         final Deferred<Void> deferred = Promises.newDeferred();
         final ConnectingConnectionState connecting = new ConnectingConnectionState(deferred);
 
-        if (!context.tryChangeState(this, connecting)) {
-            return context.getState().start(context);
+        if (!context.tryChangeConnectionState(this, connecting)) {
+            return context.getConnectionState().start(context);
         }
         final TransportManager manager = context.getTransportManager();
         final Transport transport = manager.getTransport();
@@ -76,7 +76,7 @@ final class DisconnectedConnectionState implements ConnectionState {
             @Override
             public void run() {
                 context.getConnectionNotifier().notifyOnConnecting();
-                manager.addListener(context.getConnectionNotifier());
+                manager.addTransportListener(context.getConnectionNotifier());
                 transport.start(context);
             }
         }).then(new Compose<Void, NegotiationResponse>() {
@@ -106,7 +106,7 @@ final class DisconnectedConnectionState implements ConnectionState {
             protected Void doApply(final Channel channel) throws Exception {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(channel);
 
-                context.changeState(connecting, connected);
+                context.changeConnectionState(connecting, connected);
                 context.getConnectionNotifier().notifyOnConnected();
                 manager.start(context);
 
@@ -115,7 +115,7 @@ final class DisconnectedConnectionState implements ConnectionState {
         }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
-                context.changeState(connecting, DisconnectedConnectionState.this);
+                context.changeConnectionState(connecting, DisconnectedConnectionState.this);
                 context.getConnectionNotifier().notifyOnDisconnected();
             }
         }).then(new OnFailure<Void>() {
@@ -127,7 +127,7 @@ final class DisconnectedConnectionState implements ConnectionState {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 manager.stop(context);
-                manager.removeListener(context.getConnectionNotifier());
+                manager.removeTransportListener(context.getConnectionNotifier());
             }
         }).then(deferred);
 
