@@ -16,8 +16,9 @@ connection.addConnectionListener(new ConnectionAdapter() {
         System.out.println(message);
     }
 });
+final Promise<Void> promise = connection.start();
 
-Promises.await(connection.start());
+Promises.await(promise);
 
 final Scanner scanner = new Scanner(System.in);
 
@@ -43,14 +44,14 @@ proxy.register("update", Update.class, new HubCallback<Update>() {
         System.out.println(update);
     }
 });
-final Promise<Void> start = connection.start().then(new Compose<Void, Void>() {
+final Promise<Void> promise = connection.start().then(new Compose<Void, Void>() {
     @Override
     protected Promise<Void> doCompose(final Void value) throws Exception {
         return proxy.invoke("joinUpdateGroup", Void.class);
     }
 });
 
-Promises.await(start);
+Promises.await(promise);
 ```
 
 ## Extensibility
