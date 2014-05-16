@@ -19,7 +19,6 @@ connection.addConnectionListener(new ConnectionAdapter() {
 final Promise<Void> promise = connection.start();
 
 Promises.await(promise);
-
 final Scanner scanner = new Scanner(System.in);
 
 while (scanner.hasNextLine()) {
