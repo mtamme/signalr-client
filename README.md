@@ -43,10 +43,14 @@ proxy.register("update", Update.class, new HubCallback<Update>() {
         System.out.println(update);
     }
 });
+final Promise<Void> start = connection.start().then(new Compose<Void, Void>() {
+    @Override
+    protected Promise<Void> doCompose(final Void value) throws Exception {
+        return proxy.invoke("joinUpdateGroup", Void.class);
+    }
+});
 
-Promises.await(connection.start());
-
-proxy.invoke("joinUpdateGroup", Void.class);
+Promises.await(start);
 ```
 
 ## Extensibility
