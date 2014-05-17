@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.signalr.client</groupId>
-		<artifactId>signalr-client</artifactId>
+		<artifactId>signalr-client-transport</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>signalr-client-transport-asynchttpclient</artifactId>
