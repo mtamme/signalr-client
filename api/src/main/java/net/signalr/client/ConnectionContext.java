@@ -49,11 +49,11 @@ interface ConnectionContext extends TransportContext {
     void addParameter(String name, String value);
 
     /**
-     * Returns the connection notifier.
+     * Returns the connection manager.
      * 
-     * @return The connection notifier.
+     * @return The connection manager.
      */
-    ConnectionNotifier getConnectionNotifier();
+    ConnectionManager getConnectionManager();
 
     /**
      * Sets the connection data.
@@ -79,17 +79,17 @@ interface ConnectionContext extends TransportContext {
     /**
      * Changes the connection state to the specified new connection state.
      * 
-     * @param oldState The old connection state.
-     * @param newState The new connection state.
+     * @param connectionState The connection state.
+     * @param newConnectionState The new connection state.
      */
-    void changeConnectionState(ConnectionState oldState, ConnectionState newState);
+    void changeConnectionState(ConnectionState connectionState, ConnectionState newConnectionState);
 
     /**
      * Tries to change the connection state to the specified new connection state.
      * 
-     * @param oldState The old connection state.
-     * @param newState The new connection state.
+     * @param connectionState The connection state.
+     * @param newConnectionState The new connection state.
      * @return A value indicating whether the connection state changed.
      */
-    boolean tryChangeConnectionState(ConnectionState oldState, ConnectionState newState);
+    boolean tryChangeConnectionState(ConnectionState connectionState, ConnectionState newConnectionState);
 }

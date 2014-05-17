@@ -19,9 +19,14 @@ package net.signalr.client;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
- * Represents the default connection notifier.
+ * Represents the default connection manager.
  */
-final class DefaultConnectionNotifier implements ConnectionNotifier {
+final class DefaultConnectionManager implements ConnectionManager {
+
+    /**
+     * The connection context.
+     */
+    private final ConnectionContext _context;
 
     /**
      * The connection listeners.
@@ -29,9 +34,17 @@ final class DefaultConnectionNotifier implements ConnectionNotifier {
     private final CopyOnWriteArraySet<ConnectionListener> _listeners;
 
     /**
-     * Initializes a new instance of the {@link DefaultConnectionNotifier} class.
+     * Initializes a new instance of the {@link DefaultConnectionManager} class.
+     * 
+     * @param context The connection context.
      */
-    public DefaultConnectionNotifier() {
+    public DefaultConnectionManager(final ConnectionContext context) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null");
+        }
+
+        _context = context;
+
         _listeners = new CopyOnWriteArraySet<ConnectionListener>();
     }
 
@@ -119,6 +132,7 @@ final class DefaultConnectionNotifier implements ConnectionNotifier {
 
     @Override
     public void onConnectionLost() {
+        _context.getConnectionState().reconnect(_context);
     }
 
     @Override

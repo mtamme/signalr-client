@@ -99,9 +99,9 @@ final class ConnectedConnectionState implements ConnectionState {
         Promises.newPromise(new Runnable() {
             @Override
             public void run() {
-                context.getConnectionNotifier().notifyOnDisconnecting();
+                context.getConnectionManager().notifyOnDisconnecting();
                 manager.stop(context);
-                manager.removeTransportListener(context.getConnectionNotifier());
+                manager.removeTransportListener(context.getConnectionManager());
             }
         }).then(new Compose<Void, Void>() {
             @Override
@@ -113,7 +113,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Catch<Void>() {
             @Override
             protected Void doCatch(final Throwable cause) throws Exception {
-                context.getConnectionNotifier().notifyOnError(cause);
+                context.getConnectionManager().notifyOnError(cause);
                 return null;
             }
         }).then(new Compose<Void, Void>() {
@@ -127,14 +127,14 @@ final class ConnectedConnectionState implements ConnectionState {
             @Override
             protected void onComplete(final Void value, final Throwable cause) throws Exception {
                 if (cause != null) {
-                    context.getConnectionNotifier().notifyOnError(cause);
+                    context.getConnectionManager().notifyOnError(cause);
                 }
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
                 context.setTransportOptions(null);
 
                 context.changeConnectionState(disconnecting, disconnected);
-                context.getConnectionNotifier().notifyOnDisconnected();
+                context.getConnectionManager().notifyOnDisconnected();
             }
         }).then(new OnComplete<Void>() {
             @Override
@@ -160,7 +160,7 @@ final class ConnectedConnectionState implements ConnectionState {
         Promises.newPromise(new Runnable() {
             @Override
             public void run() {
-                context.getConnectionNotifier().notifyOnReconnecting();
+                context.getConnectionManager().notifyOnReconnecting();
             }
         }).then(new Compose<Void, Void>() {
             @Override
@@ -172,7 +172,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Catch<Void>() {
             @Override
             protected Void doCatch(final Throwable cause) throws Exception {
-                context.getConnectionNotifier().notifyOnError(cause);
+                context.getConnectionManager().notifyOnError(cause);
                 return null;
             }
         }).then(new Compose<Void, Channel>() {
@@ -188,24 +188,24 @@ final class ConnectedConnectionState implements ConnectionState {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(channel);
 
                 context.changeConnectionState(reconnecting, connected);
-                context.getConnectionNotifier().notifyOnReconnected();
+                context.getConnectionManager().notifyOnReconnected();
 
                 return null;
             }
         }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
-                context.getConnectionNotifier().notifyOnError(cause);
+                context.getConnectionManager().notifyOnError(cause);
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
 
                 context.changeConnectionState(reconnecting, disconnected);
-                context.getConnectionNotifier().notifyOnDisconnected();
+                context.getConnectionManager().notifyOnDisconnected();
             }
         }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 manager.stop(context);
-                manager.removeTransportListener(context.getConnectionNotifier());
+                manager.removeTransportListener(context.getConnectionManager());
             }
         }).then(new OnFailure<Void>() {
             @Override

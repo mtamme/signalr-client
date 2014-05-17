@@ -55,7 +55,7 @@ final class PersistentConnectionContext implements ConnectionContext {
     /**
      * The transport manager.
      */
-    private final TransportManager _manager;
+    private final TransportManager _transportManager;
 
     /**
      * The executor.
@@ -73,9 +73,9 @@ final class PersistentConnectionContext implements ConnectionContext {
     private final JsonMapper _mapper;
 
     /**
-     * The current state.
+     * The current connection state.
      */
-    private final AtomicReference<ConnectionState> _state;
+    private final AtomicReference<ConnectionState> _connectionState;
 
     /**
      * The headers.
@@ -88,9 +88,9 @@ final class PersistentConnectionContext implements ConnectionContext {
     private final Map<String, Collection<String>> _parameters;
 
     /**
-     * The connection notifier.
+     * The connection manager.
      */
-    private final ConnectionNotifier _notifier;
+    private final ConnectionManager _connectionManager;
 
     /**
      * The connection data.
@@ -100,23 +100,23 @@ final class PersistentConnectionContext implements ConnectionContext {
     /**
      * The transport options.
      */
-    private TransportOptions _options;
+    private TransportOptions _transportOptions;
 
     /**
      * Initializes a new instance of the {@link PersistentConnectionContext} class.
      * 
      * @param url The connection URL.
-     * @param manager The transport manager.
+     * @param transportManager The transport manager.
      * @param executor The executor.
      * @param scheduler The scheduler.
      * @param mapper The mapper.
      */
-    protected PersistentConnectionContext(final String url, final TransportManager manager, final Executor executor, final Scheduler scheduler, final JsonMapper mapper) {
+    protected PersistentConnectionContext(final String url, final TransportManager transportManager, final Executor executor, final Scheduler scheduler, final JsonMapper mapper) {
         if (url == null) {
             throw new IllegalArgumentException("URL must not be null");
         }
-        if (manager == null) {
-            throw new IllegalArgumentException("Manager must not be null");
+        if (transportManager == null) {
+            throw new IllegalArgumentException("Transport manager must not be null");
         }
         if (executor == null) {
             throw new IllegalArgumentException("Executor must not be null");
@@ -129,20 +129,20 @@ final class PersistentConnectionContext implements ConnectionContext {
         }
 
         _url = url;
-        _manager = manager;
+        _transportManager = transportManager;
         _executor = executor;
         _scheduler = scheduler;
         _mapper = mapper;
 
         final ConnectionState initialState = new DisconnectedConnectionState();
 
-        _state = new AtomicReference<ConnectionState>(initialState);
+        _connectionState = new AtomicReference<ConnectionState>(initialState);
         _headers = new HashMap<String, Collection<String>>();
         _parameters = new HashMap<String, Collection<String>>();
-        _notifier = new DefaultConnectionNotifier();
+        _connectionManager = new DefaultConnectionManager(this);
 
         _connectionData = null;
-        _options = null;
+        _transportOptions = null;
     }
 
     @Override
@@ -187,16 +187,16 @@ final class PersistentConnectionContext implements ConnectionContext {
 
     @Override
     public TransportOptions getTransportOptions() {
-        if (_options == null) {
+        if (_transportOptions == null) {
             throw new IllegalStateException("Transport options have not been set");
         }
 
-        return _options;
+        return _transportOptions;
     }
 
     @Override
     public TransportManager getTransportManager() {
-        return _manager;
+        return _transportManager;
     }
 
     @Override
@@ -238,8 +238,8 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
-    public ConnectionNotifier getConnectionNotifier() {
-        return _notifier;
+    public ConnectionManager getConnectionManager() {
+        return _connectionManager;
     }
 
     @Override
@@ -248,29 +248,29 @@ final class PersistentConnectionContext implements ConnectionContext {
     }
 
     @Override
-    public void setTransportOptions(final TransportOptions options) {
-        _options = options;
+    public void setTransportOptions(final TransportOptions transportOptions) {
+        _transportOptions = transportOptions;
     }
 
     @Override
     public ConnectionState getConnectionState() {
-        return _state.get();
+        return _connectionState.get();
     }
 
     @Override
-    public void changeConnectionState(final ConnectionState oldState, final ConnectionState newState) {
-        if (!tryChangeConnectionState(oldState, newState)) {
+    public void changeConnectionState(final ConnectionState connectionState, final ConnectionState newConnectionState) {
+        if (!tryChangeConnectionState(connectionState, newConnectionState)) {
             throw new IllegalStateException("Failed to change connection state");
         }
     }
 
     @Override
-    public boolean tryChangeConnectionState(final ConnectionState oldState, final ConnectionState newState) {
-        if (!_state.compareAndSet(oldState, newState)) {
+    public boolean tryChangeConnectionState(final ConnectionState connectionState, final ConnectionState newConnectionState) {
+        if (!_connectionState.compareAndSet(connectionState, newConnectionState)) {
             return false;
         }
 
-        logger.debug("Changed connection state to '{}'", newState);
+        logger.debug("Changed connection state to '{}'", newConnectionState);
 
         return true;
     }

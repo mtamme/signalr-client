@@ -48,24 +48,24 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
     /**
      * Changes the lifecycle state to the specified new lifecycle state.
      * 
-     * @param oldState The old lifecycle state.
+     * @param state The lifecycle state.
      * @param newState The new lifecycle state.
      */
-    private void changeState(final State oldState, final State newState) {
-        if (!tryChangeState(oldState, newState)) {
-            throw new IllegalStateException("Failed to change state");
+    private void changeState(final State state, final State newState) {
+        if (!tryChangeState(state, newState)) {
+            throw new IllegalStateException("Failed to change lifecycle state");
         }
     }
 
     /**
      * Tries to change the lifecycle state to the specified new lifecycle state.
      * 
-     * @param oldState The old lifecycle state.
+     * @param state The lifecycle state.
      * @param newState The new lifecycle state.
      * @return A value indicating whether the lifecycle state changed.
      */
-    private boolean tryChangeState(final State oldState, final State newState) {
-        if (!_state.compareAndSet(oldState, newState)) {
+    private boolean tryChangeState(final State state, final State newState) {
+        if (!_state.compareAndSet(state, newState)) {
             return false;
         }
 

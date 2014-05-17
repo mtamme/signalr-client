@@ -19,23 +19,23 @@ package net.signalr.client;
 import net.signalr.client.transport.TransportListener;
 
 /**
- * Defines a connection notifier.
+ * Defines a connection manager.
  */
-interface ConnectionNotifier extends TransportListener {
+interface ConnectionManager extends TransportListener {
 
     /**
      * Adds the specified connection listener.
      * 
      * @param listener The connection listener.
      */
-    void addConnectionListener(final ConnectionListener listener);
+    void addConnectionListener(ConnectionListener listener);
 
     /**
      * Removes the specified connection listener.
      * 
      * @param listener The connection listener.
      */
-    void removeConnectionListener(final ConnectionListener listener);
+    void removeConnectionListener(ConnectionListener listener);
 
     /**
      * Notifies all connection listeners that the connection is connecting.

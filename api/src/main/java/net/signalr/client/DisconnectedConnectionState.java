@@ -75,8 +75,8 @@ final class DisconnectedConnectionState implements ConnectionState {
         Promises.newPromise(new Runnable() {
             @Override
             public void run() {
-                context.getConnectionNotifier().notifyOnConnecting();
-                manager.addTransportListener(context.getConnectionNotifier());
+                context.getConnectionManager().notifyOnConnecting();
+                manager.addTransportListener(context.getConnectionManager());
                 transport.start(context);
             }
         }).then(new Compose<Void, NegotiationResponse>() {
@@ -107,7 +107,7 @@ final class DisconnectedConnectionState implements ConnectionState {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(channel);
 
                 context.changeConnectionState(connecting, connected);
-                context.getConnectionNotifier().notifyOnConnected();
+                context.getConnectionManager().notifyOnConnected();
                 manager.start(context);
 
                 return null;
@@ -116,7 +116,7 @@ final class DisconnectedConnectionState implements ConnectionState {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 context.changeConnectionState(connecting, DisconnectedConnectionState.this);
-                context.getConnectionNotifier().notifyOnDisconnected();
+                context.getConnectionManager().notifyOnDisconnected();
             }
         }).then(new OnFailure<Void>() {
             @Override
@@ -127,7 +127,7 @@ final class DisconnectedConnectionState implements ConnectionState {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 manager.stop(context);
-                manager.removeTransportListener(context.getConnectionNotifier());
+                manager.removeTransportListener(context.getConnectionManager());
             }
         }).then(deferred);
 
