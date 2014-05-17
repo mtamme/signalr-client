@@ -126,6 +126,11 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new ExecuteOn<Void>(context.getExecutor())).then(new OnComplete<Void>() {
             @Override
             protected void onComplete(final Void value, final Throwable cause) throws Exception {
+                transport.stop(context);
+            }
+        }).then(new OnComplete<Void>() {
+            @Override
+            protected void onComplete(final Void value, final Throwable cause) throws Exception {
                 if (cause != null) {
                     context.getConnectionManager().notifyOnError(cause);
                 }
@@ -135,11 +140,6 @@ final class ConnectedConnectionState implements ConnectionState {
 
                 context.changeConnectionState(disconnecting, disconnected);
                 context.getConnectionManager().notifyOnDisconnected();
-            }
-        }).then(new OnComplete<Void>() {
-            @Override
-            protected void onComplete(final Void value, final Throwable cause) throws Exception {
-                transport.stop(context);
             }
         }).then(deferred);
 
@@ -195,15 +195,6 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new OnFailure<Void>() {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
-                context.getConnectionManager().notifyOnError(cause);
-                final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
-
-                context.changeConnectionState(reconnecting, disconnected);
-                context.getConnectionManager().notifyOnDisconnected();
-            }
-        }).then(new OnFailure<Void>() {
-            @Override
-            protected void onFailure(final Throwable cause) throws Exception {
                 manager.stop(context);
                 manager.removeTransportListener(context.getConnectionManager());
             }
@@ -211,6 +202,15 @@ final class ConnectedConnectionState implements ConnectionState {
             @Override
             protected void onFailure(final Throwable cause) throws Exception {
                 transport.stop(context);
+            }
+        }).then(new OnFailure<Void>() {
+            @Override
+            protected void onFailure(final Throwable cause) throws Exception {
+                context.getConnectionManager().notifyOnError(cause);
+                final DisconnectedConnectionState disconnected = new DisconnectedConnectionState();
+
+                context.changeConnectionState(reconnecting, disconnected);
+                context.getConnectionManager().notifyOnDisconnected();
             }
         }).then(deferred);
 
