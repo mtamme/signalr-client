@@ -74,7 +74,7 @@ public final class TimerScheduler implements Scheduler {
 
         logger.debug("Scheduling '{}' @{}s", schedulable, timeUnit.toMillis(period) / 1000.0);
 
-        final TimerTaskJob job = new TimerTaskJob(schedulable);
+        final ScheduledJob job = new ScheduledJob(schedulable);
 
         _timer.scheduleAtFixedRate(job, timeUnit.toMillis(period), timeUnit.toMillis(period));
         schedulable.onScheduled();
@@ -88,9 +88,9 @@ public final class TimerScheduler implements Scheduler {
     }
 
     /**
-     * Represents a job.
+     * Represents a scheduled job.
      */
-    private static final class TimerTaskJob extends TimerTask implements Job {
+    private static final class ScheduledJob extends TimerTask implements Job {
 
         /**
          * The schedulable.
@@ -98,11 +98,11 @@ public final class TimerScheduler implements Scheduler {
         private final Schedulable _schedulable;
 
         /**
-         * Initializes a new instance of the {@link TimerTaskJob} class.
+         * Initializes a new instance of the {@link ScheduledJob} class.
          * 
          * @param schedulable The schedulable.
          */
-        public TimerTaskJob(final Schedulable schedulable) {
+        public ScheduledJob(final Schedulable schedulable) {
             _schedulable = schedulable;
         }
 

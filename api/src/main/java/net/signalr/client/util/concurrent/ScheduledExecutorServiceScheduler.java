@@ -80,7 +80,7 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
 
         schedulable.onScheduled();
 
-        return new ScheduledExecutorServiceJob(future, schedulable);
+        return new ScheduledJob(future, schedulable);
     }
 
     @Override
@@ -118,9 +118,9 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
     }
 
     /**
-     * Represents a job.
+     * Represents a scheduled job.
      */
-    private static final class ScheduledExecutorServiceJob implements Job {
+    private static final class ScheduledJob implements Job {
 
         /**
          * The scheduled future.
@@ -133,12 +133,12 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
         private final Schedulable _schedulable;
 
         /**
-         * Initializes a new instance of the {@link ScheduledExecutorServiceJob} class.
+         * Initializes a new instance of the {@link ScheduledJob} class.
          * 
          * @param future The scheduled future.
          * @param schedulable The schedulable.
          */
-        public ScheduledExecutorServiceJob(final ScheduledFuture<?> future, final Schedulable schedulable) {
+        public ScheduledJob(final ScheduledFuture<?> future, final Schedulable schedulable) {
             _future = future;
             _schedulable = schedulable;
         }
