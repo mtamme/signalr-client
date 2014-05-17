@@ -72,7 +72,7 @@ public final class TimerScheduler implements Scheduler {
             throw new IllegalArgumentException("Time unit must not be null");
         }
 
-        logger.info("Scheduling '{}' @{}s", schedulable, timeUnit.toMillis(period) / 1000.0);
+        logger.debug("Scheduling '{}' @{}s", schedulable, timeUnit.toMillis(period) / 1000.0);
 
         final TimerTaskJob job = new TimerTaskJob(schedulable);
 
@@ -117,7 +117,7 @@ public final class TimerScheduler implements Scheduler {
 
         @Override
         public boolean cancel() {
-            logger.info("Canceling '{}'", _schedulable);
+            logger.debug("Canceling '{}'", _schedulable);
 
             try {
                 return super.cancel();

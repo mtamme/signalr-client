@@ -82,7 +82,7 @@ final class DisconnectedConnectionState implements ConnectionState {
         }).then(new Compose<Void, NegotiationResponse>() {
             @Override
             protected Promise<NegotiationResponse> doCompose(final Void value) throws Exception {
-                logger.info("Negotiating transport...");
+                logger.debug("Negotiating transport...");
 
                 return transport.negotiate(context);
             }
@@ -97,7 +97,7 @@ final class DisconnectedConnectionState implements ConnectionState {
 
                 context.setTransportOptions(response);
 
-                logger.info("Connecting transport...");
+                logger.debug("Connecting transport...");
 
                 return transport.connect(context, manager, false);
             }

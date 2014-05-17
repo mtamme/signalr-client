@@ -69,7 +69,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
             return false;
         }
 
-        logger.info("{} '{}'", newState, this);
+        logger.debug("{} '{}'", newState, this);
 
         return true;
     }

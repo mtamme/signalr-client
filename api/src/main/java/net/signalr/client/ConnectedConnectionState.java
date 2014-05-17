@@ -106,7 +106,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Compose<Void, Void>() {
             @Override
             protected Promise<Void> doCompose(final Void value) throws Exception {
-                logger.info("Closing channel...");
+                logger.debug("Closing channel...");
 
                 return _channel.close();
             }
@@ -119,7 +119,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Compose<Void, Void>() {
             @Override
             protected Promise<Void> doCompose(final Void value) throws Exception {
-                logger.info("Aborting transport...");
+                logger.debug("Aborting transport...");
 
                 return transport.abort(context);
             }
@@ -165,7 +165,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Compose<Void, Void>() {
             @Override
             protected Promise<Void> doCompose(final Void value) throws Exception {
-                logger.info("Closing channel...");
+                logger.debug("Closing channel...");
 
                 return _channel.close();
             }
@@ -178,7 +178,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Compose<Void, Channel>() {
             @Override
             protected Promise<Channel> doCompose(final Void value) throws Exception {
-                logger.info("Reconnecting transport...");
+                logger.debug("Reconnecting transport...");
 
                 return transport.connect(context, manager, true);
             }

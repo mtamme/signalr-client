@@ -73,7 +73,7 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
             throw new IllegalArgumentException("Time unit must not be null");
         }
 
-        logger.info("Scheduling '{}' @{}s", schedulable, timeUnit.toMillis(period) / 1000.0);
+        logger.debug("Scheduling '{}' @{}s", schedulable, timeUnit.toMillis(period) / 1000.0);
 
         final Runnable runnable = new ScheduledExecutorServiceRunnable(schedulable);
         final ScheduledFuture<?> future = _executorService.scheduleAtFixedRate(runnable, period, period, timeUnit);
@@ -145,7 +145,7 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
 
         @Override
         public boolean cancel() {
-            logger.info("Canceling '{}'", _schedulable);
+            logger.debug("Canceling '{}'", _schedulable);
 
             try {
                 return _future.cancel(false);

@@ -270,7 +270,7 @@ final class PersistentConnectionContext implements ConnectionContext {
             return false;
         }
 
-        logger.info("Changed connection state to '{}'", newState);
+        logger.debug("Changed connection state to '{}'", newState);
 
         return true;
     }
