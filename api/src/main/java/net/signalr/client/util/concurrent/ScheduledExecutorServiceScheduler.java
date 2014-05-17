@@ -75,7 +75,7 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
 
         logger.debug("Scheduling '{}' @{}s", schedulable, timeUnit.toMillis(period) / 1000.0);
 
-        final Runnable runnable = new ScheduledExecutorServiceRunnable(schedulable);
+        final Runnable runnable = new ScheduledRunnable(schedulable);
         final ScheduledFuture<?> future = _executorService.scheduleAtFixedRate(runnable, period, period, timeUnit);
 
         schedulable.onScheduled();
@@ -89,9 +89,9 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
     }
 
     /**
-     * Represents a runnable.
+     * Represents a scheduled runnable.
      */
-    private static final class ScheduledExecutorServiceRunnable implements Runnable {
+    private static final class ScheduledRunnable implements Runnable {
 
         /**
          * The runnable.
@@ -99,11 +99,11 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
         private final Runnable _runnable;
 
         /**
-         * Initializes a new instance of the {@link ScheduledExecutorServiceRunnable} class.
+         * Initializes a new instance of the {@link ScheduledRunnable} class.
          * 
          * @param runnable The runnable.
          */
-        public ScheduledExecutorServiceRunnable(final Runnable runnable) {
+        public ScheduledRunnable(final Runnable runnable) {
             _runnable = runnable;
         }
 
