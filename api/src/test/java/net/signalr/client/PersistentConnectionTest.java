@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(EasyMockRunner.class)
-public final class PersistentConnectionTests {
+public final class PersistentConnectionTest {
 
     @Mock
     private ConnectionContext _connectionContext;

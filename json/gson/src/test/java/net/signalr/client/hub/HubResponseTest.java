@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package net.signalr.client;
+package net.signalr.client.hub;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import net.signalr.client.json.DefaultJsonMapper;
+import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.json.gson.GsonFactory;
@@ -29,7 +30,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public final class PersistentResponseTests {
+public final class HubResponseTest {
 
     private JsonMapper _mapper;
 
@@ -41,32 +42,39 @@ public final class PersistentResponseTests {
     }
 
     @Test
-    public void deserializeInitializationResponseTest() {
+    public void deserializeCallbackIdResponseTest() {
         // Arrange
-        final String data = "{\"C\":\"s-0,298F386\",\"S\":1,\"M\":[]}";
+        final String data = "{\"I\":\"1\"}";
+        final JsonElement element = _mapper.toElement(data);
 
         // Act
-        final PersistentResponse response = _mapper.toObject(data, PersistentResponse.class);
+        final HubResponse response = new HubResponse(element);
 
         // Assert
         assertNotNull(response);
-        assertThat(response.getMessageId(), is("s-0,298F386"));
-        assertThat(response.isInitialize(), is(true));
+        assertThat(response.getCallbackId(), is("1"));
     }
 
     @Test
-    public void deserializeGroupTokenResponseTest() {
+    public void deserializeMessageResponseTest() {
         // Arrange
-        final String data = "{\"C\":\"s-0,298F388\",\"G\":\"jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=\",\"M\":[]}";
+        final String data = "{\"C\":\"s-0,298F690\",\"M\":[{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":1}]},{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":2}]}]}";
+        final JsonElement element = _mapper.toElement(data);
 
         // Act
-        final PersistentResponse response = _mapper.toObject(data, PersistentResponse.class);
+        final HubResponse response = new HubResponse(element);
 
         // Assert
         assertNotNull(response);
-        assertThat(response.getMessageId(), is("s-0,298F388"));
-        assertThat(response.isInitialize(), is(false));
-        assertThat(response.getGroupsToken(),
-                is("jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg="));
+        assertThat(response.getMessageId(), is("s-0,298F690"));
+        final HubMessage[] messages = response.getMessages();
+
+        assertThat(messages.length, is(2));
+        assertThat(messages[0].getHubName(), is("hub"));
+        assertThat(messages[0].getMethodName(), is("update"));
+        assertThat(messages[0].getArguments().toString(), is("[{\"Value\":1}]"));
+        assertThat(messages[1].getHubName(), is("hub"));
+        assertThat(messages[1].getMethodName(), is("update"));
+        assertThat(messages[1].getArguments().toString(), is("[{\"Value\":2}]"));
     }
 }

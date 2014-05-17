@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.signalr.client;
+package net.signalr.client.transport;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public final class PersistentResponseTests {
+public final class PingResponseTest {
 
     private JsonMapper _mapper;
 
@@ -41,32 +41,15 @@ public final class PersistentResponseTests {
     }
 
     @Test
-    public void deserializeInitializationResponseTest() {
+    public void deserializeTest() {
         // Arrange
-        final String data = "{\"C\":\"s-0,298F386\",\"S\":1,\"M\":[]}";
+        final String data = "{\"Response\":\"pong\"}";
 
         // Act
-        final PersistentResponse response = _mapper.toObject(data, PersistentResponse.class);
+        final PingResponse response = _mapper.toObject(data, PingResponse.class);
 
         // Assert
         assertNotNull(response);
-        assertThat(response.getMessageId(), is("s-0,298F386"));
-        assertThat(response.isInitialize(), is(true));
-    }
-
-    @Test
-    public void deserializeGroupTokenResponseTest() {
-        // Arrange
-        final String data = "{\"C\":\"s-0,298F388\",\"G\":\"jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=\",\"M\":[]}";
-
-        // Act
-        final PersistentResponse response = _mapper.toObject(data, PersistentResponse.class);
-
-        // Assert
-        assertNotNull(response);
-        assertThat(response.getMessageId(), is("s-0,298F388"));
-        assertThat(response.isInitialize(), is(false));
-        assertThat(response.getGroupsToken(),
-                is("jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg="));
+        assertThat(response.getValue(), is("pong"));
     }
 }

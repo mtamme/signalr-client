@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package net.signalr.client.hub;
+package net.signalr.client;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import net.signalr.client.json.DefaultJsonMapper;
-import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonFactory;
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.json.gson.GsonFactory;
@@ -30,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public final class HubResponseTests {
+public final class PersistentResponseTest {
 
     private JsonMapper _mapper;
 
@@ -42,39 +41,32 @@ public final class HubResponseTests {
     }
 
     @Test
-    public void deserializeCallbackIdResponseTest() {
+    public void deserializeInitializationResponseTest() {
         // Arrange
-        final String data = "{\"I\":\"1\"}";
-        final JsonElement element = _mapper.toElement(data);
+        final String data = "{\"C\":\"s-0,298F386\",\"S\":1,\"M\":[]}";
 
         // Act
-        final HubResponse response = new HubResponse(element);
+        final PersistentResponse response = _mapper.toObject(data, PersistentResponse.class);
 
         // Assert
         assertNotNull(response);
-        assertThat(response.getCallbackId(), is("1"));
+        assertThat(response.getMessageId(), is("s-0,298F386"));
+        assertThat(response.isInitialize(), is(true));
     }
 
     @Test
-    public void deserializeMessageResponseTest() {
+    public void deserializeGroupTokenResponseTest() {
         // Arrange
-        final String data = "{\"C\":\"s-0,298F690\",\"M\":[{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":1}]},{\"H\":\"hub\",\"M\":\"update\",\"A\":[{\"Value\":2}]}]}";
-        final JsonElement element = _mapper.toElement(data);
+        final String data = "{\"C\":\"s-0,298F388\",\"G\":\"jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=\",\"M\":[]}";
 
         // Act
-        final HubResponse response = new HubResponse(element);
+        final PersistentResponse response = _mapper.toObject(data, PersistentResponse.class);
 
         // Assert
         assertNotNull(response);
-        assertThat(response.getMessageId(), is("s-0,298F690"));
-        final HubMessage[] messages = response.getMessages();
-
-        assertThat(messages.length, is(2));
-        assertThat(messages[0].getHubName(), is("hub"));
-        assertThat(messages[0].getMethodName(), is("update"));
-        assertThat(messages[0].getArguments().toString(), is("[{\"Value\":1}]"));
-        assertThat(messages[1].getHubName(), is("hub"));
-        assertThat(messages[1].getMethodName(), is("update"));
-        assertThat(messages[1].getArguments().toString(), is("[{\"Value\":2}]"));
+        assertThat(response.getMessageId(), is("s-0,298F388"));
+        assertThat(response.isInitialize(), is(false));
+        assertThat(response.getGroupsToken(),
+                is("jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg="));
     }
 }

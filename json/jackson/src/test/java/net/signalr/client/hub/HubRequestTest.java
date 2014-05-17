@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.signalr.client.transport;
+package net.signalr.client.hub;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public final class PingResponseTests {
+public final class HubRequestTest {
 
     private JsonMapper _mapper;
 
@@ -43,13 +43,15 @@ public final class PingResponseTests {
     @Test
     public void deserializeTest() {
         // Arrange
-        final String data = "{\"Response\":\"pong\"}";
+        final HubRequest request = new HubRequest();
+
+        request.setCallbackId("1");
 
         // Act
-        final PingResponse response = _mapper.toObject(data, PingResponse.class);
+        final String data = _mapper.toJson(request);
 
         // Assert
-        assertNotNull(response);
-        assertThat(response.getValue(), is("pong"));
+        assertNotNull(data);
+        assertThat(data, is("{\"I\":\"1\"}"));
     }
 }

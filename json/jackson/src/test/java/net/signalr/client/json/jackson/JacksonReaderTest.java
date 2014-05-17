@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public final class JacksonReaderTests {
+public final class JacksonReaderTest {
 
     private JsonFactory _factory;
 
