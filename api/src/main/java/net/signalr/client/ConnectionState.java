@@ -57,6 +57,13 @@ interface ConnectionState {
     void setConnectionData(ConnectionContext context, String connectionData);
 
     /**
+     * Notifies the specified connection listener.
+     * 
+     * @param listener The connection listener.
+     */
+    void notifyConnectionListener(ConnectionListener listener);
+
+    /**
      * Starts the connection.
      * 
      * @param context The connection context.

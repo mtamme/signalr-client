@@ -129,12 +129,12 @@ public final class PersistentConnection implements Connection {
 
     @Override
     public void addConnectionListener(final ConnectionListener listener) {
-        _context.getConnectionManager().addConnectionListener(listener);
+        _context.addConnectionListener(listener);
     }
 
     @Override
     public void removeConnectionListener(final ConnectionListener listener) {
-        _context.getConnectionManager().removeConnectionListener(listener);
+        _context.removeConnectionListener(listener);
     }
 
     @Override

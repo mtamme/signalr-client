@@ -62,6 +62,11 @@ final class ConnectingConnectionState implements ConnectionState {
     }
 
     @Override
+    public void notifyConnectionListener(final ConnectionListener listener) {
+        listener.onConnecting();
+    }
+
+    @Override
     public Promise<Void> start(final ConnectionContext context) {
         return _promise;
     }

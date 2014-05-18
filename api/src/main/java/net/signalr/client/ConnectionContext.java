@@ -17,13 +17,14 @@
 package net.signalr.client;
 
 import net.signalr.client.transport.TransportContext;
+import net.signalr.client.transport.TransportListener;
 import net.signalr.client.transport.TransportManager;
 import net.signalr.client.transport.TransportOptions;
 
 /**
  * Defines a connection context.
  */
-interface ConnectionContext extends TransportContext {
+interface ConnectionContext extends TransportContext, TransportListener {
 
     /**
      * Returns the transport manager.
@@ -49,11 +50,18 @@ interface ConnectionContext extends TransportContext {
     void addParameter(String name, String value);
 
     /**
-     * Returns the connection manager.
+     * Adds the specified connection listener.
      * 
-     * @return The connection manager.
+     * @param listener The connection listener.
      */
-    ConnectionManager getConnectionManager();
+    void addConnectionListener(ConnectionListener listener);
+
+    /**
+     * Removes the specified connection listener.
+     * 
+     * @param listener The connection listener.
+     */
+    void removeConnectionListener(ConnectionListener listener);
 
     /**
      * Sets the connection data.
@@ -68,6 +76,13 @@ interface ConnectionContext extends TransportContext {
      * @param options The transport options.
      */
     void setTransportOptions(TransportOptions options);
+
+    /**
+     * Handles a connection error.
+     * 
+     * @param cause The cause.
+     */
+    void handleError(Throwable cause);
 
     /**
      * Returns the current connection state.

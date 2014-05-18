@@ -62,6 +62,11 @@ final class DisconnectingConnectionState implements ConnectionState {
     }
 
     @Override
+    public void notifyConnectionListener(final ConnectionListener listener) {
+        listener.onDisconnecting();
+    }
+
+    @Override
     public Promise<Void> start(final ConnectionContext context) {
         throw new IllegalStateException("Connection is disconnecting");
     }
