@@ -20,9 +20,9 @@ package net.signalr.client.util.concurrent;
  * Defines a continuation.
  * 
  * @param <T> The value type.
- * @param <U> The result type.
+ * @param <R> The result type.
  */
-public interface Continuation<T, U> {
+public interface Continuation<T, R> {
 
     /**
      * Completes the continuation with the specified value.
@@ -31,7 +31,7 @@ public interface Continuation<T, U> {
      * @param result The result.
      * @throws Exception
      */
-    void setSuccess(T value, Deferred<? super U> result) throws Exception;
+    void setSuccess(T value, Deferred<? super R> result) throws Exception;
 
     /**
      * Completes the continuation with the specified cause.
@@ -40,5 +40,5 @@ public interface Continuation<T, U> {
      * @param result The result.
      * @throws Exception
      */
-    void setFailure(Throwable cause, Deferred<? super U> result) throws Exception;
+    void setFailure(Throwable cause, Deferred<? super R> result) throws Exception;
 }

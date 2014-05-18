@@ -18,6 +18,8 @@ package net.signalr.client.hub;
 
 /**
  * Defines hub callback.
+ * 
+ * @param <T> The argument type.
  */
 public interface HubCallback<T> {
 

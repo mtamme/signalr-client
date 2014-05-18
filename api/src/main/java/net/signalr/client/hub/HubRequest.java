@@ -26,32 +26,72 @@ import net.signalr.client.json.JsonWriter;
  */
 final class HubRequest implements JsonWriteable {
 
+    /**
+     * The callback ID.
+     */
     private String _callbackId;
 
+    /**
+     * The hub name.
+     */
     private String _hubName;
 
+    /**
+     * The method name.
+     */
     private String _methodName;
 
+    /**
+     * The arguments.
+     */
     private Object[] _arguments;
 
+    /**
+     * The state.
+     */
     private Map<String, Object> _state;
 
+    /**
+     * Sets the callback ID.
+     * 
+     * @param callbackId The callback ID.
+     */
     public void setCallbackId(final String callbackId) {
         _callbackId = callbackId;
     }
 
+    /**
+     * Sets the hub name.
+     * 
+     * @param hubName The hub name.
+     */
     public void setHubName(final String hubName) {
         _hubName = hubName;
     }
 
+    /**
+     * Sets the method name.
+     * 
+     * @param methodName The method name.
+     */
     public void setMethodName(final String methodName) {
         _methodName = methodName;
     }
 
+    /**
+     * Sets the arguments.
+     * 
+     * @param arguments The arguments.
+     */
     public void setArguments(final Object[] arguments) {
         _arguments = arguments;
     }
 
+    /**
+     * Sets the state.
+     * 
+     * @param state The state.
+     */
     public void setState(final Map<String, Object> state) {
         _state = state;
     }

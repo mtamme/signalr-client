@@ -20,9 +20,9 @@ package net.signalr.client.util.concurrent;
  * Represents a finally continuation.
  * 
  * @param <T> The value type.
- * @param <U> The result type.
+ * @param <R> The result type.
  */
-public abstract class Finally<T, U> implements Continuation<T, U> {
+public abstract class Finally<T, R> implements Continuation<T, R> {
 
     /**
      * Handles the finally continuation.
@@ -32,18 +32,18 @@ public abstract class Finally<T, U> implements Continuation<T, U> {
      * @return The result.
      * @throws Exception
      */
-    protected abstract U doFinally(T value, Throwable cause) throws Exception;
+    protected abstract R doFinally(T value, Throwable cause) throws Exception;
 
     @Override
-    public final void setSuccess(final T value, final Deferred<? super U> result) throws Exception {
-        final U newValue = doFinally(value, null);
+    public final void setSuccess(final T value, final Deferred<? super R> result) throws Exception {
+        final R newValue = doFinally(value, null);
 
         result.setSuccess(newValue);
     }
 
     @Override
-    public final void setFailure(final Throwable cause, final Deferred<? super U> result) throws Exception {
-        final U newValue = doFinally(null, cause);
+    public final void setFailure(final Throwable cause, final Deferred<? super R> result) throws Exception {
+        final R newValue = doFinally(null, cause);
 
         result.setSuccess(newValue);
     }

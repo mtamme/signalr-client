@@ -20,9 +20,9 @@ package net.signalr.client.util.concurrent;
  * Represents an apply continuation.
  * 
  * @param <T> The value type.
- * @param <U> The result type.
+ * @param <R> The result type.
  */
-public abstract class Apply<T, U> implements Continuation<T, U> {
+public abstract class Apply<T, R> implements Continuation<T, R> {
 
     /**
      * Handles the apply continuation.
@@ -31,17 +31,17 @@ public abstract class Apply<T, U> implements Continuation<T, U> {
      * @return The result.
      * @throws Exception
      */
-    protected abstract U doApply(T value) throws Exception;
+    protected abstract R doApply(T value) throws Exception;
 
     @Override
-    public final void setSuccess(final T value, final Deferred<? super U> result) throws Exception {
-        final U newValue = doApply(value);
+    public final void setSuccess(final T value, final Deferred<? super R> result) throws Exception {
+        final R newValue = doApply(value);
 
         result.setSuccess(newValue);
     }
 
     @Override
-    public final void setFailure(final Throwable cause, final Deferred<? super U> result) throws Exception {
+    public final void setFailure(final Throwable cause, final Deferred<? super R> result) throws Exception {
         result.setFailure(cause);
     }
 }
