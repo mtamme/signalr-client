@@ -90,9 +90,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
 
     @Override
     public final boolean isRunning() {
-        final State state = _state.get();
-
-        return ((state == State.STARTED) || (state == State.STARTING));
+        return _state.get().isRunning();
     }
 
     @Override
@@ -139,24 +137,24 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
     private static enum State {
 
         /**
-         * Lifecycle has been started.
-         */
-        STARTED("Started"),
-
-        /**
          * Lifecycle is going to be started.
          */
-        STARTING("Starting"),
+        STARTING("Starting", true),
+
+        /**
+         * Lifecycle has been started.
+         */
+        STARTED("Started", true),
 
         /**
          * Lifecycle is going to be stopped.
          */
-        STOPPING("Stopping"),
+        STOPPING("Stopping", false),
 
         /**
          * Lifecycle has been stopped.
          */
-        STOPPED("Stopped");
+        STOPPED("Stopped", false);
 
         /**
          * The state name.
@@ -164,16 +162,32 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
         private final String _name;
 
         /**
+         * A value indicating whether this is a running state.
+         */
+        private final boolean _running;
+
+        /**
          * Initializes a new instance of the {@link State} class.
          * 
          * @param name The state name.
+         * @param running A value indicating whether this is a running state.
          */
-        private State(final String name) {
+        private State(final String name, final boolean running) {
             if (name == null) {
                 throw new IllegalArgumentException("Name must not be null");
             }
 
             _name = name;
+            _running = running;
+        }
+
+        /**
+         * Returns a value indicating whether this is a running state.
+         * 
+         * @return A value indicating whether this is a running state.
+         */
+        public boolean isRunning() {
+            return _running;
         }
 
         @Override
