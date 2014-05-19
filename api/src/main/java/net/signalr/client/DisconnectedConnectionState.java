@@ -42,14 +42,14 @@ final class DisconnectedConnectionState implements ConnectionState {
     private static final Logger logger = LoggerFactory.getLogger(DisconnectedConnectionState.class);
 
     /**
-     * The disconnected cause.
+     * The disconnect cause.
      */
     private final Throwable _cause;
 
     /**
      * Initializes a new instance of the {@link DisconnectedConnectionState} class.
      * 
-     * @param cause The disconnected cause.
+     * @param cause The disconnect cause.
      */
     public DisconnectedConnectionState(final Throwable cause) {
         _cause = cause;
