@@ -118,12 +118,12 @@ public final class PersistentConnection implements Connection {
     }
 
     @Override
-    public final void addHeader(final String name, final String value) {
+    public void addHeader(final String name, final String value) {
         _context.getConnectionState().addHeader(_context, name, value);
     }
 
     @Override
-    public final void addParameter(final String name, final String value) {
+    public void addParameter(final String name, final String value) {
         _context.getConnectionState().addParameter(_context, name, value);
     }
 
@@ -143,17 +143,17 @@ public final class PersistentConnection implements Connection {
     }
 
     @Override
-    public final Promise<Void> start() {
+    public Promise<Void> start() {
         return _context.getConnectionState().start(_context);
     }
 
     @Override
-    public final Promise<Void> stop() {
+    public Promise<Void> stop() {
         return _context.getConnectionState().stop(_context);
     }
 
     @Override
-    public final Promise<Void> send(final String message) {
+    public Promise<Void> send(final String message) {
         return _context.getConnectionState().send(_context, message);
     }
 }
