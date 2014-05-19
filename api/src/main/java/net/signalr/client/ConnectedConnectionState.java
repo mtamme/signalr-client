@@ -149,7 +149,6 @@ final class ConnectedConnectionState implements ConnectionState {
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState(cause);
 
                 context.setTransportOptions(null);
-
                 context.changeConnectionState(disconnecting, disconnected);
             }
         }).then(deferred);
@@ -172,6 +171,7 @@ final class ConnectedConnectionState implements ConnectionState {
             @Override
             protected Void doCatch(final Throwable cause) throws Exception {
                 context.handleError(cause);
+
                 return null;
             }
         }).then(new Compose<Void, Channel>() {
