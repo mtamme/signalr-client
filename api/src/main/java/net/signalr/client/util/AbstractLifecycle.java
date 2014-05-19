@@ -162,7 +162,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
         private final String _name;
 
         /**
-         * A value indicating whether this is a running state.
+         * A value indicating whether the lifecycle is running.
          */
         private final boolean _running;
 
@@ -170,7 +170,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
          * Initializes a new instance of the {@link State} class.
          * 
          * @param name The state name.
-         * @param running A value indicating whether this is a running state.
+         * @param running A value indicating whether the lifecycle is running.
          */
         private State(final String name, final boolean running) {
             if (name == null) {
@@ -182,9 +182,9 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
         }
 
         /**
-         * Returns a value indicating whether this is a running state.
+         * Returns a value indicating whether the lifecycle is running.
          * 
-         * @return A value indicating whether this is a running state.
+         * @return A value indicating whether the lifecycle is running.
          */
         public boolean isRunning() {
             return _running;
