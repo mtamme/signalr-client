@@ -187,6 +187,7 @@ final class TransportMonitor implements Schedulable, TransportListener {
         if (status == _status) {
             return;
         }
+        _status = status;
         if (status == Status.SLOW) {
             logger.warn("Heartbeat has been missed, connection may be dead/slow");
 
@@ -196,7 +197,6 @@ final class TransportMonitor implements Schedulable, TransportListener {
 
             _manager.handleConnectionLost();
         }
-        _status = status;
     }
 
     /**
