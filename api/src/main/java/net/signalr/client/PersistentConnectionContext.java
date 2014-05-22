@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicReference;
@@ -91,7 +92,7 @@ final class PersistentConnectionContext implements ConnectionContext {
     /**
      * The connection listeners.
      */
-    private final CopyOnWriteArraySet<ConnectionListener> _listeners;
+    private final Set<ConnectionListener> _listeners;
 
     /**
      * The connection data.

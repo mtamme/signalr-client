@@ -16,6 +16,7 @@
 
 package net.signalr.client.hub;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -48,7 +49,7 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
     /**
      * The hub callbacks.
      */
-    private final ConcurrentHashMap<String, HubCallback<HubMessage>> _callbacks;
+    private final Map<String, HubCallback<HubMessage>> _callbacks;
 
     /**
      * Initializes a new instance of the {@link DefaultHubProxy} class.

@@ -61,7 +61,7 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
     /**
      * The deferred responses.
      */
-    private final ConcurrentHashMap<String, Deferred<HubResponse>> _responses;
+    private final Map<String, Deferred<HubResponse>> _responses;
 
     /**
      * Initializes a new instance of the {@link DefaultHubDispatcher} class.

@@ -16,6 +16,7 @@
 
 package net.signalr.client.util.concurrent;
 
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -197,7 +198,7 @@ final class DefaultDeferred<T> implements Deferred<T> {
         /**
          * The stage queue.
          */
-        private final ConcurrentLinkedQueue<Stage<T>> _stages;
+        private final Queue<Stage<T>> _stages;
 
         /**
          * Initializes a new instance of the {@link PendingState} class.
