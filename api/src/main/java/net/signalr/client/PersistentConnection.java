@@ -144,12 +144,12 @@ public final class PersistentConnection implements Connection {
 
     @Override
     public Promise<Void> start() {
-        return _context.getConnectionState().start(_context);
+        return _context.getConnectionState().connect(_context);
     }
 
     @Override
     public Promise<Void> stop() {
-        return _context.getConnectionState().stop(_context);
+        return _context.getConnectionState().disconnect(_context);
     }
 
     @Override

@@ -42,7 +42,7 @@ public final class PersistentConnectionTest {
         final PersistentConnection connection = new PersistentConnection(_connectionContext);
 
         expect(_connectionContext.getConnectionState()).andReturn(_connectionState);
-        expect(_connectionState.start(_connectionContext)).andReturn(Promises.newSuccess());
+        expect(_connectionState.connect(_connectionContext)).andReturn(Promises.newSuccess());
         replay(_connectionContext, _connectionState);
 
         // Act
@@ -59,7 +59,7 @@ public final class PersistentConnectionTest {
         final PersistentConnection connection = new PersistentConnection(_connectionContext);
 
         expect(_connectionContext.getConnectionState()).andReturn(_connectionState);
-        expect(_connectionState.stop(_connectionContext)).andReturn(Promises.newSuccess());
+        expect(_connectionState.disconnect(_connectionContext)).andReturn(Promises.newSuccess());
         replay(_connectionContext, _connectionState);
 
         // Act

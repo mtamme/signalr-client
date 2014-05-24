@@ -67,18 +67,18 @@ final class DisconnectingConnectionState implements ConnectionState {
     }
 
     @Override
-    public Promise<Void> start(final ConnectionContext context) {
+    public Promise<Void> connect(final ConnectionContext context) {
         throw new IllegalStateException("Connection is disconnecting");
-    }
-
-    @Override
-    public Promise<Void> stop(final ConnectionContext context) {
-        return _promise;
     }
 
     @Override
     public Promise<Void> reconnect(final ConnectionContext context) {
         throw new IllegalStateException("Connection is disconnecting");
+    }
+
+    @Override
+    public Promise<Void> disconnect(final ConnectionContext context) {
+        return _promise;
     }
 
     @Override

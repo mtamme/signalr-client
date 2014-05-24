@@ -84,12 +84,12 @@ final class DisconnectedConnectionState implements ConnectionState {
     }
 
     @Override
-    public Promise<Void> start(final ConnectionContext context) {
+    public Promise<Void> connect(final ConnectionContext context) {
         final Deferred<Void> deferred = Promises.newDeferred();
         final ConnectingConnectionState connecting = new ConnectingConnectionState(deferred);
 
         if (!context.tryChangeConnectionState(this, connecting)) {
-            return context.getConnectionState().start(context);
+            return context.getConnectionState().connect(context);
         }
         final TransportManager manager = context.getTransportManager();
         final Transport transport = manager.getTransport();
@@ -154,13 +154,13 @@ final class DisconnectedConnectionState implements ConnectionState {
     }
 
     @Override
-    public Promise<Void> stop(final ConnectionContext context) {
-        return Promises.newSuccess();
+    public Promise<Void> reconnect(final ConnectionContext context) {
+        throw new IllegalStateException("Connection is disconnected");
     }
 
     @Override
-    public Promise<Void> reconnect(final ConnectionContext context) {
-        throw new IllegalStateException("Connection is disconnected");
+    public Promise<Void> disconnect(final ConnectionContext context) {
+        return Promises.newSuccess();
     }
 
     @Override

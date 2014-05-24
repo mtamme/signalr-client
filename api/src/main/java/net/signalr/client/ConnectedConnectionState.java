@@ -97,63 +97,8 @@ final class ConnectedConnectionState implements ConnectionState {
     }
 
     @Override
-    public Promise<Void> start(final ConnectionContext context) {
+    public Promise<Void> connect(final ConnectionContext context) {
         return Promises.newSuccess();
-    }
-
-    @Override
-    public Promise<Void> stop(final ConnectionContext context) {
-        final Deferred<Void> deferred = Promises.newDeferred();
-        final DisconnectingConnectionState disconnecting = new DisconnectingConnectionState(deferred);
-
-        if (!context.tryChangeConnectionState(this, disconnecting)) {
-            return context.getConnectionState().stop(context);
-        }
-        final TransportManager manager = context.getTransportManager();
-        final Transport transport = manager.getTransport();
-
-        Promises.newPromise(new Runnable() {
-            @Override
-            public void run() {
-                manager.stop(context);
-                manager.removeTransportListener(context);
-            }
-        }).then(new Compose<Void, Void>() {
-            @Override
-            protected Promise<Void> doCompose(final Void value) throws Exception {
-                logger.debug("Closing channel...");
-
-                return _channel.close();
-            }
-        }).then(new Catch<Void>() {
-            @Override
-            protected Void doCatch(final Throwable cause) throws Exception {
-                context.handleError(cause);
-                return null;
-            }
-        }).then(new Compose<Void, Void>() {
-            @Override
-            protected Promise<Void> doCompose(final Void value) throws Exception {
-                logger.debug("Aborting transport...");
-
-                return transport.abort(context);
-            }
-        }).then(new ExecuteOn<Void>(context.getExecutor())).then(new OnComplete<Void>() {
-            @Override
-            protected void onComplete(final Void value, final Throwable cause) throws Exception {
-                transport.stop(context);
-            }
-        }).then(new OnComplete<Void>() {
-            @Override
-            protected void onComplete(final Void value, final Throwable cause) throws Exception {
-                final DisconnectedConnectionState disconnected = new DisconnectedConnectionState(cause);
-
-                context.setTransportOptions(null);
-                context.changeConnectionState(disconnecting, disconnected);
-            }
-        }).then(deferred);
-
-        return deferred;
     }
 
     @Override
@@ -205,6 +150,61 @@ final class ConnectedConnectionState implements ConnectionState {
                 final DisconnectedConnectionState disconnected = new DisconnectedConnectionState(cause);
 
                 context.changeConnectionState(reconnecting, disconnected);
+            }
+        }).then(deferred);
+
+        return deferred;
+    }
+
+    @Override
+    public Promise<Void> disconnect(final ConnectionContext context) {
+        final Deferred<Void> deferred = Promises.newDeferred();
+        final DisconnectingConnectionState disconnecting = new DisconnectingConnectionState(deferred);
+
+        if (!context.tryChangeConnectionState(this, disconnecting)) {
+            return context.getConnectionState().disconnect(context);
+        }
+        final TransportManager manager = context.getTransportManager();
+        final Transport transport = manager.getTransport();
+
+        Promises.newPromise(new Runnable() {
+            @Override
+            public void run() {
+                manager.stop(context);
+                manager.removeTransportListener(context);
+            }
+        }).then(new Compose<Void, Void>() {
+            @Override
+            protected Promise<Void> doCompose(final Void value) throws Exception {
+                logger.debug("Closing channel...");
+
+                return _channel.close();
+            }
+        }).then(new Catch<Void>() {
+            @Override
+            protected Void doCatch(final Throwable cause) throws Exception {
+                context.handleError(cause);
+                return null;
+            }
+        }).then(new Compose<Void, Void>() {
+            @Override
+            protected Promise<Void> doCompose(final Void value) throws Exception {
+                logger.debug("Aborting transport...");
+
+                return transport.abort(context);
+            }
+        }).then(new ExecuteOn<Void>(context.getExecutor())).then(new OnComplete<Void>() {
+            @Override
+            protected void onComplete(final Void value, final Throwable cause) throws Exception {
+                transport.stop(context);
+            }
+        }).then(new OnComplete<Void>() {
+            @Override
+            protected void onComplete(final Void value, final Throwable cause) throws Exception {
+                final DisconnectedConnectionState disconnected = new DisconnectedConnectionState(cause);
+
+                context.setTransportOptions(null);
+                context.changeConnectionState(disconnecting, disconnected);
             }
         }).then(deferred);
 

@@ -64,20 +64,12 @@ interface ConnectionState {
     void notifyConnectionListener(ConnectionListener listener);
 
     /**
-     * Starts the connection.
+     * Connects the connection.
      * 
      * @param context The connection context.
-     * @return The start result.
+     * @return The connect result.
      */
-    Promise<Void> start(ConnectionContext context);
-
-    /**
-     * Stops the connection.
-     * 
-     * @param context The connection context.
-     * @return The stop result.
-     */
-    Promise<Void> stop(ConnectionContext context);
+    Promise<Void> connect(ConnectionContext context);
 
     /**
      * Reconnects the connection
@@ -86,6 +78,14 @@ interface ConnectionState {
      * @return The reconnect result.
      */
     Promise<Void> reconnect(ConnectionContext context);
+
+    /**
+     * Disconnects the connection.
+     * 
+     * @param context The connection context.
+     * @return The disconnect result.
+     */
+    Promise<Void> disconnect(ConnectionContext context);
 
     /**
      * Sends a message.
