@@ -4,7 +4,7 @@
     <parent>
         <groupId>net.signalr.client</groupId>
         <artifactId>signalr-client-json</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.1-SNAPSHOT</version>
     </parent>
     <artifactId>signalr-client-json-jackson</artifactId>
     <properties>
@@ -14,7 +14,7 @@
         <dependency>
             <groupId>net.signalr.client</groupId>
             <artifactId>signalr-client-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

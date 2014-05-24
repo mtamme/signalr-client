@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.signalr.client</groupId>
     <artifactId>signalr-client</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>signalr-client</name>
     <url>https://github.com/mtamme/signalr-client</url>
@@ -13,8 +13,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Override the default Java compiler source and target level -->
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.6</maven.compiler.source>
         <!-- Configure dependency versions -->
         <org.slf4j.version>1.7.7</org.slf4j.version>
         <junit.version>4.11</junit.version>

@@ -4,7 +4,7 @@
     <parent>
         <groupId>net.signalr.client</groupId>
         <artifactId>signalr-client-transport</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.1-SNAPSHOT</version>
     </parent>
     <artifactId>signalr-client-transport-asynchttpclient</artifactId>
     <properties>
@@ -14,12 +14,12 @@
         <dependency>
             <groupId>net.signalr.client</groupId>
             <artifactId>signalr-client-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.signalr.client</groupId>
             <artifactId>signalr-client-json-gson</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
