@@ -17,40 +17,37 @@
 package net.signalr.client.util.concurrent;
 
 /**
- * Represents a catch continuation.
- * 
- * @param <T> The value type.
+ * Represents a accept continuation.
  */
-public abstract class Catch<T> implements Continuation<T, T> {
+public abstract class Accept<T> implements Continuation<T, Void> {
 
     /**
-     * Handles the success continuation.
+     * Handles the accept continuation.
      * 
      * @param value The value.
-     * @throws Exception
-     */
-    protected void onSuccess(final T value) throws Exception {
-    }
-
-    /**
-     * Handles the catch continuation.
-     * 
-     * @param cause The cause.
      * @return The result.
      * @throws Exception
      */
-    protected abstract T doCatch(Throwable cause) throws Exception;
+    protected abstract void doAccept(T value) throws Exception;
 
-    @Override
-    public final void setSuccess(final T value, final Deferred<? super T> result) throws Exception {
-        onSuccess(value);
-        result.setSuccess(value);
+    /**
+     * Handles the failure continuation.
+     * 
+     * @param cause The cause.
+     * @throws Exception
+     */
+    protected void onFailure(final Throwable cause) throws Exception {
     }
 
     @Override
-    public final void setFailure(final Throwable cause, final Deferred<? super T> result) throws Exception {
-        final T value = doCatch(cause);
+    public void setSuccess(final T value, final Deferred<? super Void> result) throws Exception {
+        doAccept(value);
+        result.setSuccess(null);
+    }
 
-        result.setSuccess(value);
+    @Override
+    public void setFailure(final Throwable cause, final Deferred<? super Void> result) throws Exception {
+        onFailure(cause);
+        result.setFailure(cause);
     }
 }

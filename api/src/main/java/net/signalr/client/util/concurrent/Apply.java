@@ -33,6 +33,15 @@ public abstract class Apply<T, R> implements Continuation<T, R> {
      */
     protected abstract R doApply(T value) throws Exception;
 
+    /**
+     * Handles the failure continuation.
+     * 
+     * @param cause The cause.
+     * @throws Exception
+     */
+    protected void onFailure(final Throwable cause) throws Exception {
+    }
+
     @Override
     public final void setSuccess(final T value, final Deferred<? super R> result) throws Exception {
         final R newValue = doApply(value);
@@ -42,6 +51,7 @@ public abstract class Apply<T, R> implements Continuation<T, R> {
 
     @Override
     public final void setFailure(final Throwable cause, final Deferred<? super R> result) throws Exception {
+        onFailure(cause);
         result.setFailure(cause);
     }
 }

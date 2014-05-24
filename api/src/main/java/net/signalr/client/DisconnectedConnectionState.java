@@ -20,12 +20,12 @@ import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportManager;
+import net.signalr.client.util.concurrent.Accept;
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.ExecuteOn;
 import net.signalr.client.util.concurrent.OnFailure;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Promises;
-import net.signalr.client.util.concurrent.Apply;
 import net.signalr.client.util.concurrent.Compose;
 
 import org.slf4j.Logger;
@@ -122,15 +122,13 @@ final class DisconnectedConnectionState implements ConnectionState {
 
                 return transport.connect(context, manager, false);
             }
-        }).then(new ExecuteOn<Channel>(context.getExecutor())).then(new Apply<Channel, Void>() {
+        }).then(new ExecuteOn<Channel>(context.getExecutor())).then(new Accept<Channel>() {
             @Override
-            protected Void doApply(final Channel channel) throws Exception {
+            protected void doAccept(final Channel channel) throws Exception {
                 final ConnectedConnectionState connected = new ConnectedConnectionState(channel, false);
 
                 context.changeConnectionState(connecting, connected);
                 manager.start(context);
-
-                return null;
             }
         }).then(new OnFailure<Void>() {
             @Override
