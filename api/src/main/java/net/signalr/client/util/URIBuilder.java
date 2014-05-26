@@ -227,7 +227,7 @@ public final class URIBuilder {
      * @param value The parameter value.
      * @param rawQuery The raw query.
      */
-    private static void appendParameter(final String rawName, final String value, final StringBuilder rawQuery) {
+    private void appendParameter(final String rawName, final String value, final StringBuilder rawQuery) {
         if (rawQuery.length() > 0) {
             rawQuery.append('&');
         }
@@ -245,7 +245,7 @@ public final class URIBuilder {
      * @param value The value.
      * @return The encoded value.
      */
-    private static String encode(final String value) {
+    private String encode(final String value) {
         if (value == null) {
             return null;
         }
