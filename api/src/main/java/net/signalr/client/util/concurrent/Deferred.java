@@ -231,7 +231,7 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
             // Trigger completion when the promise has been completed in the meantime.
             final State<T> state = _state.get();
 
-            if (state != this) {
+            if (state.isComplete()) {
                 completeStages(state);
             }
         }
