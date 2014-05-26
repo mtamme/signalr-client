@@ -28,7 +28,6 @@ import org.eclipse.jetty.websocket.client.WebSocketClient;
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
 import net.signalr.client.transport.TransportContext;
-import net.signalr.client.transport.TransportException;
 import net.signalr.client.transport.TransportOptions;
 import net.signalr.client.util.URIBuilder;
 import net.signalr.client.util.concurrent.Promise;
@@ -155,22 +154,18 @@ public final class WebSocketTransport extends AbstractTransport {
     }
 
     @Override
-    protected void doStart(final TransportContext context) {
+    protected void doStart(final TransportContext context) throws Exception {
         try {
             _webSocketClient.start();
-        } catch (final Exception e) {
-            throw new TransportException("Failed to start transport", e);
         } finally {
             super.doStart(context);
         }
     }
 
     @Override
-    protected void doStop(final TransportContext context) {
+    protected void doStop(final TransportContext context) throws Exception {
         try {
             _webSocketClient.stop();
-        } catch (final Exception e) {
-            throw new TransportException("Failed to stop transport", e);
         } finally {
             super.doStop(context);
         }

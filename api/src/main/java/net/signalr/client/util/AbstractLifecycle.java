@@ -79,14 +79,14 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
      * 
      * @param context The lifecycle context.
      */
-    protected abstract void doStart(T context);
+    protected abstract void doStart(T context) throws Exception;
 
     /**
      * Stops the lifecycle.
      * 
      * @param context The lifecycle context.
      */
-    protected abstract void doStop(T context);
+    protected abstract void doStop(T context) throws Exception;
 
     @Override
     public final boolean isRunning() {

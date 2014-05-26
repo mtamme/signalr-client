@@ -25,7 +25,6 @@ import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.PingResponse;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportContext;
-import net.signalr.client.transport.TransportException;
 import net.signalr.client.transport.TransportOptions;
 import net.signalr.client.util.AbstractLifecycle;
 import net.signalr.client.util.URIBuilder;
@@ -224,20 +223,12 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     }
 
     @Override
-    protected void doStart(final TransportContext context) {
-        try {
-            _httpClient.start();
-        } catch (final Exception e) {
-            throw new TransportException("Failed to start transport", e);
-        }
+    protected void doStart(final TransportContext context) throws Exception {
+        _httpClient.start();
     }
 
     @Override
-    protected void doStop(final TransportContext context) {
-        try {
-            _httpClient.stop();
-        } catch (final Exception e) {
-            throw new TransportException("Failed to stop transport", e);
-        }
+    protected void doStop(final TransportContext context) throws Exception {
+        _httpClient.stop();
     }
 }

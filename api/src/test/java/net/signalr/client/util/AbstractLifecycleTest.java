@@ -27,7 +27,7 @@ import org.junit.runners.JUnit4;
 public final class AbstractLifecycleTest {
 
     @Test
-    public void startTest() {
+    public void startTest() throws Exception {
         // Arrange
         @SuppressWarnings("unchecked")
         final AbstractLifecycle<Integer> lifecycle = createMockBuilder(AbstractLifecycle.class).withConstructor().createStrictMock();
@@ -44,13 +44,13 @@ public final class AbstractLifecycleTest {
     }
 
     @Test
-    public void startWithRuntimeExceptionTest() {
+    public void startWithExceptionTest() throws Exception {
         // Arrange
         @SuppressWarnings("unchecked")
         final AbstractLifecycle<Integer> lifecycle = createMockBuilder(AbstractLifecycle.class).withConstructor().createStrictMock();
 
         lifecycle.doStart(1);
-        expectLastCall().andThrow(new RuntimeException());
+        expectLastCall().andThrow(new Exception());
         replay(lifecycle);
 
         // Act
@@ -69,7 +69,7 @@ public final class AbstractLifecycleTest {
     }
 
     @Test
-    public void startWithStartedTest() {
+    public void startWithStartedTest() throws Exception {
         // Arrange
         @SuppressWarnings("unchecked")
         final AbstractLifecycle<Integer> lifecycle = createMockBuilder(AbstractLifecycle.class).withConstructor().createStrictMock();
@@ -87,7 +87,7 @@ public final class AbstractLifecycleTest {
     }
 
     @Test
-    public void startWithStoppedTest() {
+    public void startWithStoppedTest() throws Exception {
         // Arrange
         @SuppressWarnings("unchecked")
         final AbstractLifecycle<Integer> lifecycle = createMockBuilder(AbstractLifecycle.class).withConstructor().createStrictMock();
@@ -124,14 +124,14 @@ public final class AbstractLifecycleTest {
     }
 
     @Test
-    public void stopWithRuntimeExceptionTest() {
+    public void stopWithExceptionTest() throws Exception {
         // Arrange
         @SuppressWarnings("unchecked")
         final AbstractLifecycle<Integer> lifecycle = createMockBuilder(AbstractLifecycle.class).withConstructor().createStrictMock();
 
         lifecycle.doStart(1);
         lifecycle.doStop(2);
-        expectLastCall().andThrow(new RuntimeException());
+        expectLastCall().andThrow(new Exception());
         replay(lifecycle);
         lifecycle.start(1);
 
@@ -151,7 +151,7 @@ public final class AbstractLifecycleTest {
     }
 
     @Test
-    public void stopWithStartedTest() {
+    public void stopWithStartedTest() throws Exception {
         // Arrange
         @SuppressWarnings("unchecked")
         final AbstractLifecycle<Integer> lifecycle = createMockBuilder(AbstractLifecycle.class).withConstructor().createStrictMock();

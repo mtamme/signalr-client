@@ -258,12 +258,12 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
     }
 
     @Override
-    protected final void doStart(final TransportContext context) {
+    protected final void doStart(final TransportContext context) throws Exception {
         _httpClient = newHttpClient();
     }
 
     @Override
-    protected final void doStop(final TransportContext context) {
+    protected final void doStop(final TransportContext context) throws Exception {
         _httpClient.close();
     }
 }
