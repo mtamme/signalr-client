@@ -28,7 +28,7 @@ public interface Continuation<T, R> {
      * Completes the continuation with the specified value.
      * 
      * @param value The value.
-     * @param result The result.
+     * @param result The completable result.
      * @throws Exception
      */
     void onSuccess(T value, Completable<? super R> result) throws Exception;
@@ -37,7 +37,7 @@ public interface Continuation<T, R> {
      * Completes the continuation with the specified cause.
      * 
      * @param cause The cause.
-     * @param result The result.
+     * @param result The completable result.
      * @throws Exception
      */
     void onFailure(Throwable cause, Completable<? super R> result) throws Exception;
