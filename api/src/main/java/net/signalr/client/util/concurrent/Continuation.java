@@ -31,7 +31,7 @@ public interface Continuation<T, R> {
      * @param result The result.
      * @throws Exception
      */
-    void setSuccess(T value, Deferred<? super R> result) throws Exception;
+    void onSuccess(T value, Completable<? super R> result) throws Exception;
 
     /**
      * Completes the continuation with the specified cause.
@@ -40,5 +40,5 @@ public interface Continuation<T, R> {
      * @param result The result.
      * @throws Exception
      */
-    void setFailure(Throwable cause, Deferred<? super R> result) throws Exception;
+    void onFailure(Throwable cause, Completable<? super R> result) throws Exception;
 }

@@ -48,7 +48,7 @@ public final class Promises {
      * @return The promise.
      */
     public static <T> Promise<T> newSuccess(final T value) {
-        return new DefaultDeferred<T>(value);
+        return new Deferred<T>(value);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class Promises {
      * @return The promise.
      */
     public static <T> Promise<T> newFailure(final Throwable cause) {
-        return new DefaultDeferred<T>(cause);
+        return new Deferred<T>(cause);
     }
 
     /**
@@ -79,15 +79,6 @@ public final class Promises {
         }
 
         return newSuccess();
-    }
-
-    /**
-     * Returns a new deferred.
-     * 
-     * @return The deferred.
-     */
-    public static <T> Deferred<T> newDeferred() {
-        return new DefaultDeferred<T>();
     }
 
     /**

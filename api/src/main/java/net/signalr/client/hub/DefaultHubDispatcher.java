@@ -30,7 +30,6 @@ import net.signalr.client.json.JsonMapper;
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.OnComplete;
 import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Promises;
 import net.signalr.client.util.concurrent.Compose;
 
 /**
@@ -188,7 +187,7 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
         request.setCallbackId(callbackId);
         final JsonMapper mapper = _connection.getMapper();
         final String message = mapper.toJson(request);
-        final Deferred<HubResponse> deferred = Promises.newDeferred();
+        final Deferred<HubResponse> deferred = new Deferred<HubResponse>();
 
         _responses.put(callbackId, deferred);
 

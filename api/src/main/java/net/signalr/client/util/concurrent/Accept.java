@@ -40,13 +40,13 @@ public abstract class Accept<T> implements Continuation<T, Void> {
     }
 
     @Override
-    public void setSuccess(final T value, final Deferred<? super Void> result) throws Exception {
+    public void onSuccess(final T value, final Completable<? super Void> result) throws Exception {
         doAccept(value);
         result.setSuccess(null);
     }
 
     @Override
-    public void setFailure(final Throwable cause, final Deferred<? super Void> result) throws Exception {
+    public void onFailure(final Throwable cause, final Completable<? super Void> result) throws Exception {
         onFailure(cause);
         result.setFailure(cause);
     }

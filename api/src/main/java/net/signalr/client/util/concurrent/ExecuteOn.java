@@ -52,7 +52,7 @@ public final class ExecuteOn<T> implements Continuation<T, T> {
     }
 
     @Override
-    public void setSuccess(final T value, final Deferred<? super T> result) throws Exception {
+    public void onSuccess(final T value, final Completable<? super T> result) throws Exception {
         _executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -66,7 +66,7 @@ public final class ExecuteOn<T> implements Continuation<T, T> {
     }
 
     @Override
-    public void setFailure(final Throwable cause, final Deferred<? super T> result) throws Exception {
+    public void onFailure(final Throwable cause, final Completable<? super T> result) throws Exception {
         _executor.execute(new Runnable() {
             @Override
             public void run() {

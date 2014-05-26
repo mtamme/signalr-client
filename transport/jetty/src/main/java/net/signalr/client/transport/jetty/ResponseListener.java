@@ -20,7 +20,6 @@ import java.io.IOException;
 
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Promises;
 
 import org.eclipse.jetty.client.api.Response;
 import org.eclipse.jetty.client.api.Result;
@@ -40,7 +39,7 @@ final class ResponseListener extends BufferingResponseListener {
      * Initializes a new instance of the {@link ResponseListener} class.
      */
     public ResponseListener() {
-        _response = Promises.newDeferred();
+        _response = new Deferred<String>();
     }
 
     /**

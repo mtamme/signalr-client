@@ -18,7 +18,7 @@ package net.signalr.client.transport;
 
 import java.io.IOException;
 
-import net.signalr.client.util.concurrent.Completion;
+import net.signalr.client.util.concurrent.Completable;
 import net.signalr.client.util.concurrent.Schedulable;
 
 import org.slf4j.Logger;
@@ -81,7 +81,7 @@ final class TransportPing implements Schedulable {
 
         final Transport transport = _manager.getTransport();
 
-        transport.ping(_context).then(new Completion<PingResponse>() {
+        transport.ping(_context).then(new Completable<PingResponse>() {
             @Override
             public void setSuccess(final PingResponse response) {
                 final String value = response.getValue();

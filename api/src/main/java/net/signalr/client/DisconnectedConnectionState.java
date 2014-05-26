@@ -85,7 +85,7 @@ final class DisconnectedConnectionState implements ConnectionState {
 
     @Override
     public Promise<Void> connect(final ConnectionContext context) {
-        final Deferred<Void> deferred = Promises.newDeferred();
+        final Deferred<Void> deferred = new Deferred<Void>();
         final ConnectingConnectionState connecting = new ConnectingConnectionState(deferred);
 
         if (!context.tryChangeConnectionState(this, connecting)) {

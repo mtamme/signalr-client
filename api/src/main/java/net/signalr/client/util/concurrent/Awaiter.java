@@ -22,11 +22,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Represents a completion which can be awaited.
+ * Represents a completable which can be awaited.
  * 
  * @param <T> The value type.
  */
-final class Awaiter<T> implements Completion<T> {
+final class Awaiter<T> implements Completable<T> {
 
     /**
      * Defines a value.

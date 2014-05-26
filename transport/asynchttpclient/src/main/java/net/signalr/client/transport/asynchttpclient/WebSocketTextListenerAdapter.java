@@ -20,7 +20,6 @@ import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
 import net.signalr.client.util.concurrent.Deferred;
 import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Promises;
 
 import com.ning.http.client.websocket.WebSocket;
 import com.ning.http.client.websocket.WebSocketTextListener;
@@ -51,7 +50,7 @@ final class WebSocketTextListenerAdapter implements WebSocketTextListener {
         }
 
         _handler = handler;
-        _channel = Promises.newDeferred();
+        _channel = new Deferred<Channel>();
     }
 
     /**
