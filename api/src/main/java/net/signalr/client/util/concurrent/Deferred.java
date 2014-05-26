@@ -139,7 +139,8 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
                 try {
                     continuation.onFailure(cause, result);
                 } catch (final Throwable t) {
-                    t.addSuppressed(cause);
+                    // Only available since Java 7
+                    // t.addSuppressed(cause);
                     result.setFailure(t);
                 }
             }
