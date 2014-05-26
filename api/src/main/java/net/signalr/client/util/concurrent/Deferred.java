@@ -286,7 +286,7 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
      * 
      * @param <T> The value type.
      */
-    private static abstract class CompleteState<T> implements State<T> {
+    private abstract static class CompleteState<T> implements State<T> {
 
         @Override
         public boolean isComplete() {
