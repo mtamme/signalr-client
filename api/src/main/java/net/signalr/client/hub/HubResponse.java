@@ -48,11 +48,9 @@ final class HubResponse {
      * 
      * @return The round tripped state.
      */
+    @SuppressWarnings("unchecked")
     public Map<String, Object> getState() {
-        @SuppressWarnings("unchecked")
-        final Map<String, Object> state = _element.get("S").toObject(Map.class, null);
-
-        return state;
+        return _element.get("S").toObject(Map.class, null);
     }
 
     /**
