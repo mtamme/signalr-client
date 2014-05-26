@@ -34,69 +34,6 @@ public final class URIBuilder {
     private static final String DEFAULT_ENCODING = "UTF-8";
 
     /**
-     * Resolves the specified URI against the base URI and returns a new URI builder.
-     * 
-     * @param baseUri The base URI.
-     * @param uri The URI.
-     * @return The new URI builder.
-     */
-    public static URIBuilder resolve(final String baseUri, final String uri) {
-        return resolve(toUri(baseUri), uri);
-    }
-
-    /**
-     * Resolves the specified URI against the base URI and returns a new URI builder.
-     * 
-     * @param baseUri The base URI.
-     * @param uri The URI.
-     * @return The new URI builder.
-     */
-    public static URIBuilder resolve(final URI baseUri, final String uri) {
-        if (baseUri == null) {
-            throw new IllegalArgumentException("Base URI must not be null");
-        }
-
-        return new URIBuilder(baseUri.resolve(toUri(uri)));
-    }
-
-    /**
-     * Converts the specified URI to an {@link URI}.
-     * 
-     * @param uri The URI.
-     * @return The URI.
-     */
-    private static URI toUri(final String uri) {
-        if (uri == null) {
-            throw new IllegalArgumentException("URI must not be null");
-        }
-
-        try {
-            return new URI(uri);
-        } catch (final URISyntaxException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    /**
-     * Encodes the specified value.
-     * 
-     * @param value The value.
-     * @return The encoded value.
-     */
-    private static String encode(final String value) {
-        if (value == null) {
-            return null;
-        }
-
-        try {
-            return URLEncoder.encode(value, DEFAULT_ENCODING);
-        } catch (final UnsupportedEncodingException e) {
-            // Unlikely since the default encoding should be always supported.
-            return null;
-        }
-    }
-
-    /**
      * The scheme.
      */
     private String _scheme;
@@ -179,6 +116,24 @@ public final class URIBuilder {
     }
 
     /**
+     * Converts the specified URI to an {@link URI}.
+     * 
+     * @param uri The URI.
+     * @return The URI.
+     */
+    private static URI toUri(final String uri) {
+        if (uri == null) {
+            throw new IllegalArgumentException("URI must not be null");
+        }
+
+        try {
+            return new URI(uri);
+        } catch (final URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    /**
      * Initializes the {@link URIBuilder}.
      * 
      * @param uri The URI.
@@ -246,7 +201,7 @@ public final class URIBuilder {
      * @param value The parameter value.
      * @param rawQuery The raw query.
      */
-    private void appendParameter(final String rawName, final String value, final StringBuilder rawQuery) {
+    private static void appendParameter(final String rawName, final String value, final StringBuilder rawQuery) {
         if (rawQuery.length() > 0) {
             rawQuery.append('&');
         }
@@ -256,6 +211,51 @@ public final class URIBuilder {
 
             rawQuery.append('=').append(rawValue);
         }
+    }
+
+    /**
+     * Encodes the specified value.
+     * 
+     * @param value The value.
+     * @return The encoded value.
+     */
+    private static String encode(final String value) {
+        if (value == null) {
+            return null;
+        }
+
+        try {
+            return URLEncoder.encode(value, DEFAULT_ENCODING);
+        } catch (final UnsupportedEncodingException e) {
+            // Unlikely since the default encoding should be always supported.
+            return null;
+        }
+    }
+
+    /**
+     * Resolves the specified URI against the base URI and returns a new URI builder.
+     * 
+     * @param baseUri The base URI.
+     * @param uri The URI.
+     * @return The new URI builder.
+     */
+    public static URIBuilder resolve(final String baseUri, final String uri) {
+        return resolve(toUri(baseUri), uri);
+    }
+
+    /**
+     * Resolves the specified URI against the base URI and returns a new URI builder.
+     * 
+     * @param baseUri The base URI.
+     * @param uri The URI.
+     * @return The new URI builder.
+     */
+    public static URIBuilder resolve(final URI baseUri, final String uri) {
+        if (baseUri == null) {
+            throw new IllegalArgumentException("Base URI must not be null");
+        }
+
+        return new URIBuilder(baseUri.resolve(toUri(uri)));
     }
 
     /**
