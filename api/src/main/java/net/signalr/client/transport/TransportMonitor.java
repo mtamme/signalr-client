@@ -33,7 +33,7 @@ final class TransportMonitor implements Schedulable, TransportListener {
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(TransportMonitor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransportMonitor.class);
 
     /**
      * The transport manager.
@@ -130,7 +130,7 @@ final class TransportMonitor implements Schedulable, TransportListener {
      * Updates the heartbeat time.
      */
     private void updateHeartbeatTime() {
-        logger.debug("Received transport heartbeat");
+        LOGGER.debug("Received transport heartbeat");
 
         final long currentTime = _timeProvider.currentTimeMillis();
 
@@ -182,18 +182,18 @@ final class TransportMonitor implements Schedulable, TransportListener {
         final Status status = getStatus();
 
         if (status == Status.VITAL) {
-            logger.debug("Heartbeat is recent, connection seems to be vital");
+            LOGGER.debug("Heartbeat is recent, connection seems to be vital");
         }
         if (status == _status) {
             return;
         }
         _status = status;
         if (status == Status.SLOW) {
-            logger.warn("Heartbeat has been missed, connection may be dead/slow");
+            LOGGER.warn("Heartbeat has been missed, connection may be dead/slow");
 
             _manager.handleConnectionSlow();
         } else if (status == Status.LOST) {
-            logger.error("Heartbeat timed out, connection has been lost");
+            LOGGER.error("Heartbeat timed out, connection has been lost");
 
             _manager.handleConnectionLost();
         }

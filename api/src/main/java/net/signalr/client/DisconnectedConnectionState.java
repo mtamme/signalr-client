@@ -39,7 +39,7 @@ final class DisconnectedConnectionState implements ConnectionState {
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(DisconnectedConnectionState.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DisconnectedConnectionState.class);
 
     /**
      * The disconnect cause.
@@ -103,7 +103,7 @@ final class DisconnectedConnectionState implements ConnectionState {
         }).then(new Compose<Void, NegotiationResponse>() {
             @Override
             protected Promise<NegotiationResponse> doCompose(final Void value) throws Exception {
-                logger.debug("Negotiating transport...");
+                LOGGER.debug("Negotiating transport...");
 
                 return transport.negotiate(context);
             }
@@ -118,7 +118,7 @@ final class DisconnectedConnectionState implements ConnectionState {
 
                 context.setTransportOptions(response);
 
-                logger.debug("Connecting transport...");
+                LOGGER.debug("Connecting transport...");
 
                 return transport.connect(context, manager, false);
             }

@@ -31,7 +31,7 @@ public final class ExecuteOn<T> implements Continuation<T, T> {
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(ExecuteOn.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExecuteOn.class);
 
     /**
      * The executor.
@@ -59,7 +59,7 @@ public final class ExecuteOn<T> implements Continuation<T, T> {
                 try {
                     result.setSuccess(value);
                 } catch (final Throwable t) {
-                    logger.warn("Failed to execute completable", t);
+                    LOGGER.warn("Failed to execute completable", t);
                 }
             }
         });
@@ -73,7 +73,7 @@ public final class ExecuteOn<T> implements Continuation<T, T> {
                 try {
                     result.setFailure(cause);
                 } catch (final Throwable t) {
-                    logger.warn("Failed to execute completable", t);
+                    LOGGER.warn("Failed to execute completable", t);
                 }
             }
         });

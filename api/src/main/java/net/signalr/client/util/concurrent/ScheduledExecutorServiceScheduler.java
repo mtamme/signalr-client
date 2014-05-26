@@ -37,7 +37,7 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(ScheduledExecutorServiceScheduler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledExecutorServiceScheduler.class);
 
     /**
      * The scheduled executor service.
@@ -73,7 +73,7 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
             throw new IllegalArgumentException("Time unit must not be null");
         }
 
-        logger.debug("Scheduling '{}' @{}s", schedulable, timeUnit.toMillis(period) / 1000.0);
+        LOGGER.debug("Scheduling '{}' @{}s", schedulable, timeUnit.toMillis(period) / 1000.0);
 
         final Runnable runnable = new ScheduledRunnable(schedulable);
         final ScheduledFuture<?> future = _executorService.scheduleAtFixedRate(runnable, period, period, timeUnit);
@@ -112,7 +112,7 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
             try {
                 _runnable.run();
             } catch (final Throwable t) {
-                logger.warn("Job execution failed", t);
+                LOGGER.warn("Job execution failed", t);
             }
         }
     }
@@ -145,7 +145,7 @@ public final class ScheduledExecutorServiceScheduler implements Scheduler {
 
         @Override
         public boolean cancel() {
-            logger.debug("Canceling '{}'", _schedulable);
+            LOGGER.debug("Canceling '{}'", _schedulable);
 
             try {
                 return _future.cancel(false);

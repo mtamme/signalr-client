@@ -31,7 +31,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(AbstractLifecycle.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractLifecycle.class);
 
     /**
      * The lifecycle state.
@@ -69,7 +69,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
             return false;
         }
 
-        logger.debug("{} '{}'", newState, this);
+        LOGGER.debug("{} '{}'", newState, this);
 
         return true;
     }
@@ -104,7 +104,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
         } catch (final Throwable t) {
             changeState(State.STARTING, State.STOPPED);
 
-            logger.warn("Failed to start '{}'", this, t);
+            LOGGER.warn("Failed to start '{}'", this, t);
 
             throw new LifecycleException("Failed to start lifecycle", t);
         }
@@ -123,7 +123,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
         } catch (final Throwable t) {
             changeState(State.STOPPING, State.STOPPED);
 
-            logger.warn("Failed to stop '{}'", this, t);
+            LOGGER.warn("Failed to stop '{}'", this, t);
 
             throw new LifecycleException("Failed to stop lifecycle", t);
         }

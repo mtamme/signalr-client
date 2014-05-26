@@ -40,7 +40,7 @@ final class ConnectedConnectionState implements ConnectionState {
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(ConnectedConnectionState.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedConnectionState.class);
 
     /**
      * The channel.
@@ -122,7 +122,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Compose<Void, Channel>() {
             @Override
             protected Promise<Channel> doCompose(final Void value) throws Exception {
-                logger.debug("Reconnecting transport...");
+                LOGGER.debug("Reconnecting transport...");
 
                 return transport.connect(context, manager, true);
             }
@@ -176,7 +176,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Compose<Void, Void>() {
             @Override
             protected Promise<Void> doCompose(final Void value) throws Exception {
-                logger.debug("Closing channel...");
+                LOGGER.debug("Closing channel...");
 
                 return _channel.close();
             }
@@ -189,7 +189,7 @@ final class ConnectedConnectionState implements ConnectionState {
         }).then(new Compose<Void, Void>() {
             @Override
             protected Promise<Void> doCompose(final Void value) throws Exception {
-                logger.debug("Aborting transport...");
+                LOGGER.debug("Aborting transport...");
 
                 return transport.abort(context);
             }

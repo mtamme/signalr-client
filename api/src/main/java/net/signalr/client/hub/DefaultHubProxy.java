@@ -34,7 +34,7 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(DefaultHubProxy.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultHubProxy.class);
 
     /**
      * The hub name.
@@ -155,7 +155,7 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
                 final int count = arguments.size();
 
                 if (count != 1) {
-                    logger.warn("Received message with wrong number of arguments: {}", count);
+                    LOGGER.warn("Received message with wrong number of arguments: {}", count);
                     return;
                 }
                 final JsonElement argument = arguments.get(0);

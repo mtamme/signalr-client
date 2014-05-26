@@ -47,7 +47,7 @@ final class PersistentConnectionContext implements ConnectionContext {
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(PersistentConnectionContext.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersistentConnectionContext.class);
 
     /**
      * The connection URL.
@@ -243,13 +243,13 @@ final class PersistentConnectionContext implements ConnectionContext {
             return false;
         }
 
-        logger.debug("Changed connection state to '{}'", newConnectionState);
+        LOGGER.debug("Changed connection state to '{}'", newConnectionState);
 
         for (final ConnectionListener listener : _listeners) {
             try {
                 newConnectionState.notifyConnectionListener(listener);
             } catch (final Throwable t) {
-                logger.warn("Failed to notify connection listener", t);
+                LOGGER.warn("Failed to notify connection listener", t);
             }
         }
 

@@ -32,7 +32,7 @@ final class TransportPing implements Schedulable {
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(TransportPing.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransportPing.class);
 
     /**
      * The transport ping response value.
@@ -77,7 +77,7 @@ final class TransportPing implements Schedulable {
 
     @Override
     public void run() {
-        logger.debug("Sending transport ping...");
+        LOGGER.debug("Sending transport ping...");
 
         final Transport transport = _manager.getTransport();
 
@@ -86,7 +86,7 @@ final class TransportPing implements Schedulable {
             public void setSuccess(final PingResponse response) {
                 final String value = response.getValue();
 
-                logger.debug("Received transport ping response: '{}'", value);
+                LOGGER.debug("Received transport ping response: '{}'", value);
 
                 if (!PING_RESPONSE_VALUE.equalsIgnoreCase(value)) {
                     _manager.handleError(new IOException("Received invalid transport ping response: '" + value + "'."));
@@ -95,7 +95,7 @@ final class TransportPing implements Schedulable {
 
             @Override
             public void setFailure(final Throwable cause) {
-                logger.warn("Transport ping failed", cause);
+                LOGGER.warn("Transport ping failed", cause);
 
                 _manager.handleError(cause);
             }

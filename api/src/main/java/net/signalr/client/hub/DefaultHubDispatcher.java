@@ -40,7 +40,7 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(DefaultHubDispatcher.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultHubDispatcher.class);
 
     /**
      * The connection.
@@ -116,7 +116,7 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
         final Deferred<HubResponse> deferred = _responses.remove(callbackId);
 
         if (deferred == null) {
-            logger.warn("Received response for unknown callback ID {}", callbackId);
+            LOGGER.warn("Received response for unknown callback ID {}", callbackId);
             return;
         }
         deferred.setSuccess(response);

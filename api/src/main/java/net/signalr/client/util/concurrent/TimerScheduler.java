@@ -36,7 +36,7 @@ public final class TimerScheduler implements Scheduler {
     /**
      * The private logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(TimerScheduler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimerScheduler.class);
 
     /**
      * The timer.
@@ -72,7 +72,7 @@ public final class TimerScheduler implements Scheduler {
             throw new IllegalArgumentException("Time unit must not be null");
         }
 
-        logger.debug("Scheduling '{}' @{}s", schedulable, timeUnit.toMillis(period) / 1000.0);
+        LOGGER.debug("Scheduling '{}' @{}s", schedulable, timeUnit.toMillis(period) / 1000.0);
 
         final ScheduledJob job = new ScheduledJob(schedulable);
 
@@ -111,13 +111,13 @@ public final class TimerScheduler implements Scheduler {
             try {
                 _schedulable.run();
             } catch (final Throwable t) {
-                logger.warn("Job execution failed", t);
+                LOGGER.warn("Job execution failed", t);
             }
         }
 
         @Override
         public boolean cancel() {
-            logger.debug("Canceling '{}'", _schedulable);
+            LOGGER.debug("Canceling '{}'", _schedulable);
 
             try {
                 return super.cancel();
