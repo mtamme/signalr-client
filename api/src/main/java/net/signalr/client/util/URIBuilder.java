@@ -78,6 +78,25 @@ public final class URIBuilder {
     }
 
     /**
+     * Encodes the specified value.
+     * 
+     * @param value The value.
+     * @return The encoded value.
+     */
+    private static String encode(final String value) {
+        if (value == null) {
+            return null;
+        }
+
+        try {
+            return URLEncoder.encode(value, DEFAULT_ENCODING);
+        } catch (final UnsupportedEncodingException e) {
+            // Unlikely since the default encoding should be always supported.
+            return null;
+        }
+    }
+
+    /**
      * The scheme.
      */
     private String _scheme;
@@ -236,25 +255,6 @@ public final class URIBuilder {
             final String rawValue = encode(value);
 
             rawQuery.append('=').append(rawValue);
-        }
-    }
-
-    /**
-     * Encodes the specified value.
-     * 
-     * @param value The value.
-     * @return The encoded value.
-     */
-    private String encode(final String value) {
-        if (value == null) {
-            return null;
-        }
-
-        try {
-            return URLEncoder.encode(value, DEFAULT_ENCODING);
-        } catch (final UnsupportedEncodingException e) {
-            // Unlikely since the default encoding should be always supported.
-            return null;
         }
     }
 
