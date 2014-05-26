@@ -122,30 +122,30 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
             throw new IllegalArgumentException("Continuation must not be null");
         }
 
-        final Deferred<R> deferred = new Deferred<R>();
+        final Deferred<R> result = new Deferred<R>();
 
         _state.get().then(new Completable<T>() {
             @Override
             public void setSuccess(final T value) {
                 try {
-                    continuation.onSuccess(value, deferred);
+                    continuation.onSuccess(value, result);
                 } catch (final Throwable t) {
-                    deferred.setFailure(t);
+                    result.setFailure(t);
                 }
             }
 
             @Override
             public void setFailure(final Throwable cause) {
                 try {
-                    continuation.onFailure(cause, deferred);
+                    continuation.onFailure(cause, result);
                 } catch (final Throwable t) {
                     t.addSuppressed(cause);
-                    deferred.setFailure(t);
+                    result.setFailure(t);
                 }
             }
         });
 
-        return deferred;
+        return result;
     }
 
     /**
