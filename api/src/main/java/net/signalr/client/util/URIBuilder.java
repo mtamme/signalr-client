@@ -60,6 +60,24 @@ public final class URIBuilder {
     }
 
     /**
+     * Converts the specified URI to an {@link URI}.
+     * 
+     * @param uri The URI.
+     * @return The URI.
+     */
+    private static URI toUri(final String uri) {
+        if (uri == null) {
+            throw new IllegalArgumentException("URI must not be null");
+        }
+
+        try {
+            return new URI(uri);
+        } catch (final URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    /**
      * The scheme.
      */
     private String _scheme;
@@ -139,24 +157,6 @@ public final class URIBuilder {
         }
 
         init(uri);
-    }
-
-    /**
-     * Converts the specified URI to an {@link URI}.
-     * 
-     * @param uri The URI.
-     * @return The URI.
-     */
-    private static URI toUri(final String uri) {
-        if (uri == null) {
-            throw new IllegalArgumentException("URI must not be null");
-        }
-
-        try {
-            return new URI(uri);
-        } catch (final URISyntaxException e) {
-            throw new IllegalArgumentException(e);
-        }
     }
 
     /**
