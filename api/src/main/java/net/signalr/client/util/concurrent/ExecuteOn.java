@@ -59,7 +59,7 @@ public final class ExecuteOn<T> implements Continuation<T, T> {
                 try {
                     result.setSuccess(value);
                 } catch (final Throwable t) {
-                    logger.warn("Failed to execute completion", t);
+                    logger.warn("Failed to execute completable", t);
                 }
             }
         });
@@ -73,7 +73,7 @@ public final class ExecuteOn<T> implements Continuation<T, T> {
                 try {
                     result.setFailure(cause);
                 } catch (final Throwable t) {
-                    logger.warn("Failed to execute completion", t);
+                    logger.warn("Failed to execute completable", t);
                 }
             }
         });
