@@ -28,7 +28,6 @@ import net.signalr.client.ConnectionAdapter;
 import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonMapper;
 import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.OnComplete;
 import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Compose;
 
@@ -191,15 +190,15 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
 
         _responses.put(callbackId, deferred);
 
-        return _connection.send(message).then(new OnComplete<Void>() {
-            @Override
-            protected void onFailure(final Throwable cause) throws Exception {
-                _responses.remove(callbackId);
-            }
-        }).then(new Compose<Void, HubResponse>() {
+        return _connection.send(message).then(new Compose<Void, HubResponse>() {
             @Override
             protected Promise<HubResponse> doCompose(final Void value) throws Exception {
                 return deferred;
+            }
+
+            @Override
+            protected void onFailure(final Throwable cause) throws Exception {
+                _responses.remove(callbackId);
             }
         });
     }
