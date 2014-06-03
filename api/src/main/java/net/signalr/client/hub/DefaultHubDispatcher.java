@@ -156,7 +156,7 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
     }
 
     @Override
-    public HubProxy getProxy(final String hubName) {
+    public HubProxy getHubProxy(final String hubName) {
         if (hubName == null) {
             throw new IllegalArgumentException("Hub name must not be null");
         }

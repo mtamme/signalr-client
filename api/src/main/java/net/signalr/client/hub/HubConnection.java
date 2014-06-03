@@ -125,7 +125,7 @@ public final class HubConnection {
      * @return The hub proxy.
      */
     public HubProxy getHubProxy(final String hubName) {
-        return _dispatcher.getProxy(hubName);
+        return _dispatcher.getHubProxy(hubName);
     }
 
     /**
