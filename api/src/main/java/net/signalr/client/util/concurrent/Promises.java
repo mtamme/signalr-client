@@ -123,6 +123,29 @@ public final class Promises {
     }
 
     /**
+     * Awaits the specified promise.
+     * 
+     * @param promise The promise.
+     * @param timeout The timeout.
+     * @param timeUnit The time unit.
+     * @return The value.
+     * @throws InterruptedException
+     * @throws ExecutionException
+     * @throws TimeoutException
+     */
+    public static <T> T await(final Promise<T> promise, final long timeout, final TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
+        if (promise == null) {
+            throw new IllegalArgumentException("Promise must not be null");
+        }
+
+        final Awaiter<T> awaiter = new Awaiter<T>();
+
+        promise.then(awaiter);
+
+        return awaiter.get(timeout, timeUnit);
+    }
+
+    /**
      * Returns a future for the specified promise.
      * 
      * @param promise The promise.

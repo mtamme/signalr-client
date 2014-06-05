@@ -116,7 +116,7 @@ public final class HubConnectionTests {
             }
         });
 
-        Promises.toFuture(start).get();
+        Promises.await(start);
 
         System.in.read();
 
@@ -127,6 +127,6 @@ public final class HubConnectionTests {
             }
         });
 
-        Promises.toFuture(stop).get();
+        Promises.await(stop);
     }
 }
