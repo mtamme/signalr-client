@@ -16,6 +16,7 @@
 
 package net.signalr.client.util.concurrent;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -79,6 +80,26 @@ public final class Promises {
         }
 
         return newSuccess();
+    }
+
+    /**
+     * Returns a new promise based on the execution of the specified callable.
+     * 
+     * @param callable The callable.
+     * @return The promise.
+     */
+    public static <V> Promise<V> newPromise(final Callable<V> callable) {
+        if (callable == null) {
+            throw new IllegalArgumentException("Callable must not be null");
+        }
+
+        try {
+            final V value = callable.call();
+
+            return newSuccess(value);
+        } catch (final Throwable t) {
+            return newFailure(t);
+        }
     }
 
     /**
