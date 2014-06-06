@@ -22,15 +22,15 @@ import org.slf4j.LoggerFactory;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.TransportManager;
-import net.signalr.client.util.concurrent.Accept;
-import net.signalr.client.util.concurrent.Catch;
-import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.ExecuteOn;
-import net.signalr.client.util.concurrent.OnComplete;
-import net.signalr.client.util.concurrent.OnFailure;
-import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Promises;
-import net.signalr.client.util.concurrent.Compose;
+import net.signalr.client.util.concurrent.promise.Accept;
+import net.signalr.client.util.concurrent.promise.Catch;
+import net.signalr.client.util.concurrent.promise.Compose;
+import net.signalr.client.util.concurrent.promise.Deferred;
+import net.signalr.client.util.concurrent.promise.ExecuteOn;
+import net.signalr.client.util.concurrent.promise.OnComplete;
+import net.signalr.client.util.concurrent.promise.OnFailure;
+import net.signalr.client.util.concurrent.promise.Promise;
+import net.signalr.client.util.concurrent.promise.Promises;
 
 /**
  * Represents the connected connection state.

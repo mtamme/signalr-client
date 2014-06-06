@@ -14,14 +14,24 @@
  * limitations under the License.
  */
 
-package net.signalr.client.util.concurrent;
+package net.signalr.client.util.concurrent.promise;
 
 /**
- * Represents a failure continuation.
+ * Represents an apply continuation.
  * 
  * @param <T> The value type.
+ * @param <R> The result type.
  */
-public abstract class OnFailure<T> implements Continuation<T, T> {
+public abstract class Apply<T, R> implements Continuation<T, R> {
+
+    /**
+     * Handles the apply continuation.
+     * 
+     * @param value The value.
+     * @return The result.
+     * @throws Exception
+     */
+    protected abstract R doApply(T value) throws Exception;
 
     /**
      * Handles the failure continuation.
@@ -29,15 +39,18 @@ public abstract class OnFailure<T> implements Continuation<T, T> {
      * @param cause The cause.
      * @throws Exception
      */
-    protected abstract void onFailure(Throwable cause) throws Exception;
-
-    @Override
-    public final void onSuccess(final T value, final Completable<? super T> result) throws Exception {
-        result.setSuccess(value);
+    protected void onFailure(final Throwable cause) throws Exception {
     }
 
     @Override
-    public final void onFailure(final Throwable cause, final Completable<? super T> result) throws Exception {
+    public final void onSuccess(final T value, final Completable<? super R> result) throws Exception {
+        final R newValue = doApply(value);
+
+        result.setSuccess(newValue);
+    }
+
+    @Override
+    public final void onFailure(final Throwable cause, final Completable<? super R> result) throws Exception {
         onFailure(cause);
         result.setFailure(cause);
     }

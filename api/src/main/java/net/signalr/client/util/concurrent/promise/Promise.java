@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.signalr.client.util.concurrent;
+package net.signalr.client.util.concurrent.promise;
 
 /**
  * Defines a promised value.

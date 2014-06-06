@@ -18,9 +18,8 @@ package net.signalr.client;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
-
-import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Promises;
+import net.signalr.client.util.concurrent.promise.Promise;
+import net.signalr.client.util.concurrent.promise.Promises;
 
 import org.easymock.EasyMockRunner;
 import org.easymock.Mock;

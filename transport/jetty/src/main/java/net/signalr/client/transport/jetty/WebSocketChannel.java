@@ -21,9 +21,9 @@ import org.eclipse.jetty.websocket.api.WriteCallback;
 
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
-import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Promises;
+import net.signalr.client.util.concurrent.promise.Deferred;
+import net.signalr.client.util.concurrent.promise.Promise;
+import net.signalr.client.util.concurrent.promise.Promises;
 
 /**
  * Represents a web socket channel.

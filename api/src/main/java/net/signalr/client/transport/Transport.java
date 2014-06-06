@@ -17,7 +17,7 @@
 package net.signalr.client.transport;
 
 import net.signalr.client.util.Lifecycle;
-import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.promise.Promise;
 
 /**
  * Defines a transport.

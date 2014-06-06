@@ -27,9 +27,9 @@ import net.signalr.client.Connection;
 import net.signalr.client.ConnectionAdapter;
 import net.signalr.client.json.JsonElement;
 import net.signalr.client.json.JsonMapper;
-import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Compose;
+import net.signalr.client.util.concurrent.promise.Compose;
+import net.signalr.client.util.concurrent.promise.Deferred;
+import net.signalr.client.util.concurrent.promise.Promise;
 
 /**
  * Represents the default hub dispatcher.

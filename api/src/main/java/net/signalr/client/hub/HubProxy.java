@@ -17,7 +17,7 @@
 package net.signalr.client.hub;
 
 import net.signalr.client.json.JsonElement;
-import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.promise.Promise;
 
 /**
  * Defines a hub proxy.

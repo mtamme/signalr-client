@@ -28,8 +28,8 @@ import net.signalr.client.transport.TransportManager;
 import net.signalr.client.util.SystemTimeProvider;
 import net.signalr.client.util.TimeProvider;
 import net.signalr.client.util.concurrent.ScheduledExecutorServiceScheduler;
-import net.signalr.client.util.concurrent.Promise;
 import net.signalr.client.util.concurrent.Scheduler;
+import net.signalr.client.util.concurrent.promise.Promise;
 
 /**
  * Represents a persistent connection.

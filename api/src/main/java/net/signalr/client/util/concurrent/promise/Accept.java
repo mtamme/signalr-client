@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-package net.signalr.client.util.concurrent;
+package net.signalr.client.util.concurrent.promise;
 
 /**
- * Represents a compose continuation.
- * 
- * @param <T> The value type.
- * @param <R> The result type.
+ * Represents a accept continuation.
  */
-public abstract class Compose<T, R> implements Continuation<T, R> {
+public abstract class Accept<T> implements Continuation<T, Void> {
 
     /**
-     * Handles the compose continuation.
+     * Handles the accept continuation.
      * 
      * @param value The value.
      * @return The result.
      * @throws Exception
      */
-    protected abstract Promise<R> doCompose(T value) throws Exception;
+    protected abstract void doAccept(T value) throws Exception;
 
     /**
      * Handles the failure continuation.
@@ -43,14 +40,13 @@ public abstract class Compose<T, R> implements Continuation<T, R> {
     }
 
     @Override
-    public final void onSuccess(final T value, final Completable<? super R> result) throws Exception {
-        final Promise<R> promise = doCompose(value);
-
-        promise.then(result);
+    public void onSuccess(final T value, final Completable<? super Void> result) throws Exception {
+        doAccept(value);
+        result.setSuccess(null);
     }
 
     @Override
-    public final void onFailure(final Throwable cause, final Completable<? super R> result) throws Exception {
+    public void onFailure(final Throwable cause, final Completable<? super Void> result) throws Exception {
         onFailure(cause);
         result.setFailure(cause);
     }

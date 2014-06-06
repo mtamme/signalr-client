@@ -22,9 +22,9 @@ import java.util.concurrent.ExecutionException;
 import net.signalr.client.ConnectionListener;
 import net.signalr.client.json.gson.GsonFactory;
 import net.signalr.client.transport.jetty.WebSocketTransport;
-import net.signalr.client.util.concurrent.Compose;
-import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Promises;
+import net.signalr.client.util.concurrent.promise.Compose;
+import net.signalr.client.util.concurrent.promise.Promise;
+import net.signalr.client.util.concurrent.promise.Promises;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

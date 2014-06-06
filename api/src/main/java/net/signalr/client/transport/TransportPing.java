@@ -18,8 +18,8 @@ package net.signalr.client.transport;
 
 import java.io.IOException;
 
-import net.signalr.client.util.concurrent.Completable;
 import net.signalr.client.util.concurrent.Schedulable;
+import net.signalr.client.util.concurrent.promise.Completable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

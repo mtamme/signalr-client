@@ -23,8 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.signalr.client.json.JsonElement;
-import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Apply;
+import net.signalr.client.util.concurrent.promise.Apply;
+import net.signalr.client.util.concurrent.promise.Promise;
 
 /**
  * Represents the default hub proxy.

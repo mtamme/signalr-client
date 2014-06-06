@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package net.signalr.client.hub;
-
-import net.signalr.client.ConnectionListener;
-import net.signalr.client.util.concurrent.promise.Promise;
+package net.signalr.client.util.concurrent.promise;
 
 /**
- * Defines a hub dispatcher.
+ * Defines a completable.
+ * 
+ * @param <T> The value type.
  */
-interface HubDispatcher extends ConnectionListener {
+public interface Completable<T> {
 
     /**
-     * Returns a hub proxy for the specified hub name.
+     * Completes the completable with the specified value.
      * 
-     * @param hubName The hub name.
-     * @return The hub proxy.
+     * @param value The value.
+     * @throws IllegalStateException
      */
-    HubProxy getHubProxy(String hubName);
+    void setSuccess(T value);
 
     /**
-     * Invokes a server side hub method asynchronously.
+     * Completes the completable with the specified cause.
      * 
-     * @param request The hub request.
-     * @return The hub response.
+     * @param cause The cause.
+     * @throws IllegalStateException
      */
-    Promise<HubResponse> invoke(HubRequest request);
+    void setFailure(Throwable cause);
 }

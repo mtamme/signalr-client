@@ -18,8 +18,8 @@ package net.signalr.client.transport.jetty;
 
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
-import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.promise.Deferred;
+import net.signalr.client.util.concurrent.promise.Promise;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketListener;

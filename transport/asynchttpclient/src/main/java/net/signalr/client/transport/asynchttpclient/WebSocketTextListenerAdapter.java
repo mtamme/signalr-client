@@ -18,8 +18,8 @@ package net.signalr.client.transport.asynchttpclient;
 
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
-import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.promise.Deferred;
+import net.signalr.client.util.concurrent.promise.Promise;
 
 import com.ning.http.client.websocket.WebSocket;
 import com.ning.http.client.websocket.WebSocketTextListener;

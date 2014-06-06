@@ -29,8 +29,8 @@ import net.signalr.client.transport.ChannelHandler;
 import net.signalr.client.transport.TransportContext;
 import net.signalr.client.transport.TransportOptions;
 import net.signalr.client.util.URIBuilder;
-import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Promises;
+import net.signalr.client.util.concurrent.promise.Promise;
+import net.signalr.client.util.concurrent.promise.Promises;
 
 /**
  * Represents the WebSocket transport.

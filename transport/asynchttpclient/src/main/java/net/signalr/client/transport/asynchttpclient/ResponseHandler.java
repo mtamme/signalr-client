@@ -18,8 +18,8 @@ package net.signalr.client.transport.asynchttpclient;
 
 import java.io.IOException;
 
-import net.signalr.client.util.concurrent.Deferred;
-import net.signalr.client.util.concurrent.Promise;
+import net.signalr.client.util.concurrent.promise.Deferred;
+import net.signalr.client.util.concurrent.promise.Promise;
 
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.Response;

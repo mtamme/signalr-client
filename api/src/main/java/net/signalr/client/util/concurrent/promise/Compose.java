@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package net.signalr.client.util.concurrent;
+package net.signalr.client.util.concurrent.promise;
 
 /**
- * Represents a complete continuation.
+ * Represents a compose continuation.
  * 
  * @param <T> The value type.
+ * @param <R> The result type.
  */
-public abstract class OnComplete<T> implements Continuation<T, T> {
+public abstract class Compose<T, R> implements Continuation<T, R> {
 
     /**
-     * Handles the success continuation.
+     * Handles the compose continuation.
      * 
      * @param value The value.
+     * @return The result.
      * @throws Exception
      */
-    protected void onSuccess(final T value) throws Exception {
-        onComplete(value, null);
-    }
+    protected abstract Promise<R> doCompose(T value) throws Exception;
 
     /**
      * Handles the failure continuation.
@@ -40,26 +40,17 @@ public abstract class OnComplete<T> implements Continuation<T, T> {
      * @throws Exception
      */
     protected void onFailure(final Throwable cause) throws Exception {
-        onComplete(null, cause);
-    }
-
-    /**
-     * Handles the complete continuation.
-     * 
-     * @param cause The cause.
-     * @throws Exception
-     */
-    protected void onComplete(final T value, final Throwable cause) throws Exception {
     }
 
     @Override
-    public final void onSuccess(final T value, final Completable<? super T> result) throws Exception {
-        onSuccess(value);
-        result.setSuccess(value);
+    public final void onSuccess(final T value, final Completable<? super R> result) throws Exception {
+        final Promise<R> promise = doCompose(value);
+
+        promise.then(result);
     }
 
     @Override
-    public final void onFailure(final Throwable cause, final Completable<? super T> result) throws Exception {
+    public final void onFailure(final Throwable cause, final Completable<? super R> result) throws Exception {
         onFailure(cause);
         result.setFailure(cause);
     }

@@ -33,9 +33,9 @@ import net.signalr.client.transport.TransportContext;
 import net.signalr.client.transport.TransportOptions;
 import net.signalr.client.util.AbstractLifecycle;
 import net.signalr.client.util.URIBuilder;
-import net.signalr.client.util.concurrent.Promise;
-import net.signalr.client.util.concurrent.Promises;
-import net.signalr.client.util.concurrent.Apply;
+import net.signalr.client.util.concurrent.promise.Apply;
+import net.signalr.client.util.concurrent.promise.Promise;
+import net.signalr.client.util.concurrent.promise.Promises;
 
 /**
  * Represents an abstract transport.
