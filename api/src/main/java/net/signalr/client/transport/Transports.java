@@ -115,6 +115,10 @@ public final class Transports {
      * @return The negotiate URI.
      */
     public static URI buildNegotiateUri(final TransportContext context) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null");
+        }
+
         final URIBuilder uriBuilder = URIBuilder.resolve(context.getUrl(), NEGOTIATE_URI);
         final Map<String, Collection<String>> parameters = context.getParameters();
 
@@ -132,6 +136,10 @@ public final class Transports {
      * @return The ping URI.
      */
     public static URI buildPingUri(final TransportContext context) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null");
+        }
+
         final URIBuilder uriBuilder = URIBuilder.resolve(context.getUrl(), PING_URI);
         final Map<String, Collection<String>> parameters = context.getParameters();
 
@@ -150,6 +158,13 @@ public final class Transports {
      * @return The connect URI.
      */
     public static URI buildConnectUri(final TransportContext context, final Transport transport, final boolean reconnect) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null");
+        }
+        if (transport == null) {
+            throw new IllegalArgumentException("Transport must not be null");
+        }
+
         final URIBuilder uriBuilder = URIBuilder.resolve(context.getUrl(), reconnect ? RECONNECT_URI : CONNECT_URI);
         final String transportName = transport.getName();
 
@@ -176,6 +191,13 @@ public final class Transports {
      * @return The abort URI.
      */
     public static URI buildAbortUri(final TransportContext context, final Transport transport) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null");
+        }
+        if (transport == null) {
+            throw new IllegalArgumentException("Transport must not be null");
+        }
+
         final URIBuilder uriBuilder = URIBuilder.resolve(context.getUrl(), ABORT_URI);
         final Map<String, Collection<String>> parameters = context.getParameters();
 
