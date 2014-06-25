@@ -95,10 +95,8 @@ public final class WebSocketTransport extends AbstractTransport {
             throw new IllegalStateException("WebSockets are not supported by the server");
         }
 
-        // Build request URI.
-        final URI uri = Transports.buildConnectUri(context, this, reconnect);
-
         // Setup request.
+        final URI uri = Transports.buildConnectUri(context, this, reconnect);
         final ClientUpgradeRequest request = new ClientUpgradeRequest();
         final Map<String, Collection<String>> headers = context.getHeaders();
 
