@@ -28,7 +28,7 @@ import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.ChannelHandler;
 import net.signalr.client.transport.TransportContext;
 import net.signalr.client.transport.TransportOptions;
-import net.signalr.client.util.URIBuilder;
+import net.signalr.client.transport.Transports;
 import net.signalr.client.util.concurrent.promise.Promise;
 import net.signalr.client.util.concurrent.promise.Promises;
 
@@ -36,26 +36,6 @@ import net.signalr.client.util.concurrent.promise.Promises;
  * Represents the WebSocket transport.
  */
 public final class WebSocketTransport extends AbstractTransport {
-
-    /**
-     * The HTTPS URI scheme.
-     */
-    private static final String HTTPS_SCHEME = "https";
-
-    /**
-     * The WS URI scheme.
-     */
-    private static final String WS_SCHEME = "ws";
-
-    /**
-     * The WSS URI scheme.
-     */
-    private static final String WSS_SCHEME = "wss";
-
-    /**
-     * The transport name.
-     */
-    private static final String NAME = "webSockets";
 
     /**
      * Initializes a new instance of the {@link WebSocketTransport} class.
@@ -75,7 +55,7 @@ public final class WebSocketTransport extends AbstractTransport {
 
     @Override
     public String getName() {
-        return NAME;
+        return Transports.WEB_SOCKETS;
     }
 
     @Override
@@ -93,20 +73,8 @@ public final class WebSocketTransport extends AbstractTransport {
             throw new IllegalStateException("WebSockets are not supported by the server");
         }
 
-        // Build request URI.
-        final URIBuilder uriBuilder = URIBuilder.resolve(context.getUrl(), reconnect ? RECONNECT_URI : CONNECT_URI);
-        final String scheme = uriBuilder.getScheme().equals(HTTPS_SCHEME) ? WSS_SCHEME : WS_SCHEME;
-
-        uriBuilder.setScheme(scheme);
-        final Map<String, Collection<String>> parameters = context.getParameters();
-
-        uriBuilder.addParameters(parameters);
-        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
-        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, options.getConnectionToken());
-        uriBuilder.addParameter(TRANSPORT_PARAMETER, getName());
-        final URI uri = uriBuilder.build();
-
         // Setup request.
+        final URI uri = Transports.buildConnectUri(context, this, reconnect);
         final BoundRequestBuilder boundRequestBuilder = prepareGet(uri);
         final Map<String, Collection<String>> headers = context.getHeaders();
 

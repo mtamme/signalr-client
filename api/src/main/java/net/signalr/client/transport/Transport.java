@@ -25,51 +25,6 @@ import net.signalr.client.util.concurrent.promise.Promise;
 public interface Transport extends Lifecycle<TransportContext> {
 
     /**
-     * The negotiate URI.
-     */
-    public static final String NEGOTIATE_URI = "negotiate";
-
-    /**
-     * The ping URI.
-     */
-    public static final String PING_URI = "ping";
-
-    /**
-     * The abort URI.
-     */
-    public static final String ABORT_URI = "abort";
-
-    /**
-     * The connect URI.
-     */
-    public static final String CONNECT_URI = "connect";
-
-    /**
-     * The reconnect URI.
-     */
-    public static final String RECONNECT_URI = "reconnect";
-
-    /**
-     * The connection data parameter name.
-     */
-    public static final String CONNECTION_DATA_PARAMETER = "connectionData";
-
-    /**
-     * The connection token parameter name.
-     */
-    public static final String CONNECTION_TOKEN_PARAMETER = "connectionToken";
-
-    /**
-     * The protocol version parameter name.
-     */
-    public static final String PROTOCOL_VERSION_PARAMETER = "clientProtocol";
-
-    /**
-     * The transport parameter name.
-     */
-    public static final String TRANSPORT_PARAMETER = "transport";
-
-    /**
      * Returns the transport name.
      * 
      * @return the transport name.

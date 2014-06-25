@@ -25,9 +25,8 @@ import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.PingResponse;
 import net.signalr.client.transport.Transport;
 import net.signalr.client.transport.TransportContext;
-import net.signalr.client.transport.TransportOptions;
+import net.signalr.client.transport.Transports;
 import net.signalr.client.util.AbstractLifecycle;
-import net.signalr.client.util.URIBuilder;
 import net.signalr.client.util.concurrent.promise.Apply;
 import net.signalr.client.util.concurrent.promise.Promise;
 import net.signalr.client.util.concurrent.promise.Promises;
@@ -88,16 +87,8 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
             throw new IllegalArgumentException("Context must not be null");
         }
 
-        // Build request URI.
-        final URIBuilder uriBuilder = URIBuilder.resolve(context.getUrl(), NEGOTIATE_URI);
-        final Map<String, Collection<String>> parameters = context.getParameters();
-
-        uriBuilder.addParameters(parameters);
-        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
-        uriBuilder.addParameter(PROTOCOL_VERSION_PARAMETER, context.getProtocolVersion());
-        final URI uri = uriBuilder.build();
-
         // Setup request.
+        final URI uri = Transports.buildNegotiateUri(context);
         final Request request = newRequest(uri).method(HttpMethod.GET);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
@@ -134,15 +125,8 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
             throw new IllegalArgumentException("Context must not be null");
         }
 
-        // Build request URI.
-        final URIBuilder uriBuilder = URIBuilder.resolve(context.getUrl(), PING_URI);
-        final Map<String, Collection<String>> parameters = context.getParameters();
-
-        uriBuilder.addParameters(parameters);
-        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
-        final URI uri = uriBuilder.build();
-
         // Setup request.
+        final URI uri = Transports.buildPingUri(context);
         final Request request = newRequest(uri).method(HttpMethod.GET);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
@@ -179,19 +163,8 @@ public abstract class AbstractTransport extends AbstractLifecycle<TransportConte
             throw new IllegalArgumentException("Context must not be null");
         }
 
-        // Build request URI.
-        final URIBuilder uriBuilder = URIBuilder.resolve(context.getUrl(), ABORT_URI);
-        final Map<String, Collection<String>> parameters = context.getParameters();
-
-        uriBuilder.addParameters(parameters);
-        uriBuilder.addParameter(CONNECTION_DATA_PARAMETER, context.getConnectionData());
-        final TransportOptions options = context.getTransportOptions();
-
-        uriBuilder.addParameter(CONNECTION_TOKEN_PARAMETER, options.getConnectionToken());
-        uriBuilder.addParameter(TRANSPORT_PARAMETER, getName());
-        final URI uri = uriBuilder.build();
-
         // Setup request.
+        final URI uri = Transports.buildAbortUri(context, this);
         final Request request = newRequest(uri).method(HttpMethod.POST);
         final Map<String, Collection<String>> headers = context.getHeaders();
 
