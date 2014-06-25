@@ -23,11 +23,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Represents a completable which can be awaited.
+ * Represents a completable future.
  * 
  * @param <T> The value type.
  */
-final class Awaiter<T> implements Completable<T>, Future<T> {
+final class CompletableFuture<T> implements Completable<T>, Future<T> {
 
     /**
      * Defines a value.
@@ -55,9 +55,9 @@ final class Awaiter<T> implements Completable<T>, Future<T> {
     private Value<T> _value;
 
     /**
-     * Initializes a new instance of the {@link Awaiter} class.
+     * Initializes a new instance of the {@link CompletableFuture} class.
      */
-    public Awaiter() {
+    public CompletableFuture() {
         _latch = new CountDownLatch(1);
 
         _value = null;

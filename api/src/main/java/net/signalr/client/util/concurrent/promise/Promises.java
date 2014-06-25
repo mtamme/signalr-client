@@ -115,11 +115,11 @@ public final class Promises {
             throw new IllegalArgumentException("Promise must not be null");
         }
 
-        final Awaiter<T> awaiter = new Awaiter<T>();
+        final CompletableFuture<T> future = new CompletableFuture<T>();
 
-        promise.then(awaiter);
+        promise.then(future);
 
-        return awaiter.get();
+        return future.get();
     }
 
     /**
@@ -138,11 +138,11 @@ public final class Promises {
             throw new IllegalArgumentException("Promise must not be null");
         }
 
-        final Awaiter<T> awaiter = new Awaiter<T>();
+        final CompletableFuture<T> future = new CompletableFuture<T>();
 
-        promise.then(awaiter);
+        promise.then(future);
 
-        return awaiter.get(timeout, timeUnit);
+        return future.get(timeout, timeUnit);
     }
 
     /**
@@ -156,10 +156,10 @@ public final class Promises {
             throw new IllegalArgumentException("Promise must not be null");
         }
 
-        final Awaiter<T> awaiter = new Awaiter<T>();
+        final CompletableFuture<T> future = new CompletableFuture<T>();
 
-        promise.then(awaiter);
+        promise.then(future);
 
-        return awaiter;
+        return future;
     }
 }
