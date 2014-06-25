@@ -160,31 +160,6 @@ public final class Promises {
 
         promise.then(awaiter);
 
-        return new Future<T>() {
-            @Override
-            public boolean cancel(final boolean mayInterruptIfRunning) {
-                return false;
-            }
-
-            @Override
-            public boolean isCancelled() {
-                return false;
-            }
-
-            @Override
-            public boolean isDone() {
-                return awaiter.isComplete();
-            }
-
-            @Override
-            public T get() throws InterruptedException, ExecutionException {
-                return awaiter.get();
-            }
-
-            @Override
-            public T get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-                return awaiter.get(timeout, unit);
-            }
-        };
+        return awaiter;
     }
 }
