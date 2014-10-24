@@ -44,16 +44,16 @@ public final class JacksonReaderTest {
         _factory = new JacksonFactory();
     }
 
-    private JsonReader createReader(final String text) {
+    private JsonReader newReader(final String text) {
         final StringReader input = new StringReader(text);
 
-        return _factory.createReader(input);
+        return _factory.newReader(input);
     }
 
     @Test
     public void readEmptyObjectTest() {
         // Arrange
-        final JsonReader reader = createReader("{}");
+        final JsonReader reader = newReader("{}");
 
         // Act
         // Assert
@@ -64,7 +64,7 @@ public final class JacksonReaderTest {
     @Test
     public void readObjectWithNullValueTest() {
         // Arrange
-        final JsonReader reader = createReader("{\"A\":null}");
+        final JsonReader reader = newReader("{\"A\":null}");
 
         // Act
         // Assert
@@ -82,7 +82,7 @@ public final class JacksonReaderTest {
     @Test
     public void readObjectWithBooleanValueTest() {
         // Arrange
-        final JsonReader reader = createReader("{\"A\":true}");
+        final JsonReader reader = newReader("{\"A\":true}");
         Boolean value = null;
 
         // Act
@@ -104,7 +104,7 @@ public final class JacksonReaderTest {
     @Test
     public void readObjectWithIntValueTest() {
         // Arrange
-        final JsonReader reader = createReader("{\"A\":1}");
+        final JsonReader reader = newReader("{\"A\":1}");
         Integer value = null;
 
         // Act
@@ -126,7 +126,7 @@ public final class JacksonReaderTest {
     @Test
     public void readObjectWithLongValueTest() {
         // Arrange
-        final JsonReader reader = createReader("{\"A\":1}");
+        final JsonReader reader = newReader("{\"A\":1}");
         Long value = null;
 
         // Act
@@ -148,7 +148,7 @@ public final class JacksonReaderTest {
     @Test
     public void readObjectWithDoubleValueTest() {
         // Arrange
-        final JsonReader reader = createReader("{\"A\":1.0}");
+        final JsonReader reader = newReader("{\"A\":1.0}");
         Double value = null;
 
         // Act
@@ -170,7 +170,7 @@ public final class JacksonReaderTest {
     @Test
     public void readObjectWithStringValueTest() {
         // Arrange
-        final JsonReader reader = createReader("{\"A\":\"1\"}");
+        final JsonReader reader = newReader("{\"A\":\"1\"}");
         String value = null;
 
         // Act
@@ -192,7 +192,7 @@ public final class JacksonReaderTest {
     @Test
     public void readObjectWithIntegerElementTest() {
         // Arrange
-        final JsonReader reader = createReader("{\"A\":1}");
+        final JsonReader reader = newReader("{\"A\":1}");
         JsonElement element = null;
 
         // Act
@@ -215,7 +215,7 @@ public final class JacksonReaderTest {
     @Test
     public void readObjectWithObjectElementsTest() {
         // Arrange
-        final JsonReader reader = createReader("{\"A\":{\"A\":1},\"B\":{\"B\":2}}");
+        final JsonReader reader = newReader("{\"A\":{\"A\":1},\"B\":{\"B\":2}}");
         final Map<String, JsonElement> elements = new HashMap<String, JsonElement>();
 
         // Act
@@ -241,7 +241,7 @@ public final class JacksonReaderTest {
     @Test
     public void readObjectWithArrayElementTest() {
         // Arrange
-        final JsonReader reader = createReader("{\"A\":[1,2]}");
+        final JsonReader reader = newReader("{\"A\":[1,2]}");
         JsonElement element = null;
 
         // Act
@@ -265,7 +265,7 @@ public final class JacksonReaderTest {
     @Test
     public void readObjectWithIntegerObjectTest() {
         // Arrange
-        final JsonReader reader = createReader("{\"A\":1}");
+        final JsonReader reader = newReader("{\"A\":1}");
         Integer object = null;
 
         // Act
@@ -288,7 +288,7 @@ public final class JacksonReaderTest {
     @SuppressWarnings("unchecked")
     public void readObjectWithMapObjectTest() {
         // Arrange
-        final JsonReader reader = createReader("{\"A\":{\"A\":\"1\",\"B\":true}}");
+        final JsonReader reader = newReader("{\"A\":{\"A\":\"1\",\"B\":true}}");
         Map<String, Object> object = null;
 
         // Act
@@ -312,7 +312,7 @@ public final class JacksonReaderTest {
     @Test
     public void readEmptyArrayTest() {
         // Arrange
-        final JsonReader reader = createReader("[]");
+        final JsonReader reader = newReader("[]");
 
         // Act
         // Assert
@@ -323,7 +323,7 @@ public final class JacksonReaderTest {
     @Test
     public void readArrayWithNullValueTest() {
         // Arrange
-        final JsonReader reader = createReader("[null]");
+        final JsonReader reader = newReader("[null]");
 
         // Act
         // Assert
@@ -335,7 +335,7 @@ public final class JacksonReaderTest {
     @Test
     public void readArrayWithBooleanValueTest() {
         // Arrange
-        final JsonReader reader = createReader("[true]");
+        final JsonReader reader = newReader("[true]");
         final boolean value;
 
         // Act
@@ -350,7 +350,7 @@ public final class JacksonReaderTest {
     @Test
     public void readArrayWithIntValueTest() {
         // Arrange
-        final JsonReader reader = createReader("[1]");
+        final JsonReader reader = newReader("[1]");
         final int value;
 
         // Act
@@ -365,7 +365,7 @@ public final class JacksonReaderTest {
     @Test
     public void readArrayWithLongValueTest() {
         // Arrange
-        final JsonReader reader = createReader("[1]");
+        final JsonReader reader = newReader("[1]");
         final long value;
 
         // Act
@@ -380,7 +380,7 @@ public final class JacksonReaderTest {
     @Test
     public void readArrayWithDoubleValueTest() {
         // Arrange
-        final JsonReader reader = createReader("[1.0]");
+        final JsonReader reader = newReader("[1.0]");
         final double value;
 
         // Act
@@ -395,7 +395,7 @@ public final class JacksonReaderTest {
     @Test
     public void readArrayWithStringValueTest() {
         // Arrange
-        final JsonReader reader = createReader("[\"1\"]");
+        final JsonReader reader = newReader("[\"1\"]");
         final String value;
 
         // Act
@@ -410,7 +410,7 @@ public final class JacksonReaderTest {
     @Test
     public void readArrayWithIntegerElementTest() {
         // Arrange
-        final JsonReader reader = createReader("[1]");
+        final JsonReader reader = newReader("[1]");
         final JsonElement element;
 
         // Act
@@ -426,7 +426,7 @@ public final class JacksonReaderTest {
     @Test
     public void readArrayWithObjectElementsTest() {
         // Arrange
-        final JsonReader reader = createReader("[{\"A\":1},{\"B\":2}]");
+        final JsonReader reader = newReader("[{\"A\":1},{\"B\":2}]");
         final List<JsonElement> elements = new ArrayList<JsonElement>();
 
         // Act
@@ -451,7 +451,7 @@ public final class JacksonReaderTest {
     @Test
     public void readArrayWithArrayElementTest() {
         // Arrange
-        final JsonReader reader = createReader("[[1,2]]");
+        final JsonReader reader = newReader("[[1,2]]");
         final JsonElement element;
 
         // Act
@@ -468,7 +468,7 @@ public final class JacksonReaderTest {
     @Test
     public void readArrayWithIntegerObjectTest() {
         // Arrange
-        final JsonReader reader = createReader("[1]");
+        final JsonReader reader = newReader("[1]");
         final Integer object;
 
         // Act
@@ -484,7 +484,7 @@ public final class JacksonReaderTest {
     @SuppressWarnings("unchecked")
     public void readArrayWithMapObjectTest() {
         // Arrange
-        final JsonReader reader = createReader("[{\"A\":\"1\",\"B\":true}]");
+        final JsonReader reader = newReader("[{\"A\":\"1\",\"B\":true}]");
         final Map<String, Object> object;
 
         // Act

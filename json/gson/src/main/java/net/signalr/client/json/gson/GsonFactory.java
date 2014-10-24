@@ -57,7 +57,7 @@ public final class GsonFactory implements JsonFactory {
     }
 
     @Override
-    public JsonReader createReader(final Reader input) {
+    public JsonReader newReader(final Reader input) {
         if (input == null) {
             throw new IllegalArgumentException("Input must not be null");
         }
@@ -74,7 +74,7 @@ public final class GsonFactory implements JsonFactory {
     }
 
     @Override
-    public JsonWriter createWriter(final Writer output) {
+    public JsonWriter newWriter(final Writer output) {
         if (output == null) {
             throw new IllegalArgumentException("Output must not be null");
         }

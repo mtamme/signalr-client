@@ -41,15 +41,15 @@ public final class GsonWriterTest {
         _factory = new GsonFactory();
     }
 
-    private JsonWriter createWriter(final StringWriter json) {
-        return _factory.createWriter(json);
+    private JsonWriter newWriter(final StringWriter json) {
+        return _factory.newWriter(json);
     }
 
     @Test
     public void writeEmptyObjectTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -64,7 +64,7 @@ public final class GsonWriterTest {
     public void writeObjectWithNullValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -81,7 +81,7 @@ public final class GsonWriterTest {
     public void writeObjectWithBooleanValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -98,7 +98,7 @@ public final class GsonWriterTest {
     public void writeObjectWithIntValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -115,7 +115,7 @@ public final class GsonWriterTest {
     public void writeObjectWithLongValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -132,7 +132,7 @@ public final class GsonWriterTest {
     public void writeObjectWithDoubleValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -149,7 +149,7 @@ public final class GsonWriterTest {
     public void writeObjectWithStringValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -166,7 +166,7 @@ public final class GsonWriterTest {
     public void writeObjectWithIntegerObjectTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginObject();
@@ -183,7 +183,7 @@ public final class GsonWriterTest {
     public void writeObjectWithMapObjectTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
         final Map<String, Object> value = new HashMap<String, Object>();
 
         value.put("A", "1");
@@ -204,7 +204,7 @@ public final class GsonWriterTest {
     public void writeEmptyArrayTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -219,7 +219,7 @@ public final class GsonWriterTest {
     public void writeArrayWithNullValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -235,7 +235,7 @@ public final class GsonWriterTest {
     public void writeArrayWithBooleanValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -251,7 +251,7 @@ public final class GsonWriterTest {
     public void writeArrayWithIntValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -267,7 +267,7 @@ public final class GsonWriterTest {
     public void writeArrayWithLongValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -283,7 +283,7 @@ public final class GsonWriterTest {
     public void writeArrayWithDoubleValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -299,7 +299,7 @@ public final class GsonWriterTest {
     public void writeArrayWithStringValueTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -315,7 +315,7 @@ public final class GsonWriterTest {
     public void writeArrayWithIntegerObjectTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
 
         // Act
         writer.writeBeginArray();
@@ -331,7 +331,7 @@ public final class GsonWriterTest {
     public void writeArrayWithMapObjectTest() {
         // Arrange
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = createWriter(output);
+        final JsonWriter writer = newWriter(output);
         final Map<String, Object> value = new HashMap<String, Object>();
 
         value.put("A", "1");

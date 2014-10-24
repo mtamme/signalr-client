@@ -30,7 +30,7 @@ public interface JsonFactory {
      * @param input The reader.
      * @return The new reader.
      */
-    JsonReader createReader(Reader input);
+    JsonReader newReader(Reader input);
 
     /**
      * Creates a new writer.
@@ -38,5 +38,5 @@ public interface JsonFactory {
      * @param output The writer.
      * @return The new writer.
      */
-    JsonWriter createWriter(Writer output);
+    JsonWriter newWriter(Writer output);
 }

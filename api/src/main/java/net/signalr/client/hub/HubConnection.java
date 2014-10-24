@@ -119,13 +119,13 @@ public final class HubConnection {
     }
 
     /**
-     * Returns a hub proxy for the specified hub name.
+     * Creates a new hub proxy for the specified hub name.
      * 
      * @param hubName The hub name.
-     * @return The hub proxy.
+     * @return The new hub proxy.
      */
-    public HubProxy getHubProxy(final String hubName) {
-        return _dispatcher.getHubProxy(hubName);
+    public HubProxy newHubProxy(final String hubName) {
+        return _dispatcher.newHubProxy(hubName);
     }
 
     /**

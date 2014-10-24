@@ -108,7 +108,7 @@ public final class HubConnectionTests {
                 logger.info("onDisconnected");
             }
         });
-        final HubProxy proxy = connection.getHubProxy(HUB_NAME);
+        final HubProxy proxy = connection.newHubProxy(HUB_NAME);
         final Promise<Void> start = connection.start().then(new Compose<Void, Void>() {
             @Override
             protected Promise<Void> doCompose(final Void value) throws Exception {

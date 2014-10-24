@@ -35,7 +35,7 @@ final HubConnection connection = new HubConnection(
         "http://localhost/signalr",
         new WebSocketTransport(),
         new GsonFactory());
-final HubProxy proxy = connection.getHubProxy("hub");
+final HubProxy proxy = connection.newHubProxy("hub");
 
 proxy.register("update", Update.class, new HubCallback<Update>() {
     @Override
