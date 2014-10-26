@@ -47,6 +47,8 @@ public final class PingResponse implements JsonReadable {
 
             if (name.equalsIgnoreCase("Response")) {
                 _value = reader.readString();
+            } else {
+                reader.skipValue();
             }
         }
 

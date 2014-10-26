@@ -113,6 +113,11 @@ public interface JsonReader extends Closeable {
     int readInt();
 
     /**
+     * Skips a value.
+     */
+    void skipValue();
+
+    /**
      * Closes the reader.
      */
     void close();

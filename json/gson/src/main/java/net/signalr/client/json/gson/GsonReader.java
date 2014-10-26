@@ -194,6 +194,15 @@ final class GsonReader implements JsonReader {
     }
 
     @Override
+    public void skipValue() {
+        try {
+            _reader.skipValue();
+        } catch (final Exception e) {
+            throw new JsonException(e);
+        }
+    }
+
+    @Override
     public void close() {
         try {
             _reader.close();

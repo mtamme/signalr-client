@@ -295,6 +295,16 @@ final class JacksonReader implements JsonReader {
     }
 
     @Override
+    public void skipValue() {
+        try {
+            _parser.nextToken();
+            _parser.clearCurrentToken();
+        } catch (final Exception e) {
+            throw new JsonException(e);
+        }
+    }
+
+    @Override
     public void close() {
         try {
             _parser.close();

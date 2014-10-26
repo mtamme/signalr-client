@@ -136,6 +136,8 @@ public final class NegotiationResponse implements JsonReadable, TransportOptions
                 _disconnectTimeout = (long) (reader.readDouble() * 1000L);
             } else if (name.equalsIgnoreCase("TransportConnectTimeout")) {
                 _connectTimeout = (long) (reader.readDouble() * 1000L);
+            } else {
+                reader.skipValue();
             }
         }
 

@@ -88,6 +88,8 @@ final class PersistentResponse implements JsonReadable {
                 _longPollDelay = reader.readLong();
             } else if (name.equalsIgnoreCase("M")) {
                 _messages = reader.readElement();
+            } else {
+                reader.skipValue();
             }
         }
 
