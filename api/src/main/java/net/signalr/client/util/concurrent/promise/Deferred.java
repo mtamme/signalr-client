@@ -76,10 +76,22 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
         _state = new AtomicReference<State<T>>(initialState);
     }
 
+    /**
+     * Tries to complete the deferred with the specified value.
+     * 
+     * @param value The value.
+     * @return A value indicating whether the deferred has been completed.
+     */
     public final boolean trySuccess(final T value) {
         return _state.get().trySuccess(value);
     }
 
+    /**
+     * Tries to complete the deferred with the specified cause.
+     * 
+     * @param cause The cause.
+     * @return A value indicating whether the deferred has been completed.
+     */
     public final boolean tryFailure(final Throwable cause) {
         if (cause == null) {
             throw new IllegalArgumentException("Cause must not be null");
@@ -176,7 +188,7 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
          * @param cause The cause.
          * @return A value indicating whether the deferred has been completed.
          */
-        boolean tryFailure(Throwable throwable);
+        boolean tryFailure(Throwable cause);
 
         /**
          * Adds the specified completable.
