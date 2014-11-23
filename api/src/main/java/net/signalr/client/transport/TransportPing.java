@@ -17,6 +17,7 @@
 package net.signalr.client.transport;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 import net.signalr.client.util.concurrent.Schedulable;
 import net.signalr.client.util.concurrent.promise.Completable;
@@ -89,7 +90,9 @@ final class TransportPing implements Schedulable {
                 LOGGER.debug("Received transport ping response: '{}'", value);
 
                 if (!PING_RESPONSE_VALUE.equalsIgnoreCase(value)) {
-                    _manager.handleError(new IOException("Received invalid transport ping response: '" + value + "'."));
+                    final String message = MessageFormat.format("Received invalid transport ping response: ''{0}''", value);
+
+                    _manager.handleError(new IOException(message));
                 }
             }
 

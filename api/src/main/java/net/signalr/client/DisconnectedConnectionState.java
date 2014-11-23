@@ -16,6 +16,8 @@
 
 package net.signalr.client;
 
+import java.text.MessageFormat;
+
 import net.signalr.client.transport.Channel;
 import net.signalr.client.transport.NegotiationResponse;
 import net.signalr.client.transport.Transport;
@@ -113,7 +115,9 @@ final class DisconnectedConnectionState implements ConnectionState {
                 final String protocolVersion = response.getProtocolVersion();
 
                 if (!protocolVersion.equals(context.getProtocolVersion())) {
-                    throw new IllegalStateException("Server returned unsupported protocol version: '" + protocolVersion + "'");
+                    final String message = MessageFormat.format("Server returned unsupported protocol version: ''{0}''", protocolVersion);
+
+                    throw new IllegalStateException(message);
                 }
 
                 context.setTransportOptions(response);
