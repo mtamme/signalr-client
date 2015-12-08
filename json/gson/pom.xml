@@ -10,7 +10,7 @@
 
     <artifactId>signalr-client-json-gson</artifactId>
     <properties>
-        <com.google.code.gson.version>2.2.4</com.google.code.gson.version>
+        <com.google.code.gson.version>2.5</com.google.code.gson.version>
     </properties>
 
     <dependencies>

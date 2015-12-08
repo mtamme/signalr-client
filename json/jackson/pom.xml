@@ -10,7 +10,7 @@
 
     <artifactId>signalr-client-json-jackson</artifactId>
     <properties>
-        <com.fasterxml.jackson.version>2.3.3</com.fasterxml.jackson.version>
+        <com.fasterxml.jackson.version>2.6.3</com.fasterxml.jackson.version>
     </properties>
 
     <dependencies>
