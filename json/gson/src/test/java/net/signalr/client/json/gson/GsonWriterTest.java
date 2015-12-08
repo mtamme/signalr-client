@@ -184,7 +184,7 @@ public final class GsonWriterTest {
         // Arrange
         final StringWriter output = new StringWriter();
         final JsonWriter writer = newWriter(output);
-        final Map<String, Object> value = new HashMap<String, Object>();
+        final Map<String, Object> value = new HashMap<>();
 
         value.put("A", "1");
         value.put("B", true);
@@ -332,7 +332,7 @@ public final class GsonWriterTest {
         // Arrange
         final StringWriter output = new StringWriter();
         final JsonWriter writer = newWriter(output);
-        final Map<String, Object> value = new HashMap<String, Object>();
+        final Map<String, Object> value = new HashMap<>();
 
         value.put("A", "1");
         value.put("B", true);

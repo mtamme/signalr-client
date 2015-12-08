@@ -35,19 +35,19 @@ import org.slf4j.LoggerFactory;
 @RunWith(JUnit4.class)
 public final class HubConnectionTests {
 
-    private static final String URL = "https://localhost/signalr/";
+    private static final String URL = "https://betcontentapiv1.bwin.com/signalr/";
 
-    private static final String ACCESS_ID_NAME = "X-AccessId";
+    private static final String ACCESS_ID_NAME = "X-Bwin-AccessId";
 
-    private static final String ACCESS_ID_VALUE = "";
+    private static final String ACCESS_ID_VALUE = "Nzk0NzdkOTAtNGI1Zi00Y2IxLTljYTYtZDM1MWYzMTZjOWNh";
 
-    private static final String HUB_NAME = "hub";
+    private static final String HUB_NAME = "betcontenthub";
 
-    private static final String JOIN_METHOD_NAME = "join";
+    private static final String JOIN_METHOD_NAME = "joinFullEventGroup";
 
-    private static final String LEAVE_METHOD_NAME = "leave";
+    private static final String LEAVE_METHOD_NAME = "leaveFullEventGroup";
 
-    private static final int[] ARGUMENTS = new int[] { 1 };
+    private static final int[] ARGUMENTS = new int[] { 4245023 };
 
     private static final Logger logger = LoggerFactory.getLogger(HubConnectionTests.class);
 

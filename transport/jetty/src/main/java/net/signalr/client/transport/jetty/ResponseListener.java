@@ -39,7 +39,7 @@ final class ResponseListener extends BufferingResponseListener {
      * Initializes a new instance of the {@link ResponseListener} class.
      */
     public ResponseListener() {
-        _response = new Deferred<String>();
+        _response = new Deferred<>();
     }
 
     /**

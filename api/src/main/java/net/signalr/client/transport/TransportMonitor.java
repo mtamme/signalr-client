@@ -202,7 +202,7 @@ final class TransportMonitor implements Schedulable, TransportListener {
     /**
      * Defines all transport statuses.
      */
-    private static enum Status {
+    private enum Status {
         /**
          * Transport is vital.
          */

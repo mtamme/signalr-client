@@ -49,7 +49,7 @@ public final class Promises {
      * @return The promise.
      */
     public static <T> Promise<T> newSuccess(final T value) {
-        return new Deferred<T>(value);
+        return new Deferred<>(value);
     }
 
     /**
@@ -59,7 +59,7 @@ public final class Promises {
      * @return The promise.
      */
     public static <T> Promise<T> newFailure(final Throwable cause) {
-        return new Deferred<T>(cause);
+        return new Deferred<>(cause);
     }
 
     /**
@@ -115,7 +115,7 @@ public final class Promises {
             throw new IllegalArgumentException("Promise must not be null");
         }
 
-        final CompletableFuture<T> future = new CompletableFuture<T>();
+        final CompletableFuture<T> future = new CompletableFuture<>();
 
         promise.then(future);
 
@@ -138,7 +138,7 @@ public final class Promises {
             throw new IllegalArgumentException("Promise must not be null");
         }
 
-        final CompletableFuture<T> future = new CompletableFuture<T>();
+        final CompletableFuture<T> future = new CompletableFuture<>();
 
         promise.then(future);
 
@@ -156,7 +156,7 @@ public final class Promises {
             throw new IllegalArgumentException("Promise must not be null");
         }
 
-        final CompletableFuture<T> future = new CompletableFuture<T>();
+        final CompletableFuture<T> future = new CompletableFuture<>();
 
         promise.then(future);
 

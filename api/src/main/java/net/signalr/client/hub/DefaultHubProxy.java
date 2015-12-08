@@ -68,7 +68,7 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
         _hubName = hubName;
         _dispatcher = dispatcher;
 
-        _callbacks = new ConcurrentHashMap<String, HubCallback<HubMessage>>();
+        _callbacks = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -107,7 +107,7 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
                 if (errorMessage != null) {
                     final String errorData = response.getErrorData();
                     final String stackTrace = response.getStackTrace();
-
+                    
                     throw new HubException(errorMessage, errorData, stackTrace);
                 }
                 final JsonElement data = response.getData();

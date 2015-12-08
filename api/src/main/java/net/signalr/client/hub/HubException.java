@@ -16,6 +16,9 @@
 
 package net.signalr.client.hub;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 /**
  * Represents a hub exception.
  */
@@ -62,5 +65,29 @@ public final class HubException extends RuntimeException {
      */
     public String getRemoteStackTrace() {
         return _remoteStackTrace;
+    }
+
+    @Override
+    public void printStackTrace(final PrintStream stream) {
+        synchronized (stream) {
+            super.printStackTrace(stream);
+
+            if (_remoteStackTrace != null) {
+                stream.print("Caused by: ");
+                stream.print(_remoteStackTrace);
+            }
+        }
+    }
+
+    @Override
+    public void printStackTrace(final PrintWriter writer) {
+        synchronized (writer) {
+            super.printStackTrace(writer);
+
+            if (_remoteStackTrace != null) {
+                writer.print("Caused by: ");
+                writer.print(_remoteStackTrace);
+            }
+        }
     }
 }

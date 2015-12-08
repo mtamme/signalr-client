@@ -216,7 +216,7 @@ public final class GsonReaderTest {
     public void readObjectWithObjectElementsTest() {
         // Arrange
         final JsonReader reader = newReader("{\"A\":{\"A\":1},\"B\":{\"B\":2}}");
-        final Map<String, JsonElement> elements = new HashMap<String, JsonElement>();
+        final Map<String, JsonElement> elements = new HashMap<>();
 
         // Act
         reader.readBeginObject();
@@ -427,7 +427,7 @@ public final class GsonReaderTest {
     public void readArrayWithObjectElementsTest() {
         // Arrange
         final JsonReader reader = newReader("[{\"A\":1},{\"B\":2}]");
-        final List<JsonElement> elements = new ArrayList<JsonElement>();
+        final List<JsonElement> elements = new ArrayList<>();
 
         // Act
         reader.readBeginArray();

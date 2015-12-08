@@ -150,11 +150,9 @@ final class JacksonReader implements JsonReader {
         if (token == JsonToken.END_ARRAY) {
             return false;
         }
-        if (token == JsonToken.END_OBJECT) {
-            return false;
-        }
 
-        return true;
+        return (token != JsonToken.END_OBJECT);
+
     }
 
     @Override

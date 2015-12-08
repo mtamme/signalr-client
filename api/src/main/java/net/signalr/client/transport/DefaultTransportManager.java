@@ -73,8 +73,8 @@ public final class DefaultTransportManager extends AbstractLifecycle<TransportCo
         _transport = transport;
         _timeProvider = timeProvider;
 
-        _listeners = new CopyOnWriteArraySet<TransportListener>();
-        _jobs = new ArrayList<Job>();
+        _listeners = new CopyOnWriteArraySet<>();
+        _jobs = new ArrayList<>();
     }
 
     @Override

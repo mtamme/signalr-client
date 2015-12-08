@@ -38,7 +38,7 @@ final class ResponseHandler extends AsyncCompletionHandler<Response> {
      * Initializes a new instance of the {@link ResponseHandler} class.
      */
     public ResponseHandler() {
-        _response = new Deferred<Response>();
+        _response = new Deferred<>();
     }
 
     /**

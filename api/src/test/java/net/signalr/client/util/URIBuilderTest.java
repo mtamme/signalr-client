@@ -485,7 +485,7 @@ public final class URIBuilderTest {
     public void addParametersTest() {
         // Arrange
         final URIBuilder uriBuilder = new URIBuilder("scheme://user@host:8000/path?a=1#fragment");
-        final Map<String, Collection<String>> parameters = new HashMap<String, Collection<String>>();
+        final Map<String, Collection<String>> parameters = new HashMap<>();
 
         parameters.put("b", Arrays.asList("2", "+2"));
         parameters.put("c", Arrays.asList("3", "+3"));
@@ -509,7 +509,7 @@ public final class URIBuilderTest {
     public void addParametersWithNullValuesTest() {
         // Arrange
         final URIBuilder uriBuilder = new URIBuilder("scheme://user@host:8000/path?a=1#fragment");
-        final Map<String, Collection<String>> parameters = new HashMap<String, Collection<String>>();
+        final Map<String, Collection<String>> parameters = new HashMap<>();
 
         parameters.put("b", Arrays.asList("2", null));
         parameters.put("c", Arrays.asList("3", null));
@@ -533,7 +533,7 @@ public final class URIBuilderTest {
     public void addParametersWithBuildTest() {
         // Arrange
         final URIBuilder uriBuilder = new URIBuilder("scheme://user@host:8000/path?a=1#fragment");
-        final Map<String, Collection<String>> parameters = new HashMap<String, Collection<String>>();
+        final Map<String, Collection<String>> parameters = new HashMap<>();
 
         parameters.put("b", Arrays.asList("2", "+2"));
         parameters.put("c", Arrays.asList("3", "+3"));
@@ -550,7 +550,7 @@ public final class URIBuilderTest {
     public void addParametersWithNullValuesAndBuildTest() {
         // Arrange
         final URIBuilder uriBuilder = new URIBuilder("scheme://user@host:8000/path?a=1#fragment");
-        final Map<String, Collection<String>> parameters = new HashMap<String, Collection<String>>();
+        final Map<String, Collection<String>> parameters = new HashMap<>();
 
         parameters.put("b", Arrays.asList("2", null));
         parameters.put("c", Arrays.asList("3", null));

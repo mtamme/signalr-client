@@ -34,7 +34,7 @@ final class CompletableFuture<T> implements Completable<T>, Future<T> {
      * 
      * @param <V> The value type.
      */
-    private static interface Value<V> {
+    private interface Value<V> {
         /**
          * Returns the value.
          * 

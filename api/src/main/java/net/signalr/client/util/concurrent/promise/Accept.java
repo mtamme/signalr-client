@@ -25,7 +25,6 @@ public abstract class Accept<T> implements Continuation<T, Void> {
      * Handles the accept continuation.
      * 
      * @param value The value.
-     * @return The result.
      * @throws Exception
      */
     protected abstract void doAccept(T value) throws Exception;

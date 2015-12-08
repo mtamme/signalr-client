@@ -103,7 +103,7 @@ final class ConnectedConnectionState implements ConnectionState {
 
     @Override
     public Promise<Void> reconnect(final ConnectionContext context) {
-        final Deferred<Void> deferred = new Deferred<Void>();
+        final Deferred<Void> deferred = new Deferred<>();
         final ReconnectingConnectionState reconnecting = new ReconnectingConnectionState(deferred);
 
         if (!context.tryChangeConnectionState(this, reconnecting)) {
@@ -158,7 +158,7 @@ final class ConnectedConnectionState implements ConnectionState {
 
     @Override
     public Promise<Void> disconnect(final ConnectionContext context) {
-        final Deferred<Void> deferred = new Deferred<Void>();
+        final Deferred<Void> deferred = new Deferred<>();
         final DisconnectingConnectionState disconnecting = new DisconnectingConnectionState(deferred);
 
         if (!context.tryChangeConnectionState(this, disconnecting)) {

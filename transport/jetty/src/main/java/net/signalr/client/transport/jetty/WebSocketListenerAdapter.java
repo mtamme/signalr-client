@@ -51,7 +51,7 @@ final class WebSocketListenerAdapter implements WebSocketListener {
 
         _handler = handler;
 
-        _channel = new Deferred<Channel>();
+        _channel = new Deferred<>();
     }
 
     /**

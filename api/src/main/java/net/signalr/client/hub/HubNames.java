@@ -37,7 +37,7 @@ final class HubNames implements JsonWriteable {
      * Initializes a new instance of the {@link HubNames} class.
      */
     public HubNames() {
-        _names = new HashSet<String>();
+        _names = new HashSet<>();
     }
 
     /**

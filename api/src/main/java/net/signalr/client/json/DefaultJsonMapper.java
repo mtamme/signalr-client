@@ -50,12 +50,9 @@ public final class DefaultJsonMapper implements JsonMapper {
         }
 
         final StringReader input = new StringReader(text);
-        final JsonReader reader = _factory.newReader(input);
 
-        try {
+        try (final JsonReader reader = _factory.newReader(input)) {
             return reader.readElement();
-        } finally {
-            reader.close();
         }
     }
 
@@ -79,12 +76,9 @@ public final class DefaultJsonMapper implements JsonMapper {
             throw new IllegalArgumentException(e);
         }
         final StringReader input = new StringReader(text);
-        final JsonReader reader = _factory.newReader(input);
 
-        try {
+        try (final JsonReader reader = _factory.newReader(input)) {
             object.readJson(reader);
-        } finally {
-            reader.close();
         }
 
         return object;
@@ -97,12 +91,9 @@ public final class DefaultJsonMapper implements JsonMapper {
         }
 
         final StringWriter output = new StringWriter();
-        final JsonWriter writer = _factory.newWriter(output);
 
-        try {
+        try (final JsonWriter writer = _factory.newWriter(output)) {
             object.writeJson(writer);
-        } finally {
-            writer.close();
         }
 
         return output.toString();

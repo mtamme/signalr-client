@@ -20,7 +20,8 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import net.signalr.client.ConnectionListener;
-import net.signalr.client.json.gson.GsonFactory;
+import net.signalr.client.json.JsonElement;
+import net.signalr.client.json.jackson.JacksonFactory;
 import net.signalr.client.transport.jetty.WebSocketTransport;
 import net.signalr.client.util.concurrent.promise.Compose;
 import net.signalr.client.util.concurrent.promise.Promise;
@@ -35,80 +36,98 @@ import org.slf4j.LoggerFactory;
 @RunWith(JUnit4.class)
 public final class HubConnectionTests {
 
-    private static final String URL = "https://localhost/signalr/";
+    private static final String URL = "https://betcontentapiv1.bwin.com/signalr/";
 
-    private static final String ACCESS_ID_NAME = "X-AccessId";
+    private static final String ACCESS_ID_NAME = "X-Bwin-AccessId";
 
-    private static final String ACCESS_ID_VALUE = "";
+    private static final String ACCESS_ID_VALUE = "MTA0NDI1MjEtNjUxNS00NjI3LTlhMzAtMWVlOWU3NGJlYzVk";
 
-    private static final String HUB_NAME = "hub";
+    private static final String HUB_NAME = "betcontenthub";
 
-    private static final String JOIN_METHOD_NAME = "join";
+    private static final String JOIN_METHOD_NAME = "joinFullEventGroup";
 
-    private static final String LEAVE_METHOD_NAME = "leave";
+    private static final String LEAVE_METHOD_NAME = "leaveFullEventGroup";
 
-    private static final int[] ARGUMENTS = new int[] { 1 };
+    private static final int[] ARGUMENTS = new int[] { 4481500 };
 
-    private static final Logger logger = LoggerFactory.getLogger(HubConnectionTests.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HubConnectionTests.class);
 
     @Test
     public void test() throws InterruptedException, ExecutionException, IOException {
-        final HubConnection connection = new HubConnection(URL, new WebSocketTransport(), new GsonFactory());
+        final HubConnection connection = new HubConnection(URL, new WebSocketTransport(), new JacksonFactory());
 
         connection.addHeader(ACCESS_ID_NAME, ACCESS_ID_VALUE);
-        connection.addParameter("culture", "en");
         connection.addConnectionListener(new ConnectionListener() {
             @Override
             public void onReconnecting() {
-                logger.info("onReconnecting");
+                LOGGER.info("onReconnecting");
             }
 
             @Override
             public void onReconnected() {
-                logger.info("onReconnected");
+                LOGGER.info("onReconnected");
             }
 
             @Override
             public void onSending(final String message) {
-                logger.info("onSending: {}", message);
+                LOGGER.info("onSending: {}", message);
             }
 
             @Override
             public void onReceived(final String message) {
-                logger.info("onReceived: {}", message);
+                //logger.info("onReceived: {}", message);
             }
 
             @Override
             public void onError(final Throwable cause) {
-                logger.info("onError: {}", cause);
+                LOGGER.info("onError: {}", cause);
             }
 
             @Override
             public void onConnectionSlow() {
-                logger.info("onConnectionSlow");
+                LOGGER.info("onConnectionSlow");
             }
 
             @Override
             public void onConnecting() {
-                logger.info("onConnecting");
+                LOGGER.info("onConnecting");
             }
 
             @Override
             public void onConnected() {
-                logger.info("onConnected");
+                LOGGER.info("onConnected");
             }
 
             @Override
             public void onDisconnecting() {
-                logger.info("onDisconnecting");
+                LOGGER.info("onDisconnecting");
             }
 
             @Override
             public void onDisconnected() {
-                logger.info("onDisconnected");
+                LOGGER.info("onDisconnected");
             }
         });
         final HubProxy proxy = connection.newHubProxy(HUB_NAME);
+        
+        proxy.register("updateFullScoreboard", new HubCallback<JsonElement>() {
+            @Override
+            public void onInvoke(final JsonElement argument) {
+                LOGGER.info("updateFullScoreboard: {}", argument);
+            }
+        });
+        proxy.register("updateOption", new HubCallback<JsonElement>() {
+            @Override
+            public void onInvoke(final JsonElement argument) {
+                LOGGER.info("updateOption: {}", argument);
+            }
+        });
+        proxy.register("updateMarket", new HubCallback<JsonElement>() {
+            @Override
+            public void onInvoke(final JsonElement argument) {
+                LOGGER.info("updateMarket: {}", argument);
+            }
+        });
         final Promise<Void> start = connection.start().then(new Compose<Void, Void>() {
             @Override
             protected Promise<Void> doCompose(final Void value) throws Exception {

@@ -61,7 +61,7 @@ final class WebSocketChannel implements Channel {
     @Override
     public Promise<Void> send(final String message) {
         _handler.handleMessageSending(message);
-        final Deferred<Void> deferred = new Deferred<Void>();
+        final Deferred<Void> deferred = new Deferred<>();
 
         _session.getRemote().sendString(message, new WriteCallback() {
             @Override

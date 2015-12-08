@@ -42,7 +42,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
      * Initializes a new instance of the {@link AbstractLifecycle} class
      */
     protected AbstractLifecycle() {
-        _state = new AtomicReference<State>(State.STOPPED);
+        _state = new AtomicReference<>(State.STOPPED);
     }
 
     /**
@@ -134,7 +134,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
     /**
      * Defines all lifecycle states.
      */
-    private static enum State {
+    private enum State {
 
         /**
          * Lifecycle is going to be started.
@@ -172,7 +172,7 @@ public abstract class AbstractLifecycle<T> implements Lifecycle<T> {
          * @param name The state name.
          * @param running A value indicating whether the lifecycle is running.
          */
-        private State(final String name, final boolean running) {
+        State(final String name, final boolean running) {
             if (name == null) {
                 throw new IllegalArgumentException("Name must not be null");
             }

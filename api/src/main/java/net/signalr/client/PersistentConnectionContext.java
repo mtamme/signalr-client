@@ -138,10 +138,10 @@ final class PersistentConnectionContext implements ConnectionContext {
 
         final ConnectionState initialState = new DisconnectedConnectionState(null);
 
-        _connectionState = new AtomicReference<ConnectionState>(initialState);
-        _headers = new HashMap<String, Collection<String>>();
-        _parameters = new HashMap<String, Collection<String>>();
-        _listeners = new CopyOnWriteArraySet<ConnectionListener>();
+        _connectionState = new AtomicReference<>(initialState);
+        _headers = new HashMap<>();
+        _parameters = new HashMap<>();
+        _listeners = new CopyOnWriteArraySet<>();
 
         _connectionData = null;
         _transportOptions = null;
@@ -164,7 +164,7 @@ final class PersistentConnectionContext implements ConnectionContext {
         Collection<String> values = _headers.get(name);
 
         if (values == null) {
-            values = new ArrayList<String>();
+            values = new ArrayList<>();
             _headers.put(name, values);
         }
 
@@ -183,7 +183,7 @@ final class PersistentConnectionContext implements ConnectionContext {
         Collection<String> values = _parameters.get(name);
 
         if (values == null) {
-            values = new ArrayList<String>();
+            values = new ArrayList<>();
             _parameters.put(name, values);
         }
 

@@ -74,8 +74,8 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
         _connection = connection;
 
         _nextCallbackId = new AtomicLong(0);
-        _proxies = new ConcurrentHashMap<String, DefaultHubProxy>();
-        _responses = new ConcurrentHashMap<String, Deferred<HubResponse>>();
+        _proxies = new ConcurrentHashMap<>();
+        _responses = new ConcurrentHashMap<>();
     }
 
     /**
@@ -124,7 +124,7 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
     /**
      * Handles hub messages.
      * 
-     * @param message The hub messages.
+     * @param messages The hub messages.
      */
     private void handleMessages(final HubMessage[] messages) {
         for (final HubMessage message : messages) {
@@ -186,7 +186,7 @@ final class DefaultHubDispatcher extends ConnectionAdapter implements HubDispatc
         request.setCallbackId(callbackId);
         final JsonMapper mapper = _connection.getMapper();
         final String message = mapper.toJson(request);
-        final Deferred<HubResponse> deferred = new Deferred<HubResponse>();
+        final Deferred<HubResponse> deferred = new Deferred<>();
 
         _responses.put(callbackId, deferred);
 

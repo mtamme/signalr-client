@@ -47,7 +47,7 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
     public Deferred() {
         final State<T> initialState = new PendingState();
 
-        _state = new AtomicReference<State<T>>(initialState);
+        _state = new AtomicReference<>(initialState);
     }
 
     /**
@@ -56,9 +56,9 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
      * @param value The value.
      */
     public Deferred(final T value) {
-        final State<T> initialState = new SuccessState<T>(value);
+        final State<T> initialState = new SuccessState<>(value);
 
-        _state = new AtomicReference<State<T>>(initialState);
+        _state = new AtomicReference<>(initialState);
     }
 
     /**
@@ -71,9 +71,9 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
             throw new IllegalArgumentException("Cause must not be null");
         }
 
-        final State<T> initialState = new FailureState<T>(cause);
+        final State<T> initialState = new FailureState<>(cause);
 
-        _state = new AtomicReference<State<T>>(initialState);
+        _state = new AtomicReference<>(initialState);
     }
 
     /**
@@ -134,7 +134,7 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
             throw new IllegalArgumentException("Continuation must not be null");
         }
 
-        final Deferred<R> result = new Deferred<R>();
+        final Deferred<R> result = new Deferred<>();
 
         _state.get().then(new Completable<T>() {
             @Override
@@ -165,7 +165,7 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
      * 
      * @param <T> The value type.
      */
-    private static interface State<T> {
+    private interface State<T> {
 
         /**
          * Returns a value indicating whether the deferred is complete.
@@ -200,8 +200,6 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
 
     /**
      * Represents a pending state.
-     * 
-     * @param <V> The value type.
      */
     private final class PendingState implements State<T> {
 
@@ -214,7 +212,7 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
          * Initializes a new instance of the {@link PendingState} class.
          */
         public PendingState() {
-            _stages = new ConcurrentLinkedQueue<Stage<T>>();
+            _stages = new ConcurrentLinkedQueue<>();
         }
 
         /**
@@ -272,21 +270,21 @@ public final class Deferred<T> implements Promise<T>, Completable<T> {
 
         @Override
         public boolean trySuccess(final T value) {
-            final State<T> state = new SuccessState<T>(value);
+            final State<T> state = new SuccessState<>(value);
 
             return tryChangeState(state);
         }
 
         @Override
         public boolean tryFailure(final Throwable cause) {
-            final State<T> state = new FailureState<T>(cause);
+            final State<T> state = new FailureState<>(cause);
 
             return tryChangeState(state);
         }
 
         @Override
         public void then(final Completable<? super T> completable) {
-            final Stage<T> stage = new Stage<T>(completable);
+            final Stage<T> stage = new Stage<>(completable);
 
             addStage(stage);
         }

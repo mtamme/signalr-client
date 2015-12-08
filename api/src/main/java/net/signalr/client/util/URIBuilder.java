@@ -389,7 +389,7 @@ public final class URIBuilder {
     /**
      * Sets the raw user info.
      * 
-     * @param path The raw user info.
+     * @param rawUserInfo The raw user info.
      * @return The URI builder.
      */
     public URIBuilder setRawUserInfo(final String rawUserInfo) {
@@ -412,7 +412,7 @@ public final class URIBuilder {
     /**
      * Sets the raw path.
      * 
-     * @param path The raw path.
+     * @param rawPath The raw path.
      * @return The URI builder.
      */
     public URIBuilder setRawPath(final String rawPath) {
@@ -434,7 +434,7 @@ public final class URIBuilder {
     /**
      * Sets the raw query.
      * 
-     * @param query The raw query.
+     * @param rawQuery The raw query.
      * @return The URI builder.
      */
     public URIBuilder setRawQuery(final String rawQuery) {
@@ -491,7 +491,7 @@ public final class URIBuilder {
     /**
      * Sets the raw fragment.
      * 
-     * @param fragment The raw fragment.
+     * @param rawFragment The raw fragment.
      * @return The URI builder.
      */
     public URIBuilder setRawFragment(final String rawFragment) {
