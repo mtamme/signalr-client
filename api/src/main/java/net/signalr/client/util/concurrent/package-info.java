@@ -18,4 +18,3 @@
  * 
  */
 package net.signalr.client.util.concurrent;
-

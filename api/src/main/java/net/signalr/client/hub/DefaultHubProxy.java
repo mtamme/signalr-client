@@ -107,7 +107,7 @@ final class DefaultHubProxy implements HubProxy, HubCallback<HubMessage> {
                 if (errorMessage != null) {
                     final String errorData = response.getErrorData();
                     final String stackTrace = response.getStackTrace();
-                    
+
                     throw new HubException(errorMessage, errorData, stackTrace);
                 }
                 final JsonElement data = response.getData();
