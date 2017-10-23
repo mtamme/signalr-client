@@ -2,7 +2,7 @@
 
 An extensible asynchronous SignalR client for Java.
 
-<span style="color:red">**This is currently a prototype and therefore not applicable for production use!**</span>
+**This is currently a prototype and therefore not applicable for production use!**
 
 ## Persistent Connections API
 
